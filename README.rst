@@ -43,7 +43,7 @@ Quickstart
    x_exog = 'x_1'
    controls = ['x_2', 'x_3', 'x_4', 'x_5']
    
-   specification_curve(df, y_endog, x_exog, controls)Some Ruby code.
+   specification_curve(df, y_endog, x_exog, controls)
 
 Features
 --------
