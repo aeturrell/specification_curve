@@ -10,11 +10,12 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [ ]
+requirements = ['statsmodels', 'matplotlib', 'numpy', 'pandas',
+                'scikit-learn']
 
 setup_requirements = [ ]
 
-test_requirements = [ ]
+test_requirements = ['numpy', 'pandas']
 
 setup(
     author="Arthur Turrell",

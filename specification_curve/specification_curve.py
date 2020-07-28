@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 from collections import Counter
 from itertools import combinations
 import sklearn
+import copy
 
 
 def _pretty_plots():
-    jsonPlotSettings = {'xtick.labelsize': 16,
-                        'ytick.labelsize': 20,
+    jsonPlotSettings = {'ytick.labelsize': 20,
                         'xtick.labelsize': 20,
                         'font.size': 22,
                         'figure.figsize': (10, 5),
@@ -162,7 +162,7 @@ def plot_spec_curve(df_r, df_ctr_mat, controls, save_path=None):
                     ncol=1, handlelength=4, markerscale=10)
     axarr[0].set_ylabel('Coefficient')
     axarr[0].set_title('Specification curve analysis')
-    cmap = plt.cm.plasma
+    cmap = copy.copy(plt.cm.plasma)
     cmap.set_bad('white', 1.)
     axarr[1].imshow(df_ctr_mat[controls].T, aspect='auto',
                     cmap=cmap, interpolation='None')
