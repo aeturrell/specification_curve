@@ -319,5 +319,5 @@ def spec_curve(df, y_endog, x_exog, controls,
     df_r = _spec_curve_regression(df, y_endog, x_exog, controls,
                                   exclu_grps=exclu_grps,
                                   cat_expand=cat_expand)
-    plot_spec_curve(df_r, x_exog, controls, save_path=save_path)
+    plot_spec_curve(df_r, x_exog, save_path=save_path)
     return df_r
