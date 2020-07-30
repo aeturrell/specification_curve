@@ -1,5 +1,6 @@
 """Main module."""
 
+from numpy.core.shape_base import block
 import pandas as pd
 import statsmodels.api as sm
 import numpy as np
@@ -8,6 +9,7 @@ from collections import Counter
 from itertools import combinations
 import sklearn
 import copy
+import itertools
 import matplotlib.patches as patches
 import matplotlib.ticker as ticker
 from math import log10, floor
@@ -114,6 +116,10 @@ def _reg_func(df, y_endog, x_exog, reg_vars):
     return sm.OLS(xf[y_endog], xf[[x_exog]+reg_vars_here]).fit()
 
 
+def flatn_list(nested_list):
+    return list(itertools.chain.from_iterable(nested_list))
+
+
 def _spec_curve_regression(xdf, y_endog, x_exog, controls,
                            exclu_grps=[[]],
                            cat_expand=[]):
@@ -132,7 +138,7 @@ def _spec_curve_regression(xdf, y_endog, x_exog, controls,
     # Make sure exlu grps is a list of lists TODO
     df = xdf.copy()
     controls = copy.copy(controls)
-    init_cols = [y_endog] + [x_exog] + controls
+    init_cols = y_endog + x_exog + controls
     df = df[init_cols]
     new_cols = []
     # Warning: hard-coded prefix
@@ -165,29 +171,41 @@ def _spec_curve_regression(xdf, y_endog, x_exog, controls,
     if(exclu_grps != [[]]):
         exclu_grps = [set(x) for x in exclu_grps]
     # Get all combinations excluding mutually excl groups
-    all_combs = [_excl_combs(controls, k, exclu_grps)
-                 for k in range(len(controls)+1)]
+    ctrl_combs = [_excl_combs(controls, k, exclu_grps)
+                  for k in range(len(controls)+1)]
     # Flatten this into a single list of tuples
-    all_combs = [item for sublist in all_combs for item in sublist]
+    ctrl_combs = flatn_list(ctrl_combs)
     # Turn all the tuples into lists
-    all_combs = [list(x) for x in all_combs]
-    # Regressions
-    all_results = [_reg_func(df, y_endog, x_exog, reg_vars)
-                   for reg_vars in all_combs]
-    # Get coefficient values and specifications
-    df_r = pd.DataFrame([x.params[x_exog] for x in all_results],
-                        columns=['Coefficient'])
-    df_r['Specification'] = all_combs
-    # Grab the shuffled results while everything is in the original order
-    # df_r['Shuffle_coeff'] = _get_shuffled_results(df, y_endog, x_exog,
-    #                                               all_combs,
-    #                                               num_shuffles=50)
-    # Get std err and pvalues
-    df_r['bse'] = [x.bse[x_exog] for x in all_results]
-    df_r['pvalues'] = [x.pvalues for x in all_results]
+    ctrl_combs = [list(x) for x in ctrl_combs]
+    # Regressions - order of loop matters here
+    reg_results = [[[_reg_func(df, y, x, ctrl_vars)
+                     for ctrl_vars in ctrl_combs]
+                    for x in x_exog]
+                   for y in y_endog]
+    reg_results = flatn_list(flatn_list(reg_results))
+    # Order matters here: x ends up as first var,
+    # y as second
+    combs = [[[[x] + [y] + ctrl_vars for ctrl_vars in ctrl_combs]
+              for x in x_exog]
+             for y in y_endog]
+    combs = flatn_list(flatn_list(combs))
+    df_r = pd.DataFrame(combs)
+    df_r = df_r.rename(columns={0: 'x_exog', 1: 'y_endog'})
+    df_r['Results'] = reg_results
+    df_r['Coefficient'] = df_r.apply(
+        lambda row: row['Results'].params[row['x_exog']], axis=1)
+    df_r['Specification'] = combs
+    df_r['bse'] = df_r.apply(
+        lambda row: row['Results'].bse[row['x_exog']], axis=1)
+    df_r['pvalues'] = [x.pvalues for x in reg_results]
     df_r['pvalues'] = df_r['pvalues'].apply(lambda x: dict(x))
     # Re-order by coefficient
     df_r = df_r.sort_values('Coefficient')
+    cols_to_keep = ['Results', 'Coefficient',
+                    'Specification', 'bse', 'pvalues',
+                    'x_exog', 'y_endog']
+    df_r = (df_r.drop(
+        [x for x in df_r.columns if x not in cols_to_keep], axis=1))
     df_r = df_r.reset_index().drop('index', axis=1)
     df_r.index.names = ['Specification No.']
     df_r['Specification'] = df_r['Specification'].apply(lambda x: sorted(x))
@@ -196,7 +214,7 @@ def _spec_curve_regression(xdf, y_endog, x_exog, controls,
     return df_r
 
 
-def plot_spec_curve(df_r, x_exog, save_path=None):
+def plot_spec_curve(df_r, y_endog, x_exog, controls, save_path=None):
     """Plots a specification curve.
 
 
@@ -213,21 +231,32 @@ def plot_spec_curve(df_r, x_exog, save_path=None):
     df_spec = df_spec.replace(0., False).replace(1., True)
     df_spec = df_spec.T
     df_spec = df_spec.sort_index()
-    # Warning: hard-coded prefix
-    block_ids = [x.split(' = ')[0] for x in list(df_spec.index.values)]
-    block_df = pd.DataFrame(list(df_spec.index.values), index=block_ids,
-                            columns=['name'])
-    # The size of each block
-    block_df['group_size'] = pd.Series(dict(Counter(block_ids)))
-    block_df = block_df.reset_index().set_index('name')
-    # Gives a unique index to each block
-    block_df['group_index'] = pd.Categorical(block_df['group_size']).codes
+    # This is quite hacky
+    new_ctrl_names = list(set(flatn_list(df_r['Specification'].values)))
+    new_ctrl_names = [x for x in new_ctrl_names if x not in x_exog+y_endog]
+    name = x_exog + y_endog + new_ctrl_names
+    group = (['x_exog' for x in range(len(x_exog))] +
+             ['y_endog' for y in range(len(y_endog))] +
+             [var.split(' = ')[0] for var in new_ctrl_names])
+    block_df = pd.DataFrame(group, index=name, columns=['group'])
+    group_map = dict(zip(block_df['group'], block_df['group']))
+    group_map.update(dict(zip([x for x in group if x in new_ctrl_names],
+                              ['control' for x in group if x in new_ctrl_names])))
+    block_df['group'] = block_df['group'].apply(lambda x: group_map[x])
+    counts = (block_df.reset_index().groupby('group').count().rename(
+        columns={'index': 'counts'}))
+    block_df = pd.merge(block_df.reset_index(),
+                        counts.reset_index(),
+                        on=['group']).set_index('index')
+    block_df = block_df.loc[block_df['counts'] > 1, :]
+    index_dict = dict(zip(block_df['group'].unique(),
+                          range(len(block_df['group'].unique()))))
+    block_df['group_index'] = block_df['group'].apply(lambda x: index_dict[x])
     plt.close('all')
     fig = plt.figure(constrained_layout=False, figsize=(12, 8))
     heights = ([2] +
                [0.3*np.log(x+1)
-                for x in block_df['group_size'].value_counts()][::-1])
-
+                for x in block_df['group_index'].value_counts(sort=False)])
     spec = fig.add_gridspec(ncols=1, nrows=len(heights),
                             height_ratios=heights, wspace=0.05)
     axarr = []
@@ -252,7 +281,9 @@ def plot_spec_curve(df_r, x_exog, save_path=None):
                      dashes=[12, 5])
     # Colour the significant ones differently
     df_r['color_coeff'] = 'black'
-    df_r['coeff_pvals'] = df_r['pvalues'].apply(lambda x: x[x_exog])
+    df_r['coeff_pvals'] = (df_r.apply(lambda row:
+                                      row['pvalues'][row['x_exog']],
+                                      axis=1))
     df_r.loc[df_r['coeff_pvals'] < 0.05, 'color_coeff'] = 'blue'
     for color in df_r['color_coeff'].unique():
         slice_df_r = df_r.loc[df_r['color_coeff'] == color]
@@ -296,7 +327,7 @@ def plot_spec_curve(df_r, x_exog, save_path=None):
         ax.set_yticks(range(len(list(df_sp_sl.index.values))))
         ax.set_yticklabels(list(df_sp_sl.index.values))
         ax.set_xticklabels([])
-        ax.set_ylim(-hei, len(df_sp_sl)-hei*2)
+        ax.set_ylim(-hei, len(df_sp_sl)-hei*3)
         ax.set_xlim(-wid, len(df_sp_sl.columns))
         for place in ['right', 'top', 'bottom']:
             ax.spines[place].set_visible(False)
@@ -316,8 +347,10 @@ def spec_curve(df, y_endog, x_exog, controls,
     controls = _single_list_check_str(controls)
     cat_expand = _single_list_check_str(cat_expand)
     exclu_grps = _double_list_check(exclu_grps)
+    y_endog = _single_list_check_str(y_endog)
+    x_exog = _single_list_check_str(x_exog)
     df_r = _spec_curve_regression(df, y_endog, x_exog, controls,
                                   exclu_grps=exclu_grps,
                                   cat_expand=cat_expand)
-    plot_spec_curve(df_r, x_exog, save_path=save_path)
+    plot_spec_curve(df_r, y_endog, x_exog, controls, save_path=save_path)
     return df_r

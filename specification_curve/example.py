@@ -3,6 +3,8 @@
 import numpy as np
 import pandas as pd
 from specification_curve import specification_curve as sc
+import importlib
+importlib.reload(sc)
 
 
 def load_example_data1():
@@ -58,6 +60,23 @@ df_r = sc.spec_curve(df, y_endog, x_exog, ctrls,
 df_r = sc.spec_curve(df, y_endog, x_exog, ctrls,
                      cat_expand='group1',
                      exclu_grps=['c1', 'c2'])
+
+df = load_example_data1()
+x_exog = ['x1', 'x2']
+y_endog = ['y1', 'y2']
+ctrls = ['c1', 'c2', 'group1', 'group2']
+controls = ctrls
+df_r = sc.spec_curve(df, y_endog, x_exog, ctrls)
+# TODO fix this one so it works (line 326)
+# 'Passing list-likes to .loc or [] with any missing labels is no longer supported,
+df_r = sc.spec_curve(df, y_endog, x_exog, ctrls,
+                     cat_expand=['group1', 'group2'])
+# same issue affects this one:
+x_exog = 'x2'
+y_endog = 'y2'
+df_r = sc.spec_curve(df, y_endog, x_exog, ctrls,
+                     cat_expand=['group1'])
+
 
 # Example dataset 2
 df = load_example_data2()
