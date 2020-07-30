@@ -23,9 +23,10 @@ Specification Curve is a Python package that performs specification curve analys
 * Documentation: https://specification-curve.readthedocs.io.
 
 Quickstart
---------
+----------
 
-.. code-block:: Python
+.. code-block:: python
+
    from specification_curve import specification_curve as sc
    import numpy as np
    n_samples = 100
@@ -53,7 +54,7 @@ Features
 * TODO
 
 Similar Packages
--------
+----------------
 
 In RStats, there is specr_ (which inspired many design choices in this package) and spec_chart_. Some of the example data in this package is the same as in specr_.
 
