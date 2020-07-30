@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 
-from specification_curve import specification_curve
+from specification_curve import specification_curve as sc
 
 
 class TestSpecification_curve(unittest.TestCase):
@@ -36,4 +36,4 @@ class TestSpecification_curve(unittest.TestCase):
         y_endog = 'y'
         x_exog = 'x_1'
         controls = ['x_2', 'x_3', 'x_4', 'x_5']
-        specification_curve.specification_curve(df, y_endog, x_exog, controls)
+        sc.spec_curve(df, y_endog, x_exog, controls)

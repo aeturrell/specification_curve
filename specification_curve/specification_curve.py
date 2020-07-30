@@ -209,7 +209,7 @@ def plot_spec_curve(df_r, x_exog, controls, save_path=None):
     heights = ([2] +
                [0.3*np.log(x+1)
                 for x in block_df['group_size'].value_counts()][::-1])
-    
+
     spec = fig.add_gridspec(ncols=1, nrows=len(heights),
                             height_ratios=heights, wspace=0.05)
     axarr = []
