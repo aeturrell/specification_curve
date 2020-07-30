@@ -54,10 +54,10 @@ df_r = sc.spec_curve(df, y_endog, x_exog, ctrls,
 df_r = sc.spec_curve(df, y_endog, x_exog, ctrls,
                      cat_expand=['group1', 'group2'],
                      exclu_grps=[['group1', 'group2']])
+# Tests list interpretation
 df_r = sc.spec_curve(df, y_endog, x_exog, ctrls,
-                     cat_expand=['group1', 'group2'],
-                     exclu_grps=[['group2']])
-
+                     cat_expand='group1',
+                     exclu_grps=['c1', 'c2'])
 
 # Example dataset 2
 df = load_example_data2()

@@ -13,8 +13,26 @@ import matplotlib.ticker as ticker
 from math import log10, floor
 
 
-def round_to_1(x):
+def _round_to_1(x):
     return round(x, -int(floor(log10(abs(x)))))
+
+
+def _double_list_check(XX):
+    """
+    If a list, return as list of lists
+    """
+    if(not(any(isinstance(el, list) for el in XX))):
+        XX = [XX]
+    return XX
+
+
+def _single_list_check_str(X):
+    """
+    If type is string, return string in list
+    """
+    if(type(X) == str):
+        X = [X]
+    return X
 
 
 def _pretty_plots():
@@ -178,7 +196,7 @@ def _spec_curve_regression(xdf, y_endog, x_exog, controls,
     return df_r
 
 
-def plot_spec_curve(df_r, x_exog, controls, save_path=None):
+def plot_spec_curve(df_r, x_exog, save_path=None):
     """Plots a specification curve.
 
 
@@ -259,7 +277,7 @@ def plot_spec_curve(df_r, x_exog, controls, save_path=None):
     axarr[0].set_ylabel('Coefficient')
     axarr[0].set_title('Specification curve analysis')
     ylims = axarr[0].get_ylim()
-    axarr[0].set_ylim(round_to_1(ylims[0]), round_to_1(ylims[1]))
+    axarr[0].set_ylim(_round_to_1(ylims[0]), _round_to_1(ylims[1]))
     # Now do the blocks
     wid = 0.6
     hei = wid/3
@@ -295,6 +313,9 @@ def spec_curve(df, y_endog, x_exog, controls,
                exclu_grps=[[]],
                cat_expand=[],
                save_path=None):
+    controls = _single_list_check_str(controls)
+    cat_expand = _single_list_check_str(cat_expand)
+    exclu_grps = _double_list_check(exclu_grps)
     df_r = _spec_curve_regression(df, y_endog, x_exog, controls,
                                   exclu_grps=exclu_grps,
                                   cat_expand=cat_expand)
