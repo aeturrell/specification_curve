@@ -29,29 +29,62 @@ Quickstart
 
    from specification_curve import specification_curve as sc
    import numpy as np
-   n_samples = 100
+   n_samples = 300
+   np.random.seed(1332)
    x_1 = np.random.random(size=n_samples)
    x_2 = np.random.random(size=n_samples)
    x_3 = np.random.random(size=n_samples)
    x_4 = np.random.randint(2, size=n_samples)
    y = (0.8*x_1 + 0.1*x_2 + 0.5*x_3 + x_4*0.6 +
-           + 2*np.random.randn(n_samples))
-   
+        + 2*np.random.randn(n_samples))
    df = pd.DataFrame([x_1, x_2, x_3, x_4, y],
                      ['x_1', 'x_2', 'x_3', 'x_4', 'y']).T
-   y_endog = 'y'
-   x_exog = 'x_1'
-   controls = ['x_2', 'x_3', 'x_4']
    # Set x_4 as a categorical variable
    df['x_4'] = df['x_4'].astype('category')
-   
    df_r = sc.spec_curve(df, y_endog, x_exog, controls,
-                           cat_expand=['x_4'])
+                        cat_expand=['x_4'])
+
+Grey squares (black lines when there are many specifications) show whether
+a variable is included in a specification or not. Blue markers and error bars
+show whether the coefficient is significant (0.05).
 
 Features
 --------
 
-* TODO
+These examples use the first set of **example data**:
+
+.. code-block:: python
+
+    df = edata.load_example_data1()
+
+* Expand fixed effects into mutually exclusive groups using ``cat_expand``
+
+.. code-block:: python
+
+    y_endog = 'y1'
+    x_exog = 'x1'
+    controls = ['c1', 'c2', 'group1', 'group2']
+    df_r = sc.spec_curve(df, y_endog, x_exog, controls,
+                             cat_expand=['group1', 'group2'])
+
+* Mutually exclude two variables using ``exclu_grp``
+
+.. code-block:: python
+
+    y_endog = 'y1'
+    x_exog = 'x1'
+    controls = ['c1', 'c2', 'group1', 'group2']
+    df_r = sc.spec_curve(df, y_endog, x_exog, controls,
+                     exclu_grps=[['c1', 'c2']])
+
+* Use multiple independent or dependent variables
+
+.. code-block:: python
+
+    x_exog = ['x1', 'x2']
+    y_endog = 'y1'
+    controls = ['c1', 'c2', 'group1', 'group2']
+    df_r = sc.spec_curve(df, y_endog, x_exog, controls)
 
 Similar Packages
 ----------------
