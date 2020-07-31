@@ -39,7 +39,7 @@ Running
 produces
 
 .. image:: docs/images/example.png
-   width=600
+   :width: 600
 
 Grey squares (black lines when there are many specifications) show whether
 a variable is included in a specification or not. Blue markers and error bars
