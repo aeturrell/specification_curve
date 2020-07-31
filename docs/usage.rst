@@ -14,7 +14,7 @@ To use Specification Curve in a project::
    x_3 = np.random.random(size=n_samples)
    x_4 = np.random.randint(2, size=n_samples)
    y = (0.8*x_1 + 0.1*x_2 + 0.5*x_3 + x_4*0.6 +
-           + 2*np.random.randn(n_samples))
+        + 2*np.random.randn(n_samples))
    
    df = pd.DataFrame([x_1, x_2, x_3, x_4, y],
                      ['x_1', 'x_2', 'x_3', 'x_4', 'y']).T
@@ -26,3 +26,12 @@ To use Specification Curve in a project::
    
    df_r = sc.spec_curve(df, y_endog, x_exog, controls,
                            cat_expand=['x_4'])
+
+
+Documentation for the Code
+**************************
+
+.. automodule:: specification_curve
+
+.. automodule:: specification_curve.specification_curve
+   :members:
