@@ -289,7 +289,7 @@ def plot_spec_curve(df_r, y_endog, x_exog, save_path=None):
         ax.set_xticks([])
         ax.set_xlim(-wid, len(df_spec.columns))
     if(save_path is not None):
-        plt.savefig(save_path)
+        plt.savefig(save_path, dpi=300)
     plt.show()
 
 

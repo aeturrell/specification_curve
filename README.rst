@@ -14,8 +14,6 @@ Specification Curve
         :alt: Documentation Status
 
 
-
-
 Specification Curve is a Python package that performs specification curve analysis.
 
 
@@ -24,6 +22,30 @@ Specification Curve is a Python package that performs specification curve analys
 
 Quickstart
 ----------
+
+Running
+
+.. code-block:: python
+
+   from specification_curve import specification_curve as sc
+   from specification_curve import example as scdata
+   df = scdata.load_example_data1()
+   y_endog = 'y2'
+   x_exog = ['x1', 'x2']
+   controls = ['c1', 'c2', 'group1', 'group2']
+   df_r = sc.spec_curve(df, y_endog, x_exog, controls,
+                        cat_expand=['group2'])
+
+produces
+
+.. image:: docs/images/example.png
+   width=600
+
+Grey squares (black lines when there are many specifications) show whether
+a variable is included in a specification or not. Blue markers and error bars
+show whether the coefficient is significant (0.05).
+
+Here's another example:
 
 .. code-block:: python
 
@@ -44,9 +66,6 @@ Quickstart
    df_r = sc.spec_curve(df, y_endog, x_exog, controls,
                         cat_expand=['x_4'])
 
-Grey squares (black lines when there are many specifications) show whether
-a variable is included in a specification or not. Blue markers and error bars
-show whether the coefficient is significant (0.05).
 
 Features
 --------
