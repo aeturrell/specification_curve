@@ -79,6 +79,7 @@ def _reg_func(df, y_endog, x_exog, reg_vars):
 
 
 def _flatn_list(nested_list):
+    """ Flattens nested list """
     return list(itertools.chain.from_iterable(nested_list))
 
 
