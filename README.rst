@@ -38,7 +38,7 @@ Running
 
 produces
 
-.. image:: https://github.com/aeturrell/specification_curve/blob/master/docs/images/example.png
+.. image:: https://raw.githubusercontent.com/aeturrell/specification_curve/master/docs/images/example.png
    :width: 600
 
 Grey squares (black lines when there are many specifications) show whether
