@@ -38,7 +38,7 @@ Running
 
 produces
 
-.. image:: docs/images/example.png
+.. image:: https://github.com/aeturrell/specification_curve/blob/master/docs/images/example.png
    :width: 600
 
 Grey squares (black lines when there are many specifications) show whether
@@ -74,7 +74,9 @@ These examples use the first set of **example data**:
 
 .. code-block:: python
 
-    df = edata.load_example_data1()
+    from specification_curve import specification_curve as sc
+    from specification_curve import example as scdata
+    df = scdata.load_example_data1()
 
 * Expand fixed effects into mutually exclusive groups using ``cat_expand``
 
