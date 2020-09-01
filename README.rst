@@ -118,7 +118,7 @@ These examples use the first set of **example data**:
 .. code-block:: python
 
     df_r = sc.spec_curve(df, y_endog, x_exog, controls)
-    print(df_r.head)
+    print(df_r.head())
 
 
 Similar Packages
