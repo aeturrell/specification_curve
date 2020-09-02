@@ -16,6 +16,11 @@ Specification Curve
 .. image:: https://static.pepy.tech/badge/specification-curve
         :alt: Downloads
 
+.. image:: https://img.shields.io/pypi/pyversions/specification_curve.svg
+        :target: https://pypi.python.org/pypi/specification_curve/
+        :alt: Support Python versions
+
+
 Specification Curve is a Python (3.6+) package that performs specification curve analysis.
 
 
