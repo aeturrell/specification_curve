@@ -14,7 +14,7 @@ Specification Curve
         :alt: Documentation Status
 
 
-Specification Curve is a Python package that performs specification curve analysis.
+Specification Curve is a Python (3.6+) package that performs specification curve analysis.
 
 
 * Free software: MIT license

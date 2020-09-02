@@ -20,7 +20,7 @@ test_requirements = ['numpy', 'pandas']
 setup(
     author="Arthur Turrell",
     author_email='a.turrell09@imperial.ac.uk',
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
