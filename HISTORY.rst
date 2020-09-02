@@ -2,8 +2,13 @@
 History
 =======
 
+0.2.2 (2020-09-02)
+------------------
 
-0.1.2 (2020-09-02)
+* More badges in readme
+* Dropped support for python 3.5
+
+0.2.1 (2020-09-02)
 ------------------
 
 * Switched to object oriented design
