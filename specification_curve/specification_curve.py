@@ -288,9 +288,11 @@ class SpecificationCurve():
                          dashes=[12, 5])
         # Colour the significant ones differently
         self.df_r['color_coeff'] = 'black'
-        self.df_r['coeff_pvals'] = (self.df_r.apply(lambda row:
-                                                    row['pvalues'][row['x_exog']],
-                                                    axis=1))
+        self.df_r['coeff_pvals'] = (self
+                                    .df_r
+                                    .apply(lambda row:
+                                           row['pvalues'][row['x_exog']],
+                                           axis=1))
         self.df_r.loc[self.df_r['coeff_pvals'] < 0.05, 'color_coeff'] = 'blue'
         for color in self.df_r['color_coeff'].unique():
             slice_df_r = self.df_r.loc[self.df_r['color_coeff'] == color]

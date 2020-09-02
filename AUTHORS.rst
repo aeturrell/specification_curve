@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Arthur Turrell <a.turrell09@imperial.ac.uk>
+* Arthur Turrell (http://www.aeturrell.com)
 
 Contributors
 ------------
