@@ -60,6 +60,7 @@ Here's another example:
 
    from specification_curve import specification_curve as specy
    import numpy as np
+   import pandas as pd
    n_samples = 300
    np.random.seed(1332)
    x_1 = np.random.random(size=n_samples)
@@ -72,7 +73,7 @@ Here's another example:
                      ['x_1', 'x_2', 'x_3', 'x_4', 'y']).T
    # Set x_4 as a categorical variable
    df['x_4'] = df['x_4'].astype('category')
-   sc = specy.SpecificationCurve(df, y_endog, x_exog, controls,
+   sc = specy.SpecificationCurve(df, 'y', 'x_1', ['x_2', 'x_3', 'x_4'],
                                  cat_expand=['x_4'])
    sc.fit()
    sc.plot()

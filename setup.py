@@ -15,7 +15,7 @@ requirements = ['statsmodels', 'matplotlib', 'numpy', 'pandas',
 
 setup_requirements = [ ]
 
-test_requirements = ['numpy', 'pandas']
+test_requirements = ['numpy', 'pandas', 'statsmodels']
 
 setup(
     author="Arthur Turrell",
@@ -45,4 +45,5 @@ setup(
     url='https://github.com/aeturrell/specification_curve',
     version='0.2.2',
     zip_safe=False,
+    include_package_data=True,
 )

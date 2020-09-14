@@ -3,6 +3,7 @@ include CONTRIBUTING.rst
 include HISTORY.rst
 include LICENSE
 include README.rst
+include specification_curve/data/example_data.csv
 
 recursive-include tests *
 recursive-exclude * __pycache__
