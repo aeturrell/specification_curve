@@ -2,6 +2,12 @@
 History
 =======
 
+0.2.3 (2020-14-02)
+------------------
+
+* Fixed examples
+* Bug fix for including csv data in pypi distribution
+
 0.2.2 (2020-09-02)
 ------------------
 

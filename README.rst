@@ -14,6 +14,7 @@ Specification Curve
         :alt: Documentation Status
 
 .. image:: https://static.pepy.tech/badge/specification-curve
+        :target: https://pepy.tech/project/Specification_curve
         :alt: Downloads
 
 .. image:: https://img.shields.io/pypi/pyversions/specification_curve.svg
