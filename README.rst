@@ -21,6 +21,9 @@ Specification Curve
         :target: https://pypi.python.org/pypi/specification_curve/
         :alt: Support Python versions
 
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+        :target: https://colab.research.google.com/gist/aeturrell/438fb066e4471312667268669cef2c11/specification_curve-examples.ipynb
+
 
 Specification Curve is a Python (3.6+) package that performs specification curve analysis.
 
@@ -30,6 +33,10 @@ Specification Curve is a Python (3.6+) package that performs specification curve
 
 Quickstart
 ----------
+
+You can run this package right now in `Google Colab`_
+
+.. _`Google Colab`: https://colab.research.google.com/gist/aeturrell/438fb066e4471312667268669cef2c11/specification_curve-examples.ipynb
 
 Running
 
