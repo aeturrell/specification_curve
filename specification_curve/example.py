@@ -8,13 +8,18 @@ To try out specification curve analyses.
 import numpy as np
 import pandas as pd
 import os
+import pkg_resources
+
+
+EXAMPLE_FILE = (pkg_resources
+                .resource_filename('specification_curve',
+                                   os.path.join('data',
+                                                'example_data.csv')))
 
 
 def load_example_data1():
     # Example data
-    path_to_data = os.path.join('specification_curve', 'data',
-                                'example_data.csv')
-    df = pd.read_csv(path_to_data,
+    df = pd.read_csv(EXAMPLE_FILE,
                      index_col=0)
     num_cols = [x for x in df.columns if x not in ['group1', 'group2']]
     for col in num_cols:
