@@ -2,6 +2,12 @@
 History
 =======
 
+0.2.5 (2020-11-22)
+------------------
+
+* Added option to always include some regressors
+* Added option to label preferred specification in plots
+
 0.2.4 (2020-09-15)
 ------------------
 
