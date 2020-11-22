@@ -177,7 +177,7 @@ These examples use the first set of **example data**:
     sc.fit(estimator=sm.Logit)  # sm.Probit also works
     sc.plot()
 
-* The style of specification flexes for very large numbers of specifications
+* The style of specification plot flexes for very large numbers of specifications
 
 .. code-block:: python
 
@@ -196,6 +196,19 @@ These examples use the first set of **example data**:
     controls = c_rnd_vars_names[1:]
     sc = specy.SpecificationCurve(df, ['y1', 'y2'], c_rnd_vars_names[0],
                                   controls)
+    sc.fit()
+    sc.plot()
+
+* Always include regressors using the `always_include` keyword argument
+
+.. code-block:: python
+
+    df = scdata.load_example_data1()
+    x_exog = 'x1'
+    y_endog = 'y1'
+    controls = ['c2', 'group1', 'group2']
+    sc = specy.SpecificationCurve(df, y_endog, x_exog, controls,
+                                    always_include='c1')
     sc.fit()
     sc.plot()
 

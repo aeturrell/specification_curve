@@ -42,6 +42,14 @@ def _single_list_check_str(X):
     return X
 
 
+def _remove_overlapping_vars(list_to_check, includes_list):
+    """ Checks, and removes, any variable in list_to_check that is also in
+    includes_list, returning list_to_check without overlapping variable
+    names.
+    """
+    return [x for x in list_to_check if x not in includes_list]
+
+
 def _pretty_plots():
     """
     Uses specification curve package's pretty plot style.
@@ -91,22 +99,23 @@ class SpecificationCurve():
 
     """
     def __init__(self, df, y_endog, x_exog, controls, exclu_grps=[[]],
-                 cat_expand=[]):
+                 cat_expand=[], always_include=[]):
         """
         :list[string] y_endog: dependent variable(s)
         :list[string] x_exog: independent variable(s)
         :list[string] controls: variables to control for
         :list[list[string]] exclu_grps: each list should have controls
         that are mutually exclusive in.
-        :list[string] cat_expand: categorical variables that are
-        mutually exclusive
+        :list[string] cat_expand: categorical variables to test one at a time
+        :list[string] always_include: regressors to always include
         """
-        self.df = df
+        self.df = df.copy()
         self.y_endog = y_endog
         self.x_exog = x_exog
         self.controls = controls
         self.exclu_grps = exclu_grps
         self.cat_expand = cat_expand
+        self.always_include = always_include
 
     def fit(self, estimator=sm.OLS):
         """
@@ -119,8 +128,14 @@ class SpecificationCurve():
         self.controls = _single_list_check_str(self.controls)
         self.cat_expand = _single_list_check_str(self.cat_expand)
         self.exclu_grps = _double_list_check(self.exclu_grps)
+        self.always_include = _single_list_check_str(self.always_include)
         self.y_endog = _single_list_check_str(self.y_endog)
         self.x_exog = _single_list_check_str(self.x_exog)
+        # If any of always include in any other list, remove it from other list
+        self.controls = _remove_overlapping_vars(self.controls,
+                                                 self.always_include)
+        self.x_exog = _remove_overlapping_vars(self.x_exog,
+                                               self.always_include)
         self.ctrl_combs = self._compute_combinations()
         self.df_r = self._spec_curve_regression()
         print('Fit complete')
@@ -141,7 +156,8 @@ class SpecificationCurve():
         Finds all possible combinations of variables.
         Changes df to have dummies for cat expand columns.
         """
-        init_cols = self.y_endog + self.x_exog + self.controls
+        init_cols = (self.y_endog + self.x_exog +
+                     self.controls + self.always_include)
         self.df = self.df[init_cols]
         new_cols = []
         # Warning: hard-coded prefix
@@ -181,6 +197,8 @@ class SpecificationCurve():
         ctrl_combs = _flatn_list(ctrl_combs)
         # Turn all the tuples into lists
         ctrl_combs = [list(x) for x in ctrl_combs]
+        # Add in always included regressors
+        ctrl_combs = [x + self.always_include for x in ctrl_combs]
         return ctrl_combs
 
     def _spec_curve_regression(self):

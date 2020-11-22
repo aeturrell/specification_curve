@@ -151,3 +151,15 @@ class TestSpecification_curve(unittest.TestCase):
                                       controls)
         sc.fit()
         sc.plot()
+
+    def test_009_always_include(self):
+        """Test of always include."""
+        df = scdata.load_example_data1()
+        x_exog = 'x1'
+        y_endog = 'y1'
+        controls = ['c2', 'group1', 'group2']
+        sc = specy.SpecificationCurve(df, y_endog, x_exog, controls,
+                                      always_include='c1')
+        sc.fit()
+        sc.plot()
+        sc.df_r.head()
