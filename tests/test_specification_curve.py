@@ -163,3 +163,14 @@ class TestSpecification_curve(unittest.TestCase):
         sc.fit()
         sc.plot()
         sc.df_r.head()
+
+    def test_010_preferred_specification(self):
+        """Test of labelling preferred specification."""
+        df = scdata.load_example_data1()
+        x_exog = 'x1'
+        y_endog = 'y1'
+        controls = ['c2', 'group1', 'group2']
+        sc = specy.SpecificationCurve(df, y_endog, x_exog, controls)
+        sc.fit()
+        sc.plot(preferred_spec=['group1', 'x1', 'y1'])
+        sc.df_r.head()

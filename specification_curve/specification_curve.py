@@ -246,12 +246,14 @@ class SpecificationCurve():
             lambda x: Counter(x))
         return df_r
 
-    def plot(self, save_path=None, pretty_plots=True):
+    def plot(self, save_path=None, pretty_plots=True,
+             preferred_spec=[]):
         """
         Makes plots of fitted specification curve.
 
         :string save_path: exported fig filename
         :bool pretty_plots: whether to use this package's figure formatting
+        :list[str] preferred_spec: preferred specification
         """
         if(pretty_plots):
             _pretty_plots()
@@ -260,6 +262,11 @@ class SpecificationCurve():
         df_spec = df_spec.replace(0., False).replace(1., True)
         df_spec = df_spec.T
         df_spec = df_spec.sort_index()
+        # Label the preferred specification as True
+        self.df_r['preferred'] = False
+        if preferred_spec:
+            self.df_r['preferred'] = self.df_r['Specification'].apply(
+                lambda x: Counter(x) == Counter(preferred_spec))
         # This is quite hacky
         new_ctrl_names = list(
             set(_flatn_list(self.df_r['Specification'].values)))
@@ -323,6 +330,20 @@ class SpecificationCurve():
                                                     marker='o')
             [bar.set_alpha(0.4) for bar in bars]
             [cap.set_alpha(0.4) for cap in caps]
+        # If there is a preferred spec, label it.
+        if preferred_spec:
+            loc_y = (self.df_r.loc[self.df_r['preferred'],
+                                   'Coefficient'])
+            loc_x = loc_y.index[0]
+            loc_y = loc_y.values[0]
+            cn_styl = "angle3,angleA=0,angleB=-90"
+            axarr[0].annotate('Preferred specification',
+                              xy=(loc_x, loc_y), xycoords='data',
+                              xytext=(3, 100), textcoords='offset points',
+                              fontsize='x-small',
+                              arrowprops=dict(arrowstyle="fancy",
+                                              fc="0.4", ec="none",
+                                              connectionstyle=cn_styl))
         axarr[0].legend(frameon=True, loc='lower right',
                         ncol=1, handlelength=2)
         axarr[0].set_ylabel('Coefficient')
