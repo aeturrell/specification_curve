@@ -2,6 +2,12 @@
 History
 =======
 
+0.2.6 (2021-05-05)
+------------------
+
+* Updates of some dev packages
+* Release on Zenodo to create DOI
+
 0.2.5 (2020-11-22)
 ------------------
 
