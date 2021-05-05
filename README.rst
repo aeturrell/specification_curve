@@ -25,11 +25,19 @@ Specification Curve
         :target: https://colab.research.google.com/gist/aeturrell/438fb066e4471312667268669cef2c11/specification_curve-examples.ipynb
 
 
+.. image:: https://zenodo.org/badge/282989537.svg
+        :target: https://zenodo.org/badge/latestdoi/282989537
+
+
 Specification Curve is a Python (3.6+) package that performs specification curve analysis.
 
 
 * Free software: MIT license
 * Documentation: https://specification-curve.readthedocs.io.
+
+You can cite Specification Curve as:
+    Arthur Turrell. aeturrell/specification_curve: Specification Curve 0.2.6: Biosphere Mansion (Version v0.2.6). Zenodo. http://doi.org/10.5281/zenodo.4739532, (2021, May 5).
+
 
 Quickstart
 ----------
