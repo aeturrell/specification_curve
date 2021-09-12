@@ -1,128 +1,123 @@
-.. highlight:: shell
+Contributor Guide
+=================
 
-============
-Contributing
-============
+Thank you for your interest in improving this project.
+This project is open-source under the `MIT license`_ and
+welcomes contributions in the form of bug reports, feature requests, and pull requests.
 
-Contributions are welcome, and they are greatly appreciated! Every little bit
-helps, and credit will always be given.
+Here is a list of important resources for contributors:
 
-You can contribute in many ways:
+- `Source Code`_
+- `Documentation`_
+- `Issue Tracker`_
+- `Code of Conduct`_
 
-Types of Contributions
-----------------------
+.. _MIT license: https://opensource.org/licenses/MIT
+.. _Source Code: https://github.com/aeturrell/specification_curve
+.. _Documentation: https://specification_curve.readthedocs.io/
+.. _Issue Tracker: https://github.com/aeturrell/specification_curve/issues
 
-Report Bugs
-~~~~~~~~~~~
+How to report a bug
+-------------------
 
-Report bugs at https://github.com/aeturrell/specification_curve/issues.
+Report bugs on the `Issue Tracker`_.
 
-If you are reporting a bug, please include:
+When filing an issue, make sure to answer these questions:
 
-* Your operating system name and version.
-* Any details about your local setup that might be helpful in troubleshooting.
-* Detailed steps to reproduce the bug.
+- Which operating system and Python version are you using?
+- Which version of this project are you using?
+- What did you do?
+- What did you expect to see?
+- What did you see instead?
 
-Fix Bugs
-~~~~~~~~
+The best way to get your bug fixed is to provide a test case,
+and/or steps to reproduce the issue.
 
-Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
-wanted" is open to whoever wants to implement it.
 
-Implement Features
-~~~~~~~~~~~~~~~~~~
+How to request a feature
+------------------------
 
-Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
+Request features on the `Issue Tracker`_.
 
-Write Documentation
-~~~~~~~~~~~~~~~~~~~
 
-Specification Curve could always use more documentation, whether as part of the
-official Specification Curve docs, in docstrings, or even on the web in blog posts,
-articles, and such.
+How to set up your development environment
+------------------------------------------
 
-Submit Feedback
-~~~~~~~~~~~~~~~
+You need Python 3.7+ and the following tools:
 
-The best way to send feedback is to file an issue at https://github.com/aeturrell/specification_curve/issues.
+- Poetry_
+- Nox_
+- nox-poetry_
 
-If you are proposing a feature:
+Install the package with development requirements:
 
-* Explain in detail how it would work.
-* Keep the scope as narrow as possible, to make it easier to implement.
-* Remember that this is a volunteer-driven project, and that contributions
-  are welcome :)
+.. code:: console
 
-Get Started!
-------------
+   $ poetry install
 
-Ready to contribute? Here's how to set up `specification_curve` for local development.
+You can now run an interactive Python session,
+or the command-line interface:
 
-1. Fork the `specification_curve` repo on GitHub.
-2. Clone your fork locally::
+.. code:: console
 
-    $ git clone git@github.com:your_name_here/specification_curve.git
+   $ poetry run python
+   $ poetry run specification_curve
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+.. _Poetry: https://python-poetry.org/
+.. _Nox: https://nox.thea.codes/
+.. _nox-poetry: https://nox-poetry.readthedocs.io/
 
-    $ mkvirtualenv specification_curve
-    $ cd specification_curve/
-    $ python setup.py develop
 
-4. Create a branch for local development::
-
-    $ git checkout -b name-of-your-bugfix-or-feature
-
-   Now you can make your changes locally.
-
-5. When you're done making changes, check that your changes pass flake8 and the
-   tests, including testing other Python versions with tox::
-
-    $ flake8 specification_curve tests
-    $ python setup.py test or pytest
-    $ tox
-
-   To get flake8 and tox, just pip install them into your virtualenv.
-
-6. Commit your changes and push your branch to GitHub::
-
-    $ git add .
-    $ git commit -m "Your detailed description of your changes."
-    $ git push origin name-of-your-bugfix-or-feature
-
-7. Submit a pull request through the GitHub website.
-
-Pull Request Guidelines
+How to test the project
 -----------------------
 
-Before you submit a pull request, check that it meets these guidelines:
+Run the full test suite:
 
-1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put
-   your new functionality into a function with a docstring, and add the
-   feature to the list in README.rst.
-3. The pull request should work for Python 3.5, 3.6, 3.7 and 3.8, and for PyPy. Check
-   https://travis-ci.com/aeturrell/specification_curve/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+.. code:: console
 
-Tips
-----
+   $ nox
 
-To run a subset of tests::
+List the available Nox sessions:
+
+.. code:: console
+
+   $ nox --list-sessions
+
+You can also run a specific Nox session.
+For example, invoke the unit test suite like this:
+
+.. code:: console
+
+   $ nox --session=tests
+
+Unit tests are located in the ``tests`` directory,
+and are written using the pytest_ testing framework.
+
+.. _pytest: https://pytest.readthedocs.io/
 
 
-    $ python -m unittest tests.test_specification_curve
+How to submit changes
+---------------------
 
-Deploying
----------
+Open a `pull request`_ to submit changes to this project.
 
-A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
-Then run::
+Your pull request needs to meet the following guidelines for acceptance:
 
-$ bump2version patch # possible: major / minor / patch
-$ git push
-$ git push --tags
+- The Nox test suite must pass without errors and warnings.
+- Include unit tests. This project maintains 100% code coverage.
+- If your changes add functionality, update the documentation accordingly.
 
-Travis will then deploy to PyPI if tests pass.
+Feel free to submit early, though—we can always iterate on this.
+
+To run linting and code formatting checks before commiting your change, you can install pre-commit as a Git hook by running the following command:
+
+.. code:: console
+
+   $ nox --session=pre-commit -- install
+
+It is recommended to open an issue before starting work on anything.
+This will allow a chance to talk it over with the owners and validate your approach.
+
+.. _pull request: https://github.com/aeturrell/specification_curve/pulls
+.. github-only
+.. _Code of Conduct: CODE_OF_CONDUCT.rst

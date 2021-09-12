@@ -12,6 +12,9 @@ Welcome to Specification Curve's documentation!
    contributing
    authors
    history
+   license
+   reference
+   codeofconduct
 
 Indices and tables
 ==================

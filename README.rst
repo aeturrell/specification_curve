@@ -2,34 +2,64 @@
 Specification Curve
 ===================
 
+|PyPI| |Status| |Python Version| |License|
 
-.. image:: https://img.shields.io/pypi/v/specification_curve.svg
-        :target: https://pypi.python.org/pypi/specification_curve
+|Read the Docs| |Tests| |Codecov|
 
-.. image:: https://img.shields.io/travis/aeturrell/specification_curve.svg
-        :target: https://travis-ci.com/aeturrell/specification_curve
+|pre-commit| |Black| |Google Colab|
 
-.. image:: https://readthedocs.org/projects/specification-curve/badge/?version=latest
-        :target: https://specification-curve.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+|DOI| |Downloads|
 
-.. image:: https://static.pepy.tech/badge/specification-curve
-        :target: https://pepy.tech/project/Specification_curve
-        :alt: Downloads
+|Linux| |macOS| |Windows|
 
-.. image:: https://img.shields.io/pypi/pyversions/specification_curve.svg
-        :target: https://pypi.python.org/pypi/specification_curve/
-        :alt: Support Python versions
+.. |PyPI| image:: https://img.shields.io/pypi/v/specification_curve.svg
+   :target: https://pypi.org/project/specification_curve/
+   :alt: PyPI
+.. |Status| image:: https://img.shields.io/pypi/status/specification_curve.svg
+   :target: https://pypi.org/project/specification_curve/
+   :alt: Status
+.. |Python Version| image:: https://img.shields.io/pypi/pyversions/specification_curve
+   :target: https://pypi.org/project/specification_curve
+   :alt: Python Version
+.. |License| image:: https://img.shields.io/pypi/l/specification_curve
+   :target: https://opensource.org/licenses/MIT
+   :alt: License
+.. |Read the Docs| image:: https://img.shields.io/readthedocs/specification_curve/latest.svg?label=Read%20the%20Docs
+   :target: https://specification_curve.readthedocs.io/
+   :alt: Read the documentation at https://specification_curve.readthedocs.io/
+.. |Tests| image:: https://github.com/aeturrell/specification_curve/workflows/Tests/badge.svg
+   :target: https://github.com/aeturrell/specification_curve/actions?workflow=Tests
+   :alt: Tests
+.. |Codecov| image:: https://codecov.io/gh/aeturrell/specification_curve/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/aeturrell/specification_curve
+   :alt: Codecov
+.. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
+   :target: https://github.com/pre-commit/pre-commit
+   :alt: pre-commit
+.. |Black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+   :target: https://github.com/psf/black
+   :alt: Black
+.. |Google Colab| image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/gist/aeturrell/438fb066e4471312667268669cef2c11/specification_curve-examples.ipynb
+   :alt: Google Colab
+.. |DOI| image:: https://zenodo.org/badge/282989537.svg
+   :target: https://zenodo.org/badge/latestdoi/282989537
+   :alt: DOI
+.. |Downloads| image:: https://static.pepy.tech/badge/specification-curve
+   :target: https://pepy.tech/project/Specification_curve
+   :alt: Downloads
+.. |Linux| image:: https://svgshare.com/i/Zhy.svg
+   :target: https://svgshare.com/i/Zhy.svg
+   :alt: Linux
+.. |macOS| image:: https://svgshare.com/i/ZjP.svg
+   :target: https://svgshare.com/i/ZjP.svg
+   :alt: macOS
+.. |Windows| image:: https://svgshare.com/i/ZhY.svg
+   :target: https://svgshare.com/i/ZhY.svg
+   :alt: Windows
 
-.. image:: https://colab.research.google.com/assets/colab-badge.svg
-        :target: https://colab.research.google.com/gist/aeturrell/438fb066e4471312667268669cef2c11/specification_curve-examples.ipynb
 
-
-.. image:: https://zenodo.org/badge/282989537.svg
-        :target: https://zenodo.org/badge/latestdoi/282989537
-
-
-Specification Curve is a Python (3.6+) package that performs specification curve analysis.
+Specification Curve is a Python (3.7.1+) package that performs specification curve analysis.
 
 
 * Free software: MIT license
@@ -93,6 +123,15 @@ Here's another example:
                                  cat_expand=['x_4'])
    sc.fit()
    sc.plot()
+
+Installation
+------------
+
+You can install *Specification Curve* via pip_ from PyPI_:
+
+.. code:: console
+
+   $ pip install specification-curve
 
 
 Features
@@ -220,6 +259,26 @@ These examples use the first set of **example data**:
     sc.fit()
     sc.plot()
 
+Contributing
+------------
+
+Contributions are very welcome.
+To learn more, see the `Contributor Guide`_.
+
+
+License
+-------
+
+Distributed under the terms of the `MIT license`_,
+*Specification_Curve* is free and open source software.
+
+
+Issues
+------
+
+If you encounter any problems,
+please `file an issue`_ along with a detailed description.
+
 Similar Packages
 ----------------
 
@@ -231,7 +290,16 @@ In RStats, there is specr_ (which inspired many design choices in this package) 
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+Parts of this package were created with Cookiecutter_ using the `audreyr/cookiecutter-pypackage`_ and `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ templates.
 
+.. _@cjolowicz: https://github.com/cjolowicz
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _MIT license: https://opensource.org/licenses/MIT
+.. _PyPI: https://pypi.org/
+.. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
+.. _file an issue: https://github.com/aeturrell/specification_curve/issues
+.. _pip: https://pip.pypa.io/
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+.. github-only
+.. _Contributor Guide: CONTRIBUTING.rst
+.. _Usage: https://specification_curve.readthedocs.io/en/latest/usage.html

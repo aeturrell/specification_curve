@@ -3,30 +3,27 @@ Example datasets
 ----------------
 To try out specification curve analyses.
 """
-
+import os
 
 import numpy as np
 import pandas as pd
-import os
 import pkg_resources
 
 
-EXAMPLE_FILE = (pkg_resources
-                .resource_filename('specification_curve',
-                                   os.path.join('data',
-                                                'example_data.csv')))
+EXAMPLE_FILE = pkg_resources.resource_filename(
+    "specification_curve", os.path.join("data", "example_data.csv")
+)
 
 
 def load_example_data1():
     # Example data
-    df = pd.read_csv(EXAMPLE_FILE,
-                     index_col=0)
-    num_cols = [x for x in df.columns if x not in ['group1', 'group2']]
+    df = pd.read_csv(EXAMPLE_FILE, index_col=0)
+    num_cols = [x for x in df.columns if x not in ["group1", "group2"]]
     for col in num_cols:
         df[col] = df[col].astype(np.double)
     cat_cols = [x for x in df.columns if x not in num_cols]
     for col in cat_cols:
-        df[col] = df[col].astype('category')
+        df[col] = df[col].astype("category")
     return df
 
 
@@ -37,12 +34,10 @@ def load_example_data2():
     x_2 = np.random.random(size=n_samples)
     x_3 = np.random.random(size=n_samples)
     x_4 = np.random.randint(2, size=n_samples)
-    y = (0.8*x_1 + 0.1*x_2 + 0.5*x_3 + x_4*0.6 +
-         + 2*np.random.randn(n_samples))
-    df = pd.DataFrame([x_1, x_2, x_3, x_4, y],
-                      ['x_1', 'x_2', 'x_3', 'x_4', 'y']).T
+    y = 0.8 * x_1 + 0.1 * x_2 + 0.5 * x_3 + x_4 * 0.6 + +2 * np.random.randn(n_samples)
+    df = pd.DataFrame([x_1, x_2, x_3, x_4, y], ["x_1", "x_2", "x_3", "x_4", "y"]).T
     # Set x_4 as a categorical variable
-    df['x_4'] = df['x_4'].astype('category')
+    df["x_4"] = df["x_4"].astype("category")
     return df
 
 
