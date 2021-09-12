@@ -1,1 +1,1 @@
-"""Command-line interface for specification_curve."""
+"""specification_curve."""
