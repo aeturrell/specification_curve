@@ -6,6 +6,5 @@ root: index
 chapters:
 - file: features
 - file: contributing
-- file: code_of_conduct
 - file: history
 - file: api.rst

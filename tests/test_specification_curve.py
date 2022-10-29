@@ -8,13 +8,12 @@ import pandas as pd
 import statsmodels.api as sm
 from scipy.stats import norm
 
-from specification_curve import example as scdata
-from specification_curve import specification_curve as specy
+import specification_curve as specy
 
 
 @patch("matplotlib.pyplot.show")
 def test_000_basic_plot(mock_show):
-    df = scdata.load_example_data2()
+    df = specy.load_example_data2()
     y_endog = "y"
     x_exog = "x_1"
     controls = ["x_2", "x_3", "x_4"]
@@ -27,7 +26,7 @@ def test_000_basic_plot(mock_show):
 @patch("matplotlib.pyplot.show")
 def test_001_fe_grp(mock_show):
     """Test expand multiple FE groups. Docs feature 1."""
-    df = scdata.load_example_data1()
+    df = specy.load_example_data1()
     y_endog = "y1"
     x_exog = "x1"
     controls = ["c1", "c2", "group1", "group2"]
@@ -42,7 +41,7 @@ def test_001_fe_grp(mock_show):
 @patch("matplotlib.pyplot.show")
 def test_002_docs_feat_two(mock_show):
     """Test docs feature 2."""
-    df = scdata.load_example_data1()
+    df = specy.load_example_data1()
     y_endog = "y1"
     x_exog = "x1"
     controls = ["c1", "c2", "group1", "group2"]
@@ -57,7 +56,7 @@ def test_002_docs_feat_two(mock_show):
 @patch("matplotlib.pyplot.show")
 def test_004_docs_feat_three(mock_show):
     """Test docs feature 3: multiple dependent or independent variables"""
-    df = scdata.load_example_data1()
+    df = specy.load_example_data1()
     x_exog = ["x1", "x2"]
     y_endog = "y1"
     controls = ["c1", "c2", "group1", "group2"]
@@ -70,7 +69,7 @@ def test_004_docs_feat_three(mock_show):
 @patch("matplotlib.pyplot.show")
 def test_005_save_fig(mock_show):
     """Test save fig.."""
-    df = scdata.load_example_data1()
+    df = specy.load_example_data1()
     x_exog = ["x1", "x2"]
     y_endog = "y1"
     controls = ["c1", "c2", "group1", "group2"]
@@ -163,7 +162,7 @@ def test_008_large_no_specifications(mock_show):
 @patch("matplotlib.pyplot.show")
 def test_009_always_include(mock_show):
     """Test of always include."""
-    df = scdata.load_example_data1()
+    df = specy.load_example_data1()
     x_exog = "x1"
     y_endog = "y1"
     controls = ["c2", "group1", "group2"]
@@ -176,7 +175,7 @@ def test_009_always_include(mock_show):
 @patch("matplotlib.pyplot.show")
 def test_010_preferred_specification(mock_show):
     """Test of labelling preferred specification."""
-    df = scdata.load_example_data1()
+    df = specy.load_example_data1()
     x_exog = "x1"
     y_endog = "y1"
     controls = ["c2", "group1", "group2"]

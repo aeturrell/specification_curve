@@ -33,7 +33,7 @@ Tracker](https://github.com/aeturrell/specification_curve/issues).
 
 ## How to set up your development environment
 
-You need Python 3.7+ and the following tools:
+You need Python 3.8+ and the following tools:
 
 -   [Poetry](https://python-poetry.org/)
 -   [Nox](https://nox.thea.codes/)
@@ -43,14 +43,14 @@ You need Python 3.7+ and the following tools:
 
 Install the package with development requirements:
 
-``` {.console}
+```bash
 $ poetry install
 ```
 
 You can now run an interactive Python session, or the command-line
 interface:
 
-``` {.console}
+```bash
 $ poetry run python
 $ poetry run specification_curve
 ```
@@ -59,20 +59,20 @@ $ poetry run specification_curve
 
 Run the full test suite:
 
-``` {.console}
+```bash
 $ nox
 ```
 
 List the available Nox sessions:
 
-``` {.console}
+```bash
 $ nox --list-sessions
 ```
 
 You can also run a specific Nox session. For example, invoke the unit
 test suite like this:
 
-``` {.console}
+```bash
 $ nox --session=tests
 ```
 
@@ -93,11 +93,11 @@ Your pull request needs to meet the following guidelines for acceptance:
 
 Feel free to submit early, though---we can always iterate on this.
 
-To run linting and code formatting checks before commiting your change,
+To run linting and code formatting checks before committing your change,
 you can install pre-commit as a Git hook by running the following
 command:
 
-``` {.console}
+```bash
 $ nox --session=pre-commit -- install
 ```
 
@@ -106,6 +106,8 @@ This will allow a chance to talk it over with the owners and validate
 your approach.
 
 ## How to build the documentation
+
+The readme for this project is automatically generated.
 
 - Run `make clean`
 - Run `make`
