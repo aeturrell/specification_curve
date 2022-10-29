@@ -11,6 +11,8 @@ from collections import defaultdict
 from itertools import combinations
 from math import floor
 from math import log10
+from typing import Union
+from typing import List, Set, Dict, Tuple, Optional
 
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
@@ -26,43 +28,61 @@ EXAMPLE_FILE = pkg_resources.resource_filename(
 )
 
 
-def _round_to_1(x):
-    """
-    Rounds numbers to 1 s.f.
+def _round_to_1(x: float) -> float:
+    """Rounds numbers to 1 s.f.
+
+    Args:
+        x (float): input number
+
+    Returns:
+        float: number rounded
     """
     return round(x, -int(floor(log10(abs(x)))) + 1)
 
 
-def _double_list_check(XX):
-    """
-    If a list, return as list of lists
+def _double_list_check(XX: Union[List[str], List[List[str]]]) -> List[List[str]]:
+    """Ensures that input is returned as nested list.
+
+    Args:
+        XX (Union[list[str], list[list[str]]]): Input list of (list of) strings
+
+    Returns:
+        list[list[str]]: List of list of strings
     """
     if not (any(isinstance(el, list) for el in XX)):
         XX = [XX]
     return XX
 
 
-def _single_list_check_str(X):
-    """
-    If type is string, return string in list
+def _single_list_check_str(X: Union[str, List[str]]) -> List[str]:
+    """Ensures a list of strings.
+
+    Args:
+        X (Union[str, list[str]]): input string of list of strings
+
+    Returns:
+        list[str]: List of strings.
     """
     if type(X) == str:
         X = [X]
     return X
 
 
-def _remove_overlapping_vars(list_to_check, includes_list):
-    """Checks, and removes, any variable in list_to_check that is also in
-    includes_list, returning list_to_check without overlapping variable
-    names.
+def _remove_overlapping_vars(list_to_check: List[str], includes_list: List[str]) -> List[str]:
+    """Removes any variable in list_to_check that is also in includes_list.
+
+    Args:
+        list_to_check (list[str]): _description_
+        includes_listlist (_type_): _description_
+
+    Returns:
+        list[str]: without overlapping variable names.
     """
     return [x for x in list_to_check if x not in includes_list]
 
 
-def _pretty_plots():
-    """
-    Uses specification curve package's pretty plot style.
-    Overrides existing style.
+def _pretty_plots() -> None:
+    """Uses specification curve package's pretty plot style.
     """
     json_plot_settings = {
         "ytick.labelsize": 16,
@@ -75,19 +95,21 @@ def _pretty_plots():
         "lines.markersize": 3,
         "legend.fontsize": 11,
         "mathtext.fontset": "stix",
-        # "axes.grid": True,
-        # "grid.color": "gray",
-        # "grid.alpha": 0.5,
-        # "grid.linewidth": 0.3,
         "font.family": "STIXGeneral",
     }
     plt.style.use(json_plot_settings)
 
 
 def _excl_combs(lst, r, excludes):
-    """lst = [1, 2, 3, 4, 5, 6]
-    excludes = [{1, 3}]
-    gen = _excl_combs(lst, 2, excludes)
+    """From a given list of combinations, excludes those in `excludes`.
+
+    Args:
+        lst (list[str]): combinations
+        r (int): combination integer
+        excludes (list[str]): combinations to exclude
+
+    Returns:
+        list[str]: combinations with excluded combinations remove
     """
     if excludes != [[]]:
         return [
@@ -99,8 +121,15 @@ def _excl_combs(lst, r, excludes):
         return list(combinations(lst, r))
 
 
-def _flatn_list(nested_list):
-    """Flattens nested list"""
+def _flatn_list(nested_list: Union[List[str], List[List[str]]]) -> List[str]:
+    """Flattens nested list.
+
+    Args:
+        nested_list (Union[List[str], List[List[str]]]): nested list
+
+    Returns:
+        List[str]: flattened list
+    """
     return list(itertools.chain.from_iterable(nested_list))
 
 
@@ -115,27 +144,27 @@ class SpecificationCurve:
     excluded from other categorical variables that are expanded.
 
     """
-
     def __init__(
         self,
         df: pd.DataFrame,
-        y_endog,
-        x_exog,
-        controls,
-        exclu_grps=[[]],
-        cat_expand=[],
-        always_include=[],
-    ):
+        y_endog: List[str],
+        x_exog: List[str],
+        controls: List[str],
+        exclu_grps: List[List[None]] = [[]],
+        cat_expand: List[None] = [],
+        always_include: List[None] = [],
+    ) -> None:
         """Specification curve object constructor.
 
         Args:
-            df (pd.DataFrame): Data to perform regression on
-            y_endog (_type_): _description_
-            x_exog (_type_): _description_
-            controls (_type_): _description_
-            exclu_grps (list, optional): _description_. Defaults to [[]].
-            cat_expand (list, optional): _description_. Defaults to [].
-            always_include (list, optional): _description_. Defaults to [].
+            df (pd.DataFrame): Data for regressions
+            y_endog (List[str]): Endogeneous variables
+            x_exog (List[str]): Exogeneous variables
+            controls (List[str]): Conditioning variables
+            exclu_grps (List[List[None]], optional): Combinations to exclude. Defaults to [[]].
+            cat_expand (List[None], optional): Fixed effects whose categories to run separately. Defaults to [].
+            always_include (List[None], optional): Any controls to always include. Defaults to [].
+
         """
         self.df = df.copy()
         self.y_endog = y_endog
@@ -165,7 +194,17 @@ class SpecificationCurve:
         self.df_r = self._spec_curve_regression()
         print("Fit complete")
 
-    def _reg_func(self, y_endog, x_exog, reg_vars):
+    def _reg_func(self, y_endog: List[str], x_exog: List[str], reg_vars: List[str]) -> sm.regression.linear_model.RegressionResults:
+        """Performs the regression.
+
+        Args:
+            y_endog (List[str]): Endogeneous variables
+            x_exog (List[str]): Exogeneous variables
+            reg_vars (List[str]): Controls
+
+        Returns:
+            sm.regression.linear_model.RegressionResults: _description_
+        """
         # NB: get dummies
         # transforms by default any col that is object or cat
         xf = pd.get_dummies(self.df, prefix_sep="=")
@@ -288,11 +327,11 @@ class SpecificationCurve:
         df_r["SpecificationCounts"] = df_r["Specification"].apply(lambda x: Counter(x))
         return df_r
 
-    def plot(self, save_path=None, pretty_plots=True, preferred_spec=[]):
+    def plot(self, save_path=None, pretty_plots: bool = True, preferred_spec: List[None] = []) -> None:
         """Makes plots of fitted specification curve.
 
         Args:
-            save_path (_type_, optional): Eexported fig filename. Defaults to None.
+            save_path (_type_, optional): Exported fig filename. Defaults to None.
             pretty_plots (bool, optional): whether to use this package's figure formatting. Defaults to True.
             preferred_spec (list, optional): preferred specification. Defaults to [].
         """
