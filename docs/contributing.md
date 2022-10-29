@@ -107,8 +107,6 @@ your approach.
 
 ## How to build the documentation
 
-The readme for this project is automatically generated.
-
 - Run `make clean`
 - Run `make`
 
