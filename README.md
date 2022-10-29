@@ -6,7 +6,6 @@ Specification Curve is a Python package that performs specification curve analys
 [![Status](https://img.shields.io/pypi/status/specification_curve.svg)](https://pypi.org/project/specification_curve/)
 [![Python Version](https://img.shields.io/pypi/pyversions/specification_curve)](https://pypi.org/project/specification_curve)
 [![License](https://img.shields.io/pypi/l/specification_curve)](https://opensource.org/licenses/MIT)
-[![Read the documentation at https://specification_curve.readthedocs.io/](https://img.shields.io/readthedocs/specification_curve/latest.svg?label=Read%20the%20Docs)](https://specification_curve.readthedocs.io/)
 [![Tests](https://github.com/aeturrell/specification_curve/workflows/Tests/badge.svg)](https://github.com/aeturrell/specification_curve/actions?workflow=Tests)
 [![Codecov](https://codecov.io/gh/aeturrell/specification_curve/branch/main/graph/badge.svg)](https://codecov.io/gh/aeturrell/specification_curve)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
@@ -19,9 +18,9 @@ Specification Curve is a Python package that performs specification curve analys
 [![macOS](https://svgshare.com/i/ZjP.svg)](https://svgshare.com/i/ZjP.svg)
 [![Windows](https://svgshare.com/i/ZhY.svg)](https://svgshare.com/i/ZhY.svg)
 
-[![Soure](https://img.shields.io/badge/source%20code-github-lightgrey?style=for-the-badge)](https://github.com/aeturrell/specification_curve)
+[![Source](https://img.shields.io/badge/source%20code-github-lightgrey?style=for-the-badge)](https://github.com/aeturrell/specification_curve)
 
-[Go to the full documentation for **Specification Curve**](https://specification_curve.readthedocs.io/).
+[Go to the full documentation for **Specification Curve**](https://aeturrell.github.io/specification_curve/).
 
 ## Quickstart
 
@@ -41,7 +40,7 @@ import pandas as pd
 # Set seed for random numbers
 seed_for_prng = 78557
 # prng=probabilistic random number generator
-prng = np.random.default_rng(seed_for_prng)  
+prng = np.random.default_rng(seed_for_prng)
 n_samples = 400
 # Number of dimensions
 n_dim = 4

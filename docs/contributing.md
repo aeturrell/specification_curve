@@ -8,7 +8,7 @@ and pull requests.
 Here is a list of important resources for contributors:
 
 - [Source Code](https://github.com/aeturrell/specification_curve)
-- [Documentation](https://specification_curve.readthedocs.io/)
+- [Documentation](https://aeturrell.github.io/specification_curve/)
 - [Issue Tracker](https://github.com/aeturrell/specification_curve/issues)
 
 ## How to report a bug
@@ -115,3 +115,21 @@ To upload the documentation, it’s
 ```bash
 poetry run ghp-import -n -p -f docs/_build/html
 ```
+
+## How to create a package release
+
+- Open a new branch with the version name
+
+- Change the version in pyproject.toml
+
+- Commit the change with a new version label as the commit message (checking the tests pass)
+
+- Head to github and merge into main
+
+- Draft a new release based on that most recent merge commit, using the new version as the tag
+
+- Run `poetry build` to produce the distributable files
+
+- Confirm the release draft on gitub
+
+- The automatic release github action will push to PyPI.

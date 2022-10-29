@@ -20,6 +20,7 @@ import pandas as pd
 import pkg_resources
 import statsmodels.api as sm
 
+
 EXAMPLE_FILE = pkg_resources.resource_filename(
     "specification_curve", os.path.join("data", "example_data.csv")
 )
@@ -144,12 +145,11 @@ class SpecificationCurve:
         self.cat_expand = cat_expand
         self.always_include = always_include
 
-    def fit(self, estimator=sm.OLS):
-        """
-        Fits a specification curve.
+    def fit(self, estimator=sm.OLS) -> None:
+        """Fits a specification curve by performing regressions.
 
-        :statsmodels.regression.linear_model estimator: statsmodels estimator
-        object. Default is OLS.
+        Args:
+            estimator (statsmodels.regression.linear_model or statsmodels.discrete.discrete_model, optional): statsmodels estimator. Defaults to sm.OLS.
         """
         self.estimator = estimator
         self.controls = _single_list_check_str(self.controls)
@@ -418,7 +418,7 @@ class SpecificationCurve:
             loc_y = loc_y.values[0]
             cn_styl = "angle3,angleA=0,angleB=-90"
             axarr[0].annotate(
-                f"Preferred\nspecification: {loc_y:+.2f}",
+                f"Preferred specification: {loc_y:+.2f}",
                 xy=(loc_x, loc_y),
                 xycoords="data",
                 xytext=(-30, 60),

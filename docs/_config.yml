@@ -25,6 +25,10 @@ repository:
   path_to_book: docs  # Optional path to your book, relative to the repository root
   branch: master  # Which branch of the repository should be used when creating links (optional)
 
+launch_buttons:
+  colab_url                 : "https://colab.research.google.com" # The URL of Google Colab
+
+
 # Add GitHub buttons to your book
 # See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
 html:
@@ -32,12 +36,10 @@ html:
   use_repository_button: true
   extra_navbar: ""
   home_page_in_navbar: false  # Whether to include your home page in the left Navigation Bar
-  baseurl: "https://specification-curve.readthedocs.io/"
-  favicon: "favicon.ico"
+  baseurl: "https://aeturrell.github.io/specification_curve"
+  # favicon: "favicon.ico"
 
 sphinx:
-  config:
-    html_theme: furo
   extra_extensions:
   - 'sphinx.ext.autodoc'
   - 'sphinx.ext.napoleon' # for google-style docstrings

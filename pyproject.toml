@@ -5,9 +5,9 @@ description = "Specification_Curve"
 authors = ["aeturrell <mail@mail.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/aeturrell/specification_curve"
+homepage = "https://aeturrell.github.io/specification_curve/"
 repository = "https://github.com/aeturrell/specification_curve"
-documentation = "https://specification_curve.readthedocs.io"
+documentation = "https://aeturrell.github.io/specification_curve/"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3.8",
@@ -43,6 +43,7 @@ ghp-import = "^2.1.0"
 xdoctest = "^1.1.0"
 mypy = "^0.982"
 reorder-python-imports = "^3.9.0"
+sphinxcontrib-bibtex = "^2.5.0"
 
 [tool.poetry.scripts]
 specification_curve = "specification_curve.__main__:main"
