@@ -1,0 +1,659 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Specification Curve &#8212; Specification Curve</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="canonical" href="https://aeturrell.github.io/specification_curve/index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Features" href="features.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="#">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Specification Curve</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="features.html">
+   Features
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="contributing.html">
+   Contributing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="history.html">
+   History
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api.html">
+   API Reference
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/aeturrell/specification_curve/master?urlpath=tree/docs/index.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://colab.research.google.com/github/aeturrell/specification_curve/blob/master/docs/index.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Colab"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_colab.png">
+  </span>
+<span class="headerbtn__text-container">Colab</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/aeturrell/specification_curve"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/aeturrell/specification_curve/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/index.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quickstart">
+   Quickstart
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installation">
+   Installation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#requirements">
+   Requirements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#license">
+   License
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#credits">
+   Credits
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#similar-packages">
+   Similar Packages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliography">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Specification Curve</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quickstart">
+   Quickstart
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installation">
+   Installation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#requirements">
+   Requirements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#license">
+   License
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#credits">
+   Credits
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#similar-packages">
+   Similar Packages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliography">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="specification-curve">
+<h1>Specification Curve<a class="headerlink" href="#specification-curve" title="Permalink to this headline">#</a></h1>
+<p>Specification Curve is a Python package that performs specification curve analysis; it helps with the problem of the “garden of forking paths” (many defensible choices) when doing analysis by running many regressions and summarising the effects in an easy to digest chart.</p>
+<p><a class="reference external" href="https://pypi.org/project/specification_curve/"><img alt="PyPI" src="https://img.shields.io/pypi/v/specification_curve.svg" /></a>
+<a class="reference external" href="https://pypi.org/project/specification_curve/"><img alt="Status" src="https://img.shields.io/pypi/status/specification_curve.svg" /></a>
+<a class="reference external" href="https://pypi.org/project/specification_curve"><img alt="Python Version" src="https://img.shields.io/pypi/pyversions/specification_curve" /></a>
+<a class="reference external" href="https://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/pypi/l/specification_curve" /></a>
+<a class="reference external" href="https://github.com/aeturrell/specification_curve/actions?workflow=Tests"><img alt="Tests" src="https://github.com/aeturrell/specification_curve/workflows/Tests/badge.svg" /></a>
+<a class="reference external" href="https://codecov.io/gh/aeturrell/specification_curve"><img alt="Codecov" src="https://codecov.io/gh/aeturrell/specification_curve/branch/main/graph/badge.svg" /></a>
+<a class="reference external" href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&amp;logoColor=white" /></a>
+<a class="reference external" href="https://github.com/psf/black"><img alt="Black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
+<a class="reference external" href="https://colab.research.google.com/gist/aeturrell/438fb066e4471312667268669cef2c11/specification_curve-examples.ipynb"><img alt="Google Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a>
+<a class="reference external" href="https://zenodo.org/badge/latestdoi/282989537"><img alt="DOI" src="https://zenodo.org/badge/282989537.svg" /></a>
+<a class="reference external" href="https://pepy.tech/project/Specification_curve"><img alt="Downloads" src="https://static.pepy.tech/badge/specification-curve" /></a></p>
+<p><a class="reference external" href="https://svgshare.com/i/Zhy.svg"><img alt="Linux" src="https://svgshare.com/i/Zhy.svg" /></a>
+<a class="reference external" href="https://svgshare.com/i/ZjP.svg"><img alt="macOS" src="https://svgshare.com/i/ZjP.svg" /></a>
+<a class="reference external" href="https://svgshare.com/i/ZhY.svg"><img alt="Windows" src="https://svgshare.com/i/ZhY.svg" /></a></p>
+<p><a class="reference external" href="https://github.com/aeturrell/specification_curve"><img alt="Soure" src="https://img.shields.io/badge/source%20code-github-lightgrey?style=for-the-badge" /></a></p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>When specifying a causal model, modellers have a number of options. These can be informed by field intelligence, priors, and even misguided attempts to find a significant result. Even with the best of intentions, research teams can reach entirely different conclusions using the same, or similar, data because of different choices made in preparing data or in modelling it.</p>
+<p>Typically this happens when there isn’t a clear way to do “feature engineering” on the data or the data are imperfect in some way. For example, you have a high frequency time series which needs to be aggregated to a lower frequency: you could take the maximum, the minimum, or the average over each high frequency time period. A different choice may be appropriate in different settings.</p>
+<p>There’s formal evidence that researchers really do make different decisions; one study <span id="id1">[<a class="reference internal" href="#id6" title="Raphael Silberzahn, Eric L Uhlmann, Daniel P Martin, Pasquale Anselmi, Frederik Aust, Eli Awtrey, Štěpán Bahník, Feng Bai, Colin Bannard, Evelina Bonnier, and others. Many analysts, one data set: making transparent how variations in analytic choices affect results. Advances in Methods and Practices in Psychological Science, 1(3):337–356, 2018.">SUM+18</a>]</span> gave the same research question—whether soccer referees are more likely to give red cards to players with dark skin tones than to players with light skin tones—to 29 different teams. From the abstract of that paper:</p>
+<blockquote>
+<div><p>Analytic approaches varied widely across the teams, and the estimated effect sizes ranged from 0.89 to 2.93 (Mdn = 1.31) in odds-ratio units. Twenty teams (69%) found a statistically significant positive effect, and 9 teams (31%) did not observe a significant relationship. Overall, the 29 different analyses used 21 unique combinations of covariates. Neither analysts’ prior beliefs about the effect of interest nor their level of expertise readily explained the variation in the outcomes of the analyses. Peer ratings of the quality of the analyses also did not account for the variability.</p>
+</div></blockquote>
+<p>So not only can different decisions made, but there seems to be no clearly identifiable reason for them!</p>
+<p>There have since been a number of papers that find similar conclusions <span id="id2">[<a class="reference internal" href="#id7" title="Nick Huntington-Klein, Andreu Arenas, Emily Beam, Marco Bertoni, Jeffrey R Bloem, Pralhad Burli, Naibin Chen, Paul Grieco, Godwin Ekpe, Todd Pugatch, and others. The influence of hidden researcher decisions in applied microeconomics. Economic Inquiry, 59(3):944–960, 2021.">HKAB+21</a>]</span>.</p>
+<p>Specification curves have been invented <span id="id3">[<a class="reference internal" href="#id8" title="Uri Simonsohn, Joseph P Simmons, and Leif D Nelson. Specification curve analysis. Nature Human Behaviour, 4(11):1208–1214, 2020.">SSN20</a>]</span> as a way to better grasp the garden of forking paths that analysts face, and help them show how sensitive their results are to alternative specifications.</p>
+<p>More than one piece of software <span id="id4">[<a class="reference internal" href="#id9" title="Philipp K. Masur and Michael Scharkow. Specr: statistical functions for conducting specification curve analyses (version 0.2.1). 2019. URL: https://github.com/masurp/specr.">MS19</a>]</span> has appeared to help researchers and analysts use this technique: <strong>specification curve</strong> is one such package!</p>
+</section>
+<section id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">#</a></h2>
+<p>You can try out specification curve right now in <a class="reference external" href="https://colab.research.google.com/gist/aeturrell/438fb066e4471312667268669cef2c11/specification_curve-examples.ipynb">Google Colab</a>.</p>
+<p>Here’s an example of using <strong>Specification Curve</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import specification curve</span>
+<span class="kn">import</span> <span class="nn">specification_curve</span> <span class="k">as</span> <span class="nn">specy</span>
+
+
+<span class="c1"># Generate some fake data</span>
+<span class="c1"># ------------------------</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Set seed for random numbers</span>
+<span class="n">seed_for_prng</span> <span class="o">=</span> <span class="mi">78557</span>
+<span class="c1"># prng=probabilistic random number generator</span>
+<span class="n">prng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed_for_prng</span><span class="p">)</span>  
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">400</span>
+<span class="c1"># Number of dimensions</span>
+<span class="n">n_dim</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">c_rnd_vars</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_dim</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">))</span>
+<span class="n">y_1</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.4</span><span class="o">*</span><span class="n">c_rnd_vars</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span>  <span class="c1"># THIS IS THE TRUE VALUE OF THE COEFFICIENT</span>
+       <span class="mf">0.2</span><span class="o">*</span><span class="n">c_rnd_vars</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span>
+       <span class="mf">0.3</span><span class="o">*</span><span class="n">prng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">n_samples</span><span class="p">))</span>
+<span class="c1"># Next line causes y_2 ests to be much more noisy</span>
+<span class="n">y_2</span> <span class="o">=</span> <span class="n">y_1</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">n_samples</span><span class="p">))</span>
+<span class="c1"># Put data into dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">y_1</span><span class="p">,</span> <span class="n">y_2</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;x_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_rnd_vars</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;c_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_rnd_vars</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;c_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_rnd_vars</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;c_3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_rnd_vars</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
+
+<span class="c1"># Specification Curve Analysis</span>
+<span class="c1">#-----------------------------</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">y_endog</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span>
+    <span class="n">x_exog</span><span class="o">=</span><span class="s2">&quot;x_1&quot;</span><span class="p">,</span>
+    <span class="n">controls</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;c_1&quot;</span><span class="p">,</span> <span class="s2">&quot;c_2&quot;</span><span class="p">,</span> <span class="s2">&quot;c_3&quot;</span><span class="p">])</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit complete
+</pre></div>
+</div>
+<img alt="_images/index_4_1.png" src="_images/index_4_1.png" />
+</div>
+</div>
+<p>Grey squares (black lines when there are many specifications) show whether a variable is included in a specification or not. Blue or red markers and error bars show whether the coefficient is positive and significant (at the 0.05 level) or red and significant, respectively.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
+<p>You can install <strong>Specification Curve</strong> via pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install specification-curve
+</pre></div>
+</div>
+<p>To install the development version from git, use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install git+https://github.com/aeturrell/specification_curve.git
+</pre></div>
+</div>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">#</a></h2>
+<p>You can find a full list of requirements in the <a class="reference external" href="https://github.com/aeturrell/skimpy/blob/main/pyproject.toml">pyproject.toml</a> file. The
+main requirements are:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>python &gt;=3.8,&lt;4.0.0
+pandas ^1.5.1
+statsmodels ^0.13.2
+matplotlib ^3.6.1
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">#</a></h2>
+<p>Distributed under the terms of the <a class="reference external" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">#</a></h2>
+<p>The package is built with <a class="reference external" href="https://python-poetry.org/">poetry</a>, while the documentation is built with <a class="reference external" href="https://jupyterbook.org">Jupyter Book</a>. Tests are run with <a class="reference external" href="https://nox.thea.codes/en/stable/">nox</a>.</p>
+</section>
+<section id="similar-packages">
+<h2>Similar Packages<a class="headerlink" href="#similar-packages" title="Permalink to this headline">#</a></h2>
+<p>In RStats, there is <a class="reference external" href="https://github.com/masurp/specr">specr</a> (which inspired many design choices in this package) and <a class="reference external" href="https://github.com/ArielOrtizBobea/spec_chart">spec_chart</a>. Some of the example data in this package is the same as in specr, but please note that results have not been cross-checked across packages.</p>
+</section>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">#</a></h2>
+<div class="docutils container" id="id5">
+<dl class="citation">
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id2">HKAB+21</a></span></dt>
+<dd><p>Nick Huntington-Klein, Andreu Arenas, Emily Beam, Marco Bertoni, Jeffrey R Bloem, Pralhad Burli, Naibin Chen, Paul Grieco, Godwin Ekpe, Todd Pugatch, and others. The influence of hidden researcher decisions in applied microeconomics. <em>Economic Inquiry</em>, 59(3):944–960, 2021.</p>
+</dd>
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id4">MS19</a></span></dt>
+<dd><p>Philipp K. Masur and Michael Scharkow. Specr: statistical functions for conducting specification curve analyses (version 0.2.1). 2019. URL: <a class="reference external" href="https://github.com/masurp/specr">https://github.com/masurp/specr</a>.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id1">SUM+18</a></span></dt>
+<dd><p>Raphael Silberzahn, Eric L Uhlmann, Daniel P Martin, Pasquale Anselmi, Frederik Aust, Eli Awtrey, Štěpán Bahník, Feng Bai, Colin Bannard, Evelina Bonnier, and others. Many analysts, one data set: making transparent how variations in analytic choices affect results. <em>Advances in Methods and Practices in Psychological Science</em>, 1(3):337–356, 2018.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id3">SSN20</a></span></dt>
+<dd><p>Uri Simonsohn, Joseph P Simmons, and Leif D Nelson. Specification curve analysis. <em>Nature Human Behaviour</em>, 4(11):1208–1214, 2020.</p>
+</dd>
+</dl>
+</div>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='right-next' id="next-link" href="features.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Features</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Arthur Turrell<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
