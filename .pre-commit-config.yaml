@@ -1,12 +1,15 @@
 repos:
-  - repo: local
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
     hooks:
       - id: black
         name: black
+        description: "applies black formatter to .py files"
         entry: black
-        language: system
+        language: python
         types: [python]
-        require_serial: true
+  - repo: local
+    hooks:
       - id: check-added-large-files
         name: Check for added large files
         entry: check-added-large-files
@@ -17,29 +20,27 @@ repos:
         language: system
         types: [toml]
       - id: check-yaml
+        exclude: docs/
         name: Check Yaml
         entry: check-yaml
         language: system
         types: [yaml]
       - id: end-of-file-fixer
+        exclude: docs/
         name: Fix End of Files
         entry: end-of-file-fixer
         language: system
         types: [text]
         stages: [commit, push, manual]
-      - id: flake8
-        name: flake8
-        entry: flake8
-        language: system
-        types: [python]
-        require_serial: true
       - id: reorder-python-imports
+        exclude: docs/
         name: Reorder python imports
         entry: reorder-python-imports
         language: system
         types: [python]
         args: [--application-directories=src]
       - id: trailing-whitespace
+        exclude: docs/
         name: Trim Trailing Whitespace
         entry: trailing-whitespace-fixer
         language: system
@@ -49,3 +50,13 @@ repos:
     rev: v2.3.0
     hooks:
       - id: prettier
+        exclude: docs/
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.4.0
+    hooks:
+      - id: nbstripout
+        name: nbstripout
+        description: "nbstripout: strip output from Jupyter and IPython notebooks"
+        entry: nbstripout
+        language: python
+        types: [jupyter]

@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 """Tests for `specification_curve` package."""
 import os
+from unittest.mock import patch
+
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from scipy.stats import norm
+
 from specification_curve import example as scdata
 from specification_curve import specification_curve as specy
-from unittest.mock import patch
 
 
 @patch("matplotlib.pyplot.show")
@@ -72,9 +74,7 @@ def test_005_save_fig(mock_show):
     x_exog = ["x1", "x2"]
     y_endog = "y1"
     controls = ["c1", "c2", "group1", "group2"]
-    sc = specy.SpecificationCurve(
-        df, y_endog, x_exog, controls, cat_expand=["group1"]
-    )
+    sc = specy.SpecificationCurve(df, y_endog, x_exog, controls, cat_expand=["group1"])
     sc.fit()
     sc.plot(save_path="test_fig.pdf")
     os.remove("test_fig.pdf")
@@ -167,9 +167,7 @@ def test_009_always_include(mock_show):
     x_exog = "x1"
     y_endog = "y1"
     controls = ["c2", "group1", "group2"]
-    sc = specy.SpecificationCurve(
-        df, y_endog, x_exog, controls, always_include="c1"
-    )
+    sc = specy.SpecificationCurve(df, y_endog, x_exog, controls, always_include="c1")
     sc.fit()
     sc.plot()
     mock_show.assert_called_once()
