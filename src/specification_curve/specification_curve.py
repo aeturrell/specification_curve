@@ -428,7 +428,19 @@ class SpecificationCurve:
         if len(self.df_r) > 160:
             wid = 0.01
             color_dict = {True: "k", False: "#FFFFFF"}
-        block_names = ["x", "y", "controls", "subsets"]
+        # Define group names to put on RHS of plot
+        from collections import defaultdict
+
+        def return_string():
+            """Convenience function to setup default dict.
+
+            Returns:
+                str: "subset"
+            """
+            return "subset"
+
+        block_name_dict = defaultdict(return_string)
+        block_name_dict.update({"x_exog": "x", "y_endog": "y", "control": "controls"})
         for ax_num, ax in enumerate(axarr[1:]):
             block_index = block_df.loc[block_df["group_index"] == ax_num, :].index
             df_sp_sl = df_spec.loc[block_index, :].copy()
@@ -442,10 +454,13 @@ class SpecificationCurve:
             ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
             ax.yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
             ax.set_yticks(range(len(list(df_sp_sl.index.values))))
+            # Add text on the RHS that describes what each block is
             ax.text(
                 x=len(df_sp_sl.columns) + 1,
                 y=np.mean(ax.get_yticks()),
-                s=block_names[ax_num],
+                s=block_name_dict[
+                    block_df.loc[block_df["group_index"] == ax_num, "group"].iloc[0]
+                ],
                 rotation=-90,
                 fontsize=11,
                 horizontalalignment="center",
