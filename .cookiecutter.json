@@ -1,0 +1,12 @@
+{
+  "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
+  "author": "aeturrell",
+  "development_status": "Development Status :: 3 - Alpha",
+  "email": "mail@mail.com",
+  "friendly_name": "Specification_Curve",
+  "github_user": "aeturrell",
+  "license": "MIT",
+  "package_name": "specification_curve",
+  "project_name": "specification_curve",
+  "version": "0.2.6"
+}

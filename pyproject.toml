@@ -1,0 +1,71 @@
+[tool.poetry]
+name = "specification_curve"
+version = "0.2.6"
+description = "Specification_Curve"
+authors = ["aeturrell <mail@mail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://aeturrell.github.io/specification_curve/"
+repository = "https://github.com/aeturrell/specification_curve"
+documentation = "https://aeturrell.github.io/specification_curve/"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+
+[tool.poetry.urls]
+Changelog = "https://github.com/aeturrell/specification_curve/releases"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0.0"
+pandas = "^1.5.1"
+statsmodels = "^0.13.2"
+matplotlib = "^3.6.1"
+
+[tool.poetry.dev-dependencies]
+black = "^22.10.0"
+pre-commit = "^2.20.0"
+Sphinx = "^4.0.0"
+typeguard = "^2.13.3"
+safety = "^2.3.1"
+coverage = "^6.5.0"
+pytest = "^7.2.0"
+flake8 = "^5.0.4"
+pre-commit-hooks = "^4.3.0"
+nox = "^2022.8.7"
+ipykernel = "^6.16.2"
+nbstripout = "^0.6.1"
+jupyter-book = "^0.13.1"
+furo = "^2022.9.29"
+ghp-import = "^2.1.0"
+xdoctest = "^1.1.0"
+mypy = "^0.982"
+reorder-python-imports = "^3.9.0"
+sphinxcontrib-bibtex = "^2.5.0"
+
+[tool.poetry.scripts]
+specification_curve = "specification_curve.__main__:main"
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["specification_curve"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 98
+
+[tool.mypy]
+strict = true
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

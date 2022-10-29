@@ -1,6 +1,6 @@
-* Specification Curve version:
-* Python version:
-* Operating System:
+- Specification Curve version:
+- Python version:
+- Operating System:
 
 ### Description
 
