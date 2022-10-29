@@ -6,6 +6,7 @@ A package that produces specification curve analysis.
 import copy
 import itertools
 from collections import Counter
+from collections import defaultdict
 from itertools import combinations
 from math import floor
 from math import log10
@@ -67,6 +68,10 @@ def _pretty_plots():
         "lines.markersize": 3,
         "legend.fontsize": 11,
         "mathtext.fontset": "stix",
+        # "axes.grid": True,
+        # "grid.color": "gray",
+        # "grid.alpha": 0.5,
+        # "grid.linewidth": 0.3,
         "font.family": "STIXGeneral",
     }
     plt.style.use(json_plot_settings)
@@ -252,12 +257,13 @@ class SpecificationCurve:
         )
         df_r["Specification"] = combs
         df_r["bse"] = df_r.apply(lambda row: row["Results"].bse[row["x_exog"]], axis=1)
+        # Pull out the confidence interval around the exogeneous variable
         df_r["conf_int"] = df_r.apply(
             lambda row: np.array(row["Results"].conf_int().loc[row["x_exog"]]), axis=1
         )
         df_r["pvalues"] = [x.pvalues for x in reg_results]
         df_r["pvalues"] = df_r["pvalues"].apply(lambda x: dict(x))
-        # Re-order by coefficient
+        # Re-order by coefficient: makes plots look more continuous
         df_r = df_r.sort_values("Coefficient")
         cols_to_keep = [
             "Results",
@@ -359,10 +365,11 @@ class SpecificationCurve:
         # Annotate the median coefficient line with text
         axarr[0].text(
             x=0.1,
-            y=np.median(self.df_r["Coefficient"]) * 1.04,
+            y=np.median(self.df_r["Coefficient"]) * 1.02,
             s="Median coefficient",
             fontsize=12,
             color="gray",
+            zorder=5,
         )
         # Colour the significant estimate values differently
         self.df_r["color_coeff"] = "black"
@@ -405,10 +412,10 @@ class SpecificationCurve:
             loc_y = loc_y.values[0]
             cn_styl = "angle3,angleA=0,angleB=-90"
             axarr[0].annotate(
-                "Preferred specification",
+                f"Preferred\nspecification: {loc_y:+.2f}",
                 xy=(loc_x, loc_y),
                 xycoords="data",
-                xytext=(3, 100),
+                xytext=(-30, 60),
                 textcoords="offset points",
                 fontsize=10,
                 arrowprops=dict(
@@ -429,7 +436,6 @@ class SpecificationCurve:
             wid = 0.01
             color_dict = {True: "k", False: "#FFFFFF"}
         # Define group names to put on RHS of plot
-        from collections import defaultdict
 
         def return_string():
             """Convenience function to setup default dict.
