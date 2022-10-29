@@ -352,10 +352,10 @@ class SpecificationCurve():
                                               connectionstyle=cn_styl))
         axarr[0].set_ylabel('Coefficient')
         axarr[0].set_title('Specification curve analysis')
-        max_height = (self.df_r['Coefficient'] + self.df_r['bse']).max()
-        min_height = (self.df_r['Coefficient'] - self.df_r['bse']).min()
-        ylims = (min_height/1.2, 1.5*max_height)
-        axarr[0].set_ylim(_round_to_1(ylims[0])*2,
+        max_height = self.df_r["conf_int"].apply(lambda x: x.max()).max()
+        min_height = self.df_r["conf_int"].apply(lambda x: x.min()).min()
+        ylims = (min_height/1.2, 1.2*max_height)
+        axarr[0].set_ylim(_round_to_1(ylims[0]),
                           _round_to_1(ylims[1]))
         # Now do the blocks - each group get its own array
         wid = 0.6
