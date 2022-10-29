@@ -229,12 +229,13 @@ class SpecificationCurve():
         df_r['Specification'] = combs
         df_r['bse'] = df_r.apply(
             lambda row: row['Results'].bse[row['x_exog']], axis=1)
+        df_r["conf_int"] = df_r.apply(lambda row: np.array(row['Results'].conf_int().loc[row['x_exog']]), axis=1)
         df_r['pvalues'] = [x.pvalues for x in reg_results]
         df_r['pvalues'] = df_r['pvalues'].apply(lambda x: dict(x))
         # Re-order by coefficient
         df_r = df_r.sort_values('Coefficient')
         cols_to_keep = ['Results', 'Coefficient',
-                        'Specification', 'bse', 'pvalues',
+                        'Specification', 'bse', 'pvalues', "conf_int",
                         'x_exog', 'y_endog']
         df_r = (df_r.drop(
             [x for x in df_r.columns if x not in cols_to_keep], axis=1))
@@ -311,6 +312,8 @@ class SpecificationCurve():
                          alpha=1,
                          label='Median coefficient',
                          dashes=[12, 5])
+        axarr[0].text(x=0.1, y=np.median(self.df_r['Coefficient'])*1.04,
+                      s="Median coefficient", fontsize=12, color="gray")
         # Colour the significant ones differently
         self.df_r['color_coeff'] = 'black'
         self.df_r['coeff_pvals'] = (self
@@ -321,9 +324,12 @@ class SpecificationCurve():
         self.df_r.loc[self.df_r['coeff_pvals'] < 0.05, 'color_coeff'] = 'blue'
         for color in self.df_r['color_coeff'].unique():
             slice_df_r = self.df_r.loc[self.df_r['color_coeff'] == color]
+            a = slice_df_r['Coefficient'] - np.stack(slice_df_r["conf_int"].to_numpy())[:, 0]
+            b = np.stack(slice_df_r["conf_int"].to_numpy())[:, 1] - slice_df_r['Coefficient']
+            y_err_correct_shape = np.stack((a, b))
             markers, caps, bars = axarr[0].errorbar(slice_df_r.index,
                                                     slice_df_r['Coefficient'],
-                                                    yerr=slice_df_r['bse'],
+                                                    yerr=y_err_correct_shape,
                                                     ls='none', color=color,
                                                     alpha=0.8, zorder=1,
                                                     elinewidth=2,
@@ -340,18 +346,16 @@ class SpecificationCurve():
             axarr[0].annotate('Preferred specification',
                               xy=(loc_x, loc_y), xycoords='data',
                               xytext=(3, 100), textcoords='offset points',
-                              fontsize='x-small',
+                              fontsize=10,
                               arrowprops=dict(arrowstyle="fancy",
                                               fc="0.4", ec="none",
                                               connectionstyle=cn_styl))
-        axarr[0].legend(frameon=True, loc='lower right',
-                        ncol=1, handlelength=2)
         axarr[0].set_ylabel('Coefficient')
         axarr[0].set_title('Specification curve analysis')
         max_height = (self.df_r['Coefficient'] + self.df_r['bse']).max()
         min_height = (self.df_r['Coefficient'] - self.df_r['bse']).min()
-        ylims = (min_height/1.2, 1.2*max_height)
-        axarr[0].set_ylim(_round_to_1(ylims[0]),
+        ylims = (min_height/1.2, 1.5*max_height)
+        axarr[0].set_ylim(_round_to_1(ylims[0])*2,
                           _round_to_1(ylims[1]))
         # Now do the blocks - each group get its own array
         wid = 0.6
@@ -360,6 +364,7 @@ class SpecificationCurve():
         if(len(self.df_r) > 160):
             wid = 0.01
             color_dict = {True: 'k', False: '#FFFFFF'}
+        block_names = ["x", "y", "controls", "subsets"]
         for ax_num, ax in enumerate(axarr[1:]):
             block_index = block_df.loc[block_df['group_index']
                                        == ax_num, :].index
@@ -373,7 +378,9 @@ class SpecificationCurve():
             ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
             ax.yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
             ax.set_yticks(range(len(list(df_sp_sl.index.values))))
-            ax.set_yticklabels(list(df_sp_sl.index.values))
+            ax.text(x=len(df_sp_sl.columns)+1, y=np.mean(ax.get_yticks()), s=block_names[ax_num], rotation=-90, fontsize=11,
+                    horizontalalignment="center", verticalalignment="center")
+            ax.set_yticklabels(list(df_sp_sl.index.values), fontsize=12)
             ax.set_xticklabels([])
             ax.set_ylim(-hei, len(df_sp_sl)-hei*4)
             ax.set_xlim(-wid, len(df_sp_sl.columns))
