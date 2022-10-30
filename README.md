@@ -84,6 +84,23 @@ To install the development version from git, use:
 $ pip install git+https://github.com/aeturrell/specification_curve.git
 ```
 
+## Citing Specification Curve
+
+```text
+@misc{aeturrell_2022_7264033,
+  author       = {Arthur Turrell},
+  title        = {Specification Curve: v0.3.1},
+  month        = oct,
+  year         = 2022,
+  publisher    = {Zenodo},
+  version      = {v0.3.1},
+  doi          = {10.5281/zenodo.7264033},
+  url          = {https://doi.org/10.5281/zenodo.7264033}
+}
+```
+
+Using **Specification Curve** in your paper? Let us know by raising an issue beginning with "citation".
+
 ## License
 
 Distributed under the terms of the [MIT license](https://opensource.org/licenses/MIT).

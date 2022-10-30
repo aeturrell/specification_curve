@@ -11,8 +11,12 @@ from collections import defaultdict
 from itertools import combinations
 from math import floor
 from math import log10
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Set
+from typing import Tuple
 from typing import Union
-from typing import List, Set, Dict, Tuple, Optional
 
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
@@ -68,7 +72,9 @@ def _single_list_check_str(X: Union[str, List[str]]) -> List[str]:
     return X
 
 
-def _remove_overlapping_vars(list_to_check: List[str], includes_list: List[str]) -> List[str]:
+def _remove_overlapping_vars(
+    list_to_check: List[str], includes_list: List[str]
+) -> List[str]:
     """Removes any variable in list_to_check that is also in includes_list.
 
     Args:
@@ -82,8 +88,7 @@ def _remove_overlapping_vars(list_to_check: List[str], includes_list: List[str])
 
 
 def _pretty_plots() -> None:
-    """Uses specification curve package's pretty plot style.
-    """
+    """Uses specification curve package's pretty plot style."""
     json_plot_settings = {
         "ytick.labelsize": 16,
         "xtick.labelsize": 16,
@@ -144,6 +149,7 @@ class SpecificationCurve:
     excluded from other categorical variables that are expanded.
 
     """
+
     def __init__(
         self,
         df: pd.DataFrame,
@@ -194,7 +200,9 @@ class SpecificationCurve:
         self.df_r = self._spec_curve_regression()
         print("Fit complete")
 
-    def _reg_func(self, y_endog: List[str], x_exog: List[str], reg_vars: List[str]) -> sm.regression.linear_model.RegressionResults:
+    def _reg_func(
+        self, y_endog: List[str], x_exog: List[str], reg_vars: List[str]
+    ) -> sm.regression.linear_model.RegressionResults:
         """Performs the regression.
 
         Args:
@@ -327,7 +335,9 @@ class SpecificationCurve:
         df_r["SpecificationCounts"] = df_r["Specification"].apply(lambda x: Counter(x))
         return df_r
 
-    def plot(self, save_path=None, pretty_plots: bool = True, preferred_spec: List[None] = []) -> None:
+    def plot(
+        self, save_path=None, pretty_plots: bool = True, preferred_spec: List[None] = []
+    ) -> None:
         """Makes plots of fitted specification curve.
 
         Args:
