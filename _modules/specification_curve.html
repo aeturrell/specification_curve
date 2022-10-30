@@ -262,6 +262,8 @@ title="Open an issue"
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log10</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">patches</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -277,43 +279,61 @@ title="Open an issue"
 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_round_to_1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Rounds numbers to 1 s.f.</span>
+<span class="k">def</span> <span class="nf">_round_to_1</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Rounds numbers to 1 s.f.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x (float): input number</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: number rounded</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">log10</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_double_list_check</span><span class="p">(</span><span class="n">XX</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    If a list, return as list of lists</span>
+<span class="k">def</span> <span class="nf">_double_list_check</span><span class="p">(</span><span class="n">XX</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Ensures that input is returned as nested list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        XX (Union[list[str], list[list[str]]]): Input list of (list of) strings</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[list[str]]: List of list of strings</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">XX</span><span class="p">)):</span>
         <span class="n">XX</span> <span class="o">=</span> <span class="p">[</span><span class="n">XX</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">XX</span>
 
 
-<span class="k">def</span> <span class="nf">_single_list_check_str</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    If type is string, return string in list</span>
+<span class="k">def</span> <span class="nf">_single_list_check_str</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Ensures a list of strings.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X (Union[str, list[str]]): input string of list of strings</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: List of strings.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">X</span>
 
 
-<span class="k">def</span> <span class="nf">_remove_overlapping_vars</span><span class="p">(</span><span class="n">list_to_check</span><span class="p">,</span> <span class="n">includes_list</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Checks, and removes, any variable in list_to_check that is also in</span>
-<span class="sd">    includes_list, returning list_to_check without overlapping variable</span>
-<span class="sd">    names.</span>
+<span class="k">def</span> <span class="nf">_remove_overlapping_vars</span><span class="p">(</span><span class="n">list_to_check</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">includes_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Removes any variable in list_to_check that is also in includes_list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        list_to_check (list[str]): _description_</span>
+<span class="sd">        includes_listlist (_type_): _description_</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: without overlapping variable names.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">list_to_check</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">includes_list</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_pretty_plots</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Uses specification curve package&#39;s pretty plot style.</span>
-<span class="sd">    Overrides existing style.</span>
+<span class="k">def</span> <span class="nf">_pretty_plots</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Uses specification curve package&#39;s pretty plot style.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">json_plot_settings</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;ytick.labelsize&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
@@ -326,19 +346,21 @@ title="Open an issue"
         <span class="s2">&quot;lines.markersize&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
         <span class="s2">&quot;legend.fontsize&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
         <span class="s2">&quot;mathtext.fontset&quot;</span><span class="p">:</span> <span class="s2">&quot;stix&quot;</span><span class="p">,</span>
-        <span class="c1"># &quot;axes.grid&quot;: True,</span>
-        <span class="c1"># &quot;grid.color&quot;: &quot;gray&quot;,</span>
-        <span class="c1"># &quot;grid.alpha&quot;: 0.5,</span>
-        <span class="c1"># &quot;grid.linewidth&quot;: 0.3,</span>
         <span class="s2">&quot;font.family&quot;</span><span class="p">:</span> <span class="s2">&quot;STIXGeneral&quot;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">json_plot_settings</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_excl_combs</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">excludes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;lst = [1, 2, 3, 4, 5, 6]</span>
-<span class="sd">    excludes = [{1, 3}]</span>
-<span class="sd">    gen = _excl_combs(lst, 2, excludes)</span>
+    <span class="sd">&quot;&quot;&quot;From a given list of combinations, excludes those in `excludes`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lst (list[str]): combinations</span>
+<span class="sd">        r (int): combination integer</span>
+<span class="sd">        excludes (list[str]): combinations to exclude</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: combinations with excluded combinations remove</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">excludes</span> <span class="o">!=</span> <span class="p">[[]]:</span>
         <span class="k">return</span> <span class="p">[</span>
@@ -350,8 +372,15 @@ title="Open an issue"
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">_flatn_list</span><span class="p">(</span><span class="n">nested_list</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Flattens nested list&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">_flatn_list</span><span class="p">(</span><span class="n">nested_list</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Flattens nested list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nested_list (Union[List[str], List[List[str]]]): nested list</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[str]: flattened list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">nested_list</span><span class="p">))</span>
 
 
@@ -366,27 +395,27 @@ title="Open an issue"
 <span class="sd">    excluded from other categorical variables that are expanded.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-        <span class="n">y_endog</span><span class="p">,</span>
-        <span class="n">x_exog</span><span class="p">,</span>
-        <span class="n">controls</span><span class="p">,</span>
-        <span class="n">exclu_grps</span><span class="o">=</span><span class="p">[[]],</span>
-        <span class="n">cat_expand</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">always_include</span><span class="o">=</span><span class="p">[],</span>
-    <span class="p">):</span>
+        <span class="n">y_endog</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">x_exog</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">controls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">exclu_grps</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[]],</span>
+        <span class="n">cat_expand</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">always_include</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Specification curve object constructor.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            df (pd.DataFrame): Data to perform regression on</span>
-<span class="sd">            y_endog (_type_): _description_</span>
-<span class="sd">            x_exog (_type_): _description_</span>
-<span class="sd">            controls (_type_): _description_</span>
-<span class="sd">            exclu_grps (list, optional): _description_. Defaults to [[]].</span>
-<span class="sd">            cat_expand (list, optional): _description_. Defaults to [].</span>
-<span class="sd">            always_include (list, optional): _description_. Defaults to [].</span>
+<span class="sd">            df (pd.DataFrame): Data for regressions</span>
+<span class="sd">            y_endog (List[str]): Endogeneous variables</span>
+<span class="sd">            x_exog (List[str]): Exogeneous variables</span>
+<span class="sd">            controls (List[str]): Conditioning variables</span>
+<span class="sd">            exclu_grps (List[List[None]], optional): Combinations to exclude. Defaults to [[]].</span>
+<span class="sd">            cat_expand (List[None], optional): Fixed effects whose categories to run separately. Defaults to [].</span>
+<span class="sd">            always_include (List[None], optional): Any controls to always include. Defaults to [].</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_endog</span> <span class="o">=</span> <span class="n">y_endog</span>
@@ -416,7 +445,17 @@ title="Open an issue"
         <span class="bp">self</span><span class="o">.</span><span class="n">df_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spec_curve_regression</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fit complete&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_reg_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">,</span> <span class="n">x_exog</span><span class="p">,</span> <span class="n">reg_vars</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_reg_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x_exog</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reg_vars</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">sm</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">linear_model</span><span class="o">.</span><span class="n">RegressionResults</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Performs the regression.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y_endog (List[str]): Endogeneous variables</span>
+<span class="sd">            x_exog (List[str]): Exogeneous variables</span>
+<span class="sd">            reg_vars (List[str]): Controls</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            sm.regression.linear_model.RegressionResults: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># NB: get dummies</span>
         <span class="c1"># transforms by default any col that is object or cat</span>
         <span class="n">xf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">prefix_sep</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
@@ -539,11 +578,11 @@ title="Open an issue"
         <span class="n">df_r</span><span class="p">[</span><span class="s2">&quot;SpecificationCounts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_r</span><span class="p">[</span><span class="s2">&quot;Specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">Counter</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">df_r</span>
 
-<div class="viewcode-block" id="SpecificationCurve.plot"><a class="viewcode-back" href="../api.html#specification_curve.SpecificationCurve.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pretty_plots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">preferred_spec</span><span class="o">=</span><span class="p">[]):</span>
+<div class="viewcode-block" id="SpecificationCurve.plot"><a class="viewcode-back" href="../api.html#specification_curve.SpecificationCurve.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pretty_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">preferred_spec</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Makes plots of fitted specification curve.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            save_path (_type_, optional): Eexported fig filename. Defaults to None.</span>
+<span class="sd">            save_path (_type_, optional): Exported fig filename. Defaults to None.</span>
 <span class="sd">            pretty_plots (bool, optional): whether to use this package&#39;s figure formatting. Defaults to True.</span>
 <span class="sd">            preferred_spec (list, optional): preferred specification. Defaults to [].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
