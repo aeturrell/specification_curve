@@ -25,7 +25,7 @@ statsmodels = "^0.13.2"
 matplotlib = "^3.6.1"
 
 [tool.poetry.dev-dependencies]
-black = "^22.10.0"
+black = "^23.1.0"
 pre-commit = "^3.1.1"
 Sphinx = "^4.0.0"
 typeguard = "^2.13.3"
