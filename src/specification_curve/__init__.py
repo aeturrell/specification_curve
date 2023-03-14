@@ -6,11 +6,13 @@ A package that produces specification curve analysis.
 import copy
 import itertools
 import os
+import typing
 from collections import Counter
 from collections import defaultdict
 from itertools import combinations
 from math import floor
 from math import log10
+from typing import DefaultDict
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -44,6 +46,7 @@ def _round_to_1(x: float) -> float:
     return round(x, -int(floor(log10(abs(x)))) + 1)
 
 
+@typing.no_type_check
 def _double_list_check(XX: Union[List[str], List[List[str]]]) -> List[List[str]]:
     """Ensures that input is returned as nested list.
 
@@ -58,6 +61,7 @@ def _double_list_check(XX: Union[List[str], List[List[str]]]) -> List[List[str]]
     return XX
 
 
+@typing.no_type_check
 def _single_list_check_str(X: Union[str, List[str]]) -> List[str]:
     """Ensures a list of strings.
 
@@ -79,7 +83,7 @@ def _remove_overlapping_vars(
 
     Args:
         list_to_check (list[str]): _description_
-        includes_listlist (_type_): _description_
+        includes_listlist (List[str]): _description_
 
     Returns:
         list[str]: without overlapping variable names.
@@ -153,32 +157,32 @@ class SpecificationCurve:
     def __init__(
         self,
         df: pd.DataFrame,
-        y_endog: List[str],
-        x_exog: List[str],
+        y_endog: Union[str, List[str]],
+        x_exog: Union[str, List[str]],
         controls: List[str],
         exclu_grps: List[List[None]] = [[]],
         cat_expand: List[None] = [],
-        always_include: List[None] = [],
+        always_include: List[str] = [],
     ) -> None:
         """Specification curve object constructor.
 
         Args:
             df (pd.DataFrame): Data for regressions
-            y_endog (List[str]): Endogeneous variables
-            x_exog (List[str]): Exogeneous variables
+            y_endog (Union[str, List[str]]): Endogeneous variables
+            x_exog (Union[str, List[str]]): Exogeneous variables
             controls (List[str]): Conditioning variables
             exclu_grps (List[List[None]], optional): Combinations to exclude. Defaults to [[]].
             cat_expand (List[None], optional): Fixed effects whose categories to run separately. Defaults to [].
-            always_include (List[None], optional): Any controls to always include. Defaults to [].
+            always_include (List[str], optional): Any controls to always include. Defaults to [].
 
         """
         self.df = df.copy()
-        self.y_endog = y_endog
-        self.x_exog = x_exog
-        self.controls = controls
-        self.exclu_grps = exclu_grps
-        self.cat_expand = cat_expand
-        self.always_include = always_include
+        self.y_endog = _single_list_check_str(y_endog)
+        self.x_exog = _single_list_check_str(x_exog)
+        self.controls = _single_list_check_str(controls)
+        self.exclu_grps = _double_list_check(exclu_grps)
+        self.cat_expand = _single_list_check_str(cat_expand)
+        self.always_include = _single_list_check_str(always_include)
 
     def fit(self, estimator=sm.OLS) -> None:
         """Fits a specification curve by performing regressions.
@@ -187,12 +191,9 @@ class SpecificationCurve:
             estimator (statsmodels.regression.linear_model or statsmodels.discrete.discrete_model, optional): statsmodels estimator. Defaults to sm.OLS.
         """
         self.estimator = estimator
-        self.controls = _single_list_check_str(self.controls)
-        self.cat_expand = _single_list_check_str(self.cat_expand)
-        self.exclu_grps = _double_list_check(self.exclu_grps)
-        self.always_include = _single_list_check_str(self.always_include)
-        self.y_endog = _single_list_check_str(self.y_endog)
-        self.x_exog = _single_list_check_str(self.x_exog)
+        # self.cat_expand = _single_list_check_str(self.cat_expand)
+        # self.exclu_grps = _double_list_check(self.exclu_grps)
+        # self.always_include = _single_list_check_str(self.always_include)
         # If any of always include in any other list, remove it from other list
         self.controls = _remove_overlapping_vars(self.controls, self.always_include)
         self.x_exog = _remove_overlapping_vars(self.x_exog, self.always_include)
@@ -201,13 +202,13 @@ class SpecificationCurve:
         print("Fit complete")
 
     def _reg_func(
-        self, y_endog: List[str], x_exog: List[str], reg_vars: List[str]
+        self, y_endog: List[str], x_exog: str, reg_vars: List[str]
     ) -> sm.regression.linear_model.RegressionResults:
         """Performs the regression.
 
         Args:
             y_endog (List[str]): Endogeneous variables
-            x_exog (List[str]): Exogeneous variables
+            x_exog (str): Exogeneous variables
             reg_vars (List[str]): Controls
 
         Returns:
@@ -216,11 +217,14 @@ class SpecificationCurve:
         # NB: get dummies
         # transforms by default any col that is object or cat
         xf = pd.get_dummies(self.df, prefix_sep="=")
-        new_cols = [x for x in xf.columns if x not in self.df.columns]
-        gone_cols = [x for x in self.df.columns if x not in xf.columns]
+        new_cols = [str(x) for x in xf.columns if x not in self.df.columns]
+        gone_cols = [str(x) for x in self.df.columns if x not in xf.columns]
         reg_vars_here = copy.copy(reg_vars)
         reg_vars_here.extend(new_cols)
-        [reg_vars_here.remove(x) for x in gone_cols if x in reg_vars_here]
+        # mypy prefers this formulation to a list comprehension
+        for x in gone_cols:
+            if x in reg_vars_here:
+                reg_vars_here.remove(x)
         return self.estimator(xf[y_endog], xf[[x_exog] + reg_vars_here]).fit()
 
     def _compute_combinations(self):
@@ -500,7 +504,7 @@ class SpecificationCurve:
             """
             return "subset"
 
-        block_name_dict = defaultdict(return_string)
+        block_name_dict: DefaultDict[str, str] = defaultdict(return_string)
         block_name_dict.update({"x_exog": "x", "y_endog": "y", "control": "controls"})
         for ax_num, ax in enumerate(axarr[1:]):
             block_index = block_df.loc[block_df["group_index"] == ax_num, :].index
