@@ -3963,7 +3963,7 @@ files = [
 name = "types-setuptools"
 version = "67.6.0.0"
 description = "Typing stubs for setuptools"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 files = [
@@ -4154,4 +4154,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "6000ae994d994276c5661ea1a7ed68b41798e1623de194238b426c2a36fb8870"
+content-hash = "a17e1a05d6f58e030f19c4de15e243900b93f543c696db0bef8e73fae2d8f8f8"

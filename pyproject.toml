@@ -23,6 +23,7 @@ python = ">=3.8,<3.12"
 pandas = "^1.5.1"
 statsmodels = "^0.13.2"
 matplotlib = "^3.6.1"
+types-setuptools = "^67.6.0.0"
 
 [tool.poetry.dev-dependencies]
 black = "^23.1.0"
