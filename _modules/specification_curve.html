@@ -257,13 +257,19 @@ title="Open an issue"
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">typing</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log10</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">DefaultDict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">patches</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -291,6 +297,7 @@ title="Open an issue"
     <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">log10</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
 
+<span class="nd">@typing</span><span class="o">.</span><span class="n">no_type_check</span>
 <span class="k">def</span> <span class="nf">_double_list_check</span><span class="p">(</span><span class="n">XX</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Ensures that input is returned as nested list.</span>
 
@@ -305,6 +312,7 @@ title="Open an issue"
     <span class="k">return</span> <span class="n">XX</span>
 
 
+<span class="nd">@typing</span><span class="o">.</span><span class="n">no_type_check</span>
 <span class="k">def</span> <span class="nf">_single_list_check_str</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Ensures a list of strings.</span>
 
@@ -319,12 +327,14 @@ title="Open an issue"
     <span class="k">return</span> <span class="n">X</span>
 
 
-<span class="k">def</span> <span class="nf">_remove_overlapping_vars</span><span class="p">(</span><span class="n">list_to_check</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">includes_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">_remove_overlapping_vars</span><span class="p">(</span>
+    <span class="n">list_to_check</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">includes_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Removes any variable in list_to_check that is also in includes_list.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        list_to_check (list[str]): _description_</span>
-<span class="sd">        includes_listlist (_type_): _description_</span>
+<span class="sd">        includes_listlist (List[str]): _description_</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list[str]: without overlapping variable names.</span>
@@ -333,8 +343,7 @@ title="Open an issue"
 
 
 <span class="k">def</span> <span class="nf">_pretty_plots</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Uses specification curve package&#39;s pretty plot style.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Uses specification curve package&#39;s pretty plot style.&quot;&quot;&quot;</span>
     <span class="n">json_plot_settings</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;ytick.labelsize&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
         <span class="s2">&quot;xtick.labelsize&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
@@ -395,35 +404,36 @@ title="Open an issue"
 <span class="sd">    excluded from other categorical variables that are expanded.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-        <span class="n">y_endog</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="n">x_exog</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">y_endog</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+        <span class="n">x_exog</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
         <span class="n">controls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">exclu_grps</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[]],</span>
         <span class="n">cat_expand</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-        <span class="n">always_include</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">always_include</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Specification curve object constructor.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            df (pd.DataFrame): Data for regressions</span>
-<span class="sd">            y_endog (List[str]): Endogeneous variables</span>
-<span class="sd">            x_exog (List[str]): Exogeneous variables</span>
+<span class="sd">            y_endog (Union[str, List[str]]): Endogeneous variables</span>
+<span class="sd">            x_exog (Union[str, List[str]]): Exogeneous variables</span>
 <span class="sd">            controls (List[str]): Conditioning variables</span>
 <span class="sd">            exclu_grps (List[List[None]], optional): Combinations to exclude. Defaults to [[]].</span>
 <span class="sd">            cat_expand (List[None], optional): Fixed effects whose categories to run separately. Defaults to [].</span>
-<span class="sd">            always_include (List[None], optional): Any controls to always include. Defaults to [].</span>
+<span class="sd">            always_include (List[str], optional): Any controls to always include. Defaults to [].</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y_endog</span> <span class="o">=</span> <span class="n">y_endog</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x_exog</span> <span class="o">=</span> <span class="n">x_exog</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">controls</span> <span class="o">=</span> <span class="n">controls</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">exclu_grps</span> <span class="o">=</span> <span class="n">exclu_grps</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cat_expand</span> <span class="o">=</span> <span class="n">cat_expand</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">always_include</span> <span class="o">=</span> <span class="n">always_include</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_endog</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="n">y_endog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_exog</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="n">x_exog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">controls</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="n">controls</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exclu_grps</span> <span class="o">=</span> <span class="n">_double_list_check</span><span class="p">(</span><span class="n">exclu_grps</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cat_expand</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="n">cat_expand</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">always_include</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="n">always_include</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SpecificationCurve.fit"><a class="viewcode-back" href="../api.html#specification_curve.SpecificationCurve.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Fits a specification curve by performing regressions.</span>
@@ -432,12 +442,9 @@ title="Open an issue"
 <span class="sd">            estimator (statsmodels.regression.linear_model or statsmodels.discrete.discrete_model, optional): statsmodels estimator. Defaults to sm.OLS.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">controls</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controls</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cat_expand</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cat_expand</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">exclu_grps</span> <span class="o">=</span> <span class="n">_double_list_check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exclu_grps</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">always_include</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">always_include</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y_endog</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_endog</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">x_exog</span> <span class="o">=</span> <span class="n">_single_list_check_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_exog</span><span class="p">)</span>
+        <span class="c1"># self.cat_expand = _single_list_check_str(self.cat_expand)</span>
+        <span class="c1"># self.exclu_grps = _double_list_check(self.exclu_grps)</span>
+        <span class="c1"># self.always_include = _single_list_check_str(self.always_include)</span>
         <span class="c1"># If any of always include in any other list, remove it from other list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">controls</span> <span class="o">=</span> <span class="n">_remove_overlapping_vars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controls</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">always_include</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_exog</span> <span class="o">=</span> <span class="n">_remove_overlapping_vars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_exog</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">always_include</span><span class="p">)</span>
@@ -445,12 +452,14 @@ title="Open an issue"
         <span class="bp">self</span><span class="o">.</span><span class="n">df_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spec_curve_regression</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fit complete&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_reg_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x_exog</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">reg_vars</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">sm</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">linear_model</span><span class="o">.</span><span class="n">RegressionResults</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_reg_func</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x_exog</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reg_vars</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sm</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">linear_model</span><span class="o">.</span><span class="n">RegressionResults</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Performs the regression.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            y_endog (List[str]): Endogeneous variables</span>
-<span class="sd">            x_exog (List[str]): Exogeneous variables</span>
+<span class="sd">            x_exog (str): Exogeneous variables</span>
 <span class="sd">            reg_vars (List[str]): Controls</span>
 
 <span class="sd">        Returns:</span>
@@ -459,11 +468,14 @@ title="Open an issue"
         <span class="c1"># NB: get dummies</span>
         <span class="c1"># transforms by default any col that is object or cat</span>
         <span class="n">xf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">prefix_sep</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
-        <span class="n">new_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xf</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-        <span class="n">gone_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">xf</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="n">new_cols</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xf</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="n">gone_cols</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">xf</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
         <span class="n">reg_vars_here</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">reg_vars</span><span class="p">)</span>
         <span class="n">reg_vars_here</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_cols</span><span class="p">)</span>
-        <span class="p">[</span><span class="n">reg_vars_here</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gone_cols</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">reg_vars_here</span><span class="p">]</span>
+        <span class="c1"># mypy prefers this formulation to a list comprehension</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gone_cols</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">reg_vars_here</span><span class="p">:</span>
+                <span class="n">reg_vars_here</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">(</span><span class="n">xf</span><span class="p">[</span><span class="n">y_endog</span><span class="p">],</span> <span class="n">xf</span><span class="p">[[</span><span class="n">x_exog</span><span class="p">]</span> <span class="o">+</span> <span class="n">reg_vars_here</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_compute_combinations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -578,7 +590,9 @@ title="Open an issue"
         <span class="n">df_r</span><span class="p">[</span><span class="s2">&quot;SpecificationCounts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_r</span><span class="p">[</span><span class="s2">&quot;Specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">Counter</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">df_r</span>
 
-<div class="viewcode-block" id="SpecificationCurve.plot"><a class="viewcode-back" href="../api.html#specification_curve.SpecificationCurve.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pretty_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">preferred_spec</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="SpecificationCurve.plot"><a class="viewcode-back" href="../api.html#specification_curve.SpecificationCurve.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pretty_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">preferred_spec</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Makes plots of fitted specification curve.</span>
 
 <span class="sd">        Args:</span>
@@ -741,7 +755,7 @@ title="Open an issue"
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="s2">&quot;subset&quot;</span>
 
-        <span class="n">block_name_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">return_string</span><span class="p">)</span>
+        <span class="n">block_name_dict</span><span class="p">:</span> <span class="n">DefaultDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">return_string</span><span class="p">)</span>
         <span class="n">block_name_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;x_exog&quot;</span><span class="p">:</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y_endog&quot;</span><span class="p">:</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;control&quot;</span><span class="p">:</span> <span class="s2">&quot;controls&quot;</span><span class="p">})</span>
         <span class="k">for</span> <span class="n">ax_num</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
             <span class="n">block_index</span> <span class="o">=</span> <span class="n">block_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">block_df</span><span class="p">[</span><span class="s2">&quot;group_index&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ax_num</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">index</span>
