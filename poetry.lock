@@ -3349,14 +3349,14 @@ test = ["pre-commit", "pytest"]
 
 [[package]]
 name = "typeguard"
-version = "3.0.0"
+version = "3.0.1"
 description = "Run-time type checker for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7.4"
 files = [
-    {file = "typeguard-3.0.0-py3-none-any.whl", hash = "sha256:f595ad0c7dab4d7cb7158ddb46c392f17200a1f6f7ce340068ba2417661de31a"},
-    {file = "typeguard-3.0.0.tar.gz", hash = "sha256:91d86faa19b750515edab2d5fc9e4167dedd45b420e1696cd5d5e42f06d6bc02"},
+    {file = "typeguard-3.0.1-py3-none-any.whl", hash = "sha256:15628045c830abf68533247afd2cb04683b5ce6f4e30d5401a5ef6f5182280de"},
+    {file = "typeguard-3.0.1.tar.gz", hash = "sha256:beb0e67c5dc76eea4a6d00a6606d444d899589908362960769d0c4a1d32bca70"},
 ]
 
 [package.dependencies]
@@ -3365,7 +3365,7 @@ typing-extensions = {version = ">=4.4.0", markers = "python_version < \"3.11\""}
 
 [package.extras]
 doc = ["packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
-test = ["mypy (>=0.991)", "pytest"]
+test = ["mypy (>=0.991)", "pytest (>=7)"]
 
 [[package]]
 name = "types-pkg-resources"
@@ -3542,4 +3542,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "2fa48233fb11226186154ba910080e7bbb1a5cf00f7291adaeadad5107db0f69"
+content-hash = "92043a32cd120beb5854f70554bf9ede256f74113040af1555663ee38508c2a2"
