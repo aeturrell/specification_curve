@@ -46,7 +46,6 @@ def _round_to_1(x: float) -> float:
     return round(x, -int(floor(log10(abs(x)))) + 1)
 
 
-@typing.no_type_check
 def _double_list_check(XX: Union[List[str], List[List[str]]]) -> List[List[str]]:
     """Ensures that input is returned as nested list.
 
@@ -61,7 +60,6 @@ def _double_list_check(XX: Union[List[str], List[List[str]]]) -> List[List[str]]
     return XX
 
 
-@typing.no_type_check
 def _single_list_check_str(X: Union[str, List[str]]) -> List[str]:
     """Ensures a list of strings.
 
