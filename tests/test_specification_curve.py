@@ -7,10 +7,12 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from scipy.stats import norm
+from typeguard import typeguard_ignore
 
 import specification_curve as specy
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_000_basic_plot(mock_show):
     df = specy.load_example_data2()
@@ -23,6 +25,7 @@ def test_000_basic_plot(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_001_fe_grp(mock_show):
     """Test expand multiple FE groups. Docs feature 1."""
@@ -38,6 +41,7 @@ def test_001_fe_grp(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_002_docs_feat_two(mock_show):
     """Test docs feature 2."""
@@ -53,6 +57,7 @@ def test_002_docs_feat_two(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_004_docs_feat_three(mock_show):
     """Test docs feature 3: multiple dependent or independent variables"""
@@ -66,6 +71,7 @@ def test_004_docs_feat_three(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_005_save_fig(mock_show):
     """Test save fig.."""
@@ -80,6 +86,7 @@ def test_005_save_fig(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_006_logit_estimator(mock_show):
     """Test running with different statsmodels estimators -
@@ -108,6 +115,7 @@ def test_006_logit_estimator(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_007_probit_estimator(mock_show):
     """
@@ -136,6 +144,7 @@ def test_007_probit_estimator(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_008_large_no_specifications(mock_show):
     """
@@ -159,6 +168,7 @@ def test_008_large_no_specifications(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_009_always_include(mock_show):
     """Test of always include."""
@@ -172,6 +182,7 @@ def test_009_always_include(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
 def test_010_preferred_specification(mock_show):
     """Test of labelling preferred specification."""
