@@ -42,7 +42,7 @@ jupyter-book = "^0.15.1"
 furo = "^2022.9.29"
 ghp-import = "^2.1.0"
 xdoctest = "^1.1.1"
-mypy = "^1.1"
+mypy = "^1.2"
 reorder-python-imports = "^3.9.0"
 sphinxcontrib-bibtex = "^2.5.0"
 
