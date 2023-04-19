@@ -130,7 +130,7 @@ def _excl_combs(lst, r, excludes):
         return list(combinations(lst, r))
 
 
-def _flatn_list(nested_list: Union[List[str], List[List[str]]]) -> List[str]:
+def _flatn_list(nested_list: Union[str, List[str], List[List[str]]]) -> List[str]:
     """Flattens nested list.
 
     Args:
@@ -161,7 +161,7 @@ class SpecificationCurve:
         x_exog: Union[str, List[str]],
         controls: List[str],
         exclu_grps: List[List[None]] = [[]],
-        cat_expand: List[None] = [],
+        cat_expand: Union[str, List[None]] = [],
         always_include: List[str] = [],
     ) -> None:
         """Specification curve object constructor.

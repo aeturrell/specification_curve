@@ -53,6 +53,7 @@ specification_curve = "specification_curve.__main__:main"
 types-pkg-resources = "^0.1.3"
 types-setuptools = "^67.6.0.0"
 pandas-stubs = "^1.5.3.230304"
+typeguard = "^3.0.2"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
