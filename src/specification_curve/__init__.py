@@ -36,22 +36,19 @@ EXAMPLE_FILE = pkg_resources.resource_filename(
 
 def _round_to_1(x: float) -> float:
     """Rounds numbers to 1 s.f.
-
     Args:
         x (float): input number
-
     Returns:
         float: number rounded
     """
     return round(x, -int(floor(log10(abs(x)))) + 1)
 
 
+@typing.no_type_check
 def _double_list_check(XX: Union[List[str], List[List[str]]]) -> List[List[str]]:
     """Ensures that input is returned as nested list.
-
     Args:
         XX (Union[list[str], list[list[str]]]): Input list of (list of) strings
-
     Returns:
         list[list[str]]: List of list of strings
     """
@@ -60,12 +57,11 @@ def _double_list_check(XX: Union[List[str], List[List[str]]]) -> List[List[str]]
     return XX
 
 
+@typing.no_type_check
 def _single_list_check_str(X: Union[str, List[str]]) -> List[str]:
     """Ensures a list of strings.
-
     Args:
         X (Union[str, list[str]]): input string of list of strings
-
     Returns:
         list[str]: List of strings.
     """
@@ -78,11 +74,9 @@ def _remove_overlapping_vars(
     list_to_check: List[str], includes_list: List[str]
 ) -> List[str]:
     """Removes any variable in list_to_check that is also in includes_list.
-
     Args:
         list_to_check (list[str]): _description_
         includes_listlist (List[str]): _description_
-
     Returns:
         list[str]: without overlapping variable names.
     """
@@ -109,12 +103,10 @@ def _pretty_plots() -> None:
 
 def _excl_combs(lst, r, excludes):
     """From a given list of combinations, excludes those in `excludes`.
-
     Args:
         lst (list[str]): combinations
         r (int): combination integer
         excludes (list[str]): combinations to exclude
-
     Returns:
         list[str]: combinations with excluded combinations remove
     """
@@ -130,10 +122,8 @@ def _excl_combs(lst, r, excludes):
 
 def _flatn_list(nested_list: Union[str, List[str], List[List[str]]]) -> List[str]:
     """Flattens nested list.
-
     Args:
         nested_list (Union[List[str], List[List[str]]]): nested list
-
     Returns:
         List[str]: flattened list
     """
@@ -142,14 +132,12 @@ def _flatn_list(nested_list: Union[str, List[str], List[List[str]]]) -> List[str
 
 class SpecificationCurve:
     """Specification curve object.
-
     Uses a model to perform all variants of a specification.
     Stores the results of those regressions in a tidy format pandas dataframe.
     Plots the regressions in chart that can optionally be saved.
     Will iterate over multiple inputs for exog. and endog. variables.
     Note that categorical variables that are expanded cannot be mutually
     excluded from other categorical variables that are expanded.
-
     """
 
     def __init__(
@@ -163,7 +151,6 @@ class SpecificationCurve:
         always_include: List[str] = [],
     ) -> None:
         """Specification curve object constructor.
-
         Args:
             df (pd.DataFrame): Data for regressions
             y_endog (Union[str, List[str]]): Endogeneous variables
@@ -172,7 +159,6 @@ class SpecificationCurve:
             exclu_grps (List[List[None]], optional): Combinations to exclude. Defaults to [[]].
             cat_expand (List[None], optional): Fixed effects whose categories to run separately. Defaults to [].
             always_include (List[str], optional): Any controls to always include. Defaults to [].
-
         """
         self.df = df.copy()
         self.y_endog = _single_list_check_str(y_endog)
@@ -184,7 +170,6 @@ class SpecificationCurve:
 
     def fit(self, estimator=sm.OLS) -> None:
         """Fits a specification curve by performing regressions.
-
         Args:
             estimator (statsmodels.regression.linear_model or statsmodels.discrete.discrete_model, optional): statsmodels estimator. Defaults to sm.OLS.
         """
@@ -203,12 +188,10 @@ class SpecificationCurve:
         self, y_endog: List[str], x_exog: str, reg_vars: List[str]
     ) -> sm.regression.linear_model.RegressionResults:
         """Performs the regression.
-
         Args:
             y_endog (List[str]): Endogeneous variables
             x_exog (str): Exogeneous variables
             reg_vars (List[str]): Controls
-
         Returns:
             sm.regression.linear_model.RegressionResults: _description_
         """
@@ -279,10 +262,8 @@ class SpecificationCurve:
 
     def _spec_curve_regression(self):
         """Performs all regressions for a specification curve.
-
         Estimates model with estimator as given in fitting function.
         Assumes that all controls and fixed effects should be varied.
-
         :returns: pandas dataframe of results
         """
         # Regressions - order of loop matters here
@@ -341,7 +322,6 @@ class SpecificationCurve:
         self, save_path=None, pretty_plots: bool = True, preferred_spec: List[None] = []
     ) -> None:
         """Makes plots of fitted specification curve.
-
         Args:
             save_path (_type_, optional): Exported fig filename. Defaults to None.
             pretty_plots (bool, optional): whether to use this package's figure formatting. Defaults to True.
@@ -496,7 +476,6 @@ class SpecificationCurve:
 
         def return_string():
             """Convenience function to setup default dict.
-
             Returns:
                 str: "subset"
             """
@@ -546,7 +525,6 @@ class SpecificationCurve:
 
 def load_example_data1() -> pd.DataFrame:
     """Retrieves example data from a file included with the package.
-
     Returns:
         pd.DataFrame: Example data suitable for regression.
     """
@@ -563,7 +541,6 @@ def load_example_data1() -> pd.DataFrame:
 
 def load_example_data2() -> pd.DataFrame:
     """Generates fake data.
-
     Returns:
         pd.DataFrame: Example data suitable for regression.
     """
