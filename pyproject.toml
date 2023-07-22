@@ -27,7 +27,7 @@ types-setuptools = "^67.6.0.0"
 
 [tool.poetry.dev-dependencies]
 black = "^23.7.0"
-pre-commit = "^3.3.1"
+pre-commit = "^3.3.3"
 Sphinx = "^4.0.0"
 typeguard = "^3.0.2"
 safety = "^2.3.4"
