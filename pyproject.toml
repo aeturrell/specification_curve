@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "specification_curve"
-version = "0.3.1"
+version = "0.3.2"
 description = "Specification_Curve"
 authors = ["aeturrell <mail@mail.com>"]
 license = "MIT"
