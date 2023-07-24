@@ -20,7 +20,7 @@ Changelog = "https://github.com/aeturrell/specification_curve/releases"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-pandas = "^1.5.1"
+pandas = "^2.0.3"
 statsmodels = "^0.14.0"
 matplotlib = "^3.6.1"
 types-setuptools = ">=67.6,<69.0"
