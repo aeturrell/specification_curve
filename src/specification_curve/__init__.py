@@ -193,7 +193,7 @@ class SpecificationCurve:
             x_exog (str): Exogeneous variables
             reg_vars (List[str]): Controls
         Returns:
-            sm.regression.linear_model.RegressionResults: _description_
+            sm.regression.linear_model.RegressionResults: coefficients from reg
         """
         # NB: get dummies
         # transforms by default any col that is object or cat
@@ -206,6 +206,23 @@ class SpecificationCurve:
         for x in gone_cols:
             if x in reg_vars_here:
                 reg_vars_here.remove(x)
+        # Ensure new cols are int so that statsmodels will run on them.
+        # This is because statsmodels requires all values to be of either int or float dtype.
+        # first get columns series with true or false depending on if not int or float stem to data type
+        non_int_or_float_cols = (
+            ~xf[reg_vars_here]
+            .dtypes.astype("string")
+            .str.split("[1-9][0-9]", regex=True)
+            .str[0]
+            .isin(["int", "float"])
+        )
+        # now take only the trues from
+        cols_to_convert_to_int = list(
+            non_int_or_float_cols[non_int_or_float_cols].index
+        )
+        # convert just these columns to int
+        for col_name in cols_to_convert_to_int:
+            xf[col_name] = xf[col_name].astype(int)
         return self.estimator(xf[y_endog], xf[[x_exog] + reg_vars_here]).fit()
 
     def _compute_combinations(self):
