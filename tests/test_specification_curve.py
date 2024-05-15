@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 """Tests for `specification_curve` package."""
+
 import os
 from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
+import specification_curve as specy
 import statsmodels.api as sm
 from scipy.stats import norm
-
-import specification_curve as specy
 
 
 @patch("matplotlib.pyplot.show")

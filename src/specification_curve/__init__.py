@@ -3,22 +3,15 @@ Specification Curve
 -------------------
 A package that produces specification curve analysis.
 """
+
 import copy
 import itertools
 import os
 import typing
-from collections import Counter
-from collections import defaultdict
+from collections import Counter, defaultdict
 from itertools import combinations
-from math import floor
-from math import log10
-from typing import DefaultDict
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Set
-from typing import Tuple
-from typing import Union
+from math import floor, log10
+from typing import DefaultDict, List, Union
 
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
@@ -27,7 +20,6 @@ import numpy as np
 import pandas as pd
 import pkg_resources
 import statsmodels.api as sm
-
 
 EXAMPLE_FILE = pkg_resources.resource_filename(
     "specification_curve", os.path.join("data", "example_data.csv")
@@ -65,7 +57,7 @@ def _single_list_check_str(X: Union[str, List[str]]) -> List[str]:
     Returns:
         list[str]: List of strings.
     """
-    if type(X) == str:
+    if isinstance(X, str):
         X = [X]
     return X
 
@@ -209,13 +201,9 @@ class SpecificationCurve:
         # Ensure new cols are int so that statsmodels will run on them.
         # This is because statsmodels requires all values to be of either int or float dtype.
         # first get columns series with true or false depending on if not int or float stem to data type
-        non_int_or_float_cols = (
-            ~xf[reg_vars_here]
-            .dtypes.astype("string")
-            .str.split("[1-9][0-9]", regex=True)
-            .str[0]
-            .isin(["int", "float"])
-        )
+        non_int_or_float_cols = ~xf[reg_vars_here].dtypes.astype("string").str.split(
+            "[1-9][0-9]", regex=True
+        ).str[0].isin(["int", "float"])
         # now take only the trues from
         cols_to_convert_to_int = list(
             non_int_or_float_cols[non_int_or_float_cols].index
