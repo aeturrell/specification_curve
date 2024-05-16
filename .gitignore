@@ -1,3 +1,12 @@
+# Quarto and docs
+/docs/.quarto/
+/.quarto/
+.venv/
+docs/reference/*
+docs/_sidebar.yml
+/.luarc.json
+docs/_site/
+
 .DS_Store
 
 # Byte-compiled / optimized / DLL files

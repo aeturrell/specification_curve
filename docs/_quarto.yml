@@ -1,0 +1,45 @@
+project:
+  type: website
+
+website:
+  title: "Specification Curve"
+  favicon: favicon.png
+  twitter-card: true
+  navbar:
+    left:
+      - href: index.ipynb
+        text: Home
+      - href: features.ipynb
+        text: Features
+      - text: "Reference"
+        file: reference/index.qmd
+      - href: contributing.md
+        text: Contributing
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+    toc: true
+
+# tell quarto to read the generated sidebar
+metadata-files:
+  - _sidebar.yml
+
+
+quartodoc:
+  # the name used to import the package you want to create reference docs for
+  package: "specification_curve"
+  parser: google
+
+  # write sidebar data to this file
+  sidebar: _sidebar.yml
+
+  sections:
+    - title: "Functions"
+      contents:
+        - load_example_data1
+        - load_example_data2
+    - title: "Classes"
+      contents:
+        - SpecificationCurve
