@@ -1,774 +1,518 @@
-
-
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<html >
+<title>Specification Curve - Features</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
 
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Features &#8212; Specification Curve</title>
-  
-  
-  
-  <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-  </script>
-  
-  <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./favicon.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
-  
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+<link rel="stylesheet" href="styles.css">
+<meta name="twitter:title" content="Specification Curve - Features">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="features_files/figure-html/cell-3-output-2.svg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'features';</script>
-    <link rel="canonical" href="https://aeturrell.github.io/specification_curve/features.html" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Contributing" href="contributing.html" />
-    <link rel="prev" title="Specification Curve" href="index.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
-  </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+<body class="nav-fixed">
 
-  
-  
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
-<form class="bd-search d-flex align-items-center"
-      action="search.html"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Specification Curve</span>
+    </a>
   </div>
-  
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./features.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Features</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./reference/index.html" rel="" target="">
+ <span class="menu-text">Reference</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./contributing.html" rel="" target="">
+ <span class="menu-text">Contributing</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
     </nav>
-  
-  <div class="bd-container">
-    <div class="bd-container__inner bd-page-width">
-      
-      <div class="bd-sidebar-primary bd-sidebar">
-        
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basic-use" id="toc-basic-use" class="nav-link active" data-scroll-target="#basic-use">Basic Use</a></li>
+  <li><a href="#retrieving-estimates" id="toc-retrieving-estimates" class="nav-link" data-scroll-target="#retrieving-estimates">Retrieving estimates</a></li>
+  <li><a href="#saving-results-to-file" id="toc-saving-results-to-file" class="nav-link" data-scroll-target="#saving-results-to-file">Saving results to file</a></li>
+  <li><a href="#expanding-a-categorical-variable" id="toc-expanding-a-categorical-variable" class="nav-link" data-scroll-target="#expanding-a-categorical-variable">Expanding a categorical variable</a></li>
+  <li><a href="#using-multiple-exogeneous-variables" id="toc-using-multiple-exogeneous-variables" class="nav-link" data-scroll-target="#using-multiple-exogeneous-variables">Using multiple exogeneous variables</a></li>
+  <li><a href="#excluding-some-combinations-of-controls" id="toc-excluding-some-combinations-of-controls" class="nav-link" data-scroll-target="#excluding-some-combinations-of-controls">Excluding some combinations of controls</a></li>
+  <li><a href="#always-include-some-controls-in-all-specifications" id="toc-always-include-some-controls-in-all-specifications" class="nav-link" data-scroll-target="#always-include-some-controls-in-all-specifications">Always include some controls in all specifications</a></li>
+  <li><a href="#flexing-the-style-for-very-large-numbers-of-specifications" id="toc-flexing-the-style-for-very-large-numbers-of-specifications" class="nav-link" data-scroll-target="#flexing-the-style-for-very-large-numbers-of-specifications">Flexing the style for very large numbers of specifications</a></li>
+  <li><a href="#flagging-a-preferred-specification" id="toc-flagging-a-preferred-specification" class="nav-link" data-scroll-target="#flagging-a-preferred-specification">Flagging a preferred specification</a></li>
+  <li><a href="#using-models-other-than-ordinary-least-squares" id="toc-using-models-other-than-ordinary-least-squares" class="nav-link" data-scroll-target="#using-models-other-than-ordinary-least-squares">Using models other than Ordinary Least Squares</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Features</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
   
-  <div class="sidebar-header-items sidebar-primary__section">
-    
-    
-    
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-  
 
-<a class="navbar-brand logo" href="index.html">
-  
-  
-  
-  
-  
-    <p class="title logo__title">Specification Curve</p>
-  
-</a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
-</ul>
+</header>
 
-    </div>
-</nav></div>
-    </div>
-  
-  
-  <div class="sidebar-primary-items__end sidebar-primary__section">
-  </div>
-  
-  <div id="rtd-footer-container"></div>
-
-
-      </div>
-      
-      <main id="main-content" class="bd-main">
-        
-        
-
-<div class="sbt-scroll-pixel-helper"></div>
-
-          <div class="bd-content">
-            <div class="bd-article-container">
-              
-              <div class="bd-header-article">
-<div class="header-article-items header-article__inner">
-  
-    <div class="header-article-items__start">
-      
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <span class="fa-solid fa-bars"></span>
-</label></div>
-      
-    </div>
-  
-  
-    <div class="header-article-items__end">
-      
-        <div class="header-article-item">
-
-<div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-launch-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
-    <i class="fas fa-rocket"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://colab.research.google.com/github/aeturrell/specification_curve/blob/master/docs/features.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch onColab"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  
-    <img src="_static/images/logo_colab.png">
-  </span>
-<span class="btn__text-container">Colab</span>
-</a>
-</li>
-      
-  </ul>
-</div>
-
-
-
-
-
-
-<div class="dropdown dropdown-source-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
-    <i class="fab fa-github"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://github.com/aeturrell/specification_curve" target="_blank"
-   class="btn btn-sm btn-source-repository-button dropdown-item"
-   title="Source repository"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="btn__text-container">Repository</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li><a href="https://github.com/aeturrell/specification_curve/issues/new?title=Issue%20on%20page%20%2Ffeatures.html&body=Your%20issue%20content%20here." target="_blank"
-   class="btn btn-sm btn-source-issues-button dropdown-item"
-   title="Open an issue"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="btn__text-container">Open issue</span>
-</a>
-</li>
-      
-  </ul>
-</div>
-
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="_sources/features.ipynb" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.ipynb</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
-
-
-
-<button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
-  title="Fullscreen mode"
-  data-bs-placement="bottom" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-
-
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script>
-
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
-</div></div>
-      
-    </div>
-  
-</div>
-</div>
-              
-              
-
-<div id="jb-print-docs-body" class="onlyprint">
-    <h1>Features</h1>
-    <!-- Table of contents -->
-    <div id="print-main-content">
-        <div id="jb-print-toc">
-            
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-use">Basic Use</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-estimates">Retrieving estimates</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-results-to-file">Saving results to file</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-a-categorical-variable">Expanding a categorical variable</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-multiple-exogeneous-variables">Using multiple exogeneous variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#excluding-some-combinations-of-controls">Excluding some combinations of controls</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#always-include-some-controls-in-all-specifications">Always include some controls in all specifications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flexing-the-style-for-very-large-numbers-of-specifications">Flexing the style for very large numbers of specifications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flagging-a-preferred-specification">Flagging a preferred specification</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-models-other-than-ordinary-least-squares">Using models other than Ordinary Least Squares</a></li>
-</ul>
-            </nav>
-        </div>
-    </div>
-</div>
-
-              
-                
-<div id="searchbox"></div>
-                <article class="bd-article" role="main">
-                  
-  <section class="tex2jax_ignore mathjax_ignore" id="features">
-<h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">#</a></h1>
 <p>Let’s see some of <strong>Specification Curve</strong>’s features in action.</p>
-<div class="cell tag_remove-input docutils container">
-</div>
-<section id="basic-use">
-<h2>Basic Use<a class="headerlink" href="#basic-use" title="Permalink to this headline">#</a></h2>
-<p>Here’s an example of using <strong>Specification Curve</strong>. Note that, in the below, we can pass strings or lists of string into the arguments of the class <code class="docutils literal notranslate"><span class="pre">SpecificationCurve</span></code>. The programme then automatically performs all of possible regressions of endogeneous variables on exogeneous variables and controls. The estimate that is picked out is the coefficient on the given combination of endogeneous and exogenous variables (with conditioning on the given controls).</p>
+<section id="basic-use" class="level2">
+<h2 class="anchored" data-anchor-id="basic-use">Basic Use</h2>
+<p>Here’s an example of using <strong>Specification Curve</strong>. Note that, in the below, we can pass strings or lists of string into the arguments of the class <code>SpecificationCurve</code>. The programme then automatically performs all of possible regressions of endogeneous variables on exogeneous variables and controls. The estimate that is picked out is the coefficient on the given combination of endogeneous and exogenous variables (with conditioning on the given controls).</p>
 <p>If a control variable is categorical, rather than continuous, it will be treated as a fixed effect.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">specification_curve</span> <span class="k">as</span> <span class="nn">specy</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">load_example_data1</span><span class="p">()</span>
-<span class="n">y_endog</span> <span class="o">=</span> <span class="s1">&#39;y1&#39;</span>  <span class="c1"># endogeneous variable</span>
-<span class="n">x_exog</span> <span class="o">=</span> <span class="s1">&#39;x1&#39;</span>  <span class="c1"># exogeneous variable</span>
-<span class="n">controls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">,</span> <span class="s1">&#39;group1&#39;</span><span class="p">,</span> <span class="s1">&#39;group2&#39;</span><span class="p">]</span>
-<span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">,</span>
-    <span class="n">y_endog</span><span class="p">,</span>
-    <span class="n">x_exog</span><span class="p">,</span>
-    <span class="n">controls</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> specification_curve <span class="im">as</span> specy</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> specy.load_example_data1()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span>  <span class="co"># endogeneous variable</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span>  <span class="co"># exogeneous variable</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    y_endog,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    x_exog,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    controls,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit complete</code></pre>
 </div>
+<div class="cell-output cell-output-display">
+<p><img src="features_files/figure-html/cell-3-output-2.svg" class="img-fluid"></p>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit complete
-</pre></div>
-</div>
-<img alt="_images/0b48d0df722f455d67bfff3d83b8616139e45e1531250f93e6bc91526fbb387d.svg" src="_images/0b48d0df722f455d67bfff3d83b8616139e45e1531250f93e6bc91526fbb387d.svg" /></div>
 </div>
 <p>Grey squares (black lines when there are many specifications) show whether a variable is included in a specification or not. Blue or red markers and error bars show whether the coefficient is positive and significant (at the 0.05 level) or red and significant, respectively.</p>
 </section>
-<section id="retrieving-estimates">
-<h2>Retrieving estimates<a class="headerlink" href="#retrieving-estimates" title="Permalink to this headline">#</a></h2>
+<section id="retrieving-estimates" class="level2">
+<h2 class="anchored" data-anchor-id="retrieving-estimates">Retrieving estimates</h2>
 <p>You can retrieve the estimates from the data frame:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">,</span> <span class="n">x_exog</span><span class="p">,</span> <span class="n">controls</span><span class="p">)</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">df_r</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sc.df_r.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit complete</code></pre>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit complete
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>x_exog</th>
-      <th>y_endog</th>
-      <th>Results</th>
-      <th>Coefficient</th>
-      <th>Specification</th>
-      <th>bse</th>
-      <th>conf_int</th>
-      <th>pvalues</th>
-      <th>SpecificationCounts</th>
-    </tr>
-    <tr>
-      <th>Specification No.</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>x1</td>
-      <td>y1</td>
-      <td>&lt;statsmodels.regression.linear_model.Regressio...</td>
-      <td>6.205962</td>
-      <td>[c1, c2, x1, y1]</td>
-      <td>0.385317</td>
-      <td>[5.4488963405666295, 6.963027714134417]</td>
-      <td>{'x1': 3.357166814263384e-47, 'c1': 4.04817525...</td>
-      <td>{'c1': 1, 'c2': 1, 'x1': 1, 'y1': 1}</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>x1</td>
-      <td>y1</td>
-      <td>&lt;statsmodels.regression.linear_model.Regressio...</td>
-      <td>6.205962</td>
-      <td>[c1, c2, group1, x1, y1]</td>
-      <td>0.385317</td>
-      <td>[5.4488963405666295, 6.963027714134417]</td>
-      <td>{'x1': 3.357166814263384e-47, 'c1': 4.04817525...</td>
-      <td>{'c1': 1, 'c2': 1, 'group1': 1, 'x1': 1, 'y1': 1}</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>x1</td>
-      <td>y1</td>
-      <td>&lt;statsmodels.regression.linear_model.Regressio...</td>
-      <td>6.205962</td>
-      <td>[c1, c2, group2, x1, y1]</td>
-      <td>0.385317</td>
-      <td>[5.4488963405666295, 6.963027714134417]</td>
-      <td>{'x1': 3.357166814263384e-47, 'c1': 4.04817525...</td>
-      <td>{'c1': 1, 'c2': 1, 'group2': 1, 'x1': 1, 'y1': 1}</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>x1</td>
-      <td>y1</td>
-      <td>&lt;statsmodels.regression.linear_model.Regressio...</td>
-      <td>6.205962</td>
-      <td>[c1, c2, group1, group2, x1, y1]</td>
-      <td>0.385317</td>
-      <td>[5.4488963405666295, 6.963027714134417]</td>
-      <td>{'x1': 3.357166814263384e-47, 'c1': 4.04817525...</td>
-      <td>{'c1': 1, 'c2': 1, 'group1': 1, 'group2': 1, '...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>x1</td>
-      <td>y1</td>
-      <td>&lt;statsmodels.regression.linear_model.Regressio...</td>
-      <td>6.492386</td>
-      <td>[c1, x1, y1]</td>
-      <td>0.592879</td>
-      <td>[5.327511339458265, 7.657260911796474]</td>
-      <td>{'x1': 3.922713328081366e-25, 'c1': 2.18937700...</td>
-      <td>{'c1': 1, 'x1': 1, 'y1': 1}</td>
-    </tr>
-  </tbody>
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">x_exog</th>
+<th data-quarto-table-cell-role="th">y_endog</th>
+<th data-quarto-table-cell-role="th">Results</th>
+<th data-quarto-table-cell-role="th">Coefficient</th>
+<th data-quarto-table-cell-role="th">Specification</th>
+<th data-quarto-table-cell-role="th">bse</th>
+<th data-quarto-table-cell-role="th">conf_int</th>
+<th data-quarto-table-cell-role="th">pvalues</th>
+<th data-quarto-table-cell-role="th">SpecificationCounts</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Specification No.</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>x1</td>
+<td>y1</td>
+<td>&lt;statsmodels.regression.linear_model.Regressio...</td>
+<td>6.205962</td>
+<td>[c1, c2, x1, y1]</td>
+<td>0.385317</td>
+<td>[5.448896340566625, 6.963027714134414]</td>
+<td>{'x1': 3.357166814264534e-47, 'c1': 4.04817525...</td>
+<td>{'c1': 1, 'c2': 1, 'x1': 1, 'y1': 1}</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>x1</td>
+<td>y1</td>
+<td>&lt;statsmodels.regression.linear_model.Regressio...</td>
+<td>6.205962</td>
+<td>[c1, c2, group1, x1, y1]</td>
+<td>0.385317</td>
+<td>[5.448896340566625, 6.963027714134414]</td>
+<td>{'x1': 3.357166814264534e-47, 'c1': 4.04817525...</td>
+<td>{'c1': 1, 'c2': 1, 'group1': 1, 'x1': 1, 'y1': 1}</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>x1</td>
+<td>y1</td>
+<td>&lt;statsmodels.regression.linear_model.Regressio...</td>
+<td>6.205962</td>
+<td>[c1, c2, group2, x1, y1]</td>
+<td>0.385317</td>
+<td>[5.448896340566625, 6.963027714134414]</td>
+<td>{'x1': 3.357166814264534e-47, 'c1': 4.04817525...</td>
+<td>{'c1': 1, 'c2': 1, 'group2': 1, 'x1': 1, 'y1': 1}</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>x1</td>
+<td>y1</td>
+<td>&lt;statsmodels.regression.linear_model.Regressio...</td>
+<td>6.205962</td>
+<td>[c1, c2, group1, group2, x1, y1]</td>
+<td>0.385317</td>
+<td>[5.448896340566625, 6.963027714134414]</td>
+<td>{'x1': 3.357166814264534e-47, 'c1': 4.04817525...</td>
+<td>{'c1': 1, 'c2': 1, 'group1': 1, 'group2': 1, '...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>x1</td>
+<td>y1</td>
+<td>&lt;statsmodels.regression.linear_model.Regressio...</td>
+<td>6.492386</td>
+<td>[c1, x1, y1]</td>
+<td>0.592879</td>
+<td>[5.327511339458264, 7.657260911796476]</td>
+<td>{'x1': 3.922713328081985e-25, 'c1': 2.18937700...</td>
+<td>{'c1': 1, 'x1': 1, 'y1': 1}</td>
+</tr>
+</tbody>
 </table>
-</div></div></div>
-</div>
-</section>
-<section id="saving-results-to-file">
-<h2>Saving results to file<a class="headerlink" href="#saving-results-to-file" title="Permalink to this headline">#</a></h2>
-<p>Save the plot to file (the format is inferred from file extension):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">,</span> <span class="n">x_exog</span><span class="p">,</span> <span class="n">controls</span><span class="p">,</span>
-                                  <span class="n">cat_expand</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;group1&#39;</span><span class="p">])</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s1">&#39;test_fig.pdf&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="expanding-a-categorical-variable">
-<h2>Expanding a categorical variable<a class="headerlink" href="#expanding-a-categorical-variable" title="Permalink to this headline">#</a></h2>
-<p>Should you need to, you can expand a categorical variable into its different elements and run those separately. In the example below, the <code class="docutils literal notranslate"><span class="pre">&quot;group2&quot;</span></code> categorical variable is expanded like this.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_endog</span> <span class="o">=</span> <span class="s1">&#39;y1&#39;</span>  <span class="c1"># endogeneous variable</span>
-<span class="n">x_exog</span> <span class="o">=</span> <span class="s1">&#39;x1&#39;</span>  <span class="c1"># exogeneous variable</span>
-<span class="n">controls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">,</span> <span class="s1">&#39;group1&#39;</span><span class="p">,</span> <span class="s1">&#39;group2&#39;</span><span class="p">]</span>
-<span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">,</span>
-    <span class="n">y_endog</span><span class="p">,</span>
-    <span class="n">x_exog</span><span class="p">,</span>
-    <span class="n">controls</span><span class="p">,</span>
-    <span class="n">cat_expand</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;group2&#39;</span><span class="p">]</span>  <span class="c1"># have each fixed effect run separately</span>
-    <span class="p">)</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit complete
-</pre></div>
-</div>
-<img alt="_images/084ee60e0de06f6c59129aa4e16637f655a33cb9cc3d097476378ab69bc85b85.svg" src="_images/084ee60e0de06f6c59129aa4e16637f655a33cb9cc3d097476378ab69bc85b85.svg" /></div>
-</div>
-</section>
-<section id="using-multiple-exogeneous-variables">
-<h2>Using multiple exogeneous variables<a class="headerlink" href="#using-multiple-exogeneous-variables" title="Permalink to this headline">#</a></h2>
-<p>Sometimes, you’d like to check different independent variables (and the coefficients they come with following a regression). This is achieved by passing a list to the exogeneous argument of <code class="docutils literal notranslate"><span class="pre">SpecificationCurve</span></code>. These variations on the independent variables are labelled by <code class="docutils literal notranslate"><span class="pre">x</span></code> in the plot.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">load_example_data1</span><span class="p">()</span>
-<span class="n">x_exog</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
-<span class="n">y_endog</span> <span class="o">=</span> <span class="s1">&#39;y1&#39;</span>
-<span class="n">controls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">,</span> <span class="s1">&#39;group1&#39;</span><span class="p">,</span> <span class="s1">&#39;group2&#39;</span><span class="p">]</span>
-<span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">,</span> <span class="n">x_exog</span><span class="p">,</span> <span class="n">controls</span><span class="p">)</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit complete
-</pre></div>
-</div>
-<img alt="_images/0cc0516648b296a6fd2f7e3e3b725f9f2e8294340fe6e6e3b1c5b91756f12e3a.svg" src="_images/0cc0516648b296a6fd2f7e3e3b725f9f2e8294340fe6e6e3b1c5b91756f12e3a.svg" /></div>
-</div>
-</section>
-<section id="excluding-some-combinations-of-controls">
-<h2>Excluding some combinations of controls<a class="headerlink" href="#excluding-some-combinations-of-controls" title="Permalink to this headline">#</a></h2>
-<p>Some controls may be redundant, and you might want to exclude them both being used together. The <code class="docutils literal notranslate"><span class="pre">exclu_grps</span></code> keyword argument achieves this.</p>
-<p>In the below example, <code class="docutils literal notranslate"><span class="pre">&quot;c1&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;c2&quot;</span></code> are never run in the same specification.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">load_example_data1</span><span class="p">()</span>
 
-<span class="n">y_endog</span> <span class="o">=</span> <span class="s1">&#39;y1&#39;</span>
-<span class="n">x_exog</span> <span class="o">=</span> <span class="s1">&#39;x1&#39;</span>
-<span class="n">controls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">,</span> <span class="s1">&#39;group1&#39;</span><span class="p">,</span> <span class="s1">&#39;group2&#39;</span><span class="p">]</span>
-<span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">,</span> <span class="n">x_exog</span><span class="p">,</span> <span class="n">controls</span><span class="p">,</span>
-                                  <span class="n">exclu_grps</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">]])</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit complete
-</pre></div>
-</div>
-<img alt="_images/cb8f2e59fc927efbbb172e8de7ffec75469ed12670563b7bc673382c9cb7c040.svg" src="_images/cb8f2e59fc927efbbb172e8de7ffec75469ed12670563b7bc673382c9cb7c040.svg" /></div>
 </div>
 </section>
-<section id="always-include-some-controls-in-all-specifications">
-<h2>Always include some controls in all specifications<a class="headerlink" href="#always-include-some-controls-in-all-specifications" title="Permalink to this headline">#</a></h2>
-<p>Likewise, there will be times when you always wish to include a particular control in specifications, and to show this on the plot. The <code class="docutils literal notranslate"><span class="pre">always_include=</span></code> keyword argument helps you to achieve this.</p>
-<p>In the example below, we ask that <code class="docutils literal notranslate"><span class="pre">&quot;c1&quot;</span></code> is included in every specification.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">load_example_data1</span><span class="p">()</span>
-<span class="n">x_exog</span> <span class="o">=</span> <span class="s1">&#39;x1&#39;</span>
-<span class="n">y_endog</span> <span class="o">=</span> <span class="s1">&#39;y1&#39;</span>
-<span class="n">controls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c2&#39;</span><span class="p">,</span> <span class="s1">&#39;group1&#39;</span><span class="p">,</span> <span class="s1">&#39;group2&#39;</span><span class="p">]</span>
-<span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">,</span> <span class="n">x_exog</span><span class="p">,</span> <span class="n">controls</span><span class="p">,</span>
-                                <span class="n">always_include</span><span class="o">=</span><span class="s1">&#39;c1&#39;</span><span class="p">)</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
+<section id="saving-results-to-file" class="level2">
+<h2 class="anchored" data-anchor-id="saving-results-to-file">Saving results to file</h2>
+<p>Save the plot to file (the format is inferred from file extension):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                                  cat_expand<span class="op">=</span>[<span class="st">'group1'</span>])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>sc.plot(save_path<span class="op">=</span><span class="st">'test_fig.pdf'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="expanding-a-categorical-variable" class="level2">
+<h2 class="anchored" data-anchor-id="expanding-a-categorical-variable">Expanding a categorical variable</h2>
+<p>Should you need to, you can expand a categorical variable into its different elements and run those separately. In the example below, the <code>"group2"</code> categorical variable is expanded like this.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span>  <span class="co"># endogeneous variable</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span>  <span class="co"># exogeneous variable</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    y_endog,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    x_exog,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    controls,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    cat_expand<span class="op">=</span>[<span class="st">"group2"</span>],  <span class="co"># have each fixed effect run separately</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit complete</code></pre>
 </div>
+<div class="cell-output cell-output-display">
+<p><img src="features_files/figure-html/cell-5-output-2.svg" class="img-fluid"></p>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit complete
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<img alt="_images/a18806ad6df13bf0804b9f8adcd005362ecf6492eafdb4a84d6b1e4a4764e42c.svg" src="_images/a18806ad6df13bf0804b9f8adcd005362ecf6492eafdb4a84d6b1e4a4764e42c.svg" /></div>
 </div>
 </section>
-<section id="flexing-the-style-for-very-large-numbers-of-specifications">
-<h2>Flexing the style for very large numbers of specifications<a class="headerlink" href="#flexing-the-style-for-very-large-numbers-of-specifications" title="Permalink to this headline">#</a></h2>
+<section id="using-multiple-exogeneous-variables" class="level2">
+<h2 class="anchored" data-anchor-id="using-multiple-exogeneous-variables">Using multiple exogeneous variables</h2>
+<p>Sometimes, you’d like to check different independent variables (and the coefficients they come with following a regression). This is achieved by passing a list to the exogeneous argument of <code>SpecificationCurve</code>. These variations on the independent variables are labelled by <code>x</code> in the plot.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> specy.load_example_data1()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> [<span class="st">"x1"</span>, <span class="st">"x2"</span>]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit complete</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="features_files/figure-html/cell-6-output-2.svg" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="excluding-some-combinations-of-controls" class="level2">
+<h2 class="anchored" data-anchor-id="excluding-some-combinations-of-controls">Excluding some combinations of controls</h2>
+<p>Some controls may be redundant, and you might want to exclude them both being used together. The <code>exclu_grps</code> keyword argument achieves this.</p>
+<p>In the below example, <code>"c1"</code> and <code>"c2"</code> are never run in the same specification.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> specy.load_example_data1()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls, exclu_grps<span class="op">=</span>[[<span class="st">"c1"</span>, <span class="st">"c2"</span>]])</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit complete</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="features_files/figure-html/cell-7-output-2.svg" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="always-include-some-controls-in-all-specifications" class="level2">
+<h2 class="anchored" data-anchor-id="always-include-some-controls-in-all-specifications">Always include some controls in all specifications</h2>
+<p>Likewise, there will be times when you always wish to include a particular control in specifications, and to show this on the plot. The <code>always_include=</code> keyword argument helps you to achieve this.</p>
+<p>In the example below, we ask that <code>"c1"</code> is included in every specification.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> specy.load_example_data1()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls, always_include<span class="op">=</span><span class="st">"c1"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit complete</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="features_files/figure-html/cell-8-output-2.svg" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="flexing-the-style-for-very-large-numbers-of-specifications" class="level2">
+<h2 class="anchored" data-anchor-id="flexing-the-style-for-very-large-numbers-of-specifications">Flexing the style for very large numbers of specifications</h2>
 <p>The default plot type isn’t suitable for very large numbers of specifications, but it does automatically switch to a style suited to a large number of specifications.</p>
 <p>Here’s an example</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="c1"># Set seed for random numbers</span>
-<span class="n">seed_for_prng</span> <span class="o">=</span> <span class="mi">78557</span>
-<span class="c1"># prng=probabilistic random number generator</span>
-<span class="n">prng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed_for_prng</span><span class="p">)</span>  
-</pre></div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for random numbers</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>seed_for_prng <span class="op">=</span> <span class="dv">78557</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># prng=probabilistic random number generator</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>prng <span class="op">=</span> np.random.default_rng(seed_for_prng)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate some fake data</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">400</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of dimensions of continuous</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>n_dim <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>c_rnd_vars <span class="op">=</span> prng.random(size<span class="op">=</span>(n_dim, n_samples))</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>c_rnd_vars_names <span class="op">=</span> [<span class="ss">f"c_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(np.shape(c_rnd_vars)[<span class="dv">0</span>])]</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>y_1 <span class="op">=</span> (</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.4</span> <span class="op">*</span> c_rnd_vars[<span class="dv">0</span>, :]  <span class="co"># This is the true value of the coefficient</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> <span class="fl">0.2</span> <span class="op">*</span> c_rnd_vars[<span class="dv">1</span>, :]</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> prng.standard_normal(n_samples)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Next line causes y_2 ests to be much more noisy</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>y_2 <span class="op">=</span> y_1 <span class="op">-</span> <span class="fl">0.3</span> <span class="op">*</span> np.<span class="bu">abs</span>(prng.standard_normal(n_samples))</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame([y_1, y_2], [<span class="st">"y1"</span>, <span class="st">"y2"</span>]).T</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, col_name <span class="kw">in</span> <span class="bu">enumerate</span>(c_rnd_vars_names):</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    df[col_name] <span class="op">=</span> c_rnd_vars[i, :]</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> c_rnd_vars_names[<span class="dv">1</span>:]</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Run it with Specification Curve</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, [<span class="st">"y1"</span>, <span class="st">"y2"</span>], c_rnd_vars_names[<span class="dv">0</span>], controls)</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit complete</code></pre>
 </div>
+<div class="cell-output cell-output-display">
+<p><img src="features_files/figure-html/cell-10-output-2.svg" class="img-fluid"></p>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate some fake data</span>
-
-<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">400</span>
-<span class="c1"># Number of dimensions of continuous</span>
-<span class="n">n_dim</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="n">c_rnd_vars</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_dim</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">))</span>
-<span class="n">c_rnd_vars_names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;c_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">c_rnd_vars</span><span class="p">)[</span><span class="mi">0</span><span class="p">])]</span>
-<span class="n">y_1</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.4</span><span class="o">*</span><span class="n">c_rnd_vars</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span>  <span class="c1"># This is the true value of the coefficient</span>
-       <span class="mf">0.2</span><span class="o">*</span><span class="n">c_rnd_vars</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span>
-       <span class="mf">0.3</span><span class="o">*</span><span class="n">prng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">n_samples</span><span class="p">))</span>
-<span class="c1"># Next line causes y_2 ests to be much more noisy</span>
-<span class="n">y_2</span> <span class="o">=</span> <span class="n">y_1</span> <span class="o">-</span> <span class="mf">0.3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">n_samples</span><span class="p">))</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">y_1</span><span class="p">,</span> <span class="n">y_2</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">c_rnd_vars_names</span><span class="p">):</span>
-    <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_rnd_vars</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
-
-<span class="n">controls</span> <span class="o">=</span> <span class="n">c_rnd_vars_names</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-
-<span class="c1"># Run it with Specification Curve</span>
-<span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span> <span class="n">c_rnd_vars_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                              <span class="n">controls</span><span class="p">)</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit complete
-</pre></div>
-</div>
-<img alt="_images/8a2e997c370a16d3844a2d1c78868fbcf4e5c1c5440b5dcdb9b4d8e7a5d28333.svg" src="_images/8a2e997c370a16d3844a2d1c78868fbcf4e5c1c5440b5dcdb9b4d8e7a5d28333.svg" /></div>
 </div>
 </section>
-<section id="flagging-a-preferred-specification">
-<h2>Flagging a preferred specification<a class="headerlink" href="#flagging-a-preferred-specification" title="Permalink to this headline">#</a></h2>
+<section id="flagging-a-preferred-specification" class="level2">
+<h2 class="anchored" data-anchor-id="flagging-a-preferred-specification">Flagging a preferred specification</h2>
 <p>Often, in practice, you will have a <em>preferred</em> specification that you will use as your estimate. You can specify this and have it be flagged.</p>
-<p>You can achieve this by passing a list of variables that you’d like to be used in your preferred specification via the <code class="docutils literal notranslate"><span class="pre">preferred_spec</span></code> keyword argument.</p>
+<p>You can achieve this by passing a list of variables that you’d like to be used in your preferred specification via the <code>preferred_spec</code> keyword argument.</p>
 <p>In the example below, the preferred specification comes out as being close to the known answer that we constructed.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span> <span class="n">c_rnd_vars_names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                              <span class="n">controls</span><span class="p">)</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">preferred_spec</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="n">c_rnd_vars_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">controls</span><span class="p">)</span>
-</pre></div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, [<span class="st">"y1"</span>, <span class="st">"y2"</span>], c_rnd_vars_names[<span class="dv">0</span>], controls)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>sc.plot(preferred_spec<span class="op">=</span>[<span class="st">"y1"</span>, c_rnd_vars_names[<span class="dv">0</span>]] <span class="op">+</span> controls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fit complete</code></pre>
 </div>
+<div class="cell-output cell-output-display">
+<p><img src="features_files/figure-html/cell-11-output-2.svg" class="img-fluid"></p>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fit complete
-</pre></div>
-</div>
-<img alt="_images/3c4bf815e95b9434263c679af250afa0763b2d5f9b5ea55ac455035d9a332f7e.svg" src="_images/3c4bf815e95b9434263c679af250afa0763b2d5f9b5ea55ac455035d9a332f7e.svg" /></div>
 </div>
 </section>
-<section id="using-models-other-than-ordinary-least-squares">
-<h2>Using models other than Ordinary Least Squares<a class="headerlink" href="#using-models-other-than-ordinary-least-squares" title="Permalink to this headline">#</a></h2>
+<section id="using-models-other-than-ordinary-least-squares" class="level2">
+<h2 class="anchored" data-anchor-id="using-models-other-than-ordinary-least-squares">Using models other than Ordinary Least Squares</h2>
 <p>The default model is OLS, but you can pass through other models too.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
-
-<span class="c1"># generate some fake data</span>
-<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="n">x_2</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
-<span class="n">x_1</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
-<span class="n">x_3</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
-<span class="n">x_4</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
-<span class="n">x_5</span> <span class="o">=</span> <span class="n">x_1</span> <span class="o">+</span> <span class="mf">0.05</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
-<span class="n">x_beta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="mf">3.5</span><span class="o">*</span><span class="n">x_1</span> <span class="o">+</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">x_2</span> <span class="o">+</span> <span class="mf">0.3</span><span class="o">*</span><span class="n">x_3</span>  <span class="c1"># NB: coefficient is -3.5</span>
-<span class="n">prob</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x_beta</span><span class="p">))</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">prob</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
-<span class="n">y2</span> <span class="o">=</span> <span class="n">prng</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">prob</span><span class="o">*</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">x_1</span><span class="p">,</span> <span class="n">x_2</span><span class="p">,</span> <span class="n">x_3</span><span class="p">,</span> <span class="n">x_4</span><span class="p">,</span> <span class="n">x_5</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y2</span><span class="p">],</span>
-                  <span class="p">[</span><span class="s1">&#39;x_1&#39;</span><span class="p">,</span> <span class="s1">&#39;x_2&#39;</span><span class="p">,</span> <span class="s1">&#39;x_3&#39;</span><span class="p">,</span> <span class="s1">&#39;x_4&#39;</span><span class="p">,</span> <span class="s1">&#39;x_5&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
-
-
-<span class="c1"># Specify the regressions to run </span>
-<span class="n">y_endog</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">]</span>
-<span class="n">x_exog</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x_1&#39;</span><span class="p">,</span> <span class="s1">&#39;x_5&#39;</span><span class="p">]</span>
-<span class="n">controls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x_3&#39;</span><span class="p">,</span> <span class="s1">&#39;x_2&#39;</span><span class="p">,</span> <span class="s1">&#39;x_4&#39;</span><span class="p">]</span>
-<span class="n">sc</span> <span class="o">=</span> <span class="n">specy</span><span class="o">.</span><span class="n">SpecificationCurve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y_endog</span><span class="p">,</span> <span class="n">x_exog</span><span class="p">,</span> <span class="n">controls</span><span class="p">)</span>
-<span class="c1"># Fit using the logit estimator</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">Logit</span><span class="p">)</span>  <span class="c1"># sm.Probit also works</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># generate some fake data</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>x_2 <span class="op">=</span> prng.integers(<span class="dv">2</span>, size<span class="op">=</span>n_samples)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>x_1 <span class="op">=</span> prng.random(size<span class="op">=</span>n_samples)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>x_3 <span class="op">=</span> prng.integers(<span class="dv">3</span>, size<span class="op">=</span>n_samples)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>x_4 <span class="op">=</span> prng.random(size<span class="op">=</span>n_samples)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>x_5 <span class="op">=</span> x_1 <span class="op">+</span> <span class="fl">0.05</span> <span class="op">*</span> np.random.randn(n_samples)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>x_beta <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">-</span> <span class="fl">3.5</span> <span class="op">*</span> x_1 <span class="op">+</span> <span class="fl">0.2</span> <span class="op">*</span> x_2 <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> x_3  <span class="co"># NB: coefficient is -3.5</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>x_beta))</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> prng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>prob, size<span class="op">=</span>n_samples)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> prng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>prob <span class="op">*</span> <span class="fl">0.98</span>, size<span class="op">=</span>n_samples)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    [x_1, x_2, x_3, x_4, x_5, y, y2], [<span class="st">"x_1"</span>, <span class="st">"x_2"</span>, <span class="st">"x_3"</span>, <span class="st">"x_4"</span>, <span class="st">"x_5"</span>, <span class="st">"y"</span>, <span class="st">"y2"</span>]</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>).T</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the regressions to run</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> [<span class="st">"y"</span>, <span class="st">"y2"</span>]</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> [<span class="st">"x_1"</span>, <span class="st">"x_5"</span>]</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"x_3"</span>, <span class="st">"x_2"</span>, <span class="st">"x_4"</span>]</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit using the logit estimator</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>sc.fit(estimator<span class="op">=</span>sm.Logit)  <span class="co"># sm.Probit also works</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimization terminated successfully.
          Current function value: 0.325863
          Iterations 7
 Optimization terminated successfully.
@@ -793,28 +537,28 @@ Optimization terminated successfully.
          Current function value: 0.317330
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.329434
+         Current function value: 0.332526
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.328824
+         Current function value: 0.332235
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.329414
+         Current function value: 0.332497
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.325104
+         Current function value: 0.327306
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.328641
+         Current function value: 0.332093
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.320892
+         Current function value: 0.323578
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.324550
+         Current function value: 0.326640
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.320768
+         Current function value: 0.323385
          Iterations 7
 Optimization terminated successfully.
          Current function value: 0.345222
@@ -841,159 +585,275 @@ Optimization terminated successfully.
          Current function value: 0.338721
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.346726
+         Current function value: 0.349988
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.346346
+         Current function value: 0.349287
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.340231
+         Current function value: 0.343349
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.344392
+         Current function value: 0.346967
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.340175
+         Current function value: 0.343348
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.344377
+         Current function value: 0.346967
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.339877
+         Current function value: 0.342701
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.339600
+         Current function value: 0.342536
          Iterations 7
-Fit complete
-</pre></div>
+Fit complete</code></pre>
 </div>
-<img alt="_images/facb7811844c2dd2a7f039e79023f81b7b4fd5c5a3c01b84acbd956a5fe07a32.svg" src="_images/facb7811844c2dd2a7f039e79023f81b7b4fd5c5a3c01b84acbd956a5fe07a32.svg" /></div>
+<div class="cell-output cell-output-display">
+<p><img src="features_files/figure-html/cell-12-output-2.svg" class="img-fluid"></p>
 </div>
-</section>
+</div>
+
+
 </section>
 
-    <script type="text/x-thebe-config">
-    {
-        requestKernel: true,
-        binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
-            ref: "master",
-        },
-        codeMirrorConfig: {
-            theme: "abcdef",
-            mode: "python"
-        },
-        kernelOptions: {
-            name: "python3",
-            path: "./."
-        },
-        predefinedOutput: true
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
     }
-    </script>
-    <script>kernelName = 'python3'</script>
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
 
-                </article>
-              
 
-              
-              
-                <footer class="bd-footer-article">
-                  <!-- Previous / next buttons -->
-<div class="prev-next-area">
-    <a class="left-prev"
-       href="index.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Specification Curve</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="contributing.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Contributing</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
-</div>
-                </footer>
-              
-            </div>
-            
-            
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-use">Basic Use</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-estimates">Retrieving estimates</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-results-to-file">Saving results to file</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expanding-a-categorical-variable">Expanding a categorical variable</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-multiple-exogeneous-variables">Using multiple exogeneous variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#excluding-some-combinations-of-controls">Excluding some combinations of controls</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#always-include-some-controls-in-all-specifications">Always include some controls in all specifications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flexing-the-style-for-very-large-numbers-of-specifications">Flexing the style for very large numbers of specifications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flagging-a-preferred-specification">Flagging a preferred specification</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-models-other-than-ordinary-least-squares">Using models other than Ordinary Least Squares</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
-            
-          </div>
-          <footer class="bd-footer-content">
-            <div class="bd-footer-content__inner">
-<div class="bd-footer-content__inner container">
-  
-  <div class="footer-item">
-    
-<p class="component-author">
-By Arthur Turrell
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  <p class="copyright">
-    
-      © Copyright 2022.
-      <br/>
-    
-  </p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-</div></div>
-          </footer>
-        
-
-      </main>
-    </div>
-  </div>
-  
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
-
-  <footer class="bd-footer">
-  </footer>
-  </body>
-</html>
+</body></html>
