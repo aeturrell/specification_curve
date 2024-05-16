@@ -23,14 +23,14 @@ import statsmodels.api as sm
 from typeguard import typeguard_ignore
 
 
-def _round_to_1(x: float) -> float:
-    """Rounds numbers to 1 s.f.
+def _round_to_2(x: float) -> float:
+    """Rounds numbers to 2 s.f.
     Args:
         x (float): input number
     Returns:
         float: number rounded
     """
-    return round(x, -int(floor(log10(abs(x)))) + 1)
+    return round(x, -int(floor(log10(abs(x)))) + 2)
 
 
 @typing.no_type_check
@@ -339,8 +339,8 @@ class SpecificationCurve:
         if pretty_plots:
             _pretty_plots()
         # Set up blocks for showing what effects are included
-        pd.set_option("future.no_silent_downcasting", True)
         df_spec = self.df_r["SpecificationCounts"].apply(pd.Series).fillna(0.0)
+        pd.set_option("future.no_silent_downcasting", True)  # for the line below
         df_spec = df_spec.replace(0.0, False).replace(1.0, True)
         df_spec = df_spec.T
         df_spec = df_spec.sort_index()
@@ -473,8 +473,40 @@ class SpecificationCurve:
         axarr[0].set_title("Specification curve analysis")
         max_height = self.df_r["conf_int"].apply(lambda x: x.max()).max()
         min_height = self.df_r["conf_int"].apply(lambda x: x.min()).min()
-        ylims = (min_height / 1.2, 1.2 * max_height)
-        axarr[0].set_ylim(_round_to_1(ylims[0]), _round_to_1(ylims[1]))
+
+        def get_chart_axes_limits(height: float, max: bool) -> float:
+            """For positive numbers and max, returns height*axes_width_multiple.
+            For negative numbers and max, returns height/axes_width_multiple
+            max and max height > 0:
+            np.sign(height) = 1
+            height*exp(1*1*log(m)) = height*m
+            max and max height < 0:
+            np.sign(height) = -1
+            height*exp(-1*1*log(m)) = height/m
+            min and min height > 0:
+            np.sign(height) = 1
+            height*exp(1*-1*log(m)) = height/m
+            min and min height < 0
+            np.sign(height) = -1
+            height*exp(-1*-1*log(m)) = height*m
+
+            Args:
+                height (float): The height of the error bar
+
+            Returns:
+                float: limit
+            """
+            axes_width_multiple = 1.2
+            max_or_min_factor = 1 if max else -1
+            return height * np.exp(
+                np.sign(height) * max_or_min_factor * np.log(axes_width_multiple)
+            )
+
+        ylims = (
+            get_chart_axes_limits(min_height, False),
+            get_chart_axes_limits(max_height, True),
+        )
+        axarr[0].set_ylim(_round_to_2(ylims[0]), _round_to_2(ylims[1]))
         # Now do the blocks - each group get its own array
         wid = 0.5
         hei = wid / 2.5
@@ -508,7 +540,7 @@ class SpecificationCurve:
             ax.set_yticks(range(len(list(df_sp_sl.index.values))))
             # Add text on the RHS that describes what each block is
             ax.text(
-                x=len(df_sp_sl.columns) + 1,
+                x=len(df_sp_sl.columns),
                 y=np.mean(ax.get_yticks()),
                 s=block_name_dict[
                     block_df.loc[block_df["group_index"] == ax_num, "group"].iloc[0]
