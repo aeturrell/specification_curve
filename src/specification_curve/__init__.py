@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 import pkg_resources
 import statsmodels.api as sm
+from typeguard import typeguard_ignore
 
 EXAMPLE_FILE = pkg_resources.resource_filename(
     "specification_curve", os.path.join("data", "example_data.csv")
@@ -112,10 +113,11 @@ def _excl_combs(lst, r, excludes):
         return list(combinations(lst, r))
 
 
+@typeguard_ignore
 def _flatn_list(nested_list: Union[str, List[str], List[List[str]]]) -> List[str]:
     """Flattens nested list.
     Args:
-        nested_list (Union[List[str], List[List[str]]]): nested list
+        nested_list
     Returns:
         List[str]: flattened list
     """
@@ -138,9 +140,9 @@ class SpecificationCurve:
         y_endog: Union[str, List[str]],
         x_exog: Union[str, List[str]],
         controls: List[str],
-        exclu_grps: List[List[None]] = [[]],
-        cat_expand: Union[str, List[None]] = [],
-        always_include: List[str] = [],
+        exclu_grps: Union[List[List[None]], List[str], str, List[List[str]]] = [[None]],
+        cat_expand: Union[str, List[None], List[str], List[List[str]]] = [],
+        always_include: Union[str, List[str]] = [],
     ) -> None:
         """Specification curve object constructor.
         Args:
@@ -177,8 +179,11 @@ class SpecificationCurve:
         print("Fit complete")
 
     def _reg_func(
-        self, y_endog: List[str], x_exog: str, reg_vars: List[str]
-    ) -> sm.regression.linear_model.RegressionResults:
+        self, y_endog: Union[str, List[str]], x_exog: str, reg_vars: List[str]
+    ) -> Union[
+        sm.regression.linear_model.RegressionResults,
+        sm.regression.linear_model.RegressionResultsWrapper,
+    ]:
         """Performs the regression.
         Args:
             y_endog (List[str]): Endogeneous variables
@@ -324,7 +329,10 @@ class SpecificationCurve:
         return df_r
 
     def plot(
-        self, save_path=None, pretty_plots: bool = True, preferred_spec: List[None] = []
+        self,
+        save_path=None,
+        pretty_plots: bool = True,
+        preferred_spec: Union[List[str], List[None]] = [],
     ) -> None:
         """Makes plots of fitted specification curve.
         Args:

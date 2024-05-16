@@ -9,10 +9,12 @@ import pandas as pd
 import specification_curve as specy
 import statsmodels.api as sm
 from scipy.stats import norm
+from typeguard import typeguard_ignore
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_000_basic_plot(mock_show):
+def test_000_basic_plot(mock_show) -> None:
     df = specy.load_example_data2()
     y_endog = "y"
     x_exog = "x_1"
@@ -23,8 +25,9 @@ def test_000_basic_plot(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_001_fe_grp(mock_show):
+def test_001_fe_grp(mock_show) -> None:
     """Test expand multiple FE groups. Docs feature 1."""
     df = specy.load_example_data1()
     y_endog = "y1"
@@ -38,8 +41,9 @@ def test_001_fe_grp(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_002_docs_feat_two(mock_show):
+def test_002_docs_feat_two(mock_show) -> None:
     """Test docs feature 2."""
     df = specy.load_example_data1()
     y_endog = "y1"
@@ -53,8 +57,9 @@ def test_002_docs_feat_two(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_004_docs_feat_three(mock_show):
+def test_004_docs_feat_three(mock_show) -> None:
     """Test docs feature 3: multiple dependent or independent variables"""
     df = specy.load_example_data1()
     x_exog = ["x1", "x2"]
@@ -66,8 +71,9 @@ def test_004_docs_feat_three(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_005_save_fig(mock_show):
+def test_005_save_fig(mock_show) -> None:
     """Test save fig.."""
     df = specy.load_example_data1()
     x_exog = ["x1", "x2"]
@@ -80,8 +86,9 @@ def test_005_save_fig(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_006_logit_estimator(mock_show):
+def test_006_logit_estimator(mock_show) -> None:
     """Test running with different statsmodels estimators -
     here logitistic
     """
@@ -108,8 +115,9 @@ def test_006_logit_estimator(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_007_probit_estimator(mock_show):
+def test_007_probit_estimator(mock_show) -> None:
     """
     Running with different statsmodels estimators - here probit
     """
@@ -136,8 +144,9 @@ def test_007_probit_estimator(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_008_large_no_specifications(mock_show):
+def test_008_large_no_specifications(mock_show) -> None:
     """
     Test a very large set of specifications
     """
@@ -159,8 +168,9 @@ def test_008_large_no_specifications(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_009_always_include(mock_show):
+def test_009_always_include(mock_show) -> None:
     """Test of always include."""
     df = specy.load_example_data1()
     x_exog = "x1"
@@ -172,8 +182,9 @@ def test_009_always_include(mock_show):
     mock_show.assert_called_once()
 
 
+@typeguard_ignore
 @patch("matplotlib.pyplot.show")
-def test_010_preferred_specification(mock_show):
+def test_010_preferred_specification(mock_show) -> None:
     """Test of labelling preferred specification."""
     df = specy.load_example_data1()
     x_exog = "x1"

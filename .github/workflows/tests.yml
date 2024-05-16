@@ -73,17 +73,10 @@ jobs:
           poetry run nox --force-color --python=${{ matrix.python-version }}
       - name: Upload coverage data
         if: always() && matrix.session == 'tests'
-        uses: "actions/upload-artifact@v3"
+        uses: "actions/upload-artifact@v4"
         with:
-          name: coverage-data
+          name: coverage-data-${{ matrix.python-version }}-${{ matrix.os }}
           path: ".coverage.*"
-
-      - name: Upload documentation
-        if: matrix.session == 'docs-build'
-        uses: actions/upload-artifact@v3
-        with:
-          name: docs
-          path: docs/_build
 
   coverage:
     runs-on: ubuntu-latest
@@ -112,7 +105,8 @@ jobs:
       - name: Download coverage data
         uses: actions/download-artifact@v4
         with:
-          name: coverage-data
+          pattern: coverage-data-*
+          merge-multiple: true
 
       - name: Combine coverage data and display human readable report
         run: |
