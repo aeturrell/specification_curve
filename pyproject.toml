@@ -10,20 +10,22 @@ repository = "https://github.com/aeturrell/specification_curve"
 documentation = "https://aeturrell.github.io/specification_curve/"
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 ]
 
 [tool.poetry.urls]
 Changelog = "https://github.com/aeturrell/specification_curve/releases"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.12"
+python = ">=3.9,<3.12"
 pandas = "^2.0.3"
 statsmodels = "^0.14.0"
 matplotlib = "^3.6.1"
 types-setuptools = ">=67.6,<70.0"
+numpy = "^1.26.4"
+typeguard = "^4.2.1"
 
 [tool.poetry.dev-dependencies]
 
@@ -34,12 +36,10 @@ specification_curve = "specification_curve.__main__:main"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.2.7"
-black = ">=23.7,<25.0"
 pre-commit = "^3.3.3"
 typeguard = ">=3.0.2,<5.0.0"
 safety = ">=2.3.4,<4.0.0"
 pytest = ">=7.4,<9.0"
-flake8 = "^5.0.4"
 pre-commit-hooks = "^4.4.0"
 nox = ">=2022.11.21,<2025.0.0"
 ipykernel = "^6.22.0"
@@ -48,12 +48,13 @@ jupyter-book = "^0.15.1"
 furo = ">=2022.9.29,<2024.0.0"
 ghp-import = "^2.1.0"
 xdoctest = "^1.1.1"
-mypy = "^1.2"
-reorder-python-imports = "^3.9.0"
+mypy = "1.10"
 sphinxcontrib-bibtex = "^2.5.0"
 types-pkg-resources = "^0.1.3"
 types-setuptools = ">=67.6,<70.0"
 pandas-stubs = "^2.0.2.230605"
+ruff = "^0.4.4"
+nox-poetry = "^1.0.3"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]

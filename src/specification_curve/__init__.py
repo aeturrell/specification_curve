@@ -3,45 +3,34 @@ Specification Curve
 -------------------
 A package that produces specification curve analysis.
 """
+
 import copy
 import itertools
 import os
 import typing
-from collections import Counter
-from collections import defaultdict
+from collections import Counter, defaultdict
+from importlib import resources
 from itertools import combinations
-from math import floor
-from math import log10
-from typing import DefaultDict
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Set
-from typing import Tuple
-from typing import Union
+from math import floor, log10
+from typing import DefaultDict, List, Union
 
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
-import pkg_resources
 import statsmodels.api as sm
+from typeguard import typeguard_ignore
 
 
-EXAMPLE_FILE = pkg_resources.resource_filename(
-    "specification_curve", os.path.join("data", "example_data.csv")
-)
-
-
-def _round_to_1(x: float) -> float:
-    """Rounds numbers to 1 s.f.
+def _round_to_2(x: float) -> float:
+    """Rounds numbers to 2 s.f.
     Args:
         x (float): input number
     Returns:
         float: number rounded
     """
-    return round(x, -int(floor(log10(abs(x)))) + 1)
+    return round(x, -int(floor(log10(abs(x)))) + 2)
 
 
 @typing.no_type_check
@@ -65,7 +54,7 @@ def _single_list_check_str(X: Union[str, List[str]]) -> List[str]:
     Returns:
         list[str]: List of strings.
     """
-    if type(X) == str:
+    if isinstance(X, str):
         X = [X]
     return X
 
@@ -120,10 +109,11 @@ def _excl_combs(lst, r, excludes):
         return list(combinations(lst, r))
 
 
+@typeguard_ignore
 def _flatn_list(nested_list: Union[str, List[str], List[List[str]]]) -> List[str]:
     """Flattens nested list.
     Args:
-        nested_list (Union[List[str], List[List[str]]]): nested list
+        nested_list
     Returns:
         List[str]: flattened list
     """
@@ -146,9 +136,9 @@ class SpecificationCurve:
         y_endog: Union[str, List[str]],
         x_exog: Union[str, List[str]],
         controls: List[str],
-        exclu_grps: List[List[None]] = [[]],
-        cat_expand: Union[str, List[None]] = [],
-        always_include: List[str] = [],
+        exclu_grps: Union[List[List[None]], List[str], str, List[List[str]]] = [[None]],
+        cat_expand: Union[str, List[None], List[str], List[List[str]]] = [],
+        always_include: Union[str, List[str]] = [],
     ) -> None:
         """Specification curve object constructor.
         Args:
@@ -185,8 +175,11 @@ class SpecificationCurve:
         print("Fit complete")
 
     def _reg_func(
-        self, y_endog: List[str], x_exog: str, reg_vars: List[str]
-    ) -> sm.regression.linear_model.RegressionResults:
+        self, y_endog: Union[str, List[str]], x_exog: str, reg_vars: List[str]
+    ) -> Union[
+        sm.regression.linear_model.RegressionResults,
+        sm.regression.linear_model.RegressionResultsWrapper,
+    ]:
         """Performs the regression.
         Args:
             y_endog (List[str]): Endogeneous variables
@@ -209,13 +202,9 @@ class SpecificationCurve:
         # Ensure new cols are int so that statsmodels will run on them.
         # This is because statsmodels requires all values to be of either int or float dtype.
         # first get columns series with true or false depending on if not int or float stem to data type
-        non_int_or_float_cols = (
-            ~xf[reg_vars_here]
-            .dtypes.astype("string")
-            .str.split("[1-9][0-9]", regex=True)
-            .str[0]
-            .isin(["int", "float"])
-        )
+        non_int_or_float_cols = ~xf[reg_vars_here].dtypes.astype("string").str.split(
+            "[1-9][0-9]", regex=True
+        ).str[0].isin(["int", "float"])
         # now take only the trues from
         cols_to_convert_to_int = list(
             non_int_or_float_cols[non_int_or_float_cols].index
@@ -336,7 +325,10 @@ class SpecificationCurve:
         return df_r
 
     def plot(
-        self, save_path=None, pretty_plots: bool = True, preferred_spec: List[None] = []
+        self,
+        save_path=None,
+        pretty_plots: bool = True,
+        preferred_spec: Union[List[str], List[None]] = [],
     ) -> None:
         """Makes plots of fitted specification curve.
         Args:
@@ -348,6 +340,7 @@ class SpecificationCurve:
             _pretty_plots()
         # Set up blocks for showing what effects are included
         df_spec = self.df_r["SpecificationCounts"].apply(pd.Series).fillna(0.0)
+        pd.set_option("future.no_silent_downcasting", True)  # for the line below
         df_spec = df_spec.replace(0.0, False).replace(1.0, True)
         df_spec = df_spec.T
         df_spec = df_spec.sort_index()
@@ -480,8 +473,40 @@ class SpecificationCurve:
         axarr[0].set_title("Specification curve analysis")
         max_height = self.df_r["conf_int"].apply(lambda x: x.max()).max()
         min_height = self.df_r["conf_int"].apply(lambda x: x.min()).min()
-        ylims = (min_height / 1.2, 1.2 * max_height)
-        axarr[0].set_ylim(_round_to_1(ylims[0]), _round_to_1(ylims[1]))
+
+        def get_chart_axes_limits(height: float, max: bool) -> float:
+            """For positive numbers and max, returns height*axes_width_multiple.
+            For negative numbers and max, returns height/axes_width_multiple
+            max and max height > 0:
+            np.sign(height) = 1
+            height*exp(1*1*log(m)) = height*m
+            max and max height < 0:
+            np.sign(height) = -1
+            height*exp(-1*1*log(m)) = height/m
+            min and min height > 0:
+            np.sign(height) = 1
+            height*exp(1*-1*log(m)) = height/m
+            min and min height < 0
+            np.sign(height) = -1
+            height*exp(-1*-1*log(m)) = height*m
+
+            Args:
+                height (float): The height of the error bar
+
+            Returns:
+                float: limit
+            """
+            axes_width_multiple = 1.2
+            max_or_min_factor = 1 if max else -1
+            return height * np.exp(
+                np.sign(height) * max_or_min_factor * np.log(axes_width_multiple)
+            )
+
+        ylims = (
+            get_chart_axes_limits(min_height, False),
+            get_chart_axes_limits(max_height, True),
+        )
+        axarr[0].set_ylim(_round_to_2(ylims[0]), _round_to_2(ylims[1]))
         # Now do the blocks - each group get its own array
         wid = 0.5
         hei = wid / 2.5
@@ -515,7 +540,7 @@ class SpecificationCurve:
             ax.set_yticks(range(len(list(df_sp_sl.index.values))))
             # Add text on the RHS that describes what each block is
             ax.text(
-                x=len(df_sp_sl.columns) + 1,
+                x=len(df_sp_sl.columns),
                 y=np.mean(ax.get_yticks()),
                 s=block_name_dict[
                     block_df.loc[block_df["group_index"] == ax_num, "group"].iloc[0]
@@ -546,7 +571,11 @@ def load_example_data1() -> pd.DataFrame:
         pd.DataFrame: Example data suitable for regression.
     """
     # Example data
-    df = pd.read_csv(EXAMPLE_FILE, index_col=0)
+    ref = resources.files("specification_curve") / os.path.join(
+        "data", "example_data.csv"
+    )
+    with resources.as_file(ref) as path:
+        df = pd.read_csv(path, index_col=0)
     num_cols = [x for x in df.columns if x not in ["group1", "group2"]]
     for col in num_cols:
         df[col] = df[col].astype(np.double)
