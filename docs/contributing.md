@@ -97,9 +97,6 @@ We recommend that you open an issue before starting work on any new features. Th
 
 You can build the docs locally to look at it. The command is `make`: this will build the docs and put them in `docs/_site/`.
 
-- Run `make clean`
-- Run `make`
-
 To publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s `make publish`—but only devs with admin rights will be able to execute this.
 
 ## How to create a package release

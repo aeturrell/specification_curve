@@ -1,5 +1,5 @@
 # This makes the documentation for specification_curve
-.PHONY: all clean site publish
+.PHONY: all site publish
 
 all: site
 
@@ -10,10 +10,6 @@ site:
 		rm docs/.gitignore
 		poetry run nbstripout docs/*.ipynb
 		poetry run pre-commit run --all-files
-
-
-clean:
-	rm README.md
 
 
 publish:
