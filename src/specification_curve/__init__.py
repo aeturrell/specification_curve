@@ -6,8 +6,10 @@ A package that produces specification curve analysis.
 
 import copy
 import itertools
+import os
 import typing
 from collections import Counter, defaultdict
+from importlib import resources
 from itertools import combinations
 from math import floor, log10
 from typing import DefaultDict, List, Union
@@ -18,8 +20,6 @@ import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
-from pathlib import Path
-from importlib import resources 
 from typeguard import typeguard_ignore
 
 
@@ -539,7 +539,9 @@ def load_example_data1() -> pd.DataFrame:
         pd.DataFrame: Example data suitable for regression.
     """
     # Example data
-    ref = resources.files("specification_curve") / Path("data/example_data.csv")
+    ref = resources.files("specification_curve") / os.path.join(
+        "data", "example_data.csv"
+    )
     with resources.as_file(ref) as path:
         df = pd.read_csv(path, index_col=0)
     num_cols = [x for x in df.columns if x not in ["group1", "group2"]]
