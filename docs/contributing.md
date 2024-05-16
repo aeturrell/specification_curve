@@ -17,11 +17,11 @@ Report bugs on the [Issue Tracker](https://github.com/aeturrell/specification_cu
 
 When filing an issue, make sure to answer these questions:
 
--   Which operating system and Python version are you using?
--   Which version of this project are you using?
--   What did you do?
--   What did you expect to see?
--   What did you see instead?
+- Which operating system and Python version are you using?
+- Which version of this project are you using?
+- What did you do?
+- What did you expect to see?
+- What did you see instead?
 
 The best way to get your bug fixed is to provide a test case, and/or
 steps to reproduce the issue.
@@ -35,45 +35,42 @@ Tracker](https://github.com/aeturrell/specification_curve/issues).
 
 You need Python 3.9+ and the following tools:
 
--   [Poetry](https://python-poetry.org/)
--   [Nox](https://nox.thea.codes/)
--   [nox-poetry](https://nox-poetry.readthedocs.io/)
--   [Make](https://www.gnu.org/software/make/)
+- [Poetry](https://python-poetry.org/)
+- [Nox](https://nox.thea.codes/)
+- [nox-poetry](https://nox-poetry.readthedocs.io/)
+- [Make](https://www.gnu.org/software/make/) (for documentation)
+- [Quarto](https://quarto.org/) (for documentation)
 
+Before you install the environment using poetry, you may wish to run `poetry config virtualenvs.in-project true
+` to get the virtual environment in the same folder as the code.
 
 Install the package with development requirements:
 
 ```bash
-$ poetry install
+poetry install
 ```
 
-You can now run an interactive Python session, or the command-line
-interface:
-
-```bash
-$ poetry run python
-$ poetry run specification_curve
-```
+You can now run an interactive Python session, or the command-line interface.
 
 ## How to test the project
 
 Run the full test suite:
 
 ```bash
-$ nox
+nox
 ```
 
 List the available Nox sessions:
 
 ```bash
-$ nox --list-sessions
+nox --list-sessions
 ```
 
 You can also run a specific Nox session. For example, invoke the unit
 test suite like this:
 
 ```bash
-$ nox --session=tests
+nox --session=tests
 ```
 
 Unit tests are located in the `tests` directory, and are written using
@@ -86,35 +83,24 @@ submit changes to this project.
 
 Your pull request needs to meet the following guidelines for acceptance:
 
--   The Nox test suite must pass without errors and warnings.
--   Include unit tests. This project maintains 100% code coverage.
--   If your changes add functionality, update the documentation
-    accordingly.
+- The Nox test suite must pass without errors and warnings.
+- Include unit tests. This project maintains 100% code coverage.
+- If your changes add functionality, update the documentation accordingly.
 
 Feel free to submit early, though---we can always iterate on this.
 
-To run linting and code formatting checks before committing your change,
-you can install pre-commit as a Git hook by running the following
-command:
+Linting and formatting are run as part of pre-commit and nox. To just run pre-commit checks, use `poetry run pre-commit run --all-files`.
 
-```bash
-$ nox --session=pre-commit -- install
-```
-
-It is recommended to open an issue before starting work on anything.
-This will allow a chance to talk it over with the owners and validate
-your approach.
+We recommend that you open an issue before starting work on any new features. This will allow a chance to talk it over with the owners and validate your approach.
 
 ## How to build the documentation
+
+You can build the docs locally to look at it. The command is `make`: this will build the docs and put them in `docs/_site/`.
 
 - Run `make clean`
 - Run `make`
 
-To upload the documentation, it’s
-
-```bash
-poetry run ghp-import -n -p -f docs/_build/html
-```
+To publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s `make publish`—but only devs with admin rights will be able to execute this.
 
 ## How to create a package release
 
@@ -132,4 +118,4 @@ poetry run ghp-import -n -p -f docs/_build/html
 
 - The automatic release github action will push to PyPI.
 
-If you ever need distributable files, you can use the poetry build command locally.
+If you ever need distributable files, you can use the `poetry build` command locally.

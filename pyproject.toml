@@ -55,6 +55,8 @@ types-setuptools = ">=67.6,<70.0"
 pandas-stubs = "^2.0.2.230605"
 ruff = "^0.4.4"
 nox-poetry = "^1.0.3"
+quartodoc = "^0.7.2"
+toml = "^0.10.2"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
