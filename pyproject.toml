@@ -25,6 +25,7 @@ statsmodels = "^0.14.0"
 matplotlib = "^3.6.1"
 types-setuptools = ">=67.6,<70.0"
 numpy = "^1.26.4"
+typeguard = "^4.2.1"
 
 [tool.poetry.dev-dependencies]
 

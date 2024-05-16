@@ -6,7 +6,6 @@ A package that produces specification curve analysis.
 
 import copy
 import itertools
-import os
 import typing
 from collections import Counter, defaultdict
 from itertools import combinations
@@ -18,13 +17,10 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
-import pkg_resources
 import statsmodels.api as sm
+from pathlib import Path
+from importlib import resources 
 from typeguard import typeguard_ignore
-
-EXAMPLE_FILE = pkg_resources.resource_filename(
-    "specification_curve", os.path.join("data", "example_data.csv")
-)
 
 
 def _round_to_1(x: float) -> float:
@@ -343,6 +339,7 @@ class SpecificationCurve:
         if pretty_plots:
             _pretty_plots()
         # Set up blocks for showing what effects are included
+        pd.set_option("future.no_silent_downcasting", True)
         df_spec = self.df_r["SpecificationCounts"].apply(pd.Series).fillna(0.0)
         df_spec = df_spec.replace(0.0, False).replace(1.0, True)
         df_spec = df_spec.T
@@ -542,7 +539,9 @@ def load_example_data1() -> pd.DataFrame:
         pd.DataFrame: Example data suitable for regression.
     """
     # Example data
-    df = pd.read_csv(EXAMPLE_FILE, index_col=0)
+    ref = resources.files("specification_curve") / Path("data/example_data.csv")
+    with resources.as_file(ref) as path:
+        df = pd.read_csv(path, index_col=0)
     num_cols = [x for x in df.columns if x not in ["group1", "group2"]]
     for col in num_cols:
         df[col] = df[col].astype(np.double)
