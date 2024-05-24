@@ -344,19 +344,30 @@ class SpecificationCurve:
         df_spec = df_spec.replace(0.0, False).replace(1.0, True)
         df_spec = df_spec.T
         df_spec = df_spec.sort_index()
+        # The above produces a dataframe of the form:
+        # Specification No.	0	1	2	3	4	5	6	7
+        # x_1	True	True	True	True	True	True	True	True
+        # x_2	False	False	True	True	False	False	True	True
+        # x_3	True	True	True	True	False	False	False	False
+        # x_4	False	True	False	True	False	True	False	True
+        # y	True	True	True	True	True	True	True	True
+        # in df_spec
         # Label the preferred specification as True
         self.df_r["preferred"] = False
         if preferred_spec:
             self.df_r["preferred"] = self.df_r["Specification"].apply(
                 lambda x: Counter(x) == Counter(preferred_spec)
             )
-        # This is quite hacky
+        # This is quite hacky. It takes full list of variables and just keeps
+        # those that we will be varying over.
         new_ctrl_names = list(set(_flatn_list(self.df_r["Specification"].values)))
         new_ctrl_names = [
             x for x in new_ctrl_names if x not in self.x_exog + self.y_endog
         ]
         new_ctrl_names.sort()
+        # These are the names of the blocks under the chart
         name = self.x_exog + self.y_endog + new_ctrl_names
+        # These are the groups in the blocks under the chart.
         group = (
             ["x_exog" for x in range(len(self.x_exog))]
             + ["y_endog" for y in range(len(self.y_endog))]
@@ -372,13 +383,32 @@ class SpecificationCurve:
                 )
             )
         )
+        # The above maps each individual variable to its group. So it might
+        # look something like:
+        # {'x_exog': 'x_exog',
+        # 'y_endog': 'y_endog',
+        # 'x_2': 'control',
+        # 'x_3': 'control',
+        # 'x_4': 'control'}
         block_df["group"] = block_df["group"].apply(lambda x: group_map[x])
+        # The above puts this into a data frame describing the block struture.
+        # eg it might look like
+        #       group
+        # x_1	x_exog
+        # y	y_endog
+        # x_2	control
+        # x_3	control
+        # x_4	control
+        # where the first column is the index
+        # The below does counts of variables by group. eg in the example above
+        # there are three controls, one exog, one endog.
         counts = (
             block_df.reset_index()
             .groupby("group")
             .count()
             .rename(columns={"index": "counts"})
         )
+        # For any group with a count of more than one, record it in block df
         block_df = pd.merge(
             block_df.reset_index(), counts.reset_index(), on=["group"]
         ).set_index("index")
@@ -387,6 +417,13 @@ class SpecificationCurve:
             zip(block_df["group"].unique(), range(len(block_df["group"].unique())))
         )
         block_df["group_index"] = block_df["group"].apply(lambda x: index_dict[x])
+        # above gives, as an example,
+        # 	    group	counts	group_index
+        # index
+        # x_2	control	3	0
+        # x_3	control	3	0
+        # x_4	control	3	0
+        # heights of the blocks. Gets bigger as there are more entries.
         heights = [2] + [
             0.3 * np.log(x + 1)
             for x in block_df["group_index"].value_counts(sort=False)
@@ -423,11 +460,13 @@ class SpecificationCurve:
         self.df_r["coeff_pvals"] = self.df_r.apply(
             lambda row: row["pvalues"][row["x_exog"]], axis=1
         )
-        self.df_r.loc[self.df_r["coeff_pvals"] < 0.05, "color_coeff"] = "blue"
+        self.df_r.loc[self.df_r["coeff_pvals"] < 0.05, "color_coeff"] = (
+            "blue"  # "#91d1f1"
+        )
         red_condition = (self.df_r["Coefficient"] < 0) & (
             self.df_r["coeff_pvals"] < 0.05
         )
-        self.df_r.loc[red_condition, "color_coeff"] = "red"
+        self.df_r.loc[red_condition, "color_coeff"] = "red"  # "#f94026"
         for color in self.df_r["color_coeff"].unique():
             slice_df_r = self.df_r.loc[self.df_r["color_coeff"] == color]
             a = (
@@ -510,10 +549,12 @@ class SpecificationCurve:
         # Now do the blocks - each group get its own array
         wid = 0.5
         hei = wid / 2.5
-        color_dict = {True: "#9B9B9B", False: "#F2F2F2"}
+        spec_not_activated_color = "#F2F2F2"
+        # This applies a tighter and more 'zoomed out' plot style when there
+        # are a large number of specifications
         if len(self.df_r) > 160:
             wid = 0.01
-            color_dict = {True: "k", False: "#FFFFFF"}
+            spec_not_activated_color = "#FFFFFF"
         # Define group names to put on RHS of plot
 
         def return_string():
@@ -528,19 +569,35 @@ class SpecificationCurve:
         for ax_num, ax in enumerate(axarr[1:]):
             block_index = block_df.loc[block_df["group_index"] == ax_num, :].index
             df_sp_sl = df_spec.loc[block_index, :].copy()
+            # Loop over variables in the group (eg x_2, x_3)
             for i, row_name in enumerate(df_sp_sl.index):
+                # Loop over specification numbers
                 for j, col_name in enumerate(df_sp_sl.columns):
-                    color = color_dict[df_sp_sl.iloc[i, j]]
+                    # retrieve colour based on significance
+                    sig_colour = self.df_r.loc[j, "color_coeff"]
+                    if df_sp_sl.iloc[i, j]:
+                        color = sig_colour
+                        alpha_choice = 0.4
+                    else:
+                        color = spec_not_activated_color
+                        alpha_choice = 1.0
+
                     sq = patches.Rectangle(
-                        (j - wid / 2, i - hei / 2), wid, hei, fill=True, color=color
+                        (j - wid / 2, i - hei / 2),
+                        wid,
+                        hei,
+                        fill=True,
+                        color=color,
+                        alpha=alpha_choice,
                     )
                     ax.add_patch(sq)
             ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
             ax.yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
             ax.set_yticks(range(len(list(df_sp_sl.index.values))))
             # Add text on the RHS that describes what each block is
+            furthest_x_point = len(df_sp_sl.columns) * 1.02
             ax.text(
-                x=len(df_sp_sl.columns),
+                x=furthest_x_point,
                 y=np.mean(ax.get_yticks()),
                 s=block_name_dict[
                     block_df.loc[block_df["group_index"] == ax_num, "group"].iloc[0]
@@ -553,7 +610,7 @@ class SpecificationCurve:
             ax.set_yticklabels(list(df_sp_sl.index.values), fontsize=12)
             ax.set_xticklabels([])
             ax.set_ylim(-hei, len(df_sp_sl) - hei * 4)
-            ax.set_xlim(-wid, len(df_sp_sl.columns))
+            ax.set_xlim(-wid, furthest_x_point)
             for place in ["right", "top", "bottom"]:
                 ax.spines[place].set_visible(False)
         for ax in axarr:
