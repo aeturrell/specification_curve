@@ -2290,13 +2290,13 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "quartodoc"
-version = "0.7.2"
+version = "0.7.3"
 description = "Generate API documentation with Quarto."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "quartodoc-0.7.2-py3-none-any.whl", hash = "sha256:adff974296c013308f4e06cadea8b71b90d334dcb1510d2bd0ef9cea06d8be98"},
-    {file = "quartodoc-0.7.2.tar.gz", hash = "sha256:58f98c88065ce0b4a857f13282d1e38bb2cd4757b481a4c6279bdca89ba5640b"},
+    {file = "quartodoc-0.7.3-py3-none-any.whl", hash = "sha256:697a0d919d5bd4ff169b67bbd1a201b2f0699ea3de6ea4bb0cd97a884edefead"},
+    {file = "quartodoc-0.7.3.tar.gz", hash = "sha256:6d8c7266ede844cebc9980c29956701f4b65e882daaa860a0f1391c539913f20"},
 ]
 
 [package.dependencies]
@@ -2316,7 +2316,7 @@ typing-extensions = ">=4.4.0"
 watchdog = ">=3.0.0"
 
 [package.extras]
-dev = ["jupyterlab", "jupytext", "pre-commit", "pytest", "syrupy"]
+dev = ["jupyterlab", "jupytext", "pre-commit", "pytest (<8.0.0)", "syrupy"]
 
 [[package]]
 name = "referencing"
