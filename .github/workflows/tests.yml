@@ -61,7 +61,7 @@ jobs:
           result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
           print("::set-output name=result::{}".format(result))
       - name: Restore pre-commit cache
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4.1.2
         if: matrix.session == 'pre-commit'
         with:
           path: ~/.cache/pre-commit
