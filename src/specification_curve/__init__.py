@@ -12,7 +12,7 @@ from collections import Counter, defaultdict
 from importlib import resources
 from itertools import combinations
 from math import floor, log10
-from typing import DefaultDict, List, Union
+from typing import DefaultDict, List, Optional, Union
 
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
@@ -120,6 +120,59 @@ def _flatn_list(nested_list: Union[str, List[str], List[List[str]]]) -> List[str
     return list(itertools.chain.from_iterable(nested_list))
 
 
+def _parse_formula(formula_string: str) -> dict[str, List[str]]:
+    """
+    Parse a formula string of the format "y | y1 ~ x | x1 + c + c2 | c3"
+    into separate lists of variables.
+
+    Parameters:
+    formula_string (str): The formula string to parse
+
+    Returns:
+    dict: Dictionary containing lists of variables categorized as:
+          - exog: dependent variables (before ~)
+          - endog: independent variables (after ~ and before first +)
+          - always_include: standalone variables (no | symbol)
+          - controls: variables that appear after | symbols
+    """
+    # Initialize result lists
+    result: dict[str, List[str]] = {
+        "x_exog": [],
+        "y_endog": [],
+        "always_include": [],
+        "controls": [],
+    }
+
+    # Split into left and right sides of the tilde
+    left_side, right_side = formula_string.split("~")
+
+    # Process exogenous variables (left side)
+    left_vars = left_side.strip().split("|")
+    result["x_exog"].extend(var.strip() for var in left_vars if var.strip())
+
+    # Split right side into components by plus sign
+    right_components = right_side.strip().split("+")
+
+    # Process the first component (endogenous variables)
+    if right_components:
+        endog_vars = right_components[0].strip().split("|")
+        result["y_endog"].extend(var.strip() for var in endog_vars if var.strip())
+
+        # Process remaining components
+        for component in right_components[1:]:
+            component = component.strip()
+            if "|" in component:
+                # If component contains |, split and add all parts to controls
+                vars_in_component = component.split("|")
+                result["controls"].extend(
+                    var.strip() for var in vars_in_component if var.strip()
+                )
+            else:
+                # If component is standalone (no |), add to always_include
+                result["always_include"].append(component)
+    return result
+
+
 class SpecificationCurve:
     """Specification curve object.
     Uses a model to perform all variants of a specification.
@@ -128,35 +181,75 @@ class SpecificationCurve:
     Will iterate over multiple inputs for exog. and endog. variables.
     Note that categorical variables that are expanded cannot be mutually
     excluded from other categorical variables that are expanded.
+
+    The class can be initialized in two mutually exclusive ways:
+    1. Using a formula string (e.g., "y ~ x1 + x2")
+    2. Using separate y_endog, x_exog, controls, and always_include parameters
+
+    Args:
+        df (pd.DataFrame): Input DataFrame
+        formula (str, optional): R-style formula string (e.g., "y ~ x1 + x2")
+        y_endog (Union[str, List[str]], optional): Dependent variable(s)
+        x_exog (Union[str, List[str]], optional): Independent variable(s)
+        controls (List[str], optional): Control variables
+        exclu_grps (Union[List[List[None]], List[str], str, List[List[str]]], optional):
+            Groups of variables to exclude. Defaults to [[None]]
+        cat_expand (Union[str, List[None], List[str], List[List[str]]], optional):
+            Categorical variables to expand. Defaults to []
+        always_include (Union[str, List[str]], optional): Variables to always include
+
+    Raises:
+        ValueError: If neither formula nor (y_endog, x_exog, controls) are provided
+        ValueError: If both formula and (y_endog, x_exog, controls) are provided
     """
 
     def __init__(
         self,
         df: pd.DataFrame,
-        y_endog: Union[str, List[str]],
-        x_exog: Union[str, List[str]],
-        controls: List[str],
-        exclu_grps: Union[List[List[None]], List[str], str, List[List[str]]] = [[None]],
-        cat_expand: Union[str, List[None], List[str], List[List[str]]] = [],
-        always_include: Union[str, List[str]] = [],
+        y_endog: Optional[Union[str, List[str]]] = None,
+        x_exog: Optional[Union[str, List[str]]] = None,
+        controls: Optional[List[str]] = None,
+        exclu_grps: Optional[
+            Union[List[List[None]], List[str], str, List[List[str]]]
+        ] = [[None]],
+        cat_expand: Optional[Union[str, List[None], List[str], List[List[str]]]] = [],
+        always_include: Optional[Union[str, List[str]]] = None,
+        formula: Optional[str] = None,
     ) -> None:
-        """Specification curve object constructor.
-        Args:
-            df (pd.DataFrame): Data for regressions
-            y_endog (Union[str, List[str]]): Endogeneous variables
-            x_exog (Union[str, List[str]]): Exogeneous variables
-            controls (List[str]): Conditioning variables
-            exclu_grps (List[List[None]], optional): Combinations to exclude. Defaults to [[]].
-            cat_expand (List[None], optional): Fixed effects whose categories to run separately. Defaults to [].
-            always_include (List[str], optional): Any controls to always include. Defaults to [].
-        """
-        self.df = df.copy()
-        self.y_endog = _single_list_check_str(y_endog)
-        self.x_exog = _single_list_check_str(x_exog)
-        self.controls = _single_list_check_str(controls)
-        self.exclu_grps = _double_list_check(exclu_grps)
-        self.cat_expand = _single_list_check_str(cat_expand)
-        self.always_include = _single_list_check_str(always_include)
+        if formula is not None:
+            if any(
+                param is not None
+                for param in [y_endog, x_exog, controls, always_include]
+            ):
+                raise ValueError(
+                    "Cannot provide both formula and individual components "
+                    "(y_endog, x_exog, controls, always_include)"
+                )
+            spec_via_eqn = _parse_formula(formula)
+            self.controls = spec_via_eqn["controls"]
+            self.always_include = spec_via_eqn["always_include"]
+            self.y_endog = spec_via_eqn["y_endog"]
+            self.x_exog = spec_via_eqn["x_exog"]
+        else:
+            if any(param is None for param in [y_endog, x_exog, controls]):
+                raise ValueError(
+                    "Must provide either formula or all of: y_endog, x_exog, controls"
+                )
+            # Use the provided components directly
+            self.y_endog = y_endog if isinstance(y_endog, list) else [str(y_endog)]
+            self.x_exog = x_exog if isinstance(x_exog, list) else [str(x_exog)]
+            self.controls = controls if isinstance(controls, list) else [str(controls)]
+            self.always_include = (
+                always_include
+                if isinstance(always_include, list)
+                else [str(always_include)]
+                if always_include is not None
+                else []
+            )
+
+        self.df = df
+        self.exclu_grps = exclu_grps
+        self.cat_expand = cat_expand
 
     def fit(self, estimator=sm.OLS) -> None:
         """Fits a specification curve by performing regressions.
@@ -224,10 +317,17 @@ class SpecificationCurve:
         new_cols = []
         # Warning: hard-coded prefix
         if self.cat_expand != []:
-            self.df = pd.get_dummies(self.df, columns=self.cat_expand, prefix_sep=" = ")
+            cat_expand_local = (
+                self.cat_expand
+                if isinstance(self.cat_expand, list)
+                else [str(self.cat_expand)]
+            )
+            self.df = pd.get_dummies(
+                self.df, columns=cat_expand_local, prefix_sep=" = "
+            )
             new_cols = [x for x in self.df.columns if x not in init_cols]
             # Now change the controls
-            [self.controls.remove(x) for x in self.cat_expand]
+            [self.controls.remove(x) for x in cat_expand_local if x in self.controls]
             self.controls.extend(new_cols)
             # Create mapping from cat expand to new cols
             oldnew = dict(

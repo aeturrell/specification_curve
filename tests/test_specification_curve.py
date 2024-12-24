@@ -9,6 +9,7 @@ import pandas as pd
 import specification_curve as specy
 import statsmodels.api as sm
 from scipy.stats import norm
+from specification_curve import _parse_formula
 from typeguard import typeguard_ignore
 
 
@@ -193,4 +194,31 @@ def test_010_preferred_specification(mock_show) -> None:
     sc = specy.SpecificationCurve(df, y_endog, x_exog, controls)
     sc.fit()
     sc.plot(preferred_spec=["group1", "x1", "y1"])
+    mock_show.assert_called_once()
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_011_formula_parsing(mock_show) -> None:
+    formula = "y | y1 ~ x | x1 + c + c2 | c3"
+    result = _parse_formula(formula)
+    # Print results
+    for category, variables in result.items():
+        print(f"{category}: {variables}")
+
+    assert result == {
+        "x_exog": ["y", "y1"],
+        "y_endog": ["x", "x1"],
+        "always_include": ["c"],
+        "controls": ["c2", "c3"],
+    }, "Parser output doesn't match expected result"
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_012_formula_run(mock_show) -> None:
+    df = specy.load_example_data1()
+    sc = specy.SpecificationCurve(df=df, formula="y1 ~ x1 | x2 + group1 + c1 | c2")
+    sc.fit()
+    sc.plot()
     mock_show.assert_called_once()
