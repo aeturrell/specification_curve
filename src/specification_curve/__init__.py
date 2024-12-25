@@ -695,9 +695,11 @@ class SpecificationCurve:
             ax.yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
             ax.set_yticks(range(len(list(df_sp_sl.index.values))))
             # Add text on the RHS that describes what each block is
-            furthest_x_point = len(df_sp_sl.columns) * 1.02
+            spacing_factor = 0.02  # Adjust this value to control spacing
+            figure_width = len(df_sp_sl.columns)
+            text_x_pos = figure_width * (1 + spacing_factor)
             ax.text(
-                x=furthest_x_point,
+                x=text_x_pos,
                 y=np.mean(ax.get_yticks()),
                 s=block_name_dict[
                     block_df.loc[block_df["group_index"] == ax_num, "group"].iloc[0]
@@ -710,7 +712,7 @@ class SpecificationCurve:
             ax.set_yticklabels(list(df_sp_sl.index.values), fontsize=12)
             ax.set_xticklabels([])
             ax.set_ylim(-hei, len(df_sp_sl) - hei * 4)
-            ax.set_xlim(-wid, furthest_x_point)
+            ax.set_xlim(-wid, figure_width * (1 + spacing_factor * 2))
             for place in ["right", "top", "bottom"]:
                 ax.spines[place].set_visible(False)
         for ax in axarr:
