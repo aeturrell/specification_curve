@@ -2101,7 +2101,7 @@ wheels = [
 [[package]]
 name = "specification-curve"
 version = "0.3.3"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "matplotlib" },
     { name = "numpy" },

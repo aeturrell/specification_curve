@@ -1,5 +1,5 @@
 [project]
-name = "specification-curve"
+name = "specification_curve"
 version = "0.3.3"
 description = "Specification_Curve"
 readme = "README.md"
@@ -36,3 +36,34 @@ dev = [
 [[tool.mypy.overrides]]
 module = ["statsmodels.*", "scipy.stats.*"]
 ignore_missing_imports = true
+
+[tool.mypy]
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 98
+
+[tool.coverage.run]
+branch = true
+source = ["specification_curve"]
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.setuptools.packages.find]
+where = ['src']
+exclude = ['.gitignore']
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+specification_curve=['*.csv']
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
