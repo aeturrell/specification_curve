@@ -10,6 +10,7 @@ Here is a list of important resources for contributors:
 - [Source Code](https://github.com/aeturrell/specification_curve)
 - [Documentation](https://aeturrell.github.io/specification_curve/)
 - [Issue Tracker](https://github.com/aeturrell/specification_curve/issues)
+- [Code of Conduct](code_of_conduct.qmd)
 
 ## How to report a bug
 
@@ -28,53 +29,63 @@ steps to reproduce the issue.
 
 ## How to request a feature
 
-Request features on the [Issue
-Tracker](https://github.com/aeturrell/specification_curve/issues).
+Request features on the [Issue Tracker](https://github.com/aeturrell/specification_curve/issues).
 
 ## How to set up your development environment
 
-You need Python 3.9+ and the following tools:
+You need Python and the following tools:
 
-- [Poetry](https://python-poetry.org/)
+- [uv](https://docs.astral.sh/uv/)
 - [Nox](https://nox.thea.codes/)
-- [nox-poetry](https://nox-poetry.readthedocs.io/)
-- [Make](https://www.gnu.org/software/make/) (for documentation)
-- [Quarto](https://quarto.org/) (for documentation)
+- [Make](https://www.gnu.org/software/make/)
+- [Quarto](https://quarto.org/)
 
-Before you install the environment using poetry, you may wish to run `poetry config virtualenvs.in-project true
-` to get the virtual environment in the same folder as the code.
-
-Install the package with development requirements:
+Install the package with the existing development requirements:
 
 ```bash
-poetry install
+$ uv sync --frozen
 ```
 
-You can now run an interactive Python session, or the command-line interface.
+To also update packages, do not use the `--frozen` flag.
+
+To build the documentation locally, you will also need [Make](https://www.gnu.org/software/make/) and [Quarto](https://quarto.org/) (these are non-Python dependencies).
+
+You can build the docs locally to look at them with `make`, which runs a command to build the README and then another to build the website which can then be found in `docs/_site/.` It's `make clean` to remove the existing README.
+
+To publish new docs to GitHub Pages (where the documentation is displayed as web pages), it's `make publish`—but only devs with admin rights will be able to execute this.
 
 ## How to test the project
 
 Run the full test suite:
 
 ```bash
-nox
+$ uv run nox
 ```
 
 List the available Nox sessions:
 
 ```bash
-nox --list-sessions
+$ uv run nox --list-sessions
 ```
 
 You can also run a specific Nox session. For example, invoke the unit
 test suite like this:
 
 ```bash
-nox --session=tests
+$ uv run nox --session=tests
 ```
 
 Unit tests are located in the `tests` directory, and are written using
 the [pytest](https://pytest.readthedocs.io/) testing framework.
+
+You may need to use, for example, `uv run nox` to ensure that the
+tests are run in the right environment.
+
+For the pre-commit checks, use
+
+```bash
+$ uv run pre-commit run --all-files
+```
 
 ## How to submit changes
 
@@ -84,35 +95,48 @@ submit changes to this project.
 Your pull request needs to meet the following guidelines for acceptance:
 
 - The Nox test suite must pass without errors and warnings.
-- Include unit tests. This project maintains 100% code coverage.
-- If your changes add functionality, update the documentation accordingly.
+- Include unit tests. This project aims to maintain 96% code
+  coverage.
+- If your changes add functionality, update the documentation
+  accordingly.
+- Run make to generate the new documentation.
+- Run the pre-commit suite before committing.
 
 Feel free to submit early, though---we can always iterate on this.
 
-Linting and formatting are run as part of pre-commit and nox. To just run pre-commit checks, use `poetry run pre-commit run --all-files`.
+To run linting and code formatting checks before committing your change,
+you need to run the following
+command:
 
-We recommend that you open an issue before starting work on any new features. This will allow a chance to talk it over with the owners and validate your approach.
+```bash
+$ uv run nox --session=pre-commit -- install
+```
 
-## How to build the documentation
-
-You can build the docs locally to look at it. The command is `make`: this will build the docs and put them in `docs/_site/`.
-
-To publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s `make publish`—but only devs with admin rights will be able to execute this.
+It is recommended to open an issue before starting work on anything.
+This will allow a chance to talk it over with the owners and validate
+your approach.
 
 ## How to create a package release
 
 - Open a new branch with the version name
 
-- Change the version in pyproject.toml
+- Change the version in pyproject.toml (you can run `uv run version_bumper.py`, which has script-level dependencies)
 
 - Commit the change with a new version label as the commit message (checking the tests pass)
 
-- Head to github and merge into main
+- Head to GitHub and merge into main (again, if the CI works)
 
 - Draft a new release based on that most recent merge commit, using the new version as the tag
 
-- Confirm the release draft on gitub
+- Confirm the release draft on GitHub
 
-- The automatic release github action will push to PyPI.
+- The automatic release GitHub Action will push to PyPI.
 
-If you ever need distributable files, you can use the `poetry build` command locally.
+If you ever need distributable files, you can use the `uv build` command locally.
+
+## How to build the documentation manually and locally
+
+You shouldn't need to publish the documentation because there's a GitHub action that covers it automatically whenever there's a new release. But to upload the documentation manually, it's
+
+- Run `make` to build the documentation
+- Run `make publish` to publish the documentation
