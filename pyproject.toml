@@ -3,6 +3,13 @@ name = "specification_curve"
 version = "0.3.5"
 description = "Specification_Curve"
 readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
 requires-python = ">=3.9"
 dependencies = [
     "matplotlib>=3.9.4",
