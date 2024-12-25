@@ -733,6 +733,7 @@ def load_example_data1() -> pd.DataFrame:
     )
     with resources.as_file(ref) as path:
         df = pd.read_csv(path, index_col=0)
+
     num_cols = [x for x in df.columns if x not in ["group1", "group2"]]
     for col in num_cols:
         df[col] = df[col].astype(np.double)
