@@ -10,6 +10,7 @@ import os
 import typing
 from collections import Counter, defaultdict
 from importlib import resources
+from importlib.metadata import PackageNotFoundError, version
 from itertools import combinations
 from math import floor, log10
 from typing import DefaultDict, List, Optional, Union
@@ -21,6 +22,11 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from typeguard import typeguard_ignore
+
+try:
+    __version__ = version("specification_curve")
+except PackageNotFoundError:
+    __version__ = "unknown"
 
 
 def _round_to_2(x: float) -> float:
