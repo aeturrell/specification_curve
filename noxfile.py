@@ -5,25 +5,13 @@ from pathlib import Path
 from textwrap import dedent
 
 import nox
-
-try:
-    from nox_poetry import Session, session
-except ImportError:
-    message = f"""\
-    Nox failed to import the 'nox-poetry' package.
-
-    Please install it using the following command:
-
-    {sys.executable} -m pip install nox-poetry"""
-    raise SystemExit(dedent(message))
-
+from nox import session
 
 package = "specification_curve"
 python_versions = ["3.9", "3.10", "3.11"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
-    "safety",
     "mypy",
     "tests",
     "typeguard",
@@ -31,7 +19,7 @@ nox.options.sessions = (
 )
 
 
-def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
+def activate_virtualenv_in_precommit_hooks(session: nox.Session) -> None:
     """Activate virtualenv in hooks installed by pre-commit.
 
     This function patches git hooks installed by pre-commit to activate the
@@ -83,7 +71,7 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
 
 
 @session(name="pre-commit", python="3.9")
-def precommit(session: Session) -> None:
+def precommit(session: nox.Session) -> None:
     """Lint using pre-commit."""
     args = session.posargs or ["run", "--all-files", "--show-diff-on-failure"]
     session.install(
@@ -95,16 +83,8 @@ def precommit(session: Session) -> None:
         activate_virtualenv_in_precommit_hooks(session)
 
 
-@session(python="3.9")
-def safety(session: Session) -> None:
-    """Scan dependencies for insecure packages."""
-    requirements = session.poetry.export_requirements()
-    session.install("safety")
-    session.run("safety", "check", "--full-report", f"--file={requirements}")
-
-
 @session(python=python_versions)
-def mypy(session: Session) -> None:
+def mypy(session: nox.Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or ["src", "tests"]
     session.install(".")
@@ -115,7 +95,7 @@ def mypy(session: Session) -> None:
 
 
 @session(python=python_versions)
-def tests(session: Session) -> None:
+def tests(session: nox.Session) -> None:
     """Run the test suite."""
     session.install(".")
     session.install("coverage[toml]", "pytest", "pygments")
@@ -127,7 +107,7 @@ def tests(session: Session) -> None:
 
 
 @session
-def coverage(session: Session) -> None:
+def coverage(session: nox.Session) -> None:
     """Produce the coverage report."""
     args = session.posargs or ["report"]
 
@@ -140,7 +120,7 @@ def coverage(session: Session) -> None:
 
 
 @session(python=python_versions)
-def typeguard(session: Session) -> None:
+def typeguard(session: nox.Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
     session.install("pytest", "typeguard", "pygments")
@@ -148,7 +128,7 @@ def typeguard(session: Session) -> None:
 
 
 @session(python=python_versions)
-def xdoctest(session: Session) -> None:
+def xdoctest(session: nox.Session) -> None:
     """Run examples with xdoctest."""
     args = session.posargs or ["all"]
     session.install(".")
