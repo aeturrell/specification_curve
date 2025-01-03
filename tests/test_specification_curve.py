@@ -207,8 +207,8 @@ def test_011_formula_parsing(mock_show) -> None:
         print(f"{category}: {variables}")
 
     assert result == {
-        "x_exog": ["y", "y1"],
-        "y_endog": ["x", "x1"],
+        "x_exog": ["x", "x1"],
+        "y_endog": ["y", "y1"],
         "always_include": ["c"],
         "controls": ["c2", "c3"],
     }, "Parser output doesn't match expected result"

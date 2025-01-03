@@ -109,8 +109,8 @@ def _parse_formula(formula_string: str) -> dict[str, List[str]]:
 
     Returns:
     dict: Dictionary containing lists of variables categorized as:
-          - exog: dependent variables (before ~)
-          - endog: independent variables (after ~ and before first +)
+          - endog: dependent variables (before ~)
+          - exog: independent variables (after ~ and before first +)
           - always_include: standalone variables (no | symbol)
           - controls: variables that appear after | symbols
     """
@@ -125,17 +125,17 @@ def _parse_formula(formula_string: str) -> dict[str, List[str]]:
     # Split into left and right sides of the tilde
     left_side, right_side = formula_string.split("~")
 
-    # Process exogenous variables (left side)
+    # Process endog variables (left side)
     left_vars = left_side.strip().split("|")
-    result["x_exog"].extend(var.strip() for var in left_vars if var.strip())
+    result["y_endog"].extend(var.strip() for var in left_vars if var.strip())
 
     # Split right side into components by plus sign
     right_components = right_side.strip().split("+")
 
-    # Process the first component (endogenous variables)
+    # Process the first component (exog variables)
     if right_components:
         endog_vars = right_components[0].strip().split("|")
-        result["y_endog"].extend(var.strip() for var in endog_vars if var.strip())
+        result["x_exog"].extend(var.strip() for var in endog_vars if var.strip())
 
         # Process remaining components
         for component in right_components[1:]:
