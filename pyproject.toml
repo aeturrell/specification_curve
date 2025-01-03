@@ -3,7 +3,7 @@ name = "specification_curve"
 version = "0.3.5"
 description = "Specification_Curve"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = {text = "MIT License"}
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3.9",
