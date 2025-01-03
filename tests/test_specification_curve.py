@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import specification_curve as specy
 import statsmodels.api as sm
+from pytest import raises
 from scipy.stats import norm
 from specification_curve import _parse_formula
 from typeguard import typeguard_ignore
@@ -242,3 +243,26 @@ def test_013_without_pretty(mock_show) -> None:
     sc.fit()
     sc.plot(pretty_plots=False)
     mock_show.assert_called_once()
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_014_cannot_have_formula_and_lists(mock_show) -> None:
+    with raises(ValueError) as exc_info:
+        df = specy.load_example_data1()
+        sc = specy.SpecificationCurve(  # noqa: F841
+            df=df,
+            formula="y1 | y2 ~ x1 | x2 + group1 | c1 | c2",
+            y_endog=["y1", "y2"],
+            x_exog=["x1"],
+        )
+    assert exc_info.type is ValueError
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_015_must_have_formula_xor_lists(mock_show) -> None:
+    with raises(ValueError) as exc_info:
+        df = specy.load_example_data1()
+        sc = specy.SpecificationCurve(df=df)  # noqa: F841
+    assert exc_info.type is ValueError
