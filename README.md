@@ -6,6 +6,7 @@ Specification Curve is a Python package that performs specification curve analys
 [![Status](https://img.shields.io/pypi/status/specification_curve.svg)](https://pypi.org/project/specification_curve/)
 [![Python Version](https://img.shields.io/pypi/pyversions/specification_curve)](https://pypi.org/project/specification_curve)
 [![License](https://img.shields.io/pypi/l/specification_curve)](https://opensource.org/licenses/MIT)
+[![Read the documentation at https://aeturrell.github.io/specification_curve/](https://img.shields.io/badge/docs-passing-brightgreen)](https://aeturrell.github.io/specification_curve/)
 [![Tests](https://github.com/aeturrell/specification_curve/workflows/Tests/badge.svg)](https://github.com/aeturrell/specification_curve/actions?workflow=Tests)
 [![Codecov](https://codecov.io/gh/aeturrell/specification_curve/branch/main/graph/badge.svg)](https://codecov.io/gh/aeturrell/specification_curve)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
