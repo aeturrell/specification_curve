@@ -7,7 +7,6 @@ A package that produces specification curve analysis.
 import copy
 import itertools
 import os
-import typing
 from collections import Counter, defaultdict
 from importlib import resources
 from importlib.metadata import PackageNotFoundError, version
@@ -37,32 +36,6 @@ def _round_to_2(x: float) -> float:
         float: number rounded
     """
     return round(x, -int(floor(log10(abs(x)))) + 2)
-
-
-@typing.no_type_check
-def _double_list_check(XX: Union[List[str], List[List[str]]]) -> List[List[str]]:
-    """Ensures that input is returned as nested list.
-    Args:
-        XX (Union[list[str], list[list[str]]]): Input list of (list of) strings
-    Returns:
-        list[list[str]]: List of list of strings
-    """
-    if not (any(isinstance(el, list) for el in XX)):
-        XX = [XX]
-    return XX
-
-
-@typing.no_type_check
-def _single_list_check_str(X: Union[str, List[str]]) -> List[str]:
-    """Ensures a list of strings.
-    Args:
-        X (Union[str, list[str]]): input string of list of strings
-    Returns:
-        list[str]: List of strings.
-    """
-    if isinstance(X, str):
-        X = [X]
-    return X
 
 
 def _remove_overlapping_vars(
@@ -263,9 +236,6 @@ class SpecificationCurve:
             estimator (statsmodels.regression.linear_model or statsmodels.discrete.discrete_model, optional): statsmodels estimator. Defaults to sm.OLS.
         """
         self.estimator = estimator
-        # self.cat_expand = _single_list_check_str(self.cat_expand)
-        # self.exclu_grps = _double_list_check(self.exclu_grps)
-        # self.always_include = _single_list_check_str(self.always_include)
         # If any of always include in any other list, remove it from other list
         self.controls = _remove_overlapping_vars(self.controls, self.always_include)
         self.x_exog = _remove_overlapping_vars(self.x_exog, self.always_include)

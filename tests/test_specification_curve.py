@@ -222,3 +222,23 @@ def test_012_formula_run(mock_show) -> None:
     sc.fit()
     sc.plot()
     mock_show.assert_called_once()
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_013_formula_run_endog(mock_show) -> None:
+    df = specy.load_example_data1()
+    sc = specy.SpecificationCurve(df=df, formula="y1 | y2 ~ x1 | x2 + group1 | c1 | c2")
+    sc.fit()
+    sc.plot()
+    mock_show.assert_called_once()
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_013_without_pretty(mock_show) -> None:
+    df = specy.load_example_data1()
+    sc = specy.SpecificationCurve(df=df, formula="y1 | y2 ~ x1 | x2 + group1 | c1 | c2")
+    sc.fit()
+    sc.plot(pretty_plots=False)
+    mock_show.assert_called_once()
