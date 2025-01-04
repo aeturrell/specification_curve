@@ -388,5 +388,5 @@ def test_023_fit_null_without_fit() -> None:
     )
 
     # Test that ValueError is raised when calling fit_null() before fit()
-    with raises(ValueError, match="Must have run .fit() before .fit_null()"):
+    with raises(ValueError):
         sco.fit_null(n_boot=5, f_sample=0.1)

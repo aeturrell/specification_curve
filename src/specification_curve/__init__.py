@@ -161,22 +161,22 @@ def _parse_formula(formula_string: str) -> dict[str, List[str]]:
     right_components = right_side.strip().split("+")
 
     # Process the first component (exog variables)
-    if right_components:
-        endog_vars = right_components[0].strip().split("|")
-        result["x_exog"].extend(var.strip() for var in endog_vars if var.strip())
+    endog_vars = right_components[0].strip().split("|")
+    result["x_exog"].extend(var.strip() for var in endog_vars if var.strip())
 
-        # Process remaining components
-        for component in right_components[1:]:
-            component = component.strip()
-            if "|" in component:
-                # If component contains |, split and add all parts to controls
-                vars_in_component = component.split("|")
-                result["controls"].extend(
-                    var.strip() for var in vars_in_component if var.strip()
-                )
-            else:
-                # If component is standalone (no |), add to always_include
-                result["always_include"].append(component)
+    # Process remaining components
+    for component in right_components[1:]:
+        component = component.strip()
+        if "|" in component:
+            # If component contains |, split and add all parts to controls
+            vars_in_component = component.split("|")
+            result["controls"].extend(
+                var.strip() for var in vars_in_component if var.strip()
+            )
+        else:
+            # If component is standalone (no |), add to always_include
+            result["always_include"].append(component)
+
     return result
 
 
@@ -260,8 +260,8 @@ class SpecificationCurve:
         self.exclu_grps = exclu_grps
         self.cat_expand = cat_expand
         self.orig_cat_expand = cat_expand
-        self.orig_controls = self.controls.copy()
-        self.orig_exclu_grps = self.exclu_grps.copy()
+        self.orig_controls = self.controls.copy()  # type: ignore
+        self.orig_exclu_grps = self.exclu_grps.copy()  # type: ignore
         self.init_cols = (
             self.y_endog + self.x_exog + self.controls + self.always_include
         ).copy()
