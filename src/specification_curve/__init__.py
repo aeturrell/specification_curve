@@ -241,7 +241,7 @@ class SpecificationCurve:
                 if always_include is not None
                 else []
             )
-            self.formula = None
+            self.formula = None  # type: ignore
 
         self.df = df
         self.exclu_grps = exclu_grps
@@ -485,7 +485,7 @@ class SpecificationCurve:
                 for y_star_k in range(
                     y_star_chosen_rows.shape[1]
                 ):  # iterating over specifications
-                    df_new = df.iloc[index_of_rows, :].copy()  # selects rows
+                    df_new = self.df.iloc[index_of_rows, :].copy()  # selects rows
                     df_new["y_star"] = y_star_chosen_rows.loc[
                         :, y_star_k
                     ]  # goes one spec at a time
@@ -776,8 +776,8 @@ class SpecificationCurve:
 
             # Annotate the null line
             axarr[0].annotate(
-                xy=(0.6, ns_df.iloc[-1, -1] * 1.5),
-                xycoords=("figure fraction", "data"),
+                xy=(0.6, ns_df.iloc[-1, -1] * 1.5),  # type: ignore
+                xycoords=("figure fraction", "data"),  # type: ignore
                 text="Coefficient under null",
                 fontsize=11,
                 color="gray",

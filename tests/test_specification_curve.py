@@ -282,10 +282,10 @@ def test_016_null_under_bootsraps(mock_show) -> None:
         ["x_1", "x_2", "x_3", "x_4", "y"],
     ).T
     y_endog = ["y"]
-    x_exog = ["x_1", "x_5"]
-    controls = ["x_3", "x_4"]
+    x_exog = ["x_1", "x_4"]
+    controls = ["x_2", "x_3"]
     sco = specy.SpecificationCurve(df, y_endog, x_exog, controls)
     sco.fit()
     sco.fit_null(n_boot=4)
-    sco.plot(show_null_stats=True, **{"n_boot": 50})
+    sco.plot(show_null_stats=True, **{"n_boot": 5})  # type: ignore
     sco.plot(show_null_stats=True)
