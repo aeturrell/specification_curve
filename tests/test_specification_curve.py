@@ -266,3 +266,26 @@ def test_015_must_have_formula_xor_lists(mock_show) -> None:
         df = specy.load_example_data1()
         sc = specy.SpecificationCurve(df=df)  # noqa: F841
     assert exc_info.type is ValueError
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_016_null_under_bootsraps(mock_show) -> None:
+    n_samples = 200
+    x_1 = np.random.random(size=n_samples)
+    x_2 = np.random.randint(3, size=n_samples)
+    x_3 = np.random.random(size=n_samples)
+    x_4 = x_1 + 0.05 * np.random.randn(n_samples)
+    y = 3.5 * x_1 + 0.2 * x_2 + 0.3 * x_3 + 5
+    df = pd.DataFrame(
+        [x_1, x_2, x_3, x_4, y],
+        ["x_1", "x_2", "x_3", "x_4", "y"],
+    ).T
+    y_endog = ["y"]
+    x_exog = ["x_1", "x_5"]
+    controls = ["x_3", "x_4"]
+    sco = specy.SpecificationCurve(df, y_endog, x_exog, controls)
+    sco.fit()
+    sco.fit_null(n_boot=4)
+    sco.plot(show_null_stats=True, **{"n_boot": 50})
+    sco.plot(show_null_stats=True)

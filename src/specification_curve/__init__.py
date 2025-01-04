@@ -19,13 +19,21 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
+import pingouin as pg
 import statsmodels.api as sm
+from tqdm.auto import trange
 from typeguard import typeguard_ignore
 
 try:
     __version__ = version("specification_curve")
 except PackageNotFoundError:
     __version__ = "unknown"
+
+
+# Set seed for random numbers
+seed_for_prng = 78557
+# prng=probabilistic random number generator
+prng = np.random.default_rng(seed_for_prng)
 
 
 def _round_to_2(x: float) -> float:
@@ -152,6 +160,13 @@ def _parse_formula(formula_string: str) -> dict[str, List[str]]:
     return result
 
 
+def _rounder(number: float):
+    decimal_part = number % 1
+    integer_part = number // 1
+    num_out = integer_part + float(f'{float(f"{decimal_part:.2g}"):g}')
+    return num_out
+
+
 class SpecificationCurve:
     """Specification curve object.
     Uses a model to perform all variants of a specification.
@@ -204,6 +219,7 @@ class SpecificationCurve:
                     "Cannot provide both formula and individual components "
                     "(y_endog, x_exog, controls, always_include)"
                 )
+            self.formula = formula
             spec_via_eqn = _parse_formula(formula)
             self.controls = spec_via_eqn["controls"]
             self.always_include = spec_via_eqn["always_include"]
@@ -225,10 +241,50 @@ class SpecificationCurve:
                 if always_include is not None
                 else []
             )
+            self.formula = None
 
         self.df = df
         self.exclu_grps = exclu_grps
         self.cat_expand = cat_expand
+        self.orig_cat_expand = cat_expand
+        self.orig_controls = self.controls.copy()
+
+    def __repr__(self):
+        message = "--------------------------\nSpecification Curve object\n--------------------------\n"
+        if self.formula is not None:
+            message = message + f"{self.formula=}\n" + "\n"
+        else:
+            message = (
+                message
+                + "y vars: "
+                + ", ".join([x for x in self.y_endog])
+                + "\n"
+                + "x vars: "
+                + ", ".join([x for x in self.x_exog])
+                + "\n"
+                + "controls: "
+                + ", ".join([x for x in self.controls])
+                + "\n"
+                + "always included: "
+                + " ".join([x for x in self.always_include])
+                + "\n"
+                + "\n"
+            )
+        if hasattr(self, "estimator"):
+            # Model has been fit if estimator exists
+            message = (
+                message
+                + "Specifications have run\n-----------------------\n"
+                + "Estimator: "
+                + repr(sm.OLS)
+                + "\n"
+                + "No. specifications: "
+                + str(len(self.df_r))
+                + "\n"
+                + "Median coefficient: "
+                + f"{_rounder(np.median(self.df_r['Coefficient']))}"
+            )
+        return message
 
     def fit(self, estimator=sm.OLS) -> None:
         """Fits a specification curve by performing regressions.
@@ -241,7 +297,6 @@ class SpecificationCurve:
         self.x_exog = _remove_overlapping_vars(self.x_exog, self.always_include)
         self.ctrl_combs = self._compute_combinations()
         self.df_r = self._spec_curve_regression()
-        print("Fit complete")
 
     def _reg_func(
         self, y_endog: Union[str, List[str]], x_exog: str, reg_vars: List[str]
@@ -281,7 +336,8 @@ class SpecificationCurve:
         # convert just these columns to int
         for col_name in cols_to_convert_to_int:
             xf[col_name] = xf[col_name].astype(int)
-        return self.estimator(xf[y_endog], xf[[x_exog] + reg_vars_here]).fit()
+        xf_with_constant = sm.tools.tools.add_constant(xf[[x_exog] + reg_vars_here])
+        return self.estimator(xf[y_endog], xf_with_constant).fit()
 
     def _compute_combinations(self):
         """
@@ -400,11 +456,119 @@ class SpecificationCurve:
         df_r["SpecificationCounts"] = df_r["Specification"].apply(lambda x: Counter(x))
         return df_r
 
+    def fit_null(self, n_boot: int = 20, f_sample: float = 0.1) -> None:
+        if hasattr(self, "df_r"):
+            # construct the null, y_(i(k))* = y_(i(k)) - b_k*x_(i(k))
+            # where i is over rows and k is over specifications
+            # and i is a function of k as y and x rows change depending on the k
+            y_star = (
+                self.df[self.df_r["y_endog"]]
+                - self.df_r["Coefficient"].values * self.df[self.df_r["x_exog"]].values
+            )
+            y_star.columns = self.df_r.index
+
+            all_boot_df = pd.DataFrame()
+
+            for i in trange(
+                n_boot, desc=f"Bootstraps ({y_star.shape[1]} specifications)"
+            ):
+                # Choose num_selections rows from the len(df["y"]) possible rows of data
+                # Dim.: num_selections * num_specifications
+                # which rows do we want for this bootstrap?
+                num_rows = int(floor(f_sample * y_star.shape[0]))
+                index_of_rows = prng.integers(
+                    low=0, high=y_star.shape[0], size=num_rows
+                )
+                y_star_chosen_rows = y_star.loc[index_of_rows, :]
+
+                df_spec_coef_results = pd.DataFrame()
+                for y_star_k in range(
+                    y_star_chosen_rows.shape[1]
+                ):  # iterating over specifications
+                    df_new = df.iloc[index_of_rows, :].copy()  # selects rows
+                    df_new["y_star"] = y_star_chosen_rows.loc[
+                        :, y_star_k
+                    ]  # goes one spec at a time
+                    sc_boot = SpecificationCurve(
+                        df_new,
+                        y_endog="y_star",
+                        x_exog=self.x_exog,
+                        controls=self.orig_controls,
+                        cat_expand=self.orig_cat_expand,
+                        always_include=self.always_include,
+                    )
+                    sc_boot.fit()
+                    df_spec_coef_results = pd.concat(
+                        [
+                            df_spec_coef_results,
+                            pd.DataFrame(sc_boot.df_r["Coefficient"]).set_axis(
+                                [str(i) + "_" + str(y_star_k)], axis=1
+                            ),
+                        ],
+                        axis=1,
+                    )
+
+                all_boot_df = pd.concat([all_boot_df, df_spec_coef_results], axis=1)
+            quantiles_for_bootstrap = [0.025, 0.5, 0.975]
+            self.df_null_stats = all_boot_df.quantile(quantiles_for_bootstrap, axis=1)
+            # Compute what percentage of the resampled
+            # specification curves (for example, of the 500 resamples) exhibits an overall test statistic (for example, median efect size) that
+            # is at least as extreme as that observed in the real data.
+            median_by_spec = all_boot_df.median(axis=1)
+            self.median_by_spec = median_by_spec
+            median_by_spec_p_value = pg.ttest(
+                median_by_spec, self.df_r["Coefficient"]
+            ).loc["T-test", "p-val"]
+            share_pls_p_value = pg.ttest((median_by_spec > 0), True).loc[
+                "T-test", "p-val"
+            ]
+            share_neg_p_value = pg.ttest((median_by_spec < 0), True).loc[
+                "T-test", "p-val"
+            ]
+
+            def _nice_pval_text(num: float) -> str:
+                """_summary_
+
+                Args:
+                    num (float): p-value to stringigy
+
+                Returns:
+                    str: Reading friendly version
+                """
+                if num < 0.001:
+                    return "<0.001"
+                else:
+                    return str(_rounder(num))
+
+            median_by_spec_p_text = _nice_pval_text(median_by_spec_p_value)
+            share_pls_p_text = _nice_pval_text(share_pls_p_value)
+            share_neg_p_text = _nice_pval_text(share_neg_p_value)
+
+            self.null_stats_summary = pd.DataFrame(
+                columns=["estimate", "p-value"],
+                index=["median", "share positive", "share negative"],
+                data=[
+                    [f"{_rounder(median_by_spec.median())}", median_by_spec_p_text],
+                    [
+                        f"{(median_by_spec>0).sum()} of {all_boot_df.shape[0]}",
+                        share_pls_p_text,
+                    ],
+                    [
+                        f"{(median_by_spec<0).sum()} of {all_boot_df.shape[0]}",
+                        share_neg_p_text,
+                    ],
+                ],
+            )
+        else:
+            raise ValueError("Must have run .fit() before .fit_null()")
+
     def plot(
         self,
         save_path=None,
         pretty_plots: bool = True,
         preferred_spec: Union[List[str], List[None]] = [],
+        show_null_stats: bool = False,
+        **kwargs,
     ) -> None:
         """Makes plots of fitted specification curve.
         Args:
@@ -414,6 +578,10 @@ class SpecificationCurve:
         """
         if pretty_plots:
             _pretty_plots()
+        if show_null_stats and "n_boot" in kwargs.keys():  # use new n_boots
+            self.fit_null(**kwargs)
+        if show_null_stats and not hasattr(self, "df_null_stats"):
+            self.fit_null(**kwargs)
         # Set up blocks for showing what effects are included
         df_spec = self.df_r["SpecificationCounts"].apply(pd.Series).fillna(0.0)
         pd.set_option("future.no_silent_downcasting", True)  # for the line below
@@ -588,6 +756,34 @@ class SpecificationCurve:
         axarr[0].set_title("Specification curve analysis")
         max_height = self.df_r["conf_int"].apply(lambda x: x.max()).max()
         min_height = self.df_r["conf_int"].apply(lambda x: x.min()).min()
+        if show_null_stats:
+            ns_df = self.df_null_stats.T
+            for column in ns_df.columns[::2]:
+                axarr[0].plot(
+                    ns_df[column].index, ns_df[column], ls="--", color="k", alpha=0.2
+                )
+            for column in ns_df.columns[1::2]:
+                axarr[0].plot(
+                    ns_df[column].index,
+                    ns_df[column],
+                    ls="dashdot",
+                    color="k",
+                    alpha=0.3,
+                )
+
+            max_height = max(max_height, ns_df.max().max())
+            min_height = min(min_height, ns_df.min().min())
+
+            # Annotate the null line
+            axarr[0].annotate(
+                xy=(0.6, ns_df.iloc[-1, -1] * 1.5),
+                xycoords=("figure fraction", "data"),
+                text="Coefficient under null",
+                fontsize=11,
+                color="gray",
+                zorder=5,
+                ha="left",
+            )
 
         def get_chart_axes_limits(height: float, max: bool) -> float:
             """For positive numbers and max, returns height*axes_width_multiple.
@@ -745,4 +941,30 @@ def load_example_data2() -> pd.DataFrame:
     df = pd.DataFrame([x_1, x_2, x_3, x_4, y], ["x_1", "x_2", "x_3", "x_4", "y"]).T
     # Set x_4 as a categorical variable
     df["x_4"] = df["x_4"].astype("category")
+    return df
+
+
+def load_example_data3() -> pd.DataFrame:
+    """Generates fake data.
+
+    Returns:
+        pd.DataFrame: Example data suitable for regression.
+    """
+    n_samples = 400
+    # Number of dimensions
+    n_dim = 4
+    c_rnd_vars = prng.random(size=(n_dim, n_samples))
+    y_1 = (
+        0.4 * c_rnd_vars[0, :]  # THIS IS THE TRUE VALUE OF THE COEFFICIENT
+        - 0.2 * c_rnd_vars[1, :]
+        + 0.3 * prng.standard_normal(n_samples)
+    )
+    # Next line causes y_2 ests to be much more noisy
+    y_2 = y_1 - 0.5 * np.abs(prng.standard_normal(n_samples))
+    # Put data into dataframe
+    df = pd.DataFrame([y_1, y_2], ["y1", "y2"]).T
+    df["x_1"] = c_rnd_vars[0, :]
+    df["c_1"] = c_rnd_vars[1, :]
+    df["c_2"] = c_rnd_vars[2, :]
+    df["c_3"] = c_rnd_vars[3, :]
     return df
