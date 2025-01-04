@@ -266,3 +266,127 @@ def test_015_must_have_formula_xor_lists(mock_show) -> None:
         df = specy.load_example_data1()
         sc = specy.SpecificationCurve(df=df)  # noqa: F841
     assert exc_info.type is ValueError
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_016_null_under_bootstraps(mock_show) -> None:
+    n_samples = 200
+    x_1 = np.random.random(size=n_samples)
+    x_2 = np.random.randint(3, size=n_samples)
+    x_3 = np.random.random(size=n_samples)
+    x_4 = x_1 + 0.05 * np.random.randn(n_samples)
+    y = 3.5 * x_1 + 0.2 * x_2 + 0.3 * x_3 + 5
+    df = pd.DataFrame(
+        [x_1, x_2, x_3, x_4, y],
+        ["x_1", "x_2", "x_3", "x_4", "y"],
+    ).T
+    y_endog = ["y"]
+    x_exog = ["x_1", "x_4"]
+    controls = ["x_2", "x_3"]
+    sco = specy.SpecificationCurve(df, y_endog, x_exog, controls)
+    sco.fit()
+    sco.fit_null(n_boot=4)
+    sco.plot(show_null_stats=True, **{"n_boot": 5})  # type: ignore
+    sco.plot(show_null_stats=True)
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_017_null_under_bootstraps_auto_run(mock_show) -> None:
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(df, formula="y1 | y2 ~ x1 + c1 | c2 | c3")
+    sco.fit()
+    sco.plot(show_null_stats=True)
+    print(sco)
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_018_repr(mock_show) -> None:
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(df, formula="y1 | y2 ~ x1 + c1 | c2 | c3")
+    sco.fit()
+    sco.fit_null(n_boot=3)
+    print(sco)
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_018a_repr_no_fit(mock_show) -> None:
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(df, formula="y1 | y2 ~ x1 + c1 | c2 | c3")
+    print(sco)
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_019_more_exclude(mock_show) -> None:
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(
+        df,
+        y_endog=["y1", "y2"],
+        x_exog="x1",
+        controls=["c1", "c2", "c3"],
+        exclu_grps=[["c1", "c2"], ["c3", "c2"]],
+    )
+    sco.fit()
+    sco.fit_null(n_boot=3)
+    sco.plot(show_null_stats=True)
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_020_check_version(mock_show) -> None:
+    print(specy.__version__)
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_021_exclude_and_subset(mock_show) -> None:
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(
+        df,
+        y_endog=["y1", "y2"],
+        x_exog="x1",
+        controls=["ccat", "c2", "c3"],
+        exclu_grps=[["c3", "c2"]],
+        cat_expand=["ccat"],
+    )
+    sco.fit()
+    sco.fit_null(n_boot=3)
+    sco.plot(show_null_stats=True)
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_022_formula_no_controls(mock_show) -> None:
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(
+        df,
+        formula="y1 | y2 ~ x1",
+    )
+    sco.fit()
+    sco.plot()
+
+
+@typeguard_ignore
+def test_023_fit_null_without_fit() -> None:
+    # Setup: Create a simple DataFrame for testing
+    df = pd.DataFrame(
+        {
+            "y": [1, 2, 3, 4, 5],
+            "x": [2, 4, 6, 8, 10],
+            "control1": [1, 1, 0, 0, 1],
+            "control2": [0, 1, 1, 0, 0],
+        }
+    )
+
+    # Initialize SpecificationCurve
+    sco = specy.SpecificationCurve(
+        df=df, y_endog="y", x_exog="x", controls=["control1", "control2"]
+    )
+
+    # Test that ValueError is raised when calling fit_null() before fit()
+    with raises(ValueError):
+        sco.fit_null(n_boot=5, f_sample=0.1)

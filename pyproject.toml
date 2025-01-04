@@ -20,6 +20,10 @@ dependencies = [
     "typeguard>=4.4.1",
     "types-setuptools>=75.6.0.20241223",
     "nbclient>=0.10.2",
+    "tqdm>=4.67.1",
+    "pingouin>=0.5.5",
+    "types-tqdm>=4.67.0.20241221",
+    "ipywidgets>=8.1.5",
 ]
 
 [dependency-groups]
@@ -42,7 +46,7 @@ dev = [
 
 
 [[tool.mypy.overrides]]
-module = ["statsmodels.*", "scipy.stats.*"]
+module = ["statsmodels.*", "scipy.stats.*", "pingouin"]
 ignore_missing_imports = true
 
 [tool.mypy]

@@ -19,13 +19,21 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
+import pingouin as pg
 import statsmodels.api as sm
+from tqdm.auto import trange
 from typeguard import typeguard_ignore
 
 try:
     __version__ = version("specification_curve")
 except PackageNotFoundError:
     __version__ = "unknown"
+
+
+# Set seed for random numbers
+seed_for_prng = 78557
+# prng=probabilistic random number generator
+prng = np.random.default_rng(seed_for_prng)
 
 
 def _round_to_2(x: float) -> float:
@@ -67,6 +75,26 @@ def _pretty_plots() -> None:
         "font.family": "STIXGeneral",
     }
     plt.style.use(json_plot_settings)
+
+
+def _undummify(df, prefix_sep=" = "):
+    cols2collapse = {
+        item.split(prefix_sep)[0]: (prefix_sep in item) for item in df.columns
+    }
+    series_list = []
+    for col, needs_to_collapse in cols2collapse.items():
+        if needs_to_collapse:
+            undummified = (
+                df.filter(like=col)
+                .idxmax(axis=1)
+                .apply(lambda x: x.split(prefix_sep, maxsplit=1)[1])
+                .rename(col)
+            )
+            series_list.append(undummified)
+        else:
+            series_list.append(df[col])
+    undummified_df = pd.concat(series_list, axis=1)
+    return undummified_df
 
 
 def _excl_combs(lst, r, excludes):
@@ -133,22 +161,22 @@ def _parse_formula(formula_string: str) -> dict[str, List[str]]:
     right_components = right_side.strip().split("+")
 
     # Process the first component (exog variables)
-    if right_components:
-        endog_vars = right_components[0].strip().split("|")
-        result["x_exog"].extend(var.strip() for var in endog_vars if var.strip())
+    endog_vars = right_components[0].strip().split("|")
+    result["x_exog"].extend(var.strip() for var in endog_vars if var.strip())
 
-        # Process remaining components
-        for component in right_components[1:]:
-            component = component.strip()
-            if "|" in component:
-                # If component contains |, split and add all parts to controls
-                vars_in_component = component.split("|")
-                result["controls"].extend(
-                    var.strip() for var in vars_in_component if var.strip()
-                )
-            else:
-                # If component is standalone (no |), add to always_include
-                result["always_include"].append(component)
+    # Process remaining components
+    for component in right_components[1:]:
+        component = component.strip()
+        if "|" in component:
+            # If component contains |, split and add all parts to controls
+            vars_in_component = component.split("|")
+            result["controls"].extend(
+                var.strip() for var in vars_in_component if var.strip()
+            )
+        else:
+            # If component is standalone (no |), add to always_include
+            result["always_include"].append(component)
+
     return result
 
 
@@ -204,6 +232,7 @@ class SpecificationCurve:
                     "Cannot provide both formula and individual components "
                     "(y_endog, x_exog, controls, always_include)"
                 )
+            self.formula = formula
             spec_via_eqn = _parse_formula(formula)
             self.controls = spec_via_eqn["controls"]
             self.always_include = spec_via_eqn["always_include"]
@@ -225,10 +254,67 @@ class SpecificationCurve:
                 if always_include is not None
                 else []
             )
+            self.formula = None  # type: ignore
 
         self.df = df
         self.exclu_grps = exclu_grps
         self.cat_expand = cat_expand
+        self.orig_cat_expand = cat_expand
+        self.orig_controls = self.controls.copy()  # type: ignore
+        self.orig_exclu_grps = self.exclu_grps.copy()  # type: ignore
+        self.init_cols = (
+            self.y_endog + self.x_exog + self.controls + self.always_include
+        ).copy()
+
+    def __repr__(self):
+        message = "--------------------------\nSpecification Curve object\n--------------------------\n"
+        if self.formula is not None:
+            message = message + f"{self.formula=}\n" + "\n"
+        else:
+            message = (
+                message
+                + "y vars: "
+                + ", ".join([x for x in self.y_endog])
+                + "\n"
+                + "x vars: "
+                + ", ".join([x for x in self.x_exog])
+                + "\n"
+                + "controls: "
+                + ", ".join([x for x in self.controls])
+                + "\n"
+                + "always included: "
+                + " ".join([x for x in self.always_include])
+                + "\n"
+                + "\n"
+            )
+        if hasattr(self, "estimator"):
+            # Model has been fit if estimator exists
+            message = (
+                message
+                + "Specifications have run\n-----------------------\n"
+                + "Estimator: "
+                + repr(sm.OLS)
+                + "\n"
+                + "No. specifications: "
+                + str(len(self.df_r))
+                + "\n"
+                + "\nCoefficient stats:\n"
+                + pd.DataFrame(
+                    self.df_r["Coefficient"]
+                    .agg(["min", "median", "max"])
+                    .apply(lambda x: _round_to_2(x))
+                )
+                .rename(columns={"Coefficient": ""})
+                .T.to_string()
+                + "\n\n"
+            )
+        if hasattr(self, "null_df"):
+            message = (
+                message
+                + "Coeffs under null have run\n--------------------------\n"
+                + self.null_stats_summary.to_string()
+            )
+        return message
 
     def fit(self, estimator=sm.OLS) -> None:
         """Fits a specification curve by performing regressions.
@@ -241,7 +327,6 @@ class SpecificationCurve:
         self.x_exog = _remove_overlapping_vars(self.x_exog, self.always_include)
         self.ctrl_combs = self._compute_combinations()
         self.df_r = self._spec_curve_regression()
-        print("Fit complete")
 
     def _reg_func(
         self, y_endog: Union[str, List[str]], x_exog: str, reg_vars: List[str]
@@ -281,7 +366,8 @@ class SpecificationCurve:
         # convert just these columns to int
         for col_name in cols_to_convert_to_int:
             xf[col_name] = xf[col_name].astype(int)
-        return self.estimator(xf[y_endog], xf[[x_exog] + reg_vars_here]).fit()
+        xf_with_constant = sm.tools.tools.add_constant(xf[[x_exog] + reg_vars_here])
+        return self.estimator(xf[y_endog], xf_with_constant).fit()
 
     def _compute_combinations(self):
         """
@@ -400,11 +486,149 @@ class SpecificationCurve:
         df_r["SpecificationCounts"] = df_r["Specification"].apply(lambda x: Counter(x))
         return df_r
 
+    def fit_null(self, n_boot: int = 20, f_sample: float = 0.1) -> None:
+        if hasattr(self, "df_r"):
+            # construct the null, y_(i(k))* = y_(i(k)) - b_k*x_(i(k))
+            # where i is over rows and k is over specifications
+            # and i is a function of k as y and x rows change depending on the k
+            y_star = (
+                self.df[self.df_r["y_endog"]]
+                - self.df_r["Coefficient"].values * self.df[self.df_r["x_exog"]].values
+            )
+            y_star.columns = self.df_r.index
+
+            all_boot_df = pd.DataFrame()
+
+            for i in trange(
+                n_boot, desc=f"Bootstraps ({y_star.shape[1]} specifications)"
+            ):
+                # Choose num_selections rows from the len(df["y"]) possible rows of data
+                # Dim.: num_selections * num_specifications
+                # which rows do we want for this bootstrap?
+                num_rows = int(floor(f_sample * y_star.shape[0]))
+                index_of_rows = prng.integers(
+                    low=0, high=y_star.shape[0], size=num_rows
+                )
+                y_star_chosen_rows = y_star.loc[index_of_rows, :]
+
+                df_spec_coef_results = pd.DataFrame()
+                for y_star_k in range(
+                    y_star_chosen_rows.shape[1]
+                ):  # iterating over specifications
+                    df_new = self.df.iloc[index_of_rows, :].copy()  # selects rows
+                    df_new["y_star"] = y_star_chosen_rows.loc[
+                        :, y_star_k
+                    ]  # goes one spec at a time
+                    cat_expanded_columns = [
+                        x for x in self.df.columns if x not in self.init_cols
+                    ]
+                    for cat_expand_col in self.orig_cat_expand:  # type: ignore
+                        lst = [x.split(" = ")[0] for x in self.df.columns]
+                        indices = [
+                            icat
+                            for icat, xcat in enumerate(lst)
+                            if xcat == cat_expand_col
+                        ]
+                        cols_to_pick_out = self.df.columns[indices]
+                        orig_df_cols = _undummify(self.df[cols_to_pick_out])
+                        orig_df_cols = orig_df_cols.iloc[index_of_rows, :].copy()
+                        df_new = pd.concat([df_new, orig_df_cols], axis=1)
+
+                    df_new = df_new.drop(cat_expanded_columns, axis=1)
+                    sc_boot = SpecificationCurve(
+                        df_new,
+                        y_endog="y_star",
+                        x_exog=self.x_exog,
+                        controls=self.orig_controls,
+                        cat_expand=self.orig_cat_expand,
+                        always_include=self.always_include,
+                        exclu_grps=self.orig_exclu_grps,
+                    )
+                    sc_boot.fit()
+                    coeff_this_bootstrap = pd.DataFrame()
+                    coeff_this_bootstrap["Coefficient"] = sc_boot.df_r["Coefficient"]
+                    coeff_this_bootstrap["Bootstrap"] = i
+                    coeff_this_bootstrap["Specification No."] = y_star_k
+                    coeff_this_bootstrap.index.name = "boot_spec_no"
+                    df_spec_coef_results = pd.concat(
+                        [
+                            df_spec_coef_results,
+                            coeff_this_bootstrap,
+                        ],
+                        axis=0,
+                    )
+
+                all_boot_df = pd.concat([all_boot_df, df_spec_coef_results], axis=0)
+            quantiles_for_bootstrap = np.array([0.025, 0.5, 0.975])
+            self.null_df = (
+                all_boot_df.groupby("Specification No.")["Coefficient"]
+                .quantile(quantiles_for_bootstrap)
+                .unstack(level=1)
+            )
+            median_by_spec = all_boot_df.groupby("Specification No.")[
+                "Coefficient"
+            ].median()
+            median_by_spec_p_value = pg.ttest(
+                median_by_spec, self.df_r["Coefficient"]
+            ).loc["T-test", "p-val"]
+            number_specs = len(self.df_r["Coefficient"])
+            if any(np.isin([number_specs, 0], (median_by_spec > 0).sum())):
+                share_pls_p_value = np.nan
+            else:
+                share_pls_p_value = pg.ttest((median_by_spec > 0), True).loc[
+                    "T-test", "p-val"
+                ]
+            if any(np.isin([number_specs, 0], (median_by_spec < 0).sum())):
+                share_neg_p_value = np.nan
+            else:
+                share_neg_p_value = pg.ttest((median_by_spec < 0), True).loc[
+                    "T-test", "p-val"
+                ]
+
+            def _nice_pval_text(num: float) -> str:
+                """_summary_
+
+                Args:
+                    num (float): p-value to stringigy
+
+                Returns:
+                    str: Reading friendly version
+                """
+                if num <= 0.001:
+                    return "<0.001"
+                elif np.isinf(num) or np.isnan(num):
+                    return "NA"
+                else:
+                    return str(_round_to_2(num))
+
+            median_by_spec_p_text = _nice_pval_text(median_by_spec_p_value)
+            share_pls_p_text = _nice_pval_text(share_pls_p_value)
+            share_neg_p_text = _nice_pval_text(share_neg_p_value)
+            self.null_stats_summary = pd.DataFrame(
+                columns=["estimate", "p-value"],
+                index=["median", "share positive", "share negative"],
+                data=[
+                    [f"{_round_to_2(median_by_spec.median())}", median_by_spec_p_text],
+                    [
+                        f"{(median_by_spec>0).sum()} of {number_specs}",
+                        share_pls_p_text,
+                    ],
+                    [
+                        f"{(median_by_spec<0).sum()} of {number_specs}",
+                        share_neg_p_text,
+                    ],
+                ],
+            )
+        else:
+            raise ValueError("Must have run .fit() before .fit_null()")
+
     def plot(
         self,
         save_path=None,
         pretty_plots: bool = True,
         preferred_spec: Union[List[str], List[None]] = [],
+        show_null_stats: bool = False,
+        **kwargs,
     ) -> None:
         """Makes plots of fitted specification curve.
         Args:
@@ -414,6 +638,10 @@ class SpecificationCurve:
         """
         if pretty_plots:
             _pretty_plots()
+        if show_null_stats and "n_boot" in kwargs.keys():  # use new n_boots
+            self.fit_null(**kwargs)
+        if show_null_stats and not hasattr(self, "null_df"):
+            self.fit_null(**kwargs)
         # Set up blocks for showing what effects are included
         df_spec = self.df_r["SpecificationCounts"].apply(pd.Series).fillna(0.0)
         pd.set_option("future.no_silent_downcasting", True)  # for the line below
@@ -588,6 +816,34 @@ class SpecificationCurve:
         axarr[0].set_title("Specification curve analysis")
         max_height = self.df_r["conf_int"].apply(lambda x: x.max()).max()
         min_height = self.df_r["conf_int"].apply(lambda x: x.min()).min()
+        if show_null_stats:
+            ns_df = self.null_df
+            for column in ns_df.columns[::2]:
+                axarr[0].plot(
+                    ns_df[column].index, ns_df[column], ls="--", color="k", alpha=0.2
+                )
+            for column in ns_df.columns[1::2]:
+                axarr[0].plot(
+                    ns_df[column].index,
+                    ns_df[column],
+                    ls="dashdot",
+                    color="k",
+                    alpha=0.3,
+                )
+
+            max_height = max(max_height, ns_df.max().max())
+            min_height = min(min_height, ns_df.min().min())
+
+            # Annotate the null line
+            axarr[0].annotate(
+                xy=(0.6, ns_df.iloc[-1, -1] * 1.2),  # type: ignore
+                xycoords=("figure fraction", "data"),  # type: ignore
+                text="Coefficient under null",
+                fontsize=11,
+                color="gray",
+                zorder=5,
+                ha="left",
+            )
 
         def get_chart_axes_limits(height: float, max: bool) -> float:
             """For positive numbers and max, returns height*axes_width_multiple.
@@ -672,7 +928,8 @@ class SpecificationCurve:
             ax.set_yticks(range(len(list(df_sp_sl.index.values))))
             # Add text on the RHS that describes what each block is
             spacing_factor = 0.02  # Adjust this value to control spacing
-            figure_width = len(df_sp_sl.columns)
+            figure_width_adj = 0.5
+            figure_width = len(df_sp_sl.columns) - figure_width_adj
             text_x_pos = figure_width * (1 + spacing_factor)
             ax.text(
                 x=text_x_pos,
@@ -694,7 +951,7 @@ class SpecificationCurve:
         for ax in axarr:
             ax.set_xticks([], minor=True)
             ax.set_xticks([])
-            ax.set_xlim(-wid, len(df_spec.columns))
+            ax.set_xlim(-wid, len(df_spec.columns) - figure_width_adj)
         if save_path is not None:
             plt.savefig(save_path, dpi=300)
         plt.show()
@@ -745,4 +1002,34 @@ def load_example_data2() -> pd.DataFrame:
     df = pd.DataFrame([x_1, x_2, x_3, x_4, y], ["x_1", "x_2", "x_3", "x_4", "y"]).T
     # Set x_4 as a categorical variable
     df["x_4"] = df["x_4"].astype("category")
+    return df
+
+
+def load_example_data3() -> pd.DataFrame:
+    """Generates fake data.
+
+    Returns:
+        pd.DataFrame: Example data suitable for regression.
+    """
+    n_samples = 20000
+    # Number of dimensions
+    n_dim = 4
+    c_rnd_vars = prng.random(size=(n_dim, n_samples))
+    x_bool = prng.integers(2, size=n_samples)
+    y_1 = (
+        0.4 * c_rnd_vars[0, :]  # THIS IS THE TRUE VALUE OF THE COEFFICIENT
+        - 0.2 * c_rnd_vars[1, :]
+        + 0.3 * prng.standard_normal(n_samples)
+        + 0.6
+        + 0.2 * x_bool
+    )
+    # Next line causes y_2 ests to be much more noisy
+    y_2 = y_1 - 0.5 * np.abs(prng.standard_normal(n_samples))
+    # Put data into dataframe
+    df = pd.DataFrame([y_1, y_2], ["y1", "y2"]).T
+    df["x1"] = c_rnd_vars[0, :]
+    df["c1"] = c_rnd_vars[1, :]
+    df["c2"] = c_rnd_vars[2, :]
+    df["c3"] = c_rnd_vars[3, :]
+    df["ccat"] = x_bool
     return df
