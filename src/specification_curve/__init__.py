@@ -77,6 +77,26 @@ def _pretty_plots() -> None:
     plt.style.use(json_plot_settings)
 
 
+def _undummify(df, prefix_sep=" = "):
+    cols2collapse = {
+        item.split(prefix_sep)[0]: (prefix_sep in item) for item in df.columns
+    }
+    series_list = []
+    for col, needs_to_collapse in cols2collapse.items():
+        if needs_to_collapse:
+            undummified = (
+                df.filter(like=col)
+                .idxmax(axis=1)
+                .apply(lambda x: x.split(prefix_sep, maxsplit=1)[1])
+                .rename(col)
+            )
+            series_list.append(undummified)
+        else:
+            series_list.append(df[col])
+    undummified_df = pd.concat(series_list, axis=1)
+    return undummified_df
+
+
 def _excl_combs(lst, r, excludes):
     """From a given list of combinations, excludes those in `excludes`.
     Args:
@@ -241,6 +261,10 @@ class SpecificationCurve:
         self.cat_expand = cat_expand
         self.orig_cat_expand = cat_expand
         self.orig_controls = self.controls.copy()
+        self.orig_exclu_grps = self.exclu_grps.copy()
+        self.init_cols = (
+            self.y_endog + self.x_exog + self.controls + self.always_include
+        ).copy()
 
     def __repr__(self):
         message = "--------------------------\nSpecification Curve object\n--------------------------\n"
@@ -274,8 +298,21 @@ class SpecificationCurve:
                 + "No. specifications: "
                 + str(len(self.df_r))
                 + "\n"
-                + "Median coefficient: "
-                + f"{_round_to_2(np.median(self.df_r['Coefficient']))}"
+                + "\nCoefficient stats:\n"
+                + pd.DataFrame(
+                    self.df_r["Coefficient"]
+                    .agg(["min", "median", "max"])
+                    .apply(lambda x: _round_to_2(x))
+                )
+                .rename(columns={"Coefficient": ""})
+                .T.to_string()
+                + "\n\n"
+            )
+        if hasattr(self, "null_df"):
+            message = (
+                message
+                + "Coeffs under null have run\n--------------------------\n"
+                + self.null_stats_summary.to_string()
             )
         return message
 
@@ -482,6 +519,22 @@ class SpecificationCurve:
                     df_new["y_star"] = y_star_chosen_rows.loc[
                         :, y_star_k
                     ]  # goes one spec at a time
+                    cat_expanded_columns = [
+                        x for x in self.df.columns if x not in self.init_cols
+                    ]
+                    for cat_expand_col in self.orig_cat_expand:
+                        lst = [x.split(" = ")[0] for x in self.df.columns]
+                        indices = [
+                            icat
+                            for icat, xcat in enumerate(lst)
+                            if xcat == cat_expand_col
+                        ]
+                        cols_to_pick_out = self.df.columns[indices]
+                        orig_df_cols = _undummify(self.df[cols_to_pick_out])
+                        orig_df_cols = orig_df_cols.iloc[index_of_rows, :].copy()
+                        df_new = pd.concat([df_new, orig_df_cols], axis=1)
+
+                    df_new = df_new.drop(cat_expanded_columns, axis=1)
                     sc_boot = SpecificationCurve(
                         df_new,
                         y_endog="y_star",
@@ -489,6 +542,7 @@ class SpecificationCurve:
                         controls=self.orig_controls,
                         cat_expand=self.orig_cat_expand,
                         always_include=self.always_include,
+                        exclu_grps=self.orig_exclu_grps,
                     )
                     sc_boot.fit()
                     coeff_this_bootstrap = pd.DataFrame()
@@ -540,10 +594,8 @@ class SpecificationCurve:
                 Returns:
                     str: Reading friendly version
                 """
-                if num < 0.001:
+                if num <= 0.001:
                     return "<0.001"
-                elif num == 0:
-                    return "0"
                 elif np.isinf(num) or np.isnan(num):
                     return "NA"
                 else:
@@ -963,18 +1015,21 @@ def load_example_data3() -> pd.DataFrame:
     # Number of dimensions
     n_dim = 4
     c_rnd_vars = prng.random(size=(n_dim, n_samples))
+    x_bool = prng.integers(2, size=n_samples)
     y_1 = (
         0.4 * c_rnd_vars[0, :]  # THIS IS THE TRUE VALUE OF THE COEFFICIENT
         - 0.2 * c_rnd_vars[1, :]
         + 0.3 * prng.standard_normal(n_samples)
         + 0.6
+        + 0.2 * x_bool
     )
     # Next line causes y_2 ests to be much more noisy
     y_2 = y_1 - 0.5 * np.abs(prng.standard_normal(n_samples))
     # Put data into dataframe
     df = pd.DataFrame([y_1, y_2], ["y1", "y2"]).T
-    df["x_1"] = c_rnd_vars[0, :]
-    df["c_1"] = c_rnd_vars[1, :]
-    df["c_2"] = c_rnd_vars[2, :]
-    df["c_3"] = c_rnd_vars[3, :]
+    df["x1"] = c_rnd_vars[0, :]
+    df["c1"] = c_rnd_vars[1, :]
+    df["c2"] = c_rnd_vars[2, :]
+    df["c3"] = c_rnd_vars[3, :]
+    df["ccat"] = x_bool
     return df
