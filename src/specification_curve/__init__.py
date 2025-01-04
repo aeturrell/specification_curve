@@ -160,13 +160,6 @@ def _parse_formula(formula_string: str) -> dict[str, List[str]]:
     return result
 
 
-def _rounder(number: float):
-    decimal_part = number % 1
-    integer_part = number // 1
-    num_out = integer_part + float(f'{float(f"{decimal_part:.2g}"):g}')
-    return num_out
-
-
 class SpecificationCurve:
     """Specification curve object.
     Uses a model to perform all variants of a specification.
@@ -282,7 +275,7 @@ class SpecificationCurve:
                 + str(len(self.df_r))
                 + "\n"
                 + "Median coefficient: "
-                + f"{_rounder(np.median(self.df_r['Coefficient']))}"
+                + f"{_round_to_2(np.median(self.df_r['Coefficient']))}"
             )
         return message
 
@@ -498,33 +491,45 @@ class SpecificationCurve:
                         always_include=self.always_include,
                     )
                     sc_boot.fit()
+                    coeff_this_bootstrap = pd.DataFrame()
+                    coeff_this_bootstrap["Coefficient"] = sc_boot.df_r["Coefficient"]
+                    coeff_this_bootstrap["Bootstrap"] = i
+                    coeff_this_bootstrap["Specification No."] = y_star_k
+                    coeff_this_bootstrap.index.name = "boot_spec_no"
                     df_spec_coef_results = pd.concat(
                         [
                             df_spec_coef_results,
-                            pd.DataFrame(sc_boot.df_r["Coefficient"]).set_axis(
-                                [str(i) + "_" + str(y_star_k)], axis=1
-                            ),
+                            coeff_this_bootstrap,
                         ],
-                        axis=1,
+                        axis=0,
                     )
 
-                all_boot_df = pd.concat([all_boot_df, df_spec_coef_results], axis=1)
-            quantiles_for_bootstrap = [0.025, 0.5, 0.975]
-            self.df_null_stats = all_boot_df.quantile(quantiles_for_bootstrap, axis=1)
-            # Compute what percentage of the resampled
-            # specification curves (for example, of the 500 resamples) exhibits an overall test statistic (for example, median efect size) that
-            # is at least as extreme as that observed in the real data.
-            median_by_spec = all_boot_df.median(axis=1)
-            self.median_by_spec = median_by_spec
+                all_boot_df = pd.concat([all_boot_df, df_spec_coef_results], axis=0)
+            quantiles_for_bootstrap = np.array([0.025, 0.5, 0.975])
+            self.null_df = (
+                all_boot_df.groupby("Specification No.")["Coefficient"]
+                .quantile(quantiles_for_bootstrap)
+                .unstack(level=1)
+            )
+            median_by_spec = all_boot_df.groupby("Specification No.")[
+                "Coefficient"
+            ].median()
             median_by_spec_p_value = pg.ttest(
                 median_by_spec, self.df_r["Coefficient"]
             ).loc["T-test", "p-val"]
-            share_pls_p_value = pg.ttest((median_by_spec > 0), True).loc[
-                "T-test", "p-val"
-            ]
-            share_neg_p_value = pg.ttest((median_by_spec < 0), True).loc[
-                "T-test", "p-val"
-            ]
+            number_specs = len(self.df_r["Coefficient"])
+            if any(np.isin([number_specs, 0], (median_by_spec > 0).sum())):
+                share_pls_p_value = np.nan
+            else:
+                share_pls_p_value = pg.ttest((median_by_spec > 0), True).loc[
+                    "T-test", "p-val"
+                ]
+            if any(np.isin([number_specs, 0], (median_by_spec < 0).sum())):
+                share_neg_p_value = np.nan
+            else:
+                share_neg_p_value = pg.ttest((median_by_spec < 0), True).loc[
+                    "T-test", "p-val"
+                ]
 
             def _nice_pval_text(num: float) -> str:
                 """_summary_
@@ -537,24 +542,27 @@ class SpecificationCurve:
                 """
                 if num < 0.001:
                     return "<0.001"
+                elif num == 0:
+                    return "0"
+                elif np.isinf(num) or np.isnan(num):
+                    return "NA"
                 else:
-                    return str(_rounder(num))
+                    return str(_round_to_2(num))
 
             median_by_spec_p_text = _nice_pval_text(median_by_spec_p_value)
             share_pls_p_text = _nice_pval_text(share_pls_p_value)
             share_neg_p_text = _nice_pval_text(share_neg_p_value)
-
             self.null_stats_summary = pd.DataFrame(
                 columns=["estimate", "p-value"],
                 index=["median", "share positive", "share negative"],
                 data=[
-                    [f"{_rounder(median_by_spec.median())}", median_by_spec_p_text],
+                    [f"{_round_to_2(median_by_spec.median())}", median_by_spec_p_text],
                     [
-                        f"{(median_by_spec>0).sum()} of {all_boot_df.shape[0]}",
+                        f"{(median_by_spec>0).sum()} of {number_specs}",
                         share_pls_p_text,
                     ],
                     [
-                        f"{(median_by_spec<0).sum()} of {all_boot_df.shape[0]}",
+                        f"{(median_by_spec<0).sum()} of {number_specs}",
                         share_neg_p_text,
                     ],
                 ],
@@ -580,7 +588,7 @@ class SpecificationCurve:
             _pretty_plots()
         if show_null_stats and "n_boot" in kwargs.keys():  # use new n_boots
             self.fit_null(**kwargs)
-        if show_null_stats and not hasattr(self, "df_null_stats"):
+        if show_null_stats and not hasattr(self, "null_df"):
             self.fit_null(**kwargs)
         # Set up blocks for showing what effects are included
         df_spec = self.df_r["SpecificationCounts"].apply(pd.Series).fillna(0.0)
@@ -757,7 +765,7 @@ class SpecificationCurve:
         max_height = self.df_r["conf_int"].apply(lambda x: x.max()).max()
         min_height = self.df_r["conf_int"].apply(lambda x: x.min()).min()
         if show_null_stats:
-            ns_df = self.df_null_stats.T
+            ns_df = self.null_df
             for column in ns_df.columns[::2]:
                 axarr[0].plot(
                     ns_df[column].index, ns_df[column], ls="--", color="k", alpha=0.2
@@ -776,7 +784,7 @@ class SpecificationCurve:
 
             # Annotate the null line
             axarr[0].annotate(
-                xy=(0.6, ns_df.iloc[-1, -1] * 1.5),  # type: ignore
+                xy=(0.6, ns_df.iloc[-1, -1] * 1.2),  # type: ignore
                 xycoords=("figure fraction", "data"),  # type: ignore
                 text="Coefficient under null",
                 fontsize=11,
@@ -868,7 +876,8 @@ class SpecificationCurve:
             ax.set_yticks(range(len(list(df_sp_sl.index.values))))
             # Add text on the RHS that describes what each block is
             spacing_factor = 0.02  # Adjust this value to control spacing
-            figure_width = len(df_sp_sl.columns)
+            figure_width_adj = 0.5
+            figure_width = len(df_sp_sl.columns) - figure_width_adj
             text_x_pos = figure_width * (1 + spacing_factor)
             ax.text(
                 x=text_x_pos,
@@ -890,7 +899,7 @@ class SpecificationCurve:
         for ax in axarr:
             ax.set_xticks([], minor=True)
             ax.set_xticks([])
-            ax.set_xlim(-wid, len(df_spec.columns))
+            ax.set_xlim(-wid, len(df_spec.columns) - figure_width_adj)
         if save_path is not None:
             plt.savefig(save_path, dpi=300)
         plt.show()
@@ -950,7 +959,7 @@ def load_example_data3() -> pd.DataFrame:
     Returns:
         pd.DataFrame: Example data suitable for regression.
     """
-    n_samples = 400
+    n_samples = 20000
     # Number of dimensions
     n_dim = 4
     c_rnd_vars = prng.random(size=(n_dim, n_samples))
@@ -958,6 +967,7 @@ def load_example_data3() -> pd.DataFrame:
         0.4 * c_rnd_vars[0, :]  # THIS IS THE TRUE VALUE OF THE COEFFICIENT
         - 0.2 * c_rnd_vars[1, :]
         + 0.3 * prng.standard_normal(n_samples)
+        + 0.6
     )
     # Next line causes y_2 ests to be much more noisy
     y_2 = y_1 - 0.5 * np.abs(prng.standard_normal(n_samples))

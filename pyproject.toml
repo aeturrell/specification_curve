@@ -23,6 +23,7 @@ dependencies = [
     "tqdm>=4.67.1",
     "pingouin>=0.5.5",
     "types-tqdm>=4.67.0.20241221",
+    "ipywidgets>=8.1.5",
 ]
 
 [dependency-groups]
