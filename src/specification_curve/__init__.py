@@ -522,7 +522,7 @@ class SpecificationCurve:
                     cat_expanded_columns = [
                         x for x in self.df.columns if x not in self.init_cols
                     ]
-                    for cat_expand_col in self.orig_cat_expand:
+                    for cat_expand_col in self.orig_cat_expand:  # type: ignore
                         lst = [x.split(" = ")[0] for x in self.df.columns]
                         indices = [
                             icat
