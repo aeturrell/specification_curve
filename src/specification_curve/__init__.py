@@ -756,7 +756,8 @@ class SpecificationCurve:
             y=np.median(self.df_r["Coefficient"]) * 1.02,
             s="Median coefficient",
             fontsize=12,
-            color="gray",
+            color="k",
+            alpha=0.6,
             zorder=5,
         )
         # Colour the significant estimate values differently
@@ -788,13 +789,13 @@ class SpecificationCurve:
                 yerr=y_err_correct_shape,
                 ls="none",
                 color=color,
-                alpha=0.8,
+                alpha=0.6,
                 zorder=1,
                 elinewidth=2,
                 marker="o",
             )
-            [bar.set_alpha(0.4) for bar in bars]
-            [cap.set_alpha(0.4) for cap in caps]
+            [bar.set_alpha(0.2) for bar in bars]
+            [cap.set_alpha(0.2) for cap in caps]
         # If there is a preferred spec, label it.
         if preferred_spec:
             loc_y = self.df_r.loc[self.df_r["preferred"], "Coefficient"]
