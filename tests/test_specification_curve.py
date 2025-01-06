@@ -4,6 +4,7 @@
 import os
 from unittest.mock import patch
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import specification_curve as specy
@@ -287,8 +288,8 @@ def test_016_null_under_bootstraps(mock_show) -> None:
     sco = specy.SpecificationCurve(df, y_endog, x_exog, controls)
     sco.fit()
     sco.fit_null(n_boot=4)
-    sco.plot(show_null_stats=True, **{"n_boot": 5})  # type: ignore
-    sco.plot(show_null_stats=True)
+    sco.plot(show_null_curve=True, **{"n_boot": 5})  # type: ignore
+    sco.plot(show_null_curve=True)
 
 
 @typeguard_ignore
@@ -297,7 +298,7 @@ def test_017_null_under_bootstraps_auto_run(mock_show) -> None:
     df = specy.load_example_data3()
     sco = specy.SpecificationCurve(df, formula="y1 | y2 ~ x1 + c1 | c2 | c3")
     sco.fit()
-    sco.plot(show_null_stats=True)
+    sco.plot(show_null_curve=True)
     print(sco)
 
 
@@ -321,6 +322,21 @@ def test_018a_repr_no_fit(mock_show) -> None:
 
 @typeguard_ignore
 @patch("matplotlib.pyplot.show")
+def test_018b_repr_with_lists(mock_show) -> None:
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(
+        df,
+        y_endog=["y1", "y2"],
+        x_exog="x1",
+        controls=["c1", "c2", "c3"],
+        exclu_grps=[["c1", "c2"], ["c3", "c2"]],
+    )
+    sco.fit()
+    print(sco)
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
 def test_019_more_exclude(mock_show) -> None:
     df = specy.load_example_data3()
     sco = specy.SpecificationCurve(
@@ -332,7 +348,8 @@ def test_019_more_exclude(mock_show) -> None:
     )
     sco.fit()
     sco.fit_null(n_boot=3)
-    sco.plot(show_null_stats=True)
+    sco.plot(show_null_curve=True)
+    mock_show.assert_called_once()
 
 
 @typeguard_ignore
@@ -355,7 +372,8 @@ def test_021_exclude_and_subset(mock_show) -> None:
     )
     sco.fit()
     sco.fit_null(n_boot=3)
-    sco.plot(show_null_stats=True)
+    sco.plot(show_null_curve=True)
+    mock_show.assert_called_once()
 
 
 @typeguard_ignore
@@ -368,6 +386,7 @@ def test_022_formula_no_controls(mock_show) -> None:
     )
     sco.fit()
     sco.plot()
+    mock_show.assert_called_once()
 
 
 @typeguard_ignore
@@ -390,3 +409,46 @@ def test_023_fit_null_without_fit() -> None:
     # Test that ValueError is raised when calling fit_null() before fit()
     with raises(ValueError):
         sco.fit_null(n_boot=5, f_sample=0.1)
+
+
+@typeguard_ignore
+def test_024_always_include_and_cat_expand() -> None:
+    # Setup: Create a simple DataFrame for testing
+    df = pd.DataFrame(
+        {
+            "y": [1, 2, 3, 4, 5],
+            "x": [2, 4, 6, 8, 10],
+            "control1": [1, 1, 0, 0, 1],
+            "control2": [0, 1, 1, 0, 0],
+        }
+    )
+    # Test that ValueError is raised
+    with raises(ValueError):
+        sco = specy.SpecificationCurve(
+            df=df,
+            y_endog="y",
+            x_exog="x",
+            always_include=["control1"],
+            cat_expand=["control1"],
+            controls=["control1", "control2"],
+        )
+        sco.fit()
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
+def test_025_fig_axes_further_adjustment(mock_show) -> None:
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(
+        df,
+        y_endog=["y1", "y2"],
+        x_exog="x1",
+        controls=["ccat", "c2", "c3"],
+        exclu_grps=[["c3", "c2"]],
+        cat_expand=["ccat"],
+    )
+    sco.fit()
+    fig, axes = sco.plot(return_fig=True)
+    fig.suptitle("Spec curve")
+    plt.show()
+    mock_show.assert_called_once()
