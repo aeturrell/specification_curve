@@ -4,11 +4,11 @@
 import os
 from unittest.mock import patch
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import specification_curve as specy
 import statsmodels.api as sm
-import matplotlib.pyplot as plt
 from pytest import raises
 from scipy.stats import norm
 from specification_curve import _parse_formula

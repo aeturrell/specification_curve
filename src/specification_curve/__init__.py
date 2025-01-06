@@ -1051,6 +1051,7 @@ class SpecificationCurve:
             return fig, axes
         else:
             plt.show()
+            return None
 
 
 def load_example_data1() -> pd.DataFrame:
