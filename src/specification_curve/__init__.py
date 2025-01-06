@@ -140,7 +140,7 @@ def _flatn_list(nested_list: Union[str, List[str], List[List[str]]]) -> List[str
 
 def _parse_formula(formula_string: str) -> dict[str, List[str]]:
     """
-    Parse a formula string of the format "y | y1 ~ x | x1 + c + c2 | c3"
+    Parse a formula string of the format "y | y1 ~ x | x1 + c + c2 | c3; c4 + c5"
     into separate lists of variables.
 
     Parameters:
@@ -152,6 +152,7 @@ def _parse_formula(formula_string: str) -> dict[str, List[str]]:
           - exog: independent variables (after ~ and before first +)
           - always_include: standalone variables (no | symbol)
           - controls: variables that appear after | symbols
+          - absorb: variables that appear after the semicolon
     """
     # Initialize result lists
     result: dict[str, List[str]] = {
@@ -159,10 +160,29 @@ def _parse_formula(formula_string: str) -> dict[str, List[str]]:
         "y_endog": [],
         "always_include": [],
         "controls": [],
+        "absorb": [],  # New list for absorb variables
     }
 
+    # Split into main formula and absorb components
+    if ";" in formula_string:
+        main_formula, absorb_part = formula_string.split(";")
+        # Process absorb variables
+        absorb_components = absorb_part.strip().split("+")
+        for component in absorb_components:
+            if "|" in component:
+                # If component contains |, split and add all parts to absorb
+                vars_in_component = component.split("|")
+                result["absorb"].extend(
+                    var.strip() for var in vars_in_component if var.strip()
+                )
+            else:
+                # If component is standalone, add to absorb
+                result["absorb"].append(component.strip())
+    else:
+        main_formula = formula_string
+
     # Split into left and right sides of the tilde
-    left_side, right_side = formula_string.split("~")
+    left_side, right_side = main_formula.split("~")
 
     # Process endog variables (left side)
     left_vars = left_side.strip().split("|")
@@ -232,6 +252,7 @@ class SpecificationCurve:
         ] = [[None]],
         cat_expand: Optional[Union[str, List[None], List[str], List[List[str]]]] = [],
         always_include: Optional[Union[str, List[str]]] = None,
+        absorb: Optional[Union[str, List[str]]] = None,
         formula: Optional[str] = None,
     ) -> None:
         if formula is not None:
@@ -249,6 +270,7 @@ class SpecificationCurve:
             self.always_include = spec_via_eqn["always_include"]
             self.y_endog = spec_via_eqn["y_endog"]
             self.x_exog = spec_via_eqn["x_exog"]
+            self.absorb = spec_via_eqn["absorb"]
         else:
             if any(param is None for param in [y_endog, x_exog, controls]):
                 raise ValueError(
@@ -265,6 +287,7 @@ class SpecificationCurve:
                 if always_include is not None
                 else []
             )
+            self.absorb = absorb
             self.formula = None  # type: ignore
 
         self.df = df
@@ -353,7 +376,7 @@ class SpecificationCurve:
         self.ctrl_combs = self._compute_combinations()
         self.df_r = self._spec_curve_regression()
 
-    def _reg_func(
+    def _reg_func_statsmodels(
         self, y_endog: Union[str, List[str]], x_exog: str, reg_vars: List[str]
     ) -> Union[
         sm.regression.linear_model.RegressionResults,
