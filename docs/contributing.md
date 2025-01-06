@@ -10,7 +10,6 @@ Here is a list of important resources for contributors:
 - [Source Code](https://github.com/aeturrell/specification_curve)
 - [Documentation](https://aeturrell.github.io/specification_curve/)
 - [Issue Tracker](https://github.com/aeturrell/specification_curve/issues)
-- [Code of Conduct](code_of_conduct.md)
 
 ## How to report a bug
 

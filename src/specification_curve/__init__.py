@@ -342,8 +342,10 @@ class SpecificationCurve:
 
     def fit(self, estimator=sm.OLS) -> None:
         """Fits a specification curve by performing regressions.
+
         Args:
             estimator (statsmodels.regression.linear_model or statsmodels.discrete.discrete_model, optional): statsmodels estimator. Defaults to sm.OLS.
+
         """
         self.estimator = estimator
         # If any of always include in any other list, remove it from other list
@@ -522,7 +524,7 @@ class SpecificationCurve:
         return df_r
 
     def fit_null(self, n_boot: int = 30, f_sample: float = 0.1) -> None:
-        """Refits all of the specifications under the null of y_(i(k))* = y_(i(k)) - b_k*x_(i(k))
+        """Refits all of the specifications under the null of $y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}$
         where i is over rows and k is over specifications and i is a function of k as y and x rows
         can change depending on the k when there are multiple y_endog and multiple x_exog.
         Each bootstrap sees a fraction of rows f_sample taken and then a new specification curve fit under the null.
@@ -537,6 +539,7 @@ class SpecificationCurve:
 
         Returns:
             None: Results saved in self.null_stats_summary.
+
         """
         if hasattr(self, "df_r"):
             # construct the null, y_(i(k))* = y_(i(k)) - b_k*x_(i(k))
@@ -1015,7 +1018,7 @@ class SpecificationCurve:
         preferred_spec: Union[List[str], List[None]] = [],
         show_null_curve: bool = False,
         return_fig: bool = False,
-        **kwargs,
+        **kwargs: dict,
     ) -> Union[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]:
         """Makes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.
 
@@ -1026,7 +1029,7 @@ class SpecificationCurve:
             show_null_curve (bool, optional): Whether to include the curve under the null. Defaults to False.
             pretty_plots (bool, optional): Whether to use this package's figure formatting. Defaults to False.
             return_fig (bool, optional): Whether to return the figure and axes objects. Defaults to False.
-            **kwargs: Additional arguments passed to .fit_null() when show_null_curve is True. Common parameters include:
+            **kwargs (dict, optional): Additional arguments passed to .fit_null() when show_null_curve is True. Parameters:
                 n_boot (int): Number of bootstrap iterations for null curve calculation. eg the argument would be `**{"n_boot": 5}`.
                 f_sample (float): Fraction of rows to sample in each bootstrap. Defaults to 0.1.
 
@@ -1035,6 +1038,7 @@ class SpecificationCurve:
 
         Raises:
             ValueError: If .plot() is called before .fit() - the fit must be run first.
+
         """
         if pretty_plots:
             _pretty_plots()
@@ -1056,6 +1060,7 @@ class SpecificationCurve:
 
 def load_example_data1() -> pd.DataFrame:
     """Retrieves example data from a file included with the package.
+
     Returns:
         pd.DataFrame: Example data suitable for regression.
     """
@@ -1077,6 +1082,7 @@ def load_example_data1() -> pd.DataFrame:
 
 def load_example_data2() -> pd.DataFrame:
     """Generates fake data.
+
     Returns:
         pd.DataFrame: Example data suitable for regression.
     """
