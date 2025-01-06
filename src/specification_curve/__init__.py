@@ -14,6 +14,7 @@ from itertools import combinations
 from math import floor, log10
 from typing import DefaultDict, List, Optional, Union
 
+import matplotlib as mpl
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
@@ -21,6 +22,7 @@ import numpy as np
 import pandas as pd
 import pingouin as pg
 import statsmodels.api as sm
+from matplotlib.ticker import AutoMinorLocator
 from tqdm.auto import trange
 from typeguard import typeguard_ignore
 
@@ -51,10 +53,10 @@ def _remove_overlapping_vars(
 ) -> List[str]:
     """Removes any variable in list_to_check that is also in includes_list.
     Args:
-        list_to_check (list[str]): _description_
-        includes_listlist (List[str]): _description_
+        list_to_check (list[str]): List that we wish to be sure doesn't have entries that are also in includes_list
+        includes_list (List[str]):
     Returns:
-        list[str]: without overlapping variable names.
+        list[str]: list_to_check without overlapping variable names.
     """
     return [x for x in list_to_check if x not in includes_list]
 
@@ -77,7 +79,16 @@ def _pretty_plots() -> None:
     plt.style.use(json_plot_settings)
 
 
-def _undummify(df, prefix_sep=" = "):
+def _undummify(df: pd.DataFrame, prefix_sep: str = " = ") -> pd.DataFrame:
+    """Reverts the pd.get_dummies() operation. Useful for reverting 'cat_expand'.
+
+    Args:
+        df (pd.DataFrame): Dataframe with separate columns as dummies
+        prefix_sep (str, optional): String used to expand, eg "fe" with values 0 or 1 becoming "fe = 0", "fe = 1". Defaults to " = ".
+
+    Returns:
+        pd.DataFrame: Input data frame with dummies re-packed into single column.
+    """
     cols2collapse = {
         item.split(prefix_sep)[0]: (prefix_sep in item) for item in df.columns
     }
@@ -266,7 +277,20 @@ class SpecificationCurve:
             self.y_endog + self.x_exog + self.controls + self.always_include
         ).copy()
 
-    def __repr__(self):
+        # Raise error if always include and category expand have any of the same columns.
+        if (self.cat_expand is not None) and (self.always_include is not None):
+            if any([x in self.always_include for x in self.cat_expand]):
+                raise ValueError(
+                    "Cannot always include a variable that is being expanded."
+                )
+
+    def __repr__(self) -> str:
+        """Represents a Specification Curve object as a string in the terminal.
+        Gives summary statistics if .fit() or .fit_null() have been run.
+
+        Returns:
+            str: Summary message.
+        """
         message = "--------------------------\nSpecification Curve object\n--------------------------\n"
         if self.formula is not None:
             message = message + f"{self.formula=}\n" + "\n"
@@ -325,6 +349,7 @@ class SpecificationCurve:
         # If any of always include in any other list, remove it from other list
         self.controls = _remove_overlapping_vars(self.controls, self.always_include)
         self.x_exog = _remove_overlapping_vars(self.x_exog, self.always_include)
+        # Now work out all specifications
         self.ctrl_combs = self._compute_combinations()
         self.df_r = self._spec_curve_regression()
 
@@ -345,10 +370,12 @@ class SpecificationCurve:
         # NB: get dummies
         # transforms by default any col that is object or cat
         xf = pd.get_dummies(self.df, prefix_sep="=")
-        new_cols = [str(x) for x in xf.columns if x not in self.df.columns]
+        new_cols_from_cat_expand = [
+            str(x) for x in xf.columns if x not in self.df.columns
+        ]
         gone_cols = [str(x) for x in self.df.columns if x not in xf.columns]
         reg_vars_here = copy.copy(reg_vars)
-        reg_vars_here.extend(new_cols)
+        reg_vars_here.extend(new_cols_from_cat_expand)
         # mypy prefers this formulation to a list comprehension
         for x in gone_cols:
             if x in reg_vars_here:
@@ -375,9 +402,10 @@ class SpecificationCurve:
         Changes df to have dummies for cat expand columns.
         """
         init_cols = self.y_endog + self.x_exog + self.controls + self.always_include
+        # Only keep relevant columns
         self.df = self.df[init_cols]
-        new_cols = []
-        # Warning: hard-coded prefix
+        new_cols_from_cat_expand = []
+        # Expand any variables in category expand into full dummies so that they can be subsets.
         if self.cat_expand != []:
             cat_expand_local = (
                 self.cat_expand
@@ -387,24 +415,31 @@ class SpecificationCurve:
             self.df = pd.get_dummies(
                 self.df, columns=cat_expand_local, prefix_sep=" = "
             )
-            new_cols = [x for x in self.df.columns if x not in init_cols]
-            # Now change the controls
+            new_cols_from_cat_expand = [
+                x for x in self.df.columns if x not in init_cols
+            ]
+            # Now change the controls: remove the cat_expand columns
             [self.controls.remove(x) for x in cat_expand_local if x in self.controls]
-            self.controls.extend(new_cols)
-            # Create mapping from cat expand to new cols
-            oldnew = dict(
+            # Add the dummy versions of the same columns
+            self.controls.extend(new_cols_from_cat_expand)
+            # Create mapping from cat expand to their new dummy new cols
+            dict_cat_expand_to_dummies = dict(
                 zip(
                     [x for x in self.cat_expand],
-                    [[x for x in new_cols if y in x] for y in self.cat_expand],
+                    [
+                        [x for x in new_cols_from_cat_expand if y in x]
+                        for y in self.cat_expand
+                    ],
                 )
             )
-            # Now exclude the groups that combine any new cols
+            # Now stop the new dummies from being part of specifications together
+            # as they are meant to be mutually exclusive subsets.
             for x in self.cat_expand:
                 if self.exclu_grps == [[]]:
-                    self.exclu_grps = [oldnew[x]]
+                    self.exclu_grps = [dict_cat_expand_to_dummies[x]]
                 else:
-                    self.exclu_grps.append(oldnew[x])
-        # Find any subsets of excluded combs and add all variants
+                    self.exclu_grps.append(dict_cat_expand_to_dummies[x])
+        # Find any subsets of excluded combs and add all variants thereof
         for x in self.exclu_grps:
             if len(x) > 2:
                 sub_combs = [list(combinations(x, y)) for y in range(2, len(x))]
@@ -428,11 +463,11 @@ class SpecificationCurve:
         ctrl_combs = [x + self.always_include for x in ctrl_combs]
         return ctrl_combs
 
-    def _spec_curve_regression(self):
-        """Performs all regressions for a specification curve.
-        Estimates model with estimator as given in fitting function.
-        Assumes that all controls and fixed effects should be varied.
-        :returns: pandas dataframe of results
+    def _spec_curve_regression(self) -> pd.DataFrame:
+        """Runs all of the regressions on the available combinations.
+
+        Returns:
+            pd.DataFrame: DataFrame of specifications and their results.
         """
         # Regressions - order of loop matters here
         reg_results = [
@@ -486,11 +521,25 @@ class SpecificationCurve:
         df_r["SpecificationCounts"] = df_r["Specification"].apply(lambda x: Counter(x))
         return df_r
 
-    def fit_null(self, n_boot: int = 20, f_sample: float = 0.1) -> None:
+    def fit_null(self, n_boot: int = 30, f_sample: float = 0.1) -> None:
+        """Refits all of the specifications under the null of y_(i(k))* = y_(i(k)) - b_k*x_(i(k))
+        where i is over rows and k is over specifications and i is a function of k as y and x rows
+        can change depending on the k when there are multiple y_endog and multiple x_exog.
+        Each bootstrap sees a fraction of rows f_sample taken and then a new specification curve fit under the null.
+        Then summary statistics are created by specification, and statistical tests.
+
+        Args:
+            n_boot (int, optional): Number of bootstraps. Defaults to 30.
+            f_sample (float, optional): Fraction of rows to sample in each bootstrap. Defaults to 0.1.
+
+        Raises:
+            ValueError: If .fit() has not been run first.
+
+        Returns:
+            None: Results saved in self.null_stats_summary.
+        """
         if hasattr(self, "df_r"):
             # construct the null, y_(i(k))* = y_(i(k)) - b_k*x_(i(k))
-            # where i is over rows and k is over specifications
-            # and i is a function of k as y and x rows change depending on the k
             y_star = (
                 self.df[self.df_r["y_endog"]]
                 - self.df_r["Coefficient"].values * self.df[self.df_r["x_exog"]].values
@@ -586,10 +635,10 @@ class SpecificationCurve:
                 ]
 
             def _nice_pval_text(num: float) -> str:
-                """_summary_
+                """Turns p-value numbers into nice strings.
 
                 Args:
-                    num (float): p-value to stringigy
+                    num (float): p-value to stringify
 
                 Returns:
                     str: Reading friendly version
@@ -622,26 +671,21 @@ class SpecificationCurve:
         else:
             raise ValueError("Must have run .fit() before .fit_null()")
 
-    def plot(
+    def _create_plot_internal(
         self,
-        save_path=None,
-        pretty_plots: bool = True,
-        preferred_spec: Union[List[str], List[None]] = [],
-        show_null_stats: bool = False,
-        **kwargs,
-    ) -> None:
-        """Makes plots of fitted specification curve.
+        preferred_spec: Union[List[str], List[None]],
+        show_null_curve: bool,
+    ) -> tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]:
+        """Makes plot of fitted specification curve.
+
         Args:
-            save_path (_type_, optional): Exported fig filename. Defaults to None.
-            pretty_plots (bool, optional): whether to use this package's figure formatting. Defaults to True.
-            preferred_spec (list, optional): preferred specification. Defaults to [].
+            preferred_spec (Union[List[str], List[None]]): Preferred specification. Defaults to [].
+            show_null_curve (bool): whether to include the curve under the null.
+
+        Returns:
+            tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]: fig, axes with chart on.
         """
-        if pretty_plots:
-            _pretty_plots()
-        if show_null_stats and "n_boot" in kwargs.keys():  # use new n_boots
-            self.fit_null(**kwargs)
-        if show_null_stats and not hasattr(self, "null_df"):
-            self.fit_null(**kwargs)
+        TEXT_ANNOTATION_OFFSET_POINTS = 5
         # Set up blocks for showing what effects are included
         df_spec = self.df_r["SpecificationCounts"].apply(pd.Series).fillna(0.0)
         pd.set_option("future.no_silent_downcasting", True)  # for the line below
@@ -732,7 +776,9 @@ class SpecificationCurve:
             0.3 * np.log(x + 1)
             for x in block_df["group_index"].value_counts(sort=False)
         ]
+        # --------------------------------------------------------------------
         # Make the plot
+        # --------------------------------------------------------------------
         plt.close("all")
         fig = plt.figure(constrained_layout=False, figsize=(12, 8))
         spec = fig.add_gridspec(
@@ -747,14 +793,16 @@ class SpecificationCurve:
             color="k",
             lw=0.3,
             alpha=1,
-            label="Median coefficient",
+            label="Median",
             dashes=[12, 5],
         )
         # Annotate the median coefficient line with text
-        axarr[0].text(
-            x=0.1,
-            y=np.median(self.df_r["Coefficient"]) * 1.02,
-            s="Median coefficient",
+        axarr[0].annotate(
+            text="Median",
+            xy=(0.1, np.median(self.df_r["Coefficient"])),
+            xytext=(0, TEXT_ANNOTATION_OFFSET_POINTS),
+            xycoords=("figure fraction", "data"),
+            textcoords="offset points",
             fontsize=12,
             color="k",
             alpha=0.6,
@@ -813,15 +861,14 @@ class SpecificationCurve:
                     arrowstyle="fancy", fc="0.4", ec="none", connectionstyle=cn_styl
                 ),
             )
-        axarr[0].set_ylabel("Coefficient")
-        axarr[0].set_title("Specification curve analysis")
+        axarr[0].set_ylabel("Coefficient", fontsize=13)
         max_height = self.df_r["conf_int"].apply(lambda x: x.max()).max()
         min_height = self.df_r["conf_int"].apply(lambda x: x.min()).min()
-        if show_null_stats:
+        if show_null_curve:
             ns_df = self.null_df
             for column in ns_df.columns[::2]:
                 axarr[0].plot(
-                    ns_df[column].index, ns_df[column], ls="--", color="k", alpha=0.2
+                    ns_df[column].index, ns_df[column], ls="--", color="k", alpha=0.1
                 )
             for column in ns_df.columns[1::2]:
                 axarr[0].plot(
@@ -837,9 +884,11 @@ class SpecificationCurve:
 
             # Annotate the null line
             axarr[0].annotate(
-                xy=(0.6, ns_df.iloc[-1, -1] * 1.2),  # type: ignore
+                xy=(0.6, ns_df.iloc[-1, 1]),  # type: ignore
                 xycoords=("figure fraction", "data"),  # type: ignore
-                text="Coefficient under null",
+                xytext=(0, TEXT_ANNOTATION_OFFSET_POINTS),
+                textcoords="offset points",
+                text="Median under null",
                 fontsize=11,
                 color="gray",
                 zorder=5,
@@ -878,7 +927,11 @@ class SpecificationCurve:
             get_chart_axes_limits(min_height, False),
             get_chart_axes_limits(max_height, True),
         )
+        axarr[0].yaxis.set_minor_locator(AutoMinorLocator())
         axarr[0].set_ylim(_round_to_2(ylims[0]), _round_to_2(ylims[1]))
+        for place in ["right", "top"]:
+            axarr[0].spines[place].set_visible(False)
+
         # Now do the blocks - each group get its own array
         wid = 0.5
         hei = wid / 2.5
@@ -953,9 +1006,51 @@ class SpecificationCurve:
             ax.set_xticks([], minor=True)
             ax.set_xticks([])
             ax.set_xlim(-wid, len(df_spec.columns) - figure_width_adj)
+        return fig, axarr
+
+    def plot(
+        self,
+        save_path=None,
+        pretty_plots: bool = True,
+        preferred_spec: Union[List[str], List[None]] = [],
+        show_null_curve: bool = False,
+        return_fig: bool = False,
+        **kwargs,
+    ) -> Union[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]:
+        """Makes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.
+
+        Args:
+            save_path (string or path, optional): Exported fig filename. Defaults to None.
+            pretty_plots (bool, optional): Whether to use this package's figure formatting. Defaults to True.
+            preferred_spec (list, optional): Preferred specification. Defaults to [].
+            show_null_curve (bool, optional): Whether to include the curve under the null. Defaults to False.
+            pretty_plots (bool, optional): Whether to use this package's figure formatting. Defaults to False.
+            return_fig (bool, optional): Whether to return the figure and axes objects. Defaults to False.
+            **kwargs: Additional arguments passed to .fit_null() when show_null_curve is True. Common parameters include:
+                n_boot (int): Number of bootstrap iterations for null curve calculation. eg the argument would be `**{"n_boot": 5}`.
+                f_sample (float): Fraction of rows to sample in each bootstrap. Defaults to 0.1.
+
+        Returns:
+            Union[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]: None or the fig and axes with chart on.
+
+        Raises:
+            ValueError: If .plot() is called before .fit() - the fit must be run first.
+        """
+        if pretty_plots:
+            _pretty_plots()
+        if not hasattr(self, "df_r"):
+            raise ValueError("Nothing to plot. Must run .fit() before .plot()")
+        if show_null_curve and "n_boot" in kwargs.keys():  # use new n_boots
+            self.fit_null(**kwargs)
+        if show_null_curve and not hasattr(self, "null_df"):
+            self.fit_null(**kwargs)
+        fig, axes = self._create_plot_internal(preferred_spec, show_null_curve)
         if save_path is not None:
             plt.savefig(save_path, dpi=300)
-        plt.show()
+        if return_fig:
+            return fig, axes
+        else:
+            plt.show()
 
 
 def load_example_data1() -> pd.DataFrame:
