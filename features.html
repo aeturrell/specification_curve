@@ -104,12 +104,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
 
 
 <link rel="stylesheet" href="styles.css">
 <meta name="twitter:title" content="Features – Specification Curve">
 <meta name="twitter:description" content="">
-<meta name="twitter:image" content="features_files/figure-html/cell-3-output-2.svg">
+<meta name="twitter:image" content="features_files/figure-html/cell-3-output-1.svg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -164,6 +165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#basic-use" id="toc-basic-use" class="nav-link active" data-scroll-target="#basic-use">Basic Use</a></li>
   <li><a href="#retrieving-estimates" id="toc-retrieving-estimates" class="nav-link" data-scroll-target="#retrieving-estimates">Retrieving estimates</a></li>
+  <li><a href="#inference-under-the-null" id="toc-inference-under-the-null" class="nav-link" data-scroll-target="#inference-under-the-null">Inference under the null</a></li>
   <li><a href="#saving-results-to-file" id="toc-saving-results-to-file" class="nav-link" data-scroll-target="#saving-results-to-file">Saving results to file</a></li>
   <li><a href="#expanding-a-categorical-variable" id="toc-expanding-a-categorical-variable" class="nav-link" data-scroll-target="#expanding-a-categorical-variable">Expanding a categorical variable</a></li>
   <li><a href="#using-multiple-exogeneous-variables" id="toc-using-multiple-exogeneous-variables" class="nav-link" data-scroll-target="#using-multiple-exogeneous-variables">Using multiple exogeneous variables</a></li>
@@ -203,27 +205,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Here’s an example of using <strong>Specification Curve</strong>. Note that, in the below, we can pass strings or lists of string into the arguments of the class <code>SpecificationCurve</code>. The programme then automatically performs all of possible regressions of endogeneous variables on exogeneous variables and controls. The estimate that is picked out is the coefficient on the given combination of endogeneous and exogenous variables (with conditioning on the given controls).</p>
 <p>If a control variable is categorical, rather than continuous, it will be treated as a fixed effect.</p>
 <div id="cell-5" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> specification_curve <span class="im">as</span> specy</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> specification_curve <span class="im">as</span> sc</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> specy.load_example_data1()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sc.load_example_data1()</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span>  <span class="co"># endogeneous variable</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span>  <span class="co"># exogeneous variable</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    df,</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    y_endog,</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    x_exog,</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    controls,</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit complete</code></pre>
-</div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>sco.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="features_files/figure-html/cell-3-output-2.svg" class="img-fluid figure-img"></p>
+<p><img src="features_files/figure-html/cell-3-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -232,43 +231,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You can also specify models with the formula API. An example string would be “y1 | y2 ~ x1 | x2 | x3 + c1 + c2 + c3 | c4”. This would produce a specification curve in which there two endogenous variables, two exogenous variables, two variables that are always included (c1 and c2), and two controls that are included in all possible combinations.</p>
 <p>Here’s an example, for which we first generate some data.</p>
 <div id="cell-8" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for random numbers</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>seed_for_prng <span class="op">=</span> <span class="dv">78557</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prng=probabilistic random number generator</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>prng <span class="op">=</span> np.random.default_rng(seed_for_prng)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># generate some fake data</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">1000</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>x_2 <span class="op">=</span> prng.integers(<span class="dv">2</span>, size<span class="op">=</span>n_samples)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>x_1 <span class="op">=</span> prng.random(size<span class="op">=</span>n_samples)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>x_3 <span class="op">=</span> prng.integers(<span class="dv">3</span>, size<span class="op">=</span>n_samples)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>x_4 <span class="op">=</span> prng.random(size<span class="op">=</span>n_samples)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>x_5 <span class="op">=</span> x_1 <span class="op">+</span> <span class="fl">0.05</span> <span class="op">*</span> np.random.randn(n_samples)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>x_beta <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">-</span> <span class="fl">3.5</span> <span class="op">*</span> x_1 <span class="op">+</span> <span class="fl">0.2</span> <span class="op">*</span> x_2 <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> x_3  <span class="co"># NB: coefficient is -3.5</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>x_beta))</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> prng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>prob, size<span class="op">=</span>n_samples)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> prng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>prob <span class="op">*</span> <span class="fl">0.98</span>, size<span class="op">=</span>n_samples)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>df_logit <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    [x_1, x_2, x_3, x_4, x_5, y, y2], [<span class="st">"x_1"</span>, <span class="st">"x_2"</span>, <span class="st">"x_3"</span>, <span class="st">"x_4"</span>, <span class="st">"x_5"</span>, <span class="st">"y"</span>, <span class="st">"y2"</span>]</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>).T</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for random numbers</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>seed_for_prng <span class="op">=</span> <span class="dv">78557</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># prng=probabilistic random number generator</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>prng <span class="op">=</span> np.random.default_rng(seed_for_prng)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># generate some fake data</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>x_2 <span class="op">=</span> prng.integers(<span class="dv">2</span>, size<span class="op">=</span>n_samples)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>x_1 <span class="op">=</span> prng.random(size<span class="op">=</span>n_samples)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>x_3 <span class="op">=</span> prng.integers(<span class="dv">3</span>, size<span class="op">=</span>n_samples)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>x_4 <span class="op">=</span> prng.random(size<span class="op">=</span>n_samples)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>x_5 <span class="op">=</span> x_1 <span class="op">+</span> <span class="fl">0.05</span> <span class="op">*</span> np.random.randn(n_samples)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>x_beta <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">-</span> <span class="fl">3.5</span> <span class="op">*</span> x_1 <span class="op">+</span> <span class="fl">0.2</span> <span class="op">*</span> x_2 <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> x_3  <span class="co"># NB: coefficient is -3.5</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>x_beta))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> prng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>prob, size<span class="op">=</span>n_samples)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> prng.binomial(n<span class="op">=</span><span class="dv">1</span>, p<span class="op">=</span>prob <span class="op">*</span> <span class="fl">0.98</span>, size<span class="op">=</span>n_samples)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>df_logit <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    [x_1, x_2, x_3, x_4, x_5, y, y2], [<span class="st">"x_1"</span>, <span class="st">"x_2"</span>, <span class="st">"x_3"</span>, <span class="st">"x_4"</span>, <span class="st">"x_5"</span>, <span class="st">"y"</span>, <span class="st">"y2"</span>]</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>).T</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-9" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sc_form <span class="op">=</span> specy.SpecificationCurve(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    df_logit, formula<span class="op">=</span><span class="st">"y | y2 ~ x_1 | x_5 + x_2 + x_3 | x_4"</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sc_form.fit()</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>sc_form.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit complete</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sc_form <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    df_logit, formula<span class="op">=</span><span class="st">"y | y2 ~ x_1 | x_5 + x_2 + x_3 | x_4"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>sc_form.fit()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>sc_form.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="features_files/figure-html/cell-5-output-2.svg" class="img-fluid figure-img"></p>
+<p><img src="features_files/figure-html/cell-5-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -279,12 +275,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="retrieving-estimates">Retrieving estimates</h2>
 <p>You can retrieve the estimates from the data frame:</p>
 <div id="cell-12" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sc.df_r.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit complete</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(df, y_endog, x_exog, controls)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sco.df_r.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
@@ -325,8 +318,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>6.205962</td>
 <td>[c1, c2, x1, y1]</td>
 <td>0.385317</td>
-<td>[5.448896340566633, 6.96302771413442]</td>
-<td>{'x1': 3.357166814263145e-47, 'c1': 4.04817525...</td>
+<td>[5.448896340566617, 6.963027714134404]</td>
+<td>{'const': 1.2704500980836043e-23, 'x1': 3.3571...</td>
 <td>{'c1': 1, 'c2': 1, 'x1': 1, 'y1': 1}</td>
 </tr>
 <tr class="even">
@@ -337,8 +330,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>6.205962</td>
 <td>[c1, c2, group1, group2, x1, y1]</td>
 <td>0.385317</td>
-<td>[5.448896340566633, 6.96302771413442]</td>
-<td>{'x1': 3.357166814263145e-47, 'c1': 4.04817525...</td>
+<td>[5.448896340566617, 6.963027714134404]</td>
+<td>{'const': 1.2704500980836043e-23, 'x1': 3.3571...</td>
 <td>{'c1': 1, 'c2': 1, 'group1': 1, 'group2': 1, '...</td>
 </tr>
 <tr class="odd">
@@ -349,8 +342,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>6.205962</td>
 <td>[c1, c2, group2, x1, y1]</td>
 <td>0.385317</td>
-<td>[5.448896340566633, 6.96302771413442]</td>
-<td>{'x1': 3.357166814263145e-47, 'c1': 4.04817525...</td>
+<td>[5.448896340566617, 6.963027714134404]</td>
+<td>{'const': 1.2704500980836043e-23, 'x1': 3.3571...</td>
 <td>{'c1': 1, 'c2': 1, 'group2': 1, 'x1': 1, 'y1': 1}</td>
 </tr>
 <tr class="even">
@@ -361,8 +354,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>6.205962</td>
 <td>[c1, c2, group1, x1, y1]</td>
 <td>0.385317</td>
-<td>[5.448896340566633, 6.96302771413442]</td>
-<td>{'x1': 3.357166814263145e-47, 'c1': 4.04817525...</td>
+<td>[5.448896340566617, 6.963027714134404]</td>
+<td>{'const': 1.2704500980836043e-23, 'x1': 3.3571...</td>
 <td>{'c1': 1, 'c2': 1, 'group1': 1, 'x1': 1, 'y1': 1}</td>
 </tr>
 <tr class="odd">
@@ -373,8 +366,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>6.492386</td>
 <td>[c1, group1, group2, x1, y1]</td>
 <td>0.592879</td>
-<td>[5.327511339458263, 7.657260911796471]</td>
-<td>{'x1': 3.9227133280816755e-25, 'c1': 2.1893770...</td>
+<td>[5.3275113394582725, 7.657260911796481]</td>
+<td>{'const': 0.7410410238698457, 'x1': 3.92271332...</td>
 <td>{'c1': 1, 'group1': 1, 'group2': 1, 'x1': 1, '...</td>
 </tr>
 </tbody>
@@ -384,37 +377,210 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="inference-under-the-null" class="level2">
+<h2 class="anchored" data-anchor-id="inference-under-the-null">Inference under the null</h2>
+<p>Although not everyone is convinced, it may be informative to run some statistical inferences on the specification curve. These ask: considering the full set of reasonable specifications jointly, how inconsistent are the results with the null hypothesis of no effect? You can find more details in <span class="citation" data-cites="simonsohn2020specification">[@simonsohn2020specification]</span>.</p>
+<div id="cell-14" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dfn <span class="op">=</span> sc.load_example_data3()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dfn.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">y1</th>
+<th data-quarto-table-cell-role="th">y2</th>
+<th data-quarto-table-cell-role="th">x1</th>
+<th data-quarto-table-cell-role="th">c1</th>
+<th data-quarto-table-cell-role="th">c2</th>
+<th data-quarto-table-cell-role="th">c3</th>
+<th data-quarto-table-cell-role="th">ccat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0.408694</td>
+<td>-0.677861</td>
+<td>0.319844</td>
+<td>0.873945</td>
+<td>0.315051</td>
+<td>0.317730</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.823288</td>
+<td>0.220807</td>
+<td>0.879205</td>
+<td>0.603677</td>
+<td>0.044192</td>
+<td>0.313405</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1.314995</td>
+<td>1.100182</td>
+<td>0.980309</td>
+<td>0.937964</td>
+<td>0.790195</td>
+<td>0.684977</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0.481942</td>
+<td>0.305384</td>
+<td>0.210092</td>
+<td>0.718184</td>
+<td>0.079917</td>
+<td>0.719236</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1.013794</td>
+<td>0.773417</td>
+<td>0.267960</td>
+<td>0.239086</td>
+<td>0.789400</td>
+<td>0.279626</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>As normal, we create a specification curve object and fit it.</p>
+<div id="cell-16" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    dfn, y_endog<span class="op">=</span>[<span class="st">"y1"</span>, <span class="st">"y2"</span>], x_exog<span class="op">=</span><span class="st">"x1"</span>, controls<span class="op">=</span>[<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"c3"</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>sco.fit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, to look at the fit under the null, we can choose to either fit it directly, using <code>.fit_null()</code> or to use <code>.plot(show_null_curve=True)</code>, which will run the inference automatically <em>and</em> plot it. For either case, you can also pass the number of bootstraps as an argument: for example, <code>.fit_null(n_boot=10)</code> or .<code>plot(show_null_curve=True, **{"n_boot": 10})</code> respectively.</p>
+<p>You should really use a large number of bootstraps (eg 500) but be warned it takes a long time to run this many.</p>
+<p>Let’s fit the null first:</p>
+<div id="cell-18" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sco.fit_null(n_boot<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"cdaf3c6043fe42a1a0a916bd3821e9e9","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<p>And now we can plot it to see what the likely range of the coefficient would be under the null:</p>
+<div id="cell-20" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sco.plot(show_null_curve<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-10-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Finally, there is a summary of some statistical tests that are relevant to whether coefficient under the null is zero (hypothesis) or not, and whether the share of positives and negatives is what you would expect from chance or not.</p>
+<div id="cell-22" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sco.null_stats_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">estimate</th>
+<th data-quarto-table-cell-role="th">p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">median</td>
+<td>0.00593</td>
+<td>&lt;0.001</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">share positive</td>
+<td>16 of 16</td>
+<td>NA</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">share negative</td>
+<td>0 of 16</td>
+<td>NA</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>And, once you have done all of this fitting, you can examine it all simply by calling the object:</p>
+<div id="cell-24" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sco</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>--------------------------
+Specification Curve object
+--------------------------
+y vars: y1, y2
+x vars: x1
+controls: c1, c2, c3
+always included: 
+
+Specifications have run
+-----------------------
+Estimator: &lt;class 'statsmodels.regression.linear_model.OLS'&gt;
+No. specifications: 16
+
+Coefficient stats:
+    min  median    max
+  0.399     0.4  0.401
+
+Coeffs under null have run
+--------------------------
+                estimate p-value
+median           0.00593  &lt;0.001
+share positive  16 of 16      NA
+share negative   0 of 16      NA</code></pre>
+</div>
+</div>
+</section>
 <section id="saving-results-to-file" class="level2">
 <h2 class="anchored" data-anchor-id="saving-results-to-file">Saving results to file</h2>
 <p>Save the plot to file (the format is inferred from file extension):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls,</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                                  cat_expand<span class="op">=</span>[<span class="st">'group1'</span>])</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>sc.plot(save_path<span class="op">=</span><span class="st">'test_fig.pdf'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(df, y_endog, x_exog, controls,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                                  cat_expand<span class="op">=</span>[<span class="st">'group1'</span>])</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>sco.plot(save_path<span class="op">=</span><span class="st">'test_fig.pdf'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="expanding-a-categorical-variable" class="level2">
 <h2 class="anchored" data-anchor-id="expanding-a-categorical-variable">Expanding a categorical variable</h2>
 <p>Should you need to, you can expand a categorical variable into its different elements and run those separately. In the example below, the <code>"group2"</code> categorical variable is expanded like this.</p>
-<div id="cell-15" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span>  <span class="co"># endogeneous variable</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span>  <span class="co"># exogeneous variable</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    df,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    y_endog,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    x_exog,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    controls,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    cat_expand<span class="op">=</span>[<span class="st">"group2"</span>],  <span class="co"># have each fixed effect run separately</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit complete</code></pre>
-</div>
+<div id="cell-27" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span>  <span class="co"># endogeneous variable</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span>  <span class="co"># exogeneous variable</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    y_endog,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    x_exog,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    controls,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    cat_expand<span class="op">=</span>[<span class="st">"group2"</span>],  <span class="co"># have each fixed effect run separately</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>sco.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="features_files/figure-html/cell-7-output-2.svg" class="img-fluid figure-img"></p>
+<p><img src="features_files/figure-html/cell-13-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -423,21 +589,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="using-multiple-exogeneous-variables" class="level2">
 <h2 class="anchored" data-anchor-id="using-multiple-exogeneous-variables">Using multiple exogeneous variables</h2>
 <p>Sometimes, you’d like to check different independent variables (and the coefficients they come with following a regression). This is achieved by passing a list to the exogeneous argument of <code>SpecificationCurve</code>. These variations on the independent variables are labelled by <code>x</code> in the plot.</p>
-<div id="cell-17" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> specy.load_example_data1()</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> [<span class="st">"x1"</span>, <span class="st">"x2"</span>]</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit complete</code></pre>
-</div>
+<div id="cell-29" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sc.load_example_data1()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> [<span class="st">"x1"</span>, <span class="st">"x2"</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(df, y_endog, x_exog, controls)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>sco.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="features_files/figure-html/cell-8-output-2.svg" class="img-fluid figure-img"></p>
+<p><img src="features_files/figure-html/cell-14-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -447,22 +610,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="excluding-some-combinations-of-controls">Excluding some combinations of controls</h2>
 <p>Some controls may be redundant, and you might want to exclude them both being used together. The <code>exclu_grps</code> keyword argument achieves this.</p>
 <p>In the below example, <code>"c1"</code> and <code>"c2"</code> are never run in the same specification.</p>
-<div id="cell-19" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> specy.load_example_data1()</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls, exclu_grps<span class="op">=</span>[[<span class="st">"c1"</span>, <span class="st">"c2"</span>]])</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit complete</code></pre>
-</div>
+<div id="cell-31" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sc.load_example_data1()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(df, y_endog, x_exog, controls, exclu_grps<span class="op">=</span>[[<span class="st">"c1"</span>, <span class="st">"c2"</span>]])</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>sco.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="features_files/figure-html/cell-9-output-2.svg" class="img-fluid figure-img"></p>
+<p><img src="features_files/figure-html/cell-15-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -472,21 +632,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="always-include-some-controls-in-all-specifications">Always include some controls in all specifications</h2>
 <p>Likewise, there will be times when you always wish to include a particular control in specifications, and to show this on the plot. The <code>always_include=</code> keyword argument helps you to achieve this.</p>
 <p>In the example below, we ask that <code>"c1"</code> is included in every specification.</p>
-<div id="cell-21" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> specy.load_example_data1()</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, y_endog, x_exog, controls, always_include<span class="op">=</span><span class="st">"c1"</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit complete</code></pre>
-</div>
+<div id="cell-33" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sc.load_example_data1()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> <span class="st">"x1"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> <span class="st">"y1"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"c2"</span>, <span class="st">"group1"</span>, <span class="st">"group2"</span>]</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(df, y_endog, x_exog, controls, always_include<span class="op">=</span><span class="st">"c1"</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>sco.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="features_files/figure-html/cell-10-output-2.svg" class="img-fluid figure-img"></p>
+<p><img src="features_files/figure-html/cell-16-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -496,10 +653,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="flexing-the-style-for-very-large-numbers-of-specifications">Flexing the style for very large numbers of specifications</h2>
 <p>The default plot type isn’t suitable for very large numbers of specifications, but it does automatically switch to a style suited to a large number of specifications.</p>
 <p>Here’s an example</p>
-<div id="cell-23" class="cell" data-execution_count="10">
+<div id="cell-35" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate some fake data</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">400</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">2000</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of dimensions of continuous</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>n_dim <span class="op">=</span> <span class="dv">8</span></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>c_rnd_vars <span class="op">=</span> prng.random(size<span class="op">=</span>(n_dim, n_samples))</span>
@@ -518,16 +675,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> c_rnd_vars_names[<span class="dv">1</span>:]</span>
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Run it with Specification Curve</span></span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, [<span class="st">"y1"</span>, <span class="st">"y2"</span>], c_rnd_vars_names[<span class="dv">0</span>], controls)</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit complete</code></pre>
-</div>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(df, [<span class="st">"y1"</span>, <span class="st">"y2"</span>], c_rnd_vars_names[<span class="dv">0</span>], controls)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>sco.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="features_files/figure-html/cell-11-output-2.svg" class="img-fluid figure-img"></p>
+<p><img src="features_files/figure-html/cell-17-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -538,17 +692,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Often, in practice, you will have a <em>preferred</em> specification that you will use as your estimate. You can specify this and have it be flagged.</p>
 <p>You can achieve this by passing a list of variables that you’d like to be used in your preferred specification via the <code>preferred_spec</code> keyword argument.</p>
 <p>In the example below, the preferred specification comes out as being close to the known answer that we constructed.</p>
-<div id="cell-25" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df, [<span class="st">"y1"</span>, <span class="st">"y2"</span>], c_rnd_vars_names[<span class="dv">0</span>], controls)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>sc.fit()</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>sc.plot(preferred_spec<span class="op">=</span>[<span class="st">"y1"</span>, c_rnd_vars_names[<span class="dv">0</span>]] <span class="op">+</span> controls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fit complete</code></pre>
-</div>
+<div id="cell-37" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(df, [<span class="st">"y1"</span>, <span class="st">"y2"</span>], c_rnd_vars_names[<span class="dv">0</span>], controls)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>sco.plot(preferred_spec<span class="op">=</span>[<span class="st">"y1"</span>, c_rnd_vars_names[<span class="dv">0</span>]] <span class="op">+</span> controls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="features_files/figure-html/cell-12-output-2.svg" class="img-fluid figure-img"></p>
+<p><img src="features_files/figure-html/cell-18-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -557,118 +708,117 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="using-models-other-than-ordinary-least-squares" class="level2">
 <h2 class="anchored" data-anchor-id="using-models-other-than-ordinary-least-squares">Using models other than Ordinary Least Squares</h2>
 <p>The default model is OLS, but you can pass through other models too.</p>
-<div id="cell-27" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the regressions to run</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> [<span class="st">"y"</span>, <span class="st">"y2"</span>]</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> [<span class="st">"x_1"</span>, <span class="st">"x_5"</span>]</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"x_3"</span>, <span class="st">"x_2"</span>, <span class="st">"x_4"</span>]</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> specy.SpecificationCurve(df_logit, y_endog, x_exog, controls)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit using the logit estimator</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>sc.fit(estimator<span class="op">=</span>sm.Logit)  <span class="co"># sm.Probit also works</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>sc.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-39" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the regressions to run</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>y_endog <span class="op">=</span> [<span class="st">"y"</span>, <span class="st">"y2"</span>]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>x_exog <span class="op">=</span> [<span class="st">"x_1"</span>, <span class="st">"x_5"</span>]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>controls <span class="op">=</span> [<span class="st">"x_3"</span>, <span class="st">"x_2"</span>, <span class="st">"x_4"</span>]</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(df_logit, y_endog, x_exog, controls)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit using the logit estimator</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>sco.fit(estimator<span class="op">=</span>sm.Logit)  <span class="co"># sm.Probit also works</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>sco.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Optimization terminated successfully.
-         Current function value: 0.356491
+         Current function value: 0.350088
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.356433
+         Current function value: 0.346934
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355868
+         Current function value: 0.349797
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355865
+         Current function value: 0.347686
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355866
+         Current function value: 0.346750
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355853
+         Current function value: 0.344251
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355574
+         Current function value: 0.347407
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355513
+         Current function value: 0.344075
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.356569
+         Current function value: 0.352582
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.356497
+         Current function value: 0.349318
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355847
+         Current function value: 0.352264
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355799
+         Current function value: 0.350093
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355846
+         Current function value: 0.349110
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355784
+         Current function value: 0.346530
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355478
+         Current function value: 0.349782
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.355407
+         Current function value: 0.346324
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.351587
+         Current function value: 0.345884
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.351581
+         Current function value: 0.342386
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.351502
+         Current function value: 0.344798
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.348753
+         Current function value: 0.345878
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.351501
+         Current function value: 0.341527
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.348243
+         Current function value: 0.342360
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.348634
+         Current function value: 0.344793
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.348212
+         Current function value: 0.341502
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.351919
+         Current function value: 0.345083
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.351904
+         Current function value: 0.341444
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.351787
+         Current function value: 0.343892
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.348755
+         Current function value: 0.345071
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.351786
+         Current function value: 0.340488
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.348234
+         Current function value: 0.341403
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.348652
+         Current function value: 0.343882
          Iterations 7
 Optimization terminated successfully.
-         Current function value: 0.348213
-         Iterations 7
-Fit complete</code></pre>
+         Current function value: 0.340448
+         Iterations 7</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="features_files/figure-html/cell-13-output-2.svg" class="img-fluid figure-img"></p>
+<p><img src="features_files/figure-html/cell-19-output-2.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -678,6 +828,9 @@ Fit complete</code></pre>
 </section>
 
 </main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{"000444a418c74de48b8a91e29a23cd4a":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_1c7d5ce25d24494aa87ae057bd317c83","placeholder":"​","style":"IPY_MODEL_8fb973b339094310b07e53db240f0c94","tabbable":null,"tooltip":null,"value":" 10/10 [00:06&lt;00:00,  1.55it/s]"}},"10d1347c933f47fab06fb8e0364849b3":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"1c7d5ce25d24494aa87ae057bd317c83":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"3cce9e6d212e4e2385deef00ebd36fb4":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"77e248d0de7c401488c20f947da96f64":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"8fb973b339094310b07e53db240f0c94":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"b5147f173a244beea15a236d2edc6ebc":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"ProgressStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"bad43cb18ea74fb896f942ac8b0b7c3a":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"cdaf3c6043fe42a1a0a916bd3821e9e9":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HBoxModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_f9983ed46dde45a6b46f157d23d608da","IPY_MODEL_fb61091fe4204720b634cbaefa990b9e","IPY_MODEL_000444a418c74de48b8a91e29a23cd4a"],"layout":"IPY_MODEL_3cce9e6d212e4e2385deef00ebd36fb4","tabbable":null,"tooltip":null}},"f9983ed46dde45a6b46f157d23d608da":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_bad43cb18ea74fb896f942ac8b0b7c3a","placeholder":"​","style":"IPY_MODEL_10d1347c933f47fab06fb8e0364849b3","tabbable":null,"tooltip":null,"value":"Bootstraps (16 specifications): 100%"}},"fb61091fe4204720b634cbaefa990b9e":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"FloatProgressModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"ProgressView","bar_style":"success","description":"","description_allow_html":false,"layout":"IPY_MODEL_77e248d0de7c401488c20f947da96f64","max":10,"min":0,"orientation":"horizontal","style":"IPY_MODEL_b5147f173a244beea15a236d2edc6ebc","tabbable":null,"tooltip":null,"value":10}}},"version_major":2,"version_minor":0}
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

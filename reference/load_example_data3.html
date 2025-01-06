@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>specificationcurve – Specification Curve</title>
+<title>load_example_data3 – Specification Curve</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -102,35 +102,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../styles.css">
 <meta name="twitter:title" content="Specification Curve">
@@ -182,7 +153,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/SpecificationCurve.html">Classes</a></li><li class="breadcrumb-item"><a href="../reference/SpecificationCurve.html">SpecificationCurve</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/load_example_data1.html">Functions</a></li><li class="breadcrumb-item"><a href="../reference/load_example_data3.html">load_example_data3</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -211,7 +182,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/SpecificationCurve.html" class="sidebar-item-text sidebar-link active">
+  <a href="../reference/SpecificationCurve.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">SpecificationCurve</span></a>
   </div>
 </li>
@@ -240,7 +211,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/load_example_data3.html" class="sidebar-item-text sidebar-link">
+  <a href="../reference/load_example_data3.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">load_example_data3</span></a>
   </div>
 </li>
@@ -256,396 +227,48 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#specification_curve.SpecificationCurve" id="toc-specification_curve.SpecificationCurve" class="nav-link active" data-scroll-target="#specification_curve.SpecificationCurve">SpecificationCurve</a>
+  <li><a href="#specification_curve.load_example_data3" id="toc-specification_curve.load_example_data3" class="nav-link active" data-scroll-target="#specification_curve.load_example_data3">load_example_data3</a>
   <ul class="collapse">
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
-  <li><a href="#raises" id="toc-raises" class="nav-link" data-scroll-target="#raises">Raises</a></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
-  <ul class="collapse">
-  <li><a href="#specification_curve.SpecificationCurve.fit" id="toc-specification_curve.SpecificationCurve.fit" class="nav-link" data-scroll-target="#specification_curve.SpecificationCurve.fit">fit</a></li>
-  <li><a href="#specification_curve.SpecificationCurve.fit_null" id="toc-specification_curve.SpecificationCurve.fit_null" class="nav-link" data-scroll-target="#specification_curve.SpecificationCurve.fit_null">fit_null</a></li>
-  <li><a href="#specification_curve.SpecificationCurve.plot" id="toc-specification_curve.SpecificationCurve.plot" class="nav-link" data-scroll-target="#specification_curve.SpecificationCurve.plot">plot</a></li>
-  </ul></li>
+  <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns">Returns</a></li>
   </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/SpecificationCurve.html">Classes</a></li><li class="breadcrumb-item"><a href="../reference/SpecificationCurve.html">SpecificationCurve</a></li></ol></nav></header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/load_example_data1.html">Functions</a></li><li class="breadcrumb-item"><a href="../reference/load_example_data3.html">load_example_data3</a></li></ol></nav></header>
 
 
 
 
-<section id="specification_curve.SpecificationCurve" class="level1">
-<h1>SpecificationCurve</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>SpecificationCurve(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    df,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    y_endog<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    x_exog<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    exclu_grps<span class="op">=</span>[[<span class="va">None</span>]],</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    cat_expand<span class="op">=</span>[],</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    always_include<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    formula<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Specification curve object. Uses a model to perform all variants of a specification. Stores the results of those regressions in a tidy format pandas dataframe. Plots the regressions in chart that can optionally be saved. Will iterate over multiple inputs for exog. and endog. variables. Note that categorical variables that are expanded cannot be mutually excluded from other categorical variables that are expanded.</p>
-<p>The class can be initialized in two mutually exclusive ways: 1. Using a formula string (e.g., “y ~ x1 + x2”) 2. Using separate y_endog, x_exog, controls, and always_include parameters</p>
-<section id="parameters" class="level2 doc-section doc-section-parameters">
-<h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
+<section id="specification_curve.load_example_data3" class="level1">
+<h1>load_example_data3</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>load_example_data3()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Generates fake data.</p>
+<section id="returns" class="level2 doc-section doc-section-returns">
+<h2 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 10%">
-<col style="width: 46%">
-<col style="width: 35%">
-<col style="width: 7%">
+<col style="width: 18%">
+<col style="width: 70%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
 <th>Type</th>
 <th>Description</th>
-<th>Default</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>df</td>
+<td></td>
 <td>pd.DataFrame</td>
-<td>Input DataFrame</td>
-<td><em>required</em></td>
-</tr>
-<tr class="even">
-<td>formula</td>
-<td>str</td>
-<td>R-style formula string (e.g., “y ~ x1 + x2”)</td>
-<td><code>None</code></td>
-</tr>
-<tr class="odd">
-<td>y_endog</td>
-<td>Union[str, List[str]]</td>
-<td>Dependent variable(s)</td>
-<td><code>None</code></td>
-</tr>
-<tr class="even">
-<td>x_exog</td>
-<td>Union[str, List[str]]</td>
-<td>Independent variable(s)</td>
-<td><code>None</code></td>
-</tr>
-<tr class="odd">
-<td>controls</td>
-<td>List[str]</td>
-<td>Control variables</td>
-<td><code>None</code></td>
-</tr>
-<tr class="even">
-<td>exclu_grps</td>
-<td>Union[List[List[None]], List[str], str, List[List[str]]]</td>
-<td>Groups of variables to exclude. Defaults to [[None]]</td>
-<td><code>[[None]]</code></td>
-</tr>
-<tr class="odd">
-<td>cat_expand</td>
-<td>Union[str, List[None], List[str], List[List[str]]]</td>
-<td>Categorical variables to expand. Defaults to []</td>
-<td><code>[]</code></td>
-</tr>
-<tr class="even">
-<td>always_include</td>
-<td>Union[str, List[str]]</td>
-<td>Variables to always include</td>
-<td><code>None</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="raises" class="level2 doc-section doc-section-raises">
-<h2 class="doc-section doc-section-raises anchored" data-anchor-id="raises">Raises</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 14%">
-<col style="width: 76%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>ValueError</td>
-<td>If neither formula nor (y_endog, x_exog, controls) are provided</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>ValueError</td>
-<td>If both formula and (y_endog, x_exog, controls) are provided</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="methods" class="level2">
-<h2 class="anchored" data-anchor-id="methods">Methods</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="#specification_curve.SpecificationCurve.fit">fit</a></td>
-<td>Fits a specification curve by performing regressions.</td>
-</tr>
-<tr class="even">
-<td><a href="#specification_curve.SpecificationCurve.fit_null">fit_null</a></td>
-<td>Refits all of the specifications under the null of <span class="math inline">\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\)</span></td>
-</tr>
-<tr class="odd">
-<td><a href="#specification_curve.SpecificationCurve.plot">plot</a></td>
-<td>Makes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.</td>
-</tr>
-</tbody>
-</table>
-<section id="specification_curve.SpecificationCurve.fit" class="level3">
-<h3 class="anchored" data-anchor-id="specification_curve.SpecificationCurve.fit">fit</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>SpecificationCurve.fit(estimator<span class="op">=</span>sm.OLS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Fits a specification curve by performing regressions.</p>
-<section id="parameters-1" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-1">Parameters</h4>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 7%">
-<col style="width: 53%">
-<col style="width: 30%">
-<col style="width: 7%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>estimator</td>
-<td>statsmodels.regression.linear_model or statsmodels.discrete.discrete_model</td>
-<td>statsmodels estimator. Defaults to sm.OLS.</td>
-<td><code>sm.OLS</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="specification_curve.SpecificationCurve.fit_null" class="level3">
-<h3 class="anchored" data-anchor-id="specification_curve.SpecificationCurve.fit_null">fit_null</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>SpecificationCurve.fit_null(n_boot<span class="op">=</span><span class="dv">30</span>, f_sample<span class="op">=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Refits all of the specifications under the null of <span class="math inline">\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\)</span> where i is over rows and k is over specifications and i is a function of k as y and x rows can change depending on the k when there are multiple y_endog and multiple x_exog. Each bootstrap sees a fraction of rows f_sample taken and then a new specification curve fit under the null. Then summary statistics are created by specification, and statistical tests.</p>
-<section id="parameters-2" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-2">Parameters</h4>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 8%">
-<col style="width: 68%">
-<col style="width: 11%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>n_boot</td>
-<td>int</td>
-<td>Number of bootstraps. Defaults to 30.</td>
-<td><code>30</code></td>
-</tr>
-<tr class="even">
-<td>f_sample</td>
-<td>float</td>
-<td>Fraction of rows to sample in each bootstrap. Defaults to 0.1.</td>
-<td><code>0.1</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="raises-1" class="level4 doc-section doc-section-raises">
-<h4 class="doc-section doc-section-raises anchored" data-anchor-id="raises-1">Raises</h4>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>ValueError</td>
-<td>If .fit() has not been run first.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="returns" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h4>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>None</td>
-<td>None</td>
-<td>Results saved in self.null_stats_summary.</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="specification_curve.SpecificationCurve.plot" class="level3">
-<h3 class="anchored" data-anchor-id="specification_curve.SpecificationCurve.plot">plot</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>SpecificationCurve.plot(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    save_path<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    pretty_plots<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    preferred_spec<span class="op">=</span>[],</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    show_null_curve<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    return_fig<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>kwargs,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Makes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.</p>
-<section id="parameters-3" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-3">Parameters</h4>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 5%">
-<col style="width: 4%">
-<col style="width: 86%">
-<col style="width: 3%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>save_path</td>
-<td>string or path</td>
-<td>Exported fig filename. Defaults to None.</td>
-<td><code>None</code></td>
-</tr>
-<tr class="even">
-<td>pretty_plots</td>
-<td>bool</td>
-<td>Whether to use this package’s figure formatting. Defaults to True.</td>
-<td><code>True</code></td>
-</tr>
-<tr class="odd">
-<td>preferred_spec</td>
-<td>list</td>
-<td>Preferred specification. Defaults to [].</td>
-<td><code>[]</code></td>
-</tr>
-<tr class="even">
-<td>show_null_curve</td>
-<td>bool</td>
-<td>Whether to include the curve under the null. Defaults to False.</td>
-<td><code>False</code></td>
-</tr>
-<tr class="odd">
-<td>pretty_plots</td>
-<td>bool</td>
-<td>Whether to use this package’s figure formatting. Defaults to False.</td>
-<td><code>True</code></td>
-</tr>
-<tr class="even">
-<td>return_fig</td>
-<td>bool</td>
-<td>Whether to return the figure and axes objects. Defaults to False.</td>
-<td><code>False</code></td>
-</tr>
-<tr class="odd">
-<td>**kwargs</td>
-<td>dict</td>
-<td>Additional arguments passed to .fit_null() when show_null_curve is True. Parameters: n_boot (int): Number of bootstrap iterations for null curve calculation. eg the argument would be <code>**{"n_boot": 5}</code>. f_sample (float): Fraction of rows to sample in each bootstrap. Defaults to 0.1.</td>
-<td><code>{}</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="returns-1" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-1">Returns</h4>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 4%">
-<col style="width: 38%">
-<col style="width: 57%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>Union[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]</td>
-<td>Union[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]: None or the fig and axes with chart on.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="raises-2" class="level4 doc-section doc-section-raises">
-<h4 class="doc-section doc-section-raises anchored" data-anchor-id="raises-2">Raises</h4>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 14%">
-<col style="width: 76%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>ValueError</td>
-<td>If .plot() is called before .fit() - the fit must be run first.</td>
+<td>pd.DataFrame: Example data suitable for regression.</td>
 </tr>
 </tbody>
 </table>
 
 
-</section>
-</section>
 </section>
 </section>
 
