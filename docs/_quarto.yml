@@ -36,10 +36,12 @@ quartodoc:
   sidebar: _sidebar.yml
 
   sections:
+    - title: "Classes"
+      contents:
+        - name: SpecificationCurve
+          children: embedded
     - title: "Functions"
       contents:
         - load_example_data1
         - load_example_data2
-    - title: "Classes"
-      contents:
-        - SpecificationCurve
+        - load_example_data3
