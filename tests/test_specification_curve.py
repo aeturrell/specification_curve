@@ -322,6 +322,21 @@ def test_018a_repr_no_fit(mock_show) -> None:
 
 @typeguard_ignore
 @patch("matplotlib.pyplot.show")
+def test_018b_repr_with_lists(mock_show) -> None:
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(
+        df,
+        y_endog=["y1", "y2"],
+        x_exog="x1",
+        controls=["c1", "c2", "c3"],
+        exclu_grps=[["c1", "c2"], ["c3", "c2"]],
+    )
+    sco.fit()
+    print(sco)
+
+
+@typeguard_ignore
+@patch("matplotlib.pyplot.show")
 def test_019_more_exclude(mock_show) -> None:
     df = specy.load_example_data3()
     sco = specy.SpecificationCurve(
@@ -415,6 +430,7 @@ def test_024_always_include_and_cat_expand() -> None:
             x_exog="x",
             always_include=["control1"],
             cat_expand=["control1"],
+            controls=["control1", "control2"],
         )
         sco.fit()
 

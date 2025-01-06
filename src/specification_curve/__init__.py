@@ -279,7 +279,7 @@ class SpecificationCurve:
 
         # Raise error if always include and category expand have any of the same columns.
         if (self.cat_expand is not None) and (self.always_include is not None):
-            if any([x in self.always_include for x in self.cat_expand]):
+            if [x for x in self.always_include if x in self.cat_expand]:
                 raise ValueError(
                     "Cannot always include a variable that is being expanded."
                 )
