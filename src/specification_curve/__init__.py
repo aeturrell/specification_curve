@@ -1018,7 +1018,7 @@ class SpecificationCurve:
         preferred_spec: Union[List[str], List[None]] = [],
         show_null_curve: bool = False,
         return_fig: bool = False,
-        **kwargs: dict,
+        **kwargs,
     ) -> Union[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]:
         """Makes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.
 
