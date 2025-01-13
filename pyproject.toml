@@ -41,6 +41,8 @@ dev = [
     "toml>=0.10.2",
     "types-setuptools>=75.6.0.20241223",
     "xdoctest>=1.2.0",
+    "aquarel>=0.0.6",
+    "pydoclint>=0.6.0",
 ]
 
 [tool.coverage.report]
@@ -67,3 +69,7 @@ specification_curve=['*.csv']
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
+
+[tool.pydoclint]
+style = 'google'
+exclude = ["noxfile.py", "tests/", "docs/"]

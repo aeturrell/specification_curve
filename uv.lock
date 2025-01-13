@@ -26,6 +26,19 @@ wheels = [
 ]
 
 [[package]]
+name = "aquarel"
+version = "0.0.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cycler" },
+    { name = "matplotlib" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d3/74/73b05d8a8d94d3e2676cee10a4d6102cd6f8b14e3236ca7ea7d9e34401aa/aquarel-0.0.6.tar.gz", hash = "sha256:1905766db15f07c3b4047fd19bc898e0193c93d14700cc549d0af83e8ada0dfa", size = 19592 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3d/80/caa86f9707478d95986ae60166fc81ed680763caa4e2d8298cd5f9ce0ba1/aquarel-0.0.6-py3-none-any.whl", hash = "sha256:373fa3f9e101c16a8b453e2cb64c88ef05ab8830e873bb110bca49e14137877d", size = 20312 },
+]
+
+[[package]]
 name = "argcomplete"
 version = "3.5.2"
 source = { registry = "https://pypi.org/simple" }
@@ -503,6 +516,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/0d/dd/1bec4c5ddb504ca60fc29472f3d27e8d4da1257a854e1d96742f15c1d02d/distlib-0.3.9.tar.gz", hash = "sha256:a60f20dea646b8a33f3e7772f74dc0b2d0772d2837ee1342a00645c81edf9403", size = 613923 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/91/a1/cf2472db20f7ce4a6be1253a81cfdf85ad9c7885ffbed7047fb72c24cf87/distlib-0.3.9-py2.py3-none-any.whl", hash = "sha256:47f8c22fd27c27e25a65601af709b38e4f0a45ea4fc2e710f65755fa8caaaf87", size = 468973 },
+]
+
+[[package]]
+name = "docstring-parser-fork"
+version = "0.0.12"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/c6/72/61f7243ad62e14d527f93304cd4f333e681295aa3ef9bcc4afc36c07001a/docstring_parser_fork-0.0.12.tar.gz", hash = "sha256:b44c5e0be64ae80f395385f01497d381bd094a57221fd9ff020987d06857b2a0", size = 31608 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/50/0d/eed05d4b1065f11f8bef2f57440759d4dacc73c22780764948bfa4aaa304/docstring_parser_fork-0.0.12-py3-none-any.whl", hash = "sha256:55d7cbbc8b367655efd64372b9a0b33a49bae930a8ddd5cdc4c6112312e28a87", size = 42185 },
 ]
 
 [[package]]
@@ -1611,6 +1633,20 @@ wheels = [
 ]
 
 [[package]]
+name = "pydoclint"
+version = "0.6.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "docstring-parser-fork" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/57/08/ef4e3c77279d3e849aaa5c340fbd8f3df4faddd0654f3ee057988dad61e3/pydoclint-0.6.0.tar.gz", hash = "sha256:bee5b509f5407c8ae180ff86a6776895084129097a4600b749fd133fd58a1cf4", size = 53067 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9d/79/9daa3087d4cfc9e5dec7911363b8f1f024a66899559d031fc215fe6724ea/pydoclint-0.6.0-py2.py3-none-any.whl", hash = "sha256:f1fb9676efe70c9a0443c7177186a01001a2227c9100272ef72d7da269ae9bbd", size = 47515 },
+]
+
+[[package]]
 name = "pygments"
 version = "2.18.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2200,7 +2236,7 @@ wheels = [
 
 [[package]]
 name = "specification-curve"
-version = "0.3.6"
+version = "0.3.7"
 source = { editable = "." }
 dependencies = [
     { name = "ipywidgets" },
@@ -2219,6 +2255,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "aquarel" },
     { name = "coverage" },
     { name = "ipykernel" },
     { name = "nbstripout" },
@@ -2226,6 +2263,7 @@ dev = [
     { name = "pandas-stubs" },
     { name = "pre-commit" },
     { name = "pre-commit-hooks" },
+    { name = "pydoclint" },
     { name = "pytest" },
     { name = "quartodoc" },
     { name = "ruff" },
@@ -2252,6 +2290,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "aquarel", specifier = ">=0.0.6" },
     { name = "coverage", specifier = ">=7.6.9" },
     { name = "ipykernel", specifier = ">=6.29.5" },
     { name = "nbstripout", specifier = ">=0.8.1" },
@@ -2259,6 +2298,7 @@ dev = [
     { name = "pandas-stubs", specifier = ">=2.2.2.240807" },
     { name = "pre-commit", specifier = ">=4.0.1" },
     { name = "pre-commit-hooks", specifier = ">=5.0.0" },
+    { name = "pydoclint", specifier = ">=0.6.0" },
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "quartodoc", specifier = ">=0.9.1" },
     { name = "ruff", specifier = ">=0.8.4" },
