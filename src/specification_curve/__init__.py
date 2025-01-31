@@ -932,7 +932,7 @@ class SpecificationCurve:
         )
         axarr[0].yaxis.set_minor_locator(AutoMinorLocator())
         axarr[0].set_ylim(_round_to_2(ylims[0]), _round_to_2(ylims[1]))
-        for place in ["right", "top"]:
+        for place in ["right", "top", "bottom"]:
             axarr[0].spines[place].set_visible(False)
 
         # Now do the blocks - each group get its own array
