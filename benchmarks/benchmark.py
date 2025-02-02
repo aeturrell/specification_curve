@@ -4,9 +4,8 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import statsmodels.api as sm
-
 import specification_curve as sc
+import statsmodels.api as sm
 
 tic = time.perf_counter()
 
