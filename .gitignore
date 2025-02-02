@@ -1,3 +1,7 @@
+# For benchmarks
+outputs/*
+!outputs/.gitkeep
+
 # Quarto and docs
 /docs/.quarto/
 /.quarto/
