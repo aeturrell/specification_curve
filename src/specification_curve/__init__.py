@@ -25,6 +25,7 @@ import statsmodels.api as sm
 from matplotlib.ticker import AutoMinorLocator
 from tqdm.auto import trange
 from typeguard import typeguard_ignore
+import pyfixest as pf
 
 try:
     __version__ = version("specification_curve")
@@ -396,6 +397,17 @@ class SpecificationCurve:
         for col_name in cols_to_convert_to_int:
             xf[col_name] = xf[col_name].astype(int)
         xf_with_constant = sm.tools.tools.add_constant(xf[[x_exog] + reg_vars_here])
+        print(xf_with_constant.iloc[:, :2].head())
+        print(xf_with_constant.iloc[:, 2:].head())
+        print(
+            str(
+                pf.estimation.demean(
+                    xf_with_constant.iloc[:, :2].to_numpy(),
+                    xf_with_constant.iloc[:, 2:].to_numpy(),
+                    weights=np.ones(xf_with_constant.iloc[:, :2].shape[0]),
+                )
+            )
+        )
         return self.estimator(xf[y_endog], xf_with_constant).fit()
 
     def _compute_combinations(self):
@@ -662,11 +674,11 @@ class SpecificationCurve:
                 data=[
                     [f"{_round_to_2(median_by_spec.median())}", median_by_spec_p_text],
                     [
-                        f"{(median_by_spec>0).sum()} of {number_specs}",
+                        f"{(median_by_spec > 0).sum()} of {number_specs}",
                         share_pls_p_text,
                     ],
                     [
-                        f"{(median_by_spec<0).sum()} of {number_specs}",
+                        f"{(median_by_spec < 0).sum()} of {number_specs}",
                         share_neg_p_text,
                     ],
                 ],
