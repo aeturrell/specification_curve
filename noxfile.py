@@ -8,7 +8,7 @@ import nox
 from nox import session
 
 package = "specification_curve"
-python_versions = ["3.9", "3.10", "3.11"]
+python_versions = ["3.10", "3.11", "3.12"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
@@ -70,7 +70,7 @@ def activate_virtualenv_in_precommit_hooks(session: nox.Session) -> None:
         hook.write_text("\n".join(lines))
 
 
-@session(name="pre-commit", python="3.9")
+@session(name="pre-commit", python="3.10")
 def precommit(session: nox.Session) -> None:
     """Lint using pre-commit."""
     args = session.posargs or ["run", "--all-files", "--show-diff-on-failure"]
