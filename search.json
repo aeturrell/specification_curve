@@ -1,270 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Specification Curve",
-    "section": "",
-    "text": "Specification Curve is a Python package that performs specification curve analysis; it helps with the problem of the “garden of forking paths” (many defensible choices) when doing analysis by running many regressions and summarising the effects in an easy to digest chart."
-  },
-  {
-    "objectID": "index.html#introduction",
-    "href": "index.html#introduction",
-    "title": "Specification Curve",
-    "section": "Introduction",
-    "text": "Introduction\nWhen specifying a causal model, modellers have a number of options. These can be informed by field intelligence, priors, and even misguided attempts to find a significant result. Even with the best of intentions, research teams can reach entirely different conclusions using the same, or similar, data because of different choices made in preparing data or in modelling it.\nTypically this happens when there isn’t a clear way to do “feature engineering” on the data or the data are imperfect in some way. For example, you have a high frequency time series which needs to be aggregated to a lower frequency: you could take the maximum, the minimum, or the average over each high frequency time period. A different choice may be appropriate in different settings.\nThere’s formal evidence that researchers really do make different decisions; one study (Silberzahn et al. 2018) gave the same research question—whether soccer referees are more likely to give red cards to players with dark skin tones than to players with light skin tones—to 29 different teams. From the abstract of that paper:\n\nAnalytic approaches varied widely across the teams, and the estimated effect sizes ranged from 0.89 to 2.93 (Mdn = 1.31) in odds-ratio units. Twenty teams (69%) found a statistically significant positive effect, and 9 teams (31%) did not observe a significant relationship. Overall, the 29 different analyses used 21 unique combinations of covariates. Neither analysts’ prior beliefs about the effect of interest nor their level of expertise readily explained the variation in the outcomes of the analyses. Peer ratings of the quality of the analyses also did not account for the variability.\n\nSo not only can different decisions made, but there seems to be no clearly identifiable reason for them!\nThere have since been a number of papers that find similar conclusions (Huntington-Klein et al. 2021).\nSpecification curves have been invented (Simonsohn, Simmons, and Nelson 2020) as a way to better grasp the garden of forking paths that analysts face, and help them show how sensitive their results are to alternative specifications.\nMore than one piece of software (Masur and Scharkow 2019) has appeared to help researchers and analysts use this technique: specification curve is one such package!"
-  },
-  {
-    "objectID": "index.html#quickstart",
-    "href": "index.html#quickstart",
-    "title": "Specification Curve",
-    "section": "Quickstart",
-    "text": "Quickstart\nYou can try out specification curve right now in Google Colab. To install the package in Colab, run !pip install specification_curve in a new code cell.\nHere’s an example of using Specification Curve.\n\nimport specification_curve as sc\n\ndf = sc.load_example_data3()\ndf.head()\n\n\n\n\n\n\n\n\ny1\ny2\nx1\nc1\nc2\nc3\nccat\n\n\n\n\n0\n0.408694\n-0.677861\n0.319844\n0.873945\n0.315051\n0.317730\n0\n\n\n1\n0.823288\n0.220807\n0.879205\n0.603677\n0.044192\n0.313405\n0\n\n\n2\n1.314995\n1.100182\n0.980309\n0.937964\n0.790195\n0.684977\n1\n\n\n3\n0.481942\n0.305384\n0.210092\n0.718184\n0.079917\n0.719236\n1\n\n\n4\n1.013794\n0.773417\n0.267960\n0.239086\n0.789400\n0.279626\n1\n\n\n\n\n\n\n\n\n# Specification Curve Analysis\n# -----------------------------\nsco = sc.SpecificationCurve(\n    df, y_endog=[\"y1\", \"y2\"], x_exog=\"x1\", controls=[\"c1\", \"c2\", \"c3\"]\n)\nsco.fit()\nsco.plot()\n\n\n\n\n\n\n\n\nGrey squares (black lines when there are many specifications) show whether a variable is included in a specification or not. Blue or red markers and error bars show whether the coefficient is positive and significant (at the 0.05 level) or red and significant, respectively.\nYou can also specify the same model by passing a string to the formula API. This takes specifications in the form:\n“endogenous ~ exogenous + controls to always include + controls”\nwith any alternatives given by the “|” character.\nFor example:\n“y1 | y2 ~ x1 | x2 | x3 + c1 + c2 + c3 | c4”\nwould run specifications of y1, y2 on x1, x2, with c1 and c2 always included as controls and c3 and c4 included controls that are included combinatorially.\nHere’s an example:\n\ndf = sc.load_example_data1()\nsc = sc.SpecificationCurve(df=df, formula=\"y1 ~ x1 | x2 + group1 + c1 | c2\")\nsc.fit()\nsc.plot()"
-  },
-  {
-    "objectID": "index.html#installation",
-    "href": "index.html#installation",
-    "title": "Specification Curve",
-    "section": "Installation",
-    "text": "Installation\nYou can install Specification Curve via pip:\n$ pip install specification-curve\nTo install the development version from git, use:\n$ pip install git+https://github.com/aeturrell/specification_curve.git"
-  },
-  {
-    "objectID": "index.html#license",
-    "href": "index.html#license",
-    "title": "Specification Curve",
-    "section": "License",
-    "text": "License\nDistributed under the terms of the MIT license."
-  },
-  {
-    "objectID": "index.html#citing-specification-curve",
-    "href": "index.html#citing-specification-curve",
-    "title": "Specification Curve",
-    "section": "Citing Specification Curve",
-    "text": "Citing Specification Curve\nYou can find full citation information at the following link: https://zenodo.org/badge/latestdoi/282989537.\nUsing Specification Curve in your paper? Let us know by raising an issue beginning with “citation”."
-  },
-  {
-    "objectID": "index.html#similar-packages",
-    "href": "index.html#similar-packages",
-    "title": "Specification Curve",
-    "section": "Similar Packages",
-    "text": "Similar Packages\nIn RStats, there is specr (which inspired many design choices in this package) and spec_chart. Some of the example data in this package is the same as in specr, but please note that results have not been cross-checked across packages."
-  },
-  {
-    "objectID": "index.html#references",
-    "href": "index.html#references",
-    "title": "Specification Curve",
-    "section": "References",
-    "text": "References\n\n\nHuntington-Klein, Nick, Andreu Arenas, Emily Beam, Marco Bertoni, Jeffrey R Bloem, Pralhad Burli, Naibin Chen, et al. 2021. “The Influence of Hidden Researcher Decisions in Applied Microeconomics.” Economic Inquiry 59 (3): 944–60.\n\n\nMasur, Philipp K., and Michael Scharkow. 2019. “Specr: Statistical Functions for Conducting Specification Curve Analyses (Version 0.2.1).” https://github.com/masurp/specr.\n\n\nSilberzahn, Raphael, Eric L Uhlmann, Daniel P Martin, Pasquale Anselmi, Frederik Aust, Eli Awtrey, Štěpán Bahnı́k, et al. 2018. “Many Analysts, One Data Set: Making Transparent How Variations in Analytic Choices Affect Results.” Advances in Methods and Practices in Psychological Science 1 (3): 337–56.\n\n\nSimonsohn, Uri, Joseph P Simmons, and Leif D Nelson. 2020. “Specification Curve Analysis.” Nature Human Behaviour 4 (11): 1208–14."
-  },
-  {
-    "objectID": "contributing.html",
-    "href": "contributing.html",
-    "title": "Contributing",
-    "section": "",
-    "text": "Thank you for your interest in improving this project. This project is open-source under the MIT license and welcomes contributions in the form of bug reports, feature requests, and pull requests.\nHere is a list of important resources for contributors:\n\nSource Code\nDocumentation\nIssue Tracker\n\n\n\nReport bugs on the Issue Tracker.\nWhen filing an issue, make sure to answer these questions:\n\nWhich operating system and Python version are you using?\nWhich version of this project are you using?\nWhat did you do?\nWhat did you expect to see?\nWhat did you see instead?\n\nThe best way to get your bug fixed is to provide a test case, and/or steps to reproduce the issue.\n\n\n\nRequest features on the Issue Tracker.\n\n\n\nYou need Python and the following tools:\n\nuv\nNox\nMake\nQuarto\n\nInstall the package with the existing development requirements:\n$ uv sync --frozen\nTo also update packages, do not use the --frozen flag.\nTo build the documentation locally, you will also need Make and Quarto (these are non-Python dependencies).\nYou can build the docs locally to look at them with make, which runs a command to build the README and then another to build the website which can then be found in docs/_site/. It’s make clean to remove the existing README.\nTo publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s make publish—but only devs with admin rights will be able to execute this.\n\n\n\nRun the full test suite:\n$ uv run nox\nList the available Nox sessions:\n$ uv run nox --list-sessions\nYou can also run a specific Nox session. For example, invoke the unit test suite like this:\n$ uv run nox --session=tests\nUnit tests are located in the tests directory, and are written using the pytest testing framework.\nYou may need to use, for example, uv run nox to ensure that the tests are run in the right environment.\nFor the pre-commit checks, use\n$ uv run pre-commit run --all-files\n\n\n\nOpen a pull request to submit changes to this project.\nYour pull request needs to meet the following guidelines for acceptance:\n\nThe Nox test suite must pass without errors and warnings.\nInclude unit tests. This project aims to maintain 96% code coverage.\nIf your changes add functionality, update the documentation accordingly.\nRun make to generate the new documentation.\nRun the pre-commit suite before committing.\n\nFeel free to submit early, though—we can always iterate on this.\nTo run linting and code formatting checks before committing your change, you need to run the following command:\n$ uv run nox --session=pre-commit -- install\nIt is recommended to open an issue before starting work on anything. This will allow a chance to talk it over with the owners and validate your approach.\n\n\n\n\nOpen a new branch with the version name\nChange the version in pyproject.toml (you can run uv run version_bumper.py, which has script-level dependencies)\nCommit the change with a new version label as the commit message (checking the tests pass)\nHead to GitHub and merge into main (again, if the CI works)\nDraft a new release based on that most recent merge commit, using the new version as the tag\nConfirm the release draft on GitHub\nThe automatic release GitHub Action will push to PyPI.\n\nIf you ever need distributable files, you can use the uv build command locally.\n\n\n\nYou shouldn’t need to publish the documentation because there’s a GitHub action that covers it automatically whenever there’s a new release. But to upload the documentation manually, it’s\n\nRun make to build the documentation\nRun make publish to publish the documentation"
-  },
-  {
-    "objectID": "contributing.html#how-to-report-a-bug",
-    "href": "contributing.html#how-to-report-a-bug",
-    "title": "Contributing",
-    "section": "",
-    "text": "Report bugs on the Issue Tracker.\nWhen filing an issue, make sure to answer these questions:\n\nWhich operating system and Python version are you using?\nWhich version of this project are you using?\nWhat did you do?\nWhat did you expect to see?\nWhat did you see instead?\n\nThe best way to get your bug fixed is to provide a test case, and/or steps to reproduce the issue."
-  },
-  {
-    "objectID": "contributing.html#how-to-request-a-feature",
-    "href": "contributing.html#how-to-request-a-feature",
-    "title": "Contributing",
-    "section": "",
-    "text": "Request features on the Issue Tracker."
-  },
-  {
-    "objectID": "contributing.html#how-to-set-up-your-development-environment",
-    "href": "contributing.html#how-to-set-up-your-development-environment",
-    "title": "Contributing",
-    "section": "",
-    "text": "You need Python and the following tools:\n\nuv\nNox\nMake\nQuarto\n\nInstall the package with the existing development requirements:\n$ uv sync --frozen\nTo also update packages, do not use the --frozen flag.\nTo build the documentation locally, you will also need Make and Quarto (these are non-Python dependencies).\nYou can build the docs locally to look at them with make, which runs a command to build the README and then another to build the website which can then be found in docs/_site/. It’s make clean to remove the existing README.\nTo publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s make publish—but only devs with admin rights will be able to execute this."
-  },
-  {
-    "objectID": "contributing.html#how-to-test-the-project",
-    "href": "contributing.html#how-to-test-the-project",
-    "title": "Contributing",
-    "section": "",
-    "text": "Run the full test suite:\n$ uv run nox\nList the available Nox sessions:\n$ uv run nox --list-sessions\nYou can also run a specific Nox session. For example, invoke the unit test suite like this:\n$ uv run nox --session=tests\nUnit tests are located in the tests directory, and are written using the pytest testing framework.\nYou may need to use, for example, uv run nox to ensure that the tests are run in the right environment.\nFor the pre-commit checks, use\n$ uv run pre-commit run --all-files"
-  },
-  {
-    "objectID": "contributing.html#how-to-submit-changes",
-    "href": "contributing.html#how-to-submit-changes",
-    "title": "Contributing",
-    "section": "",
-    "text": "Open a pull request to submit changes to this project.\nYour pull request needs to meet the following guidelines for acceptance:\n\nThe Nox test suite must pass without errors and warnings.\nInclude unit tests. This project aims to maintain 96% code coverage.\nIf your changes add functionality, update the documentation accordingly.\nRun make to generate the new documentation.\nRun the pre-commit suite before committing.\n\nFeel free to submit early, though—we can always iterate on this.\nTo run linting and code formatting checks before committing your change, you need to run the following command:\n$ uv run nox --session=pre-commit -- install\nIt is recommended to open an issue before starting work on anything. This will allow a chance to talk it over with the owners and validate your approach."
-  },
-  {
-    "objectID": "contributing.html#how-to-create-a-package-release",
-    "href": "contributing.html#how-to-create-a-package-release",
-    "title": "Contributing",
-    "section": "",
-    "text": "Open a new branch with the version name\nChange the version in pyproject.toml (you can run uv run version_bumper.py, which has script-level dependencies)\nCommit the change with a new version label as the commit message (checking the tests pass)\nHead to GitHub and merge into main (again, if the CI works)\nDraft a new release based on that most recent merge commit, using the new version as the tag\nConfirm the release draft on GitHub\nThe automatic release GitHub Action will push to PyPI.\n\nIf you ever need distributable files, you can use the uv build command locally."
-  },
-  {
-    "objectID": "contributing.html#how-to-build-the-documentation-manually-and-locally",
-    "href": "contributing.html#how-to-build-the-documentation-manually-and-locally",
-    "title": "Contributing",
-    "section": "",
-    "text": "You shouldn’t need to publish the documentation because there’s a GitHub action that covers it automatically whenever there’s a new release. But to upload the documentation manually, it’s\n\nRun make to build the documentation\nRun make publish to publish the documentation"
-  },
-  {
-    "objectID": "reference/SpecificationCurve.html",
-    "href": "reference/SpecificationCurve.html",
-    "title": "SpecificationCurve",
-    "section": "",
-    "text": "SpecificationCurve(\n    self,\n    df,\n    y_endog=None,\n    x_exog=None,\n    controls=None,\n    exclu_grps=[[None]],\n    cat_expand=[],\n    always_include=None,\n    formula=None,\n)\nSpecification curve object. Uses a model to perform all variants of a specification. Stores the results of those regressions in a tidy format pandas dataframe. Plots the regressions in chart that can optionally be saved. Will iterate over multiple inputs for exog. and endog. variables. Note that categorical variables that are expanded cannot be mutually excluded from other categorical variables that are expanded.\nThe class can be initialized in two mutually exclusive ways: 1. Using a formula string (e.g., “y ~ x1 + x2”) 2. Using separate y_endog, x_exog, controls, and always_include parameters\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ndf\npd.DataFrame\nInput DataFrame\nrequired\n\n\nformula\nstr\nR-style formula string (e.g., “y ~ x1 + x2”)\nNone\n\n\ny_endog\nUnion[str, List[str]]\nDependent variable(s)\nNone\n\n\nx_exog\nUnion[str, List[str]]\nIndependent variable(s)\nNone\n\n\ncontrols\nList[str]\nControl variables\nNone\n\n\nexclu_grps\nUnion[List[List[None]], List[str], str, List[List[str]]]\nGroups of variables to exclude. Defaults to [[None]]\n[[None]]\n\n\ncat_expand\nUnion[str, List[None], List[str], List[List[str]]]\nCategorical variables to expand. Defaults to []\n[]\n\n\nalways_include\nUnion[str, List[str]]\nVariables to always include\nNone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf neither formula nor (y_endog, x_exog, controls) are provided\n\n\n\nValueError\nIf both formula and (y_endog, x_exog, controls) are provided\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nfit\nFits a specification curve by performing regressions.\n\n\nfit_null\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\)\n\n\nplot\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\nSpecificationCurve.fit(estimator=sm.OLS)\nFits a specification curve by performing regressions.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nestimator\nstatsmodels.regression.linear_model or statsmodels.discrete.discrete_model\nstatsmodels estimator. Defaults to sm.OLS.\nsm.OLS\n\n\n\n\n\n\n\nSpecificationCurve.fit_null(n_boot=30, f_sample=0.1)\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\) where i is over rows and k is over specifications and i is a function of k as y and x rows can change depending on the k when there are multiple y_endog and multiple x_exog. Each bootstrap sees a fraction of rows f_sample taken and then a new specification curve fit under the null. Then summary statistics are created by specification, and statistical tests.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nn_boot\nint\nNumber of bootstraps. Defaults to 30.\n30\n\n\nf_sample\nfloat\nFraction of rows to sample in each bootstrap. Defaults to 0.1.\n0.1\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .fit() has not been run first.\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nNone\nNone\nResults saved in self.null_stats_summary.\n\n\n\n\n\n\n\nSpecificationCurve.plot(\n    save_path=None,\n    pretty_plots=True,\n    preferred_spec=[],\n    show_null_curve=False,\n    return_fig=False,\n    **kwargs,\n)\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstring or path\nExported fig filename. Defaults to None.\nNone\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to True.\nTrue\n\n\npreferred_spec\nlist\nPreferred specification. Defaults to [].\n[]\n\n\nshow_null_curve\nbool\nWhether to include the curve under the null. Defaults to False.\nFalse\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to False.\nTrue\n\n\nreturn_fig\nbool\nWhether to return the figure and axes objects. Defaults to False.\nFalse\n\n\n**kwargs\ndict\nAdditional arguments passed to .fit_null() when show_null_curve is True. Parameters: n_boot (int): Number of bootstrap iterations for null curve calculation. eg the argument would be **{\"n_boot\": 5}. f_sample (float): Fraction of rows to sample in each bootstrap. Defaults to 0.1.\n{}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]: None or the fig and axes with chart on.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .plot() is called before .fit() - the fit must be run first.",
-    "crumbs": [
-      "Reference",
-      "Classes",
-      "SpecificationCurve"
-    ]
-  },
-  {
-    "objectID": "reference/SpecificationCurve.html#parameters",
-    "href": "reference/SpecificationCurve.html#parameters",
-    "title": "SpecificationCurve",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ndf\npd.DataFrame\nInput DataFrame\nrequired\n\n\nformula\nstr\nR-style formula string (e.g., “y ~ x1 + x2”)\nNone\n\n\ny_endog\nUnion[str, List[str]]\nDependent variable(s)\nNone\n\n\nx_exog\nUnion[str, List[str]]\nIndependent variable(s)\nNone\n\n\ncontrols\nList[str]\nControl variables\nNone\n\n\nexclu_grps\nUnion[List[List[None]], List[str], str, List[List[str]]]\nGroups of variables to exclude. Defaults to [[None]]\n[[None]]\n\n\ncat_expand\nUnion[str, List[None], List[str], List[List[str]]]\nCategorical variables to expand. Defaults to []\n[]\n\n\nalways_include\nUnion[str, List[str]]\nVariables to always include\nNone",
-    "crumbs": [
-      "Reference",
-      "Classes",
-      "SpecificationCurve"
-    ]
-  },
-  {
-    "objectID": "reference/SpecificationCurve.html#raises",
-    "href": "reference/SpecificationCurve.html#raises",
-    "title": "SpecificationCurve",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\nValueError\nIf neither formula nor (y_endog, x_exog, controls) are provided\n\n\n\nValueError\nIf both formula and (y_endog, x_exog, controls) are provided",
-    "crumbs": [
-      "Reference",
-      "Classes",
-      "SpecificationCurve"
-    ]
-  },
-  {
-    "objectID": "reference/SpecificationCurve.html#methods",
-    "href": "reference/SpecificationCurve.html#methods",
-    "title": "SpecificationCurve",
-    "section": "",
-    "text": "Name\nDescription\n\n\n\n\nfit\nFits a specification curve by performing regressions.\n\n\nfit_null\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\)\n\n\nplot\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\nSpecificationCurve.fit(estimator=sm.OLS)\nFits a specification curve by performing regressions.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nestimator\nstatsmodels.regression.linear_model or statsmodels.discrete.discrete_model\nstatsmodels estimator. Defaults to sm.OLS.\nsm.OLS\n\n\n\n\n\n\n\nSpecificationCurve.fit_null(n_boot=30, f_sample=0.1)\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\) where i is over rows and k is over specifications and i is a function of k as y and x rows can change depending on the k when there are multiple y_endog and multiple x_exog. Each bootstrap sees a fraction of rows f_sample taken and then a new specification curve fit under the null. Then summary statistics are created by specification, and statistical tests.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nn_boot\nint\nNumber of bootstraps. Defaults to 30.\n30\n\n\nf_sample\nfloat\nFraction of rows to sample in each bootstrap. Defaults to 0.1.\n0.1\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .fit() has not been run first.\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nNone\nNone\nResults saved in self.null_stats_summary.\n\n\n\n\n\n\n\nSpecificationCurve.plot(\n    save_path=None,\n    pretty_plots=True,\n    preferred_spec=[],\n    show_null_curve=False,\n    return_fig=False,\n    **kwargs,\n)\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstring or path\nExported fig filename. Defaults to None.\nNone\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to True.\nTrue\n\n\npreferred_spec\nlist\nPreferred specification. Defaults to [].\n[]\n\n\nshow_null_curve\nbool\nWhether to include the curve under the null. Defaults to False.\nFalse\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to False.\nTrue\n\n\nreturn_fig\nbool\nWhether to return the figure and axes objects. Defaults to False.\nFalse\n\n\n**kwargs\ndict\nAdditional arguments passed to .fit_null() when show_null_curve is True. Parameters: n_boot (int): Number of bootstrap iterations for null curve calculation. eg the argument would be **{\"n_boot\": 5}. f_sample (float): Fraction of rows to sample in each bootstrap. Defaults to 0.1.\n{}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]: None or the fig and axes with chart on.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .plot() is called before .fit() - the fit must be run first.",
-    "crumbs": [
-      "Reference",
-      "Classes",
-      "SpecificationCurve"
-    ]
-  },
-  {
-    "objectID": "reference/load_example_data2.html",
-    "href": "reference/load_example_data2.html",
-    "title": "load_example_data2",
-    "section": "",
-    "text": "load_example_data2()\nGenerates fake data.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
-    "crumbs": [
-      "Reference",
-      "Functions",
-      "load_example_data2"
-    ]
-  },
-  {
-    "objectID": "reference/load_example_data2.html#returns",
-    "href": "reference/load_example_data2.html#returns",
-    "title": "load_example_data2",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
-    "crumbs": [
-      "Reference",
-      "Functions",
-      "load_example_data2"
-    ]
-  },
-  {
-    "objectID": "reference/index.html",
-    "href": "reference/index.html",
-    "title": "Function reference",
-    "section": "",
-    "text": "SpecificationCurve\nSpecification curve object.\n\n\n\n\n\n\n\n\n\nload_example_data1\nRetrieves example data from a file included with the package.\n\n\nload_example_data2\nGenerates fake data.\n\n\nload_example_data3\nGenerates fake data.",
-    "crumbs": [
-      "Reference",
-      "Function reference"
-    ]
-  },
-  {
-    "objectID": "reference/index.html#classes",
-    "href": "reference/index.html#classes",
-    "title": "Function reference",
-    "section": "",
-    "text": "SpecificationCurve\nSpecification curve object.",
-    "crumbs": [
-      "Reference",
-      "Function reference"
-    ]
-  },
-  {
-    "objectID": "reference/index.html#functions",
-    "href": "reference/index.html#functions",
-    "title": "Function reference",
-    "section": "",
-    "text": "load_example_data1\nRetrieves example data from a file included with the package.\n\n\nload_example_data2\nGenerates fake data.\n\n\nload_example_data3\nGenerates fake data.",
-    "crumbs": [
-      "Reference",
-      "Function reference"
-    ]
-  },
-  {
-    "objectID": "reference/load_example_data3.html",
-    "href": "reference/load_example_data3.html",
-    "title": "load_example_data3",
-    "section": "",
-    "text": "load_example_data3()\nGenerates fake data.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
-    "crumbs": [
-      "Reference",
-      "Functions",
-      "load_example_data3"
-    ]
-  },
-  {
-    "objectID": "reference/load_example_data3.html#returns",
-    "href": "reference/load_example_data3.html#returns",
-    "title": "load_example_data3",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
-    "crumbs": [
-      "Reference",
-      "Functions",
-      "load_example_data3"
-    ]
-  },
-  {
-    "objectID": "reference/load_example_data1.html",
-    "href": "reference/load_example_data1.html",
-    "title": "load_example_data1",
-    "section": "",
-    "text": "load_example_data1()\nRetrieves example data from a file included with the package.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
-    "crumbs": [
-      "Reference",
-      "Functions",
-      "load_example_data1"
-    ]
-  },
-  {
-    "objectID": "reference/load_example_data1.html#returns",
-    "href": "reference/load_example_data1.html#returns",
-    "title": "load_example_data1",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
-    "crumbs": [
-      "Reference",
-      "Functions",
-      "load_example_data1"
-    ]
-  },
-  {
     "objectID": "features.html",
     "href": "features.html",
     "title": "Features",
@@ -346,6 +81,271 @@
     "href": "features.html#using-models-other-than-ordinary-least-squares",
     "title": "Features",
     "section": "Using models other than Ordinary Least Squares",
-    "text": "Using models other than Ordinary Least Squares\nThe default model is OLS, but you can pass through other models too.\n\n# Specify the regressions to run\ny_endog = [\"y\", \"y2\"]\nx_exog = [\"x_1\", \"x_5\"]\ncontrols = [\"x_3\", \"x_2\", \"x_4\"]\nsco = sc.SpecificationCurve(df_logit, y_endog, x_exog, controls)\n# Fit using the logit estimator\nsco.fit(estimator=sm.Logit)  # sm.Probit also works\nsco.plot()\n\nOptimization terminated successfully.\n         Current function value: 0.350088\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346934\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.349797\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347686\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346750\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344251\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347407\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344075\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.352582\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.349318\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.352264\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.350093\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.349110\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346530\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.349782\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346324\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345884\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.342386\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344798\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345878\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341527\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.342360\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344793\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341502\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345083\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341444\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.343892\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345071\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.340488\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341403\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.343882\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.340448\n         Iterations 7"
+    "text": "Using models other than Ordinary Least Squares\nThe default model is OLS, but you can pass through other models too.\n\n# Specify the regressions to run\ny_endog = [\"y\", \"y2\"]\nx_exog = [\"x_1\", \"x_5\"]\ncontrols = [\"x_3\", \"x_2\", \"x_4\"]\nsco = sc.SpecificationCurve(df_logit, y_endog, x_exog, controls)\n# Fit using the logit estimator\nsco.fit(estimator=sm.Logit)  # sm.Probit also works\nsco.plot()\n\nOptimization terminated successfully.\n         Current function value: 0.350088\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346934\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.349797\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347686\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346750\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344251\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347407\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344075\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.356169\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.352965\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.355944\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.353721\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.352823\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.350268\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.353502\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.350127\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345884\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.342386\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344798\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345878\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341527\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.342360\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344793\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341502\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346261\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.342700\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345256\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346250\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341890\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.342666\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345247\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341857\n         Iterations 7"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Specification Curve",
+    "section": "",
+    "text": "Specification Curve is a Python package that performs specification curve analysis; it helps with the problem of the “garden of forking paths” (many defensible choices) when doing analysis by running many regressions and summarising the effects in an easy to digest chart."
+  },
+  {
+    "objectID": "index.html#introduction",
+    "href": "index.html#introduction",
+    "title": "Specification Curve",
+    "section": "Introduction",
+    "text": "Introduction\nWhen specifying a causal model, modellers have a number of options. These can be informed by field intelligence, priors, and even misguided attempts to find a significant result. Even with the best of intentions, research teams can reach entirely different conclusions using the same, or similar, data because of different choices made in preparing data or in modelling it.\nTypically this happens when there isn’t a clear way to do “feature engineering” on the data or the data are imperfect in some way. For example, you have a high frequency time series which needs to be aggregated to a lower frequency: you could take the maximum, the minimum, or the average over each high frequency time period. A different choice may be appropriate in different settings.\nThere’s formal evidence that researchers really do make different decisions; one study (Silberzahn et al. 2018) gave the same research question—whether soccer referees are more likely to give red cards to players with dark skin tones than to players with light skin tones—to 29 different teams. From the abstract of that paper:\n\nAnalytic approaches varied widely across the teams, and the estimated effect sizes ranged from 0.89 to 2.93 (Mdn = 1.31) in odds-ratio units. Twenty teams (69%) found a statistically significant positive effect, and 9 teams (31%) did not observe a significant relationship. Overall, the 29 different analyses used 21 unique combinations of covariates. Neither analysts’ prior beliefs about the effect of interest nor their level of expertise readily explained the variation in the outcomes of the analyses. Peer ratings of the quality of the analyses also did not account for the variability.\n\nSo not only can different decisions made, but there seems to be no clearly identifiable reason for them!\nThere have since been a number of papers that find similar conclusions (Huntington-Klein et al. 2021).\nSpecification curves have been invented (Simonsohn, Simmons, and Nelson 2020) as a way to better grasp the garden of forking paths that analysts face, and help them show how sensitive their results are to alternative specifications.\nMore than one piece of software (Masur and Scharkow 2019) has appeared to help researchers and analysts use this technique: specification curve is one such package!"
+  },
+  {
+    "objectID": "index.html#quickstart",
+    "href": "index.html#quickstart",
+    "title": "Specification Curve",
+    "section": "Quickstart",
+    "text": "Quickstart\nYou can try out specification curve right now in Google Colab. To install the package in Colab, run !pip install specification_curve in a new code cell.\nHere’s an example of using Specification Curve.\n\nimport specification_curve as sc\n\ndf = sc.load_example_data3()\ndf.head()\n\n\n\n\n\n\n\n\ny1\ny2\nx1\nc1\nc2\nc3\nccat\n\n\n\n\n0\n0.408694\n-0.677861\n0.319844\n0.873945\n0.315051\n0.317730\n0\n\n\n1\n0.823288\n0.220807\n0.879205\n0.603677\n0.044192\n0.313405\n0\n\n\n2\n1.314995\n1.100182\n0.980309\n0.937964\n0.790195\n0.684977\n1\n\n\n3\n0.481942\n0.305384\n0.210092\n0.718184\n0.079917\n0.719236\n1\n\n\n4\n1.013794\n0.773417\n0.267960\n0.239086\n0.789400\n0.279626\n1\n\n\n\n\n\n\n\n\n# Specification Curve Analysis\n# -----------------------------\nsco = sc.SpecificationCurve(\n    df, y_endog=[\"y1\", \"y2\"], x_exog=\"x1\", controls=[\"c1\", \"c2\", \"c3\"]\n)\nsco.fit()\nsco.plot()\n\n\n\n\n\n\n\n\nGrey squares (black lines when there are many specifications) show whether a variable is included in a specification or not. Blue or red markers and error bars show whether the coefficient is positive and significant (at the 0.05 level) or red and significant, respectively.\nYou can also specify the same model by passing a string to the formula API. This takes specifications in the form:\n“endogenous ~ exogenous + controls to always include + controls”\nwith any alternatives given by the “|” character.\nFor example:\n“y1 | y2 ~ x1 | x2 | x3 + c1 + c2 + c3 | c4”\nwould run specifications of y1, y2 on x1, x2, with c1 and c2 always included as controls and c3 and c4 included controls that are included combinatorially.\nHere’s an example:\n\ndf = sc.load_example_data1()\nsc = sc.SpecificationCurve(df=df, formula=\"y1 ~ x1 | x2 + group1 + c1 | c2\")\nsc.fit()\nsc.plot()"
+  },
+  {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "Specification Curve",
+    "section": "Installation",
+    "text": "Installation\nYou can install Specification Curve via pip:\n$ pip install specification-curve\nTo install the development version from git, use:\n$ pip install git+https://github.com/aeturrell/specification_curve.git"
+  },
+  {
+    "objectID": "index.html#license",
+    "href": "index.html#license",
+    "title": "Specification Curve",
+    "section": "License",
+    "text": "License\nDistributed under the terms of the MIT license."
+  },
+  {
+    "objectID": "index.html#citing-specification-curve",
+    "href": "index.html#citing-specification-curve",
+    "title": "Specification Curve",
+    "section": "Citing Specification Curve",
+    "text": "Citing Specification Curve\nYou can find full citation information at the following link: https://zenodo.org/badge/latestdoi/282989537.\nUsing Specification Curve in your paper? Let us know by raising an issue beginning with “citation”."
+  },
+  {
+    "objectID": "index.html#similar-packages",
+    "href": "index.html#similar-packages",
+    "title": "Specification Curve",
+    "section": "Similar Packages",
+    "text": "Similar Packages\nIn RStats, there is specr (which inspired many design choices in this package) and spec_chart. Some of the example data in this package is the same as in specr, but please note that results have not been cross-checked across packages."
+  },
+  {
+    "objectID": "index.html#references",
+    "href": "index.html#references",
+    "title": "Specification Curve",
+    "section": "References",
+    "text": "References\n\n\nHuntington-Klein, Nick, Andreu Arenas, Emily Beam, Marco Bertoni, Jeffrey R Bloem, Pralhad Burli, Naibin Chen, et al. 2021. “The Influence of Hidden Researcher Decisions in Applied Microeconomics.” Economic Inquiry 59 (3): 944–60.\n\n\nMasur, Philipp K., and Michael Scharkow. 2019. “Specr: Statistical Functions for Conducting Specification Curve Analyses (Version 0.2.1).” https://github.com/masurp/specr.\n\n\nSilberzahn, Raphael, Eric L Uhlmann, Daniel P Martin, Pasquale Anselmi, Frederik Aust, Eli Awtrey, Štěpán Bahnı́k, et al. 2018. “Many Analysts, One Data Set: Making Transparent How Variations in Analytic Choices Affect Results.” Advances in Methods and Practices in Psychological Science 1 (3): 337–56.\n\n\nSimonsohn, Uri, Joseph P Simmons, and Leif D Nelson. 2020. “Specification Curve Analysis.” Nature Human Behaviour 4 (11): 1208–14."
+  },
+  {
+    "objectID": "reference/load_example_data3.html",
+    "href": "reference/load_example_data3.html",
+    "title": "load_example_data3",
+    "section": "",
+    "text": "load_example_data3()\nGenerates fake data.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "crumbs": [
+      "Reference",
+      "Functions",
+      "load_example_data3"
+    ]
+  },
+  {
+    "objectID": "reference/load_example_data3.html#returns",
+    "href": "reference/load_example_data3.html#returns",
+    "title": "load_example_data3",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "crumbs": [
+      "Reference",
+      "Functions",
+      "load_example_data3"
+    ]
+  },
+  {
+    "objectID": "reference/index.html",
+    "href": "reference/index.html",
+    "title": "Function reference",
+    "section": "",
+    "text": "SpecificationCurve\nSpecification curve object.\n\n\n\n\n\n\n\n\n\nload_example_data1\nRetrieves example data from a file included with the package.\n\n\nload_example_data2\nGenerates fake data.\n\n\nload_example_data3\nGenerates fake data.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#classes",
+    "href": "reference/index.html#classes",
+    "title": "Function reference",
+    "section": "",
+    "text": "SpecificationCurve\nSpecification curve object.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#functions",
+    "href": "reference/index.html#functions",
+    "title": "Function reference",
+    "section": "",
+    "text": "load_example_data1\nRetrieves example data from a file included with the package.\n\n\nload_example_data2\nGenerates fake data.\n\n\nload_example_data3\nGenerates fake data.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/load_example_data2.html",
+    "href": "reference/load_example_data2.html",
+    "title": "load_example_data2",
+    "section": "",
+    "text": "load_example_data2()\nGenerates fake data.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "crumbs": [
+      "Reference",
+      "Functions",
+      "load_example_data2"
+    ]
+  },
+  {
+    "objectID": "reference/load_example_data2.html#returns",
+    "href": "reference/load_example_data2.html#returns",
+    "title": "load_example_data2",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "crumbs": [
+      "Reference",
+      "Functions",
+      "load_example_data2"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html",
+    "href": "reference/SpecificationCurve.html",
+    "title": "SpecificationCurve",
+    "section": "",
+    "text": "SpecificationCurve(\n    self,\n    df,\n    y_endog=None,\n    x_exog=None,\n    controls=None,\n    exclu_grps=[[None]],\n    cat_expand=[],\n    always_include=None,\n    formula=None,\n)\nSpecification curve object. Uses a model to perform all variants of a specification. Stores the results of those regressions in a tidy format pandas dataframe. Plots the regressions in chart that can optionally be saved. Will iterate over multiple inputs for exog. and endog. variables. Note that categorical variables that are expanded cannot be mutually excluded from other categorical variables that are expanded.\nThe class can be initialized in two mutually exclusive ways: 1. Using a formula string (e.g., “y ~ x1 + x2”) 2. Using separate y_endog, x_exog, controls, and always_include parameters\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ndf\npd.DataFrame\nInput DataFrame\nrequired\n\n\nformula\nstr\nR-style formula string (e.g., “y ~ x1 + x2”)\nNone\n\n\ny_endog\nUnion[str, List[str]]\nDependent variable(s)\nNone\n\n\nx_exog\nUnion[str, List[str]]\nIndependent variable(s)\nNone\n\n\ncontrols\nList[str]\nControl variables\nNone\n\n\nexclu_grps\nUnion[List[List[None]], List[str], str, List[List[str]]]\nGroups of variables to exclude. Defaults to [[None]]\n[[None]]\n\n\ncat_expand\nUnion[str, List[None], List[str], List[List[str]]]\nCategorical variables to expand. Defaults to []\n[]\n\n\nalways_include\nUnion[str, List[str]]\nVariables to always include\nNone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf neither formula nor (y_endog, x_exog, controls) are provided\n\n\n\nValueError\nIf both formula and (y_endog, x_exog, controls) are provided\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nfit\nFits a specification curve by performing regressions.\n\n\nfit_null\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\)\n\n\nplot\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\nSpecificationCurve.fit(estimator=sm.OLS)\nFits a specification curve by performing regressions.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nestimator\nstatsmodels.regression.linear_model or statsmodels.discrete.discrete_model\nstatsmodels estimator. Defaults to sm.OLS.\nsm.OLS\n\n\n\n\n\n\n\nSpecificationCurve.fit_null(n_boot=30, f_sample=0.1)\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\) where i is over rows and k is over specifications and i is a function of k as y and x rows can change depending on the k when there are multiple y_endog and multiple x_exog. Each bootstrap sees a fraction of rows f_sample taken and then a new specification curve fit under the null. Then summary statistics are created by specification, and statistical tests.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nn_boot\nint\nNumber of bootstraps. Defaults to 30.\n30\n\n\nf_sample\nfloat\nFraction of rows to sample in each bootstrap. Defaults to 0.1.\n0.1\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .fit() has not been run first.\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nNone\nNone\nResults saved in self.null_stats_summary.\n\n\n\n\n\n\n\nSpecificationCurve.plot(\n    save_path=None,\n    pretty_plots=True,\n    preferred_spec=[],\n    show_null_curve=False,\n    return_fig=False,\n    **kwargs,\n)\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstring or path\nExported fig filename. Defaults to None.\nNone\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to True.\nTrue\n\n\npreferred_spec\nlist\nPreferred specification. Defaults to [].\n[]\n\n\nshow_null_curve\nbool\nWhether to include the curve under the null. Defaults to False.\nFalse\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to False.\nTrue\n\n\nreturn_fig\nbool\nWhether to return the figure and axes objects. Defaults to False.\nFalse\n\n\n**kwargs\ndict\nAdditional arguments passed to .fit_null() when show_null_curve is True. Parameters: n_boot (int): Number of bootstrap iterations for null curve calculation. eg the argument would be **{\"n_boot\": 5}. f_sample (float): Fraction of rows to sample in each bootstrap. Defaults to 0.1.\n{}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]: None or the fig and axes with chart on.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .plot() is called before .fit() - the fit must be run first.",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html#parameters",
+    "href": "reference/SpecificationCurve.html#parameters",
+    "title": "SpecificationCurve",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ndf\npd.DataFrame\nInput DataFrame\nrequired\n\n\nformula\nstr\nR-style formula string (e.g., “y ~ x1 + x2”)\nNone\n\n\ny_endog\nUnion[str, List[str]]\nDependent variable(s)\nNone\n\n\nx_exog\nUnion[str, List[str]]\nIndependent variable(s)\nNone\n\n\ncontrols\nList[str]\nControl variables\nNone\n\n\nexclu_grps\nUnion[List[List[None]], List[str], str, List[List[str]]]\nGroups of variables to exclude. Defaults to [[None]]\n[[None]]\n\n\ncat_expand\nUnion[str, List[None], List[str], List[List[str]]]\nCategorical variables to expand. Defaults to []\n[]\n\n\nalways_include\nUnion[str, List[str]]\nVariables to always include\nNone",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html#raises",
+    "href": "reference/SpecificationCurve.html#raises",
+    "title": "SpecificationCurve",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\nValueError\nIf neither formula nor (y_endog, x_exog, controls) are provided\n\n\n\nValueError\nIf both formula and (y_endog, x_exog, controls) are provided",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html#methods",
+    "href": "reference/SpecificationCurve.html#methods",
+    "title": "SpecificationCurve",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\nfit\nFits a specification curve by performing regressions.\n\n\nfit_null\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\)\n\n\nplot\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\nSpecificationCurve.fit(estimator=sm.OLS)\nFits a specification curve by performing regressions.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nestimator\nstatsmodels.regression.linear_model or statsmodels.discrete.discrete_model\nstatsmodels estimator. Defaults to sm.OLS.\nsm.OLS\n\n\n\n\n\n\n\nSpecificationCurve.fit_null(n_boot=30, f_sample=0.1)\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\) where i is over rows and k is over specifications and i is a function of k as y and x rows can change depending on the k when there are multiple y_endog and multiple x_exog. Each bootstrap sees a fraction of rows f_sample taken and then a new specification curve fit under the null. Then summary statistics are created by specification, and statistical tests.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nn_boot\nint\nNumber of bootstraps. Defaults to 30.\n30\n\n\nf_sample\nfloat\nFraction of rows to sample in each bootstrap. Defaults to 0.1.\n0.1\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .fit() has not been run first.\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nNone\nNone\nResults saved in self.null_stats_summary.\n\n\n\n\n\n\n\nSpecificationCurve.plot(\n    save_path=None,\n    pretty_plots=True,\n    preferred_spec=[],\n    show_null_curve=False,\n    return_fig=False,\n    **kwargs,\n)\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstring or path\nExported fig filename. Defaults to None.\nNone\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to True.\nTrue\n\n\npreferred_spec\nlist\nPreferred specification. Defaults to [].\n[]\n\n\nshow_null_curve\nbool\nWhether to include the curve under the null. Defaults to False.\nFalse\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to False.\nTrue\n\n\nreturn_fig\nbool\nWhether to return the figure and axes objects. Defaults to False.\nFalse\n\n\n**kwargs\ndict\nAdditional arguments passed to .fit_null() when show_null_curve is True. Parameters: n_boot (int): Number of bootstrap iterations for null curve calculation. eg the argument would be **{\"n_boot\": 5}. f_sample (float): Fraction of rows to sample in each bootstrap. Defaults to 0.1.\n{}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]: None or the fig and axes with chart on.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .plot() is called before .fit() - the fit must be run first.",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/load_example_data1.html",
+    "href": "reference/load_example_data1.html",
+    "title": "load_example_data1",
+    "section": "",
+    "text": "load_example_data1()\nRetrieves example data from a file included with the package.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "crumbs": [
+      "Reference",
+      "Functions",
+      "load_example_data1"
+    ]
+  },
+  {
+    "objectID": "reference/load_example_data1.html#returns",
+    "href": "reference/load_example_data1.html#returns",
+    "title": "load_example_data1",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "crumbs": [
+      "Reference",
+      "Functions",
+      "load_example_data1"
+    ]
+  },
+  {
+    "objectID": "contributing.html",
+    "href": "contributing.html",
+    "title": "Contributing",
+    "section": "",
+    "text": "Thank you for your interest in improving this project. This project is open-source under the MIT license and welcomes contributions in the form of bug reports, feature requests, and pull requests.\nHere is a list of important resources for contributors:\n\nSource Code\nDocumentation\nIssue Tracker\n\n\n\nReport bugs on the Issue Tracker.\nWhen filing an issue, make sure to answer these questions:\n\nWhich operating system and Python version are you using?\nWhich version of this project are you using?\nWhat did you do?\nWhat did you expect to see?\nWhat did you see instead?\n\nThe best way to get your bug fixed is to provide a test case, and/or steps to reproduce the issue.\n\n\n\nRequest features on the Issue Tracker.\n\n\n\nYou need Python and the following tools:\n\nuv\nNox\nMake\nQuarto\n\nInstall the package with the existing development requirements:\n$ uv sync --frozen\nTo also update packages, do not use the --frozen flag.\nTo build the documentation locally, you will also need Make and Quarto (these are non-Python dependencies).\nYou can build the docs locally to look at them with make, which runs a command to build the README and then another to build the website which can then be found in docs/_site/. It’s make clean to remove the existing README.\nTo publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s make publish—but only devs with admin rights will be able to execute this.\n\n\n\nRun the full test suite:\n$ uv run nox\nList the available Nox sessions:\n$ uv run nox --list-sessions\nYou can also run a specific Nox session. For example, invoke the unit test suite like this:\n$ uv run nox --session=tests\nUnit tests are located in the tests directory, and are written using the pytest testing framework.\nYou may need to use, for example, uv run nox to ensure that the tests are run in the right environment.\nFor the pre-commit checks, use\n$ uv run pre-commit run --all-files\n\n\n\nOpen a pull request to submit changes to this project.\nYour pull request needs to meet the following guidelines for acceptance:\n\nThe Nox test suite must pass without errors and warnings.\nInclude unit tests. This project aims to maintain 96% code coverage.\nIf your changes add functionality, update the documentation accordingly.\nRun make to generate the new documentation.\nRun the pre-commit suite before committing.\n\nFeel free to submit early, though—we can always iterate on this.\nTo run linting and code formatting checks before committing your change, you need to run the following command:\n$ uv run nox --session=pre-commit -- install\nIt is recommended to open an issue before starting work on anything. This will allow a chance to talk it over with the owners and validate your approach.\n\n\n\n\nOpen a new branch with the version name\nChange the version in pyproject.toml (you can run uv run version_bumper.py, which has script-level dependencies)\nCommit the change with a new version label as the commit message (checking the tests pass)\nHead to GitHub and merge into main (again, if the CI works)\nDraft a new release based on that most recent merge commit, using the new version as the tag\nConfirm the release draft on GitHub\nThe automatic release GitHub Action will push to PyPI.\n\nIf you ever need distributable files, you can use the uv build command locally.\n\n\n\nYou shouldn’t need to publish the documentation because there’s a GitHub action that covers it automatically whenever there’s a new release. But to upload the documentation manually, it’s\n\nRun make to build the documentation\nRun make publish to publish the documentation"
+  },
+  {
+    "objectID": "contributing.html#how-to-report-a-bug",
+    "href": "contributing.html#how-to-report-a-bug",
+    "title": "Contributing",
+    "section": "",
+    "text": "Report bugs on the Issue Tracker.\nWhen filing an issue, make sure to answer these questions:\n\nWhich operating system and Python version are you using?\nWhich version of this project are you using?\nWhat did you do?\nWhat did you expect to see?\nWhat did you see instead?\n\nThe best way to get your bug fixed is to provide a test case, and/or steps to reproduce the issue."
+  },
+  {
+    "objectID": "contributing.html#how-to-request-a-feature",
+    "href": "contributing.html#how-to-request-a-feature",
+    "title": "Contributing",
+    "section": "",
+    "text": "Request features on the Issue Tracker."
+  },
+  {
+    "objectID": "contributing.html#how-to-set-up-your-development-environment",
+    "href": "contributing.html#how-to-set-up-your-development-environment",
+    "title": "Contributing",
+    "section": "",
+    "text": "You need Python and the following tools:\n\nuv\nNox\nMake\nQuarto\n\nInstall the package with the existing development requirements:\n$ uv sync --frozen\nTo also update packages, do not use the --frozen flag.\nTo build the documentation locally, you will also need Make and Quarto (these are non-Python dependencies).\nYou can build the docs locally to look at them with make, which runs a command to build the README and then another to build the website which can then be found in docs/_site/. It’s make clean to remove the existing README.\nTo publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s make publish—but only devs with admin rights will be able to execute this."
+  },
+  {
+    "objectID": "contributing.html#how-to-test-the-project",
+    "href": "contributing.html#how-to-test-the-project",
+    "title": "Contributing",
+    "section": "",
+    "text": "Run the full test suite:\n$ uv run nox\nList the available Nox sessions:\n$ uv run nox --list-sessions\nYou can also run a specific Nox session. For example, invoke the unit test suite like this:\n$ uv run nox --session=tests\nUnit tests are located in the tests directory, and are written using the pytest testing framework.\nYou may need to use, for example, uv run nox to ensure that the tests are run in the right environment.\nFor the pre-commit checks, use\n$ uv run pre-commit run --all-files"
+  },
+  {
+    "objectID": "contributing.html#how-to-submit-changes",
+    "href": "contributing.html#how-to-submit-changes",
+    "title": "Contributing",
+    "section": "",
+    "text": "Open a pull request to submit changes to this project.\nYour pull request needs to meet the following guidelines for acceptance:\n\nThe Nox test suite must pass without errors and warnings.\nInclude unit tests. This project aims to maintain 96% code coverage.\nIf your changes add functionality, update the documentation accordingly.\nRun make to generate the new documentation.\nRun the pre-commit suite before committing.\n\nFeel free to submit early, though—we can always iterate on this.\nTo run linting and code formatting checks before committing your change, you need to run the following command:\n$ uv run nox --session=pre-commit -- install\nIt is recommended to open an issue before starting work on anything. This will allow a chance to talk it over with the owners and validate your approach."
+  },
+  {
+    "objectID": "contributing.html#how-to-create-a-package-release",
+    "href": "contributing.html#how-to-create-a-package-release",
+    "title": "Contributing",
+    "section": "",
+    "text": "Open a new branch with the version name\nChange the version in pyproject.toml (you can run uv run version_bumper.py, which has script-level dependencies)\nCommit the change with a new version label as the commit message (checking the tests pass)\nHead to GitHub and merge into main (again, if the CI works)\nDraft a new release based on that most recent merge commit, using the new version as the tag\nConfirm the release draft on GitHub\nThe automatic release GitHub Action will push to PyPI.\n\nIf you ever need distributable files, you can use the uv build command locally."
+  },
+  {
+    "objectID": "contributing.html#how-to-build-the-documentation-manually-and-locally",
+    "href": "contributing.html#how-to-build-the-documentation-manually-and-locally",
+    "title": "Contributing",
+    "section": "",
+    "text": "You shouldn’t need to publish the documentation because there’s a GitHub action that covers it automatically whenever there’s a new release. But to upload the documentation manually, it’s\n\nRun make to build the documentation\nRun make publish to publish the documentation"
   }
 ]
