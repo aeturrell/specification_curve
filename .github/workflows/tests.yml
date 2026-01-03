@@ -37,7 +37,8 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           # Install a specific version of uv.
-          version: "0.5.2"
+          version: "0.9.17"
+
 
       - name: Compute pre-commit cache key
         if: matrix.session == 'pre-commit'
@@ -92,11 +93,11 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           # Install a specific version of uv.
-          version: "0.5.2"
+          version: "0.9.17"
 
       - name: Install dependencies
         run: |
-          uv sync --extra dev
+          uv sync --group dev
 
       - name: Download coverage data
         uses: actions/download-artifact@v6

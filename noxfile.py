@@ -8,11 +8,11 @@ import nox
 from nox import session
 
 package = "specification_curve"
-python_versions = ["3.10", "3.11", "3.12"]
+python_versions = ["3.10", "3.11", "3.12", "3.13"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
-    # "mypy",
+    "ty",
     "tests",
     "typeguard",
     "xdoctest",
@@ -83,15 +83,22 @@ def precommit(session: nox.Session) -> None:
         activate_virtualenv_in_precommit_hooks(session)
 
 
-@session(python=python_versions)
-def mypy(session: nox.Session) -> None:
-    """Type-check using mypy."""
-    args = session.posargs or ["src", "tests"]
-    session.install(".")
-    session.install("mypy", "pytest")
-    session.run("mypy", *args)
+@nox.session(python=python_versions, venv_backend="uv")
+def ty(session: nox.Session) -> None:
+    """Type-check using ty."""
+    args = session.posargs or ["src"]
+
+    # Install project and dependencies using uv
+    session.run_install(
+        "uv",
+        "sync",
+        "--group=dev",
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
+    )
+    session.run_install("uv", "pip", "install", "-e", ".")
+    session.run("ty", "check", ".", *args)
     if not session.posargs:
-        session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
+        session.run("ty", "check", ".", f"--python={sys.executable}", "noxfile.py")
 
 
 @session(python=python_versions)

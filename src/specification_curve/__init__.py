@@ -711,7 +711,8 @@ class SpecificationCurve:
             )
         # This is quite hacky. It takes full list of variables and just keeps
         # those that we will be varying over.
-        new_ctrl_names = list(set(_flatn_list(self.df_r["Specification"].values)))
+        list_of_specs: list[str] = list(self.df_r["Specification"].values)
+        new_ctrl_names = list(set(_flatn_list(list_of_specs)))
         new_ctrl_names = [
             x for x in new_ctrl_names if x not in self.x_exog + self.y_endog
         ]
