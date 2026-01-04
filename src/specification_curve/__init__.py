@@ -604,12 +604,20 @@ class SpecificationCurve:
 
         Raises:
             ValueError: If .fit() has not been run first.
+            ValueError: If estimator is not OLS (null inference only valid for OLS).
 
         Returns:
             None: Results saved in self.null_stats_summary.
 
         """
         if hasattr(self, "df_r"):
+            # Check that estimator is OLS - null inference is not valid for non-linear models
+            if self.estimator != sm.OLS:
+                raise ValueError(
+                    "Null inference is only supported for OLS estimators. "
+                    "The null construction (y* = y - b*x) creates a continuous variable, "
+                    "which is incompatible with non-linear models like Logit or Probit."
+                )
             # construct the null, y_(i(k))* = y_(i(k)) - b_k*x_(i(k))
             y_star = (
                 self.df[self.df_r["y_endog"]]
