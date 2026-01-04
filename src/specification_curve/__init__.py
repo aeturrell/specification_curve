@@ -14,7 +14,6 @@ from itertools import combinations
 from math import floor, log10
 from typing import DefaultDict, List, Optional, Union
 
-import matplotlib as mpl
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
@@ -22,6 +21,8 @@ import numpy as np
 import pandas as pd
 import pingouin as pg
 import statsmodels.api as sm
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 from matplotlib.ticker import AutoMinorLocator
 from tqdm.auto import trange
 from typeguard import typeguard_ignore
@@ -128,14 +129,79 @@ def _excl_combs(lst, r, excludes):
 
 
 @typeguard_ignore
-def _flatn_list(nested_list: Union[str, List[str], List[List[str]]]) -> List[str]:
+def _flatn_list(nested_list):  # type: ignore[no-untyped-def]
     """Flattens nested list.
     Args:
         nested_list
     Returns:
-        List[str]: flattened list
+        list: flattened list
     """
     return list(itertools.chain.from_iterable(nested_list))
+
+
+def _normalize_cat_expand(
+    cat_expand: Optional[Union[str, List[None], List[str], List[List[str]]]],
+) -> List[str]:
+    """Normalize cat_expand to a List[str].
+
+    Args:
+        cat_expand: The cat_expand parameter in various forms
+
+    Returns:
+        List[str]: Normalized list of strings
+    """
+    if cat_expand is None or cat_expand == []:
+        return []
+    if isinstance(cat_expand, str):
+        return [cat_expand] if cat_expand else []
+    # It's a list - filter out None values and flatten if needed
+    result: List[str] = []
+    for item in cat_expand:
+        if item is None:
+            continue
+        if isinstance(item, str):
+            result.append(item)
+        elif isinstance(item, list):
+            result.extend(str(x) for x in item if x is not None)
+    return result
+
+
+def _normalize_exclu_grps(
+    exclu_grps: Optional[Union[List[List[None]], List[str], str, List[List[str]]]],
+) -> List[List[str]]:
+    """Normalize exclu_grps to a List[List[str]].
+
+    Args:
+        exclu_grps: The exclu_grps parameter in various forms
+
+    Returns:
+        List[List[str]]: Normalized list of list of strings
+    """
+    if exclu_grps is None:
+        return [[]]
+    if exclu_grps == [[None]]:
+        return [[]]
+    if isinstance(exclu_grps, str):
+        return [[exclu_grps]]
+    if isinstance(exclu_grps, list):
+        if len(exclu_grps) == 0:
+            return [[]]
+        # Check if it's a flat list of strings
+        if all(isinstance(x, str) for x in exclu_grps):
+            return [list(exclu_grps)]  # type: ignore[arg-type]
+        # It's a list of lists - normalize each
+        result: List[List[str]] = []
+        for item in exclu_grps:
+            if item is None:
+                continue
+            if isinstance(item, list):
+                normalized = [str(x) for x in item if x is not None]
+                if normalized or not result:  # Keep at least one empty list
+                    result.append(normalized)
+            elif isinstance(item, str):
+                result.append([item])
+        return result if result else [[]]
+    return [[]]
 
 
 def _parse_formula(formula_string: str) -> dict[str, List[str]]:
@@ -268,17 +334,18 @@ class SpecificationCurve:
             self.formula = None  # type: ignore
 
         self.df = df
-        self.exclu_grps = exclu_grps
-        self.cat_expand = cat_expand
-        self.orig_cat_expand = cat_expand
-        self.orig_controls = self.controls.copy()  # type: ignore
-        self.orig_exclu_grps = self.exclu_grps.copy()  # type: ignore
+        # Normalize exclu_grps and cat_expand to consistent types
+        self.exclu_grps: List[List[str]] = _normalize_exclu_grps(exclu_grps)
+        self.cat_expand: List[str] = _normalize_cat_expand(cat_expand)
+        self.orig_cat_expand = self.cat_expand.copy()
+        self.orig_controls = self.controls.copy()
+        self.orig_exclu_grps = [grp.copy() for grp in self.exclu_grps]
         self.init_cols = (
             self.y_endog + self.x_exog + self.controls + self.always_include
         ).copy()
 
         # Raise error if always include and category expand have any of the same columns.
-        if (self.cat_expand is not None) and (self.always_include is not None):
+        if self.cat_expand and self.always_include:
             if [x for x in self.always_include if x in self.cat_expand]:
                 raise ValueError(
                     "Cannot always include a variable that is being expanded."
@@ -406,28 +473,23 @@ class SpecificationCurve:
         init_cols = self.y_endog + self.x_exog + self.controls + self.always_include
         # Only keep relevant columns
         self.df = self.df[init_cols]
-        new_cols_from_cat_expand = []
+        new_cols_from_cat_expand: List[str] = []
         # Expand any variables in category expand into full dummies so that they can be subsets.
-        if self.cat_expand != []:
-            cat_expand_local = (
-                self.cat_expand
-                if isinstance(self.cat_expand, list)
-                else [str(self.cat_expand)]
-            )
-            self.df = pd.get_dummies(
-                self.df, columns=cat_expand_local, prefix_sep=" = "
-            )
+        if self.cat_expand:
+            self.df = pd.get_dummies(self.df, columns=self.cat_expand, prefix_sep=" = ")
             new_cols_from_cat_expand = [
-                x for x in self.df.columns if x not in init_cols
+                str(x) for x in self.df.columns if x not in init_cols
             ]
             # Now change the controls: remove the cat_expand columns
-            [self.controls.remove(x) for x in cat_expand_local if x in self.controls]
+            for x in self.cat_expand:
+                if x in self.controls:
+                    self.controls.remove(x)
             # Add the dummy versions of the same columns
             self.controls.extend(new_cols_from_cat_expand)
             # Create mapping from cat expand to their new dummy new cols
-            dict_cat_expand_to_dummies = dict(
+            dict_cat_expand_to_dummies: dict[str, List[str]] = dict(
                 zip(
-                    [x for x in self.cat_expand],
+                    self.cat_expand,
                     [
                         [x for x in new_cols_from_cat_expand if y in x]
                         for y in self.cat_expand
@@ -437,7 +499,9 @@ class SpecificationCurve:
             # Now stop the new dummies from being part of specifications together
             # as they are meant to be mutually exclusive subsets.
             for x in self.cat_expand:
-                if self.exclu_grps == [[]]:
+                if self.exclu_grps == [[]] or (
+                    len(self.exclu_grps) == 1 and not self.exclu_grps[0]
+                ):
                     self.exclu_grps = [dict_cat_expand_to_dummies[x]]
                 else:
                     self.exclu_grps.append(dict_cat_expand_to_dummies[x])
@@ -450,11 +514,15 @@ class SpecificationCurve:
                 sub_combs = [list(x) for x in sub_combs]
                 self.exclu_grps = self.exclu_grps + sub_combs
         # Turn mutually exclusive groups into sets
-        if self.exclu_grps != [[]]:
-            self.exclu_grps = [set(x) for x in self.exclu_grps]
+        exclu_grps_sets: List[set[str]] = []
+        if not (
+            self.exclu_grps == [[]]
+            or (len(self.exclu_grps) == 1 and not self.exclu_grps[0])
+        ):
+            exclu_grps_sets = [set(x) for x in self.exclu_grps]
         # Get all combinations excluding mutually excl groups
         ctrl_combs = [
-            _excl_combs(self.controls, k, self.exclu_grps)
+            _excl_combs(self.controls, k, exclu_grps_sets if exclu_grps_sets else [[]])
             for k in range(len(self.controls) + 1)
         ]
         # Flatten this into a single list of tuples
@@ -678,7 +746,7 @@ class SpecificationCurve:
         self,
         preferred_spec: Union[List[str], List[None]],
         show_null_curve: bool,
-    ) -> tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]:
+    ) -> tuple[Figure, List[Axes]]:
         """Makes plot of fitted specification curve.
 
         Args:
@@ -711,7 +779,8 @@ class SpecificationCurve:
             )
         # This is quite hacky. It takes full list of variables and just keeps
         # those that we will be varying over.
-        new_ctrl_names = list(set(_flatn_list(self.df_r["Specification"].values)))
+        list_of_specs: list[list[str]] = list(self.df_r["Specification"].values)
+        new_ctrl_names = list(set(_flatn_list(list_of_specs)))
         new_ctrl_names = [
             x for x in new_ctrl_names if x not in self.x_exog + self.y_endog
         ]
@@ -825,14 +894,9 @@ class SpecificationCurve:
         self.df_r.loc[red_condition, "color_coeff"] = "red"  # "#f94026"
         for color in self.df_r["color_coeff"].unique():
             slice_df_r = self.df_r.loc[self.df_r["color_coeff"] == color]
-            a = (
-                slice_df_r["Coefficient"]
-                - np.stack(slice_df_r["conf_int"].to_numpy())[:, 0]
-            )
-            b = (
-                np.stack(slice_df_r["conf_int"].to_numpy())[:, 1]
-                - slice_df_r["Coefficient"]
-            )
+            conf_int_array = np.stack(list(slice_df_r["conf_int"]))
+            a = slice_df_r["Coefficient"] - conf_int_array[:, 0]
+            b = conf_int_array[:, 1] - slice_df_r["Coefficient"]
             y_err_correct_shape = np.stack((a, b))
             markers, caps, bars = axarr[0].errorbar(
                 slice_df_r.index,
@@ -1019,7 +1083,7 @@ class SpecificationCurve:
         show_null_curve: bool = False,
         return_fig: bool = False,
         **kwargs,
-    ) -> Union[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]:
+    ) -> Union[None, tuple[Figure, List[Axes]]]:
         """Makes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.
 
         Args:

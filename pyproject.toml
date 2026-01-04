@@ -3,12 +3,13 @@ name = "specification_curve"
 version = "0.3.8"
 description = "Specification_Curve"
 readme = "README.md"
-license = {text = "MIT License"}
+license = "MIT"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 requires-python = ">=3.10"
 dependencies = [
@@ -43,7 +44,13 @@ dev = [
     "xdoctest>=1.2.0",
     "aquarel>=0.0.6",
     "pydoclint>=0.6.0",
+    "ty>=0.0.8",
 ]
+
+[tool.ty.rules]
+
+[tool.ty.src]
+exclude = ["tests/", "docs/logo.py"]
 
 [tool.coverage.report]
 show_missing = true

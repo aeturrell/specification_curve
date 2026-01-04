@@ -452,3 +452,65 @@ def test_025_fig_axes_further_adjustment(mock_show) -> None:
     fig.suptitle("Spec curve")
     plt.show()
     mock_show.assert_called_once()
+
+
+@typeguard_ignore
+def test_026_plot_before_fit() -> None:
+    """Test that calling plot() before fit() raises ValueError."""
+    df = specy.load_example_data3()
+    sco = specy.SpecificationCurve(df, formula="y1 ~ x1 + c1 | c2")
+    with raises(ValueError) as exc_info:
+        sco.plot()
+    assert "Must run .fit() before .plot()" in str(exc_info.value)
+
+
+@typeguard_ignore
+def test_027_normalize_cat_expand_with_none_items() -> None:
+    """Test _normalize_cat_expand with None items in list."""
+    from specification_curve import _normalize_cat_expand
+
+    # Test with None items in list
+    result = _normalize_cat_expand([None, "a", None, "b"])
+    assert result == ["a", "b"]
+
+    # Test with nested lists
+    result = _normalize_cat_expand([["a", "b"], ["c"]])
+    assert result == ["a", "b", "c"]
+
+    # Test with nested list containing None
+    result = _normalize_cat_expand([["a", None, "b"]])
+    assert result == ["a", "b"]
+
+
+@typeguard_ignore
+def test_028_normalize_exclu_grps_edge_cases() -> None:
+    """Test _normalize_exclu_grps with various edge cases."""
+    from specification_curve import _normalize_exclu_grps
+
+    # Test with None
+    result = _normalize_exclu_grps(None)
+    assert result == [[]]
+
+    # Test with string
+    result = _normalize_exclu_grps("a")
+    assert result == [["a"]]
+
+    # Test with empty list
+    result = _normalize_exclu_grps([])
+    assert result == [[]]
+
+    # Test with flat list of strings
+    result = _normalize_exclu_grps(["a", "b", "c"])
+    assert result == [["a", "b", "c"]]
+
+    # Test with None items in list of lists - empty list is kept as first element
+    result = _normalize_exclu_grps([[None], ["a", "b"]])
+    assert result == [[], ["a", "b"]]
+
+    # Test with string item in list (not nested)
+    result = _normalize_exclu_grps([["a"], "b"])  # type: ignore
+    assert result == [["a"], ["b"]]
+
+    # Test with only None items - should still have at least one empty list
+    result = _normalize_exclu_grps([[None, None]])
+    assert result == [[]]
