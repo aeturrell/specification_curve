@@ -23,18 +23,12 @@ Specification Curve is a Python package that performs specification curve analys
 
 [Go to the full documentation for **Specification Curve**](https://aeturrell.github.io/specification_curve/).
 
-## Quickstart
-
-You can try out specification curve right now in [Google Colab](https://colab.research.google.com/github/aeturrell/specification_curve/blob/master/docs/features.ipynb). To install the package in Colab, run `!pip install specification_curve` in a new code cell.
-
-Alternatively you can see examples on the [features page](https://aeturrell.github.io/specification_curve/features.html) of the documentation.
-
 ## Installation
 
-You can install **Specification Curve** via pip:
+You can install **Specification Curve** via uv:
 
 ```bash
-pip install specification-curve
+uv add specification-curve
 ```
 
 To install the development version from git, use:
