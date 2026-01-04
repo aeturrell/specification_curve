@@ -514,3 +514,22 @@ def test_028_normalize_exclu_grps_edge_cases() -> None:
     # Test with only None items - should still have at least one empty list
     result = _normalize_exclu_grps([[None, None]])
     assert result == [[]]
+
+
+@typeguard_ignore
+def test_029_null_inference_not_supported_for_non_ols() -> None:
+    """Test that null inference raises ValueError for non-OLS estimators."""
+    n_samples = 100
+    x_1 = np.random.random(size=n_samples)
+    x_2 = np.random.randint(2, size=n_samples)
+    x_beta = -1 + 3.5 * x_1 + 0.2 * x_2
+    prob = 1 / (1 + np.exp(-x_beta))
+    y = np.random.binomial(n=1, p=prob, size=n_samples)
+    df = pd.DataFrame([x_1, x_2, y], ["x_1", "x_2", "y"]).T
+
+    sc = specy.SpecificationCurve(df, "y", "x_1", ["x_2"])
+    sc.fit(estimator=sm.Logit)
+
+    with raises(ValueError) as exc_info:
+        sc.fit_null(n_boot=3)
+    assert "only supported for OLS" in str(exc_info.value)
