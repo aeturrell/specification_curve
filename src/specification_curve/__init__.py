@@ -698,19 +698,19 @@ class SpecificationCurve:
             ].median()
             median_by_spec_p_value = pg.ttest(
                 median_by_spec, self.df_r["Coefficient"]
-            ).loc["T-test", "p-val"]
+            ).loc["T_test", "p_val"]
             number_specs = len(self.df_r["Coefficient"])
             if any(np.isin([number_specs, 0], (median_by_spec > 0).sum())):
                 share_pls_p_value = np.nan
             else:
                 share_pls_p_value = pg.ttest((median_by_spec > 0), True).loc[
-                    "T-test", "p-val"
+                    "T_test", "p_val"
                 ]
             if any(np.isin([number_specs, 0], (median_by_spec < 0).sum())):
                 share_neg_p_value = np.nan
             else:
                 share_neg_p_value = pg.ttest((median_by_spec < 0), True).loc[
-                    "T-test", "p-val"
+                    "T_test", "p_val"
                 ]
 
             def _nice_pval_text(num: float) -> str:
