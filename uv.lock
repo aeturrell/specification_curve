@@ -27,15 +27,16 @@ wheels = [
 
 [[package]]
 name = "aquarel"
-version = "0.0.6"
+version = "0.0.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cycler" },
     { name = "matplotlib" },
+    { name = "seaborn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d3/74/73b05d8a8d94d3e2676cee10a4d6102cd6f8b14e3236ca7ea7d9e34401aa/aquarel-0.0.6.tar.gz", hash = "sha256:1905766db15f07c3b4047fd19bc898e0193c93d14700cc549d0af83e8ada0dfa", size = 19592, upload-time = "2024-02-26T13:06:18.703Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7f/b0/f3128841565ad019d9e7a4c20175bff6774a60db10a9d2781120f1b1b45e/aquarel-0.0.7.tar.gz", hash = "sha256:6cae3f82c4bc02ed11e368e15e9575b4f007e937be9825d24f8eaa8d8b1fdb02", size = 21323, upload-time = "2025-01-23T21:26:08.922Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3d/80/caa86f9707478d95986ae60166fc81ed680763caa4e2d8298cd5f9ce0ba1/aquarel-0.0.6-py3-none-any.whl", hash = "sha256:373fa3f9e101c16a8b453e2cb64c88ef05ab8830e873bb110bca49e14137877d", size = 20312, upload-time = "2024-02-26T13:06:17.622Z" },
+    { url = "https://files.pythonhosted.org/packages/8c/ee/e7888712fe1631ae8589b499a465f1c4d542b5cb3c234b37acc299f46a04/aquarel-0.0.7-py3-none-any.whl", hash = "sha256:908c800494f6b18e316cfb7aa63f4ed0c783f66b8e39bbf587fce0b185c590f0", size = 23099, upload-time = "2025-01-23T21:26:03.619Z" },
 ]
 
 [[package]]
