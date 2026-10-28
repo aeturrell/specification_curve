@@ -188,7 +188,7 @@ def _normalize_exclu_grps(
             return [[]]
         # Check if it's a flat list of strings
         if all(isinstance(x, str) for x in exclu_grps):
-            return [list(exclu_grps)]  # type: ignore[arg-type]
+            return [[x for x in exclu_grps if isinstance(x, str)]]
         # It's a list of lists - normalize each
         result: List[List[str]] = []
         for item in exclu_grps:
@@ -331,7 +331,7 @@ class SpecificationCurve:
                 if always_include is not None
                 else []
             )
-            self.formula = None  # type: ignore
+            self.formula = None
 
         self.df = df
         # Normalize exclu_grps and cat_expand to consistent types
@@ -650,7 +650,7 @@ class SpecificationCurve:
                     cat_expanded_columns = [
                         x for x in self.df.columns if x not in self.init_cols
                     ]
-                    for cat_expand_col in self.orig_cat_expand:  # type: ignore
+                    for cat_expand_col in self.orig_cat_expand:
                         lst = [x.split(" = ")[0] for x in self.df.columns]
                         indices = [
                             icat
@@ -959,8 +959,8 @@ class SpecificationCurve:
 
             # Annotate the null line
             axarr[0].annotate(
-                xy=(0.6, ns_df.iloc[-1, 1]),  # type: ignore
-                xycoords=("figure fraction", "data"),  # type: ignore
+                xy=(0.6, ns_df.iloc[-1, 1]),
+                xycoords=("figure fraction", "data"),
                 xytext=(0, TEXT_ANNOTATION_OFFSET_POINTS),
                 textcoords="offset points",
                 text="Median under null",
