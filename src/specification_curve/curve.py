@@ -5,12 +5,13 @@ from typing import Any, Mapping, Optional, Sequence, Union
 
 import pandas as pd
 from matplotlib.axes import Axes
-from matplotlib.figure import Figure
+from matplotlib.figure import Figure, SubFigure
 
 from . import inference
 from ._pyfixest import VcovSpec, accepted_kwargs
 from .engine import run_grid
 from .grid import build_grid
+from .inference import NullResult
 from .plot import plot_curve
 
 
@@ -86,10 +87,12 @@ class SpecificationCurve:
         results (pd.DataFrame): The grid with estimates, available after ``fit``.
         models (dict[int, Any]): Fitted pyfixest models keyed by ``spec_id``, if
             ``fit(keep_models=True)`` was used.
-        null_curves (pd.DataFrame): Quantiles of the curve under the null, after
-            ``fit_null``.
         null_summary (pd.DataFrame): Tests of the curve against the null, after
             ``fit_null``.
+        null_curves (pd.DataFrame): Quantiles of the curve under the null, after
+            ``fit_null``.
+        null_draws (pd.DataFrame): Estimates in every resample, after
+            ``fit_null(keep_draws=True)``.
 
     Examples:
         >>> import specification_curve as sc
@@ -147,7 +150,7 @@ class SpecificationCurve:
             skip_invalid=skip_invalid,
         )
         self._results: Optional[pd.DataFrame] = None
-        self._null: Optional[tuple[pd.DataFrame, pd.DataFrame]] = None
+        self._null: Optional[NullResult] = None
         self._fit_kwargs: dict[str, Any] = {}
         self.models: dict[int, Any] = {}
 
@@ -168,19 +171,29 @@ class SpecificationCurve:
             raise ValueError("No results yet. Run .fit() first.")
         return self._results.copy()
 
+    def _null_result(self) -> NullResult:
+        """The inference results, if fit_null() has been run."""
+        if self._null is None:
+            raise ValueError("No inference yet. Run .fit_null() first.")
+        return self._null
+
     @property
     def null_curves(self) -> pd.DataFrame:
         """Quantiles of the sorted curve under the null, one row per rank."""
-        if self._null is None:
-            raise ValueError("No inference yet. Run .fit_null() first.")
-        return self._null[0].copy()
+        return self._null_result().curves.copy()
 
     @property
     def null_summary(self) -> pd.DataFrame:
         """Observed statistics of the curve and their p-values under the null."""
-        if self._null is None:
-            raise ValueError("No inference yet. Run .fit_null() first.")
-        return self._null[1].copy()
+        return self._null_result().summary.copy()
+
+    @property
+    def null_draws(self) -> pd.DataFrame:
+        """Estimates in every resample, if ``fit_null(keep_draws=True)`` was used."""
+        draws = self._null_result().draws
+        if draws is None:
+            raise ValueError("Draws were not kept. Run .fit_null(keep_draws=True).")
+        return draws.copy()
 
     def fit(
         self,
@@ -253,22 +266,61 @@ class SpecificationCurve:
         return self
 
     def fit_null(
-        self, n_boot: int = 500, *, alpha: float = 0.05, seed: Optional[int] = None
+        self,
+        n_boot: int = 500,
+        *,
+        method: str = "auto",
+        cluster: Optional[str] = None,
+        strata: Optional[str] = None,
+        alpha: float = 0.05,
+        alternative: str = "two-sided",
+        seed: Optional[int] = None,
+        n_jobs: int = 1,
+        keep_draws: bool = False,
+        min_valid: float = 0.5,
+        progress: Optional[bool] = None,
     ) -> "SpecificationCurve":
-        """Bootstraps the curve under the null hypothesis of no effect.
+        """Tests the curve against the null hypothesis of no effect.
 
-        For each specification the estimated effect is removed from the outcome,
-        rows are resampled with replacement, and all specifications are
-        re-estimated. The results are in ``.null_curves`` and ``.null_summary``.
-        Available when every specification uses ``model="feols"``.
+        The curve is re-estimated on many resamples in which the null holds.
+        Three statistics of the observed curve are then compared with their
+        distribution across resamples: the median estimate, the share of
+        significant estimates, and Stouffer's Z, which combines the evidence of
+        all specifications. The results are in ``.null_summary`` and
+        ``.null_curves``.
+
+        With ``method="bootstrap"``, each specification's estimated effect is
+        removed from its outcome and rows are resampled with replacement. This
+        applies when every specification uses ``model="feols"``. With
+        ``method="permutation"``, the focal variable is shuffled between rows.
+        This applies to any estimator, but it is only valid if the focal
+        variable is as good as randomly assigned (within ``strata``, if given),
+        as in an experiment.
 
         Args:
-            n_boot (int): Number of bootstrap resamples. Use several hundred for
-                results you rely on; the cost is ``n_boot`` times the number of
-                specifications.
-            alpha (float): Significance level for the shares of significant
+            n_boot (int): Number of resamples. Use several hundred for results
+                you rely on; every resample re-estimates the whole curve.
+            method (str): "bootstrap", "permutation" or "auto". "auto" uses the
+                bootstrap if every specification uses "feols", and otherwise
+                asks you to choose.
+            cluster (Optional[str]): Column identifying clusters. Whole clusters
+                are resampled (bootstrap) or swap their focal values
+                (permutation; the focal variable must be constant within them).
+            strata (Optional[str]): Column identifying strata. Resampling is done
+                within each stratum.
+            alpha (float): Significance level for the share of significant
                 estimates.
-            seed (Optional[int]): Seed for the resampling.
+            alternative (str): "two-sided", "greater" (the effect is positive) or
+                "less" (the effect is negative).
+            seed (Optional[int]): Seed for the resampling. Results do not depend
+                on ``n_jobs``.
+            n_jobs (int): Number of parallel workers.
+            keep_draws (bool): Keep the estimates from every resample in
+                ``.null_draws``.
+            min_valid (float): A resample is left out if fewer than this share of
+                the specifications could be estimated in it.
+            progress (Optional[bool]): Show a progress bar. By default one is
+                shown when there are at least 20 resamples.
 
         Returns:
             SpecificationCurve: The object itself, so calls can be chained.
@@ -279,8 +331,16 @@ class SpecificationCurve:
             vcov_specs=self._grid.vcov_specs,
             subsets=self._grid.subsets,
             n_boot=n_boot,
+            method=method,
+            cluster=cluster,
+            strata=strata,
             alpha=alpha,
+            alternative=alternative,
             seed=seed,
+            n_jobs=n_jobs,
+            keep_draws=keep_draws,
+            min_valid=min_valid,
+            progress=progress,
             common_sample=self.common_sample,
             fit_kwargs=self._fit_kwargs,
         )
@@ -291,9 +351,8 @@ class SpecificationCurve:
         save_path: Union[str, os.PathLike[str], None] = None,
         *,
         show_null_curve: bool = False,
-        alpha: float = 0.05,
-        style: bool = True,
-    ) -> tuple[Figure, list[Axes]]:
+        **kwargs: Any,
+    ) -> tuple[Union[Figure, SubFigure], dict[str, Axes]]:
         """Plots the fitted specification curve.
 
         Args:
@@ -301,16 +360,20 @@ class SpecificationCurve:
                 to; the format is taken from the extension.
             show_null_curve (bool): Overlay the curve expected under the null.
                 Requires ``fit_null`` to have been run.
-            alpha (float): Significance level used for colouring.
-            style (bool): Use this package's fonts and sizes for the figure.
+            **kwargs (Any): Passed to ``plot_curve``, for example ``sort_by``,
+                ``color_by``, ``panels``, ``labels``, ``highlight`` or ``fig``.
 
         Returns:
-            tuple[Figure, list[Axes]]: The figure and its axes, top panel first.
+            tuple[Union[Figure, SubFigure], dict[str, Axes]]: The figure and its
+                axes keyed by panel name.
         """
         null_curves = self.null_curves if show_null_curve else None
-        fig, axes = plot_curve(self.results, null_curves, alpha=alpha, style=style)
+        fig, axes = plot_curve(self.results, null_curves, **kwargs)
         if save_path is not None:
-            fig.savefig(save_path, dpi=300, bbox_inches="tight")
+            root: Any = fig
+            while isinstance(root, SubFigure):
+                root = root.get_figure()
+            root.savefig(save_path, dpi=300, bbox_inches="tight")
         return fig, axes
 
     def __repr__(self) -> str:
@@ -355,6 +418,7 @@ class SpecificationCurve:
                 lines.append(f"  significant at 0.05: {share:.0%}")
         if self._null is not None:
             lines.append("")
-            lines.append("Under the null:")
-            lines.append(self._null[1].to_string())
+            null = self._null
+            lines.append(f"Under the null ({null.method}, {null.n_boot} resamples):")
+            lines.append(null.summary.to_string())
         return "\n".join(lines)

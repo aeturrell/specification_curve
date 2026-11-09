@@ -16,6 +16,7 @@ dependencies = [
     "numpy>=2.0.2",
     "pandas>=2.3.3",
     "pyfixest>=0.70",
+    "scipy>=1.13",
     "tqdm>=4.67.1",
 ]
 
@@ -45,6 +46,9 @@ dev = [
 
 [tool.ty.src]
 exclude = ["tests/", "docs/logo.py"]
+
+[tool.pytest.ini_options]
+markers = ["slow: tests that re-estimate many curves"]
 
 [tool.coverage.report]
 show_missing = true

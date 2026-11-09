@@ -2229,6 +2229,7 @@ dependencies = [
     { name = "numpy", version = "2.5.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "pandas" },
     { name = "pyfixest" },
+    { name = "scipy" },
     { name = "tqdm" },
 ]
 
@@ -2261,6 +2262,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.0.2" },
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "pyfixest", specifier = ">=0.70" },
+    { name = "scipy", specifier = ">=1.13" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
 
