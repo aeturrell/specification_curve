@@ -1,11 +1,13 @@
 [project]
 name = "specification_curve"
-version = "0.3.10"
-description = "Specification_Curve"
+version = "0.4.0"
+description = "Specification curve analysis for econometrics, built on pyfixest"
 readme = "README.md"
 license = "MIT"
 classifiers = [
     "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Information Analysis",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]

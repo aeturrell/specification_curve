@@ -1,6 +1,6 @@
 # Specification Curve
 
-Specification Curve is a Python package that performs specification curve analysis; it helps with the problem of the "garden of forking paths" (many defensible choices) when doing analysis by running many regressions and summarising the estimated coefficients in an easy to digest chart.
+Specification Curve is a Python package that performs specification curve analysis; it helps with the problem of the "garden of forking paths" (many defensible choices) when doing analysis by running many regressions and summarising the estimated coefficients in an easy to digest chart. Estimation is done by [pyfixest](https://pyfixest.org/), so specifications can vary the outcome, the regressor of interest, controls, fixed effects, instruments, standard errors, weights, the sample and the estimator (OLS, Poisson, logit, probit and quantile regression).
 
 [![PyPI](https://img.shields.io/pypi/v/specification_curve.svg)](https://pypi.org/project/specification_curve/)
 [![Status](https://img.shields.io/pypi/status/specification_curve.svg)](https://pypi.org/project/specification_curve/)
@@ -11,7 +11,7 @@ Specification Curve is a Python package that performs specification curve analys
 [![Codecov](https://codecov.io/gh/aeturrell/specification_curve/branch/main/graph/badge.svg)](https://codecov.io/gh/aeturrell/specification_curve)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aeturrell/specification_curve/blob/master/docs/features.ipynb)
+[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aeturrell/specification_curve/blob/main/docs/features.ipynb)
 [![DOI](https://zenodo.org/badge/282989537.svg)](https://zenodo.org/badge/latestdoi/282989537)
 [![Downloads](https://static.pepy.tech/badge/specification-curve)](https://pepy.tech/project/Specification_curve)
 
@@ -22,6 +22,39 @@ Specification Curve is a Python package that performs specification curve analys
 [![Source](https://img.shields.io/badge/source%20code-github-lightgrey?style=for-the-badge)](https://github.com/aeturrell/specification_curve)
 
 [Go to the full documentation for **Specification Curve**](https://aeturrell.github.io/specification_curve/).
+
+## Quickstart
+
+```python
+import specification_curve as sc
+
+df = sc.load_example_panel()  # a made-up panel of firms
+sco = sc.SpecificationCurve(
+    df,
+    y="log(sales)",
+    x="treated",
+    controls=["size", "leverage", "rd"],
+    fe=[None, "firm", "firm + year"],
+    vcov=["hetero", {"CRV1": "firm"}],
+)
+sco.fit()
+sco.plot()
+```
+
+![A specification curve: the estimated effect of treatment across 48 specifications, with panels showing the controls, fixed effects and standard errors each one uses](https://raw.githubusercontent.com/aeturrell/specification_curve/main/docs/quickstart.png)
+
+Each column is one specification. Here the true effect is 0.3, and the specifications without firm fixed effects overstate it. The estimates are in `sco.results`, one row per specification.
+
+The same specifications can be written as a pyfixest formula, with `comb0()` standing for every combination of its terms:
+
+```python
+sco = sc.SpecificationCurve(
+    df,
+    "log(sales) ~ treated + comb0(size, leverage, rd) | sw0(firm, firm + year)",
+    x="treated",
+    vcov=["hetero", {"CRV1": "firm"}],
+)
+```
 
 ## Installation
 

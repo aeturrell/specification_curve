@@ -117,7 +117,7 @@ def test_repr_with_all_failures(panel) -> None:
         (sc.load_example_data1, (500, 8)),
         (sc.load_example_data2, (500, 5)),
         (sc.load_example_data3, (20000, 7)),
-        (sc.load_example_panel, (2400, 13)),
+        (sc.load_example_panel, (2400, 14)),
     ],
 )
 def test_example_data(loader, shape) -> None:

@@ -84,9 +84,11 @@ def load_example_panel(n_firms: int = 300, n_years: int = 8) -> pd.DataFrame:
     instrument for ``treated``.
 
     Columns: ``firm``, ``year``, ``industry``, ``state`` (identifiers);
-    ``treated`` (0/1), ``eligible`` (0/1); ``size``, ``age``, ``leverage``
-    (controls; ``age`` and ``leverage`` have a few missing values); ``sales``
-    (positive), ``patents`` (count), ``exporter`` (0/1) (outcomes); ``weight``.
+    ``treated`` (0/1), ``eligible`` (0/1); ``size``, ``age``, ``leverage``,
+    ``rd`` (controls; ``age`` and ``leverage`` have a few missing values);
+    ``sales`` (positive), ``patents`` (count), ``exporter`` (0/1) (outcomes);
+    ``weight``. Note that ``age`` rises by one each year, so it cannot be
+    separated from firm and year fixed effects used together.
 
     Args:
         n_firms (int): Number of firms.
@@ -130,6 +132,7 @@ def load_example_panel(n_firms: int = 300, n_years: int = 8) -> pd.DataFrame:
     ).astype(int)
     age[prng.random(n) < 0.01] = np.nan
     leverage[prng.random(n) < 0.02] = np.nan
+    rd = np.clip(0.05 + 0.01 * fe + prng.normal(scale=0.02, size=n), 0, None)
     return pd.DataFrame(
         {
             "firm": firm,
@@ -141,6 +144,7 @@ def load_example_panel(n_firms: int = 300, n_years: int = 8) -> pd.DataFrame:
             "size": size,
             "age": age,
             "leverage": leverage,
+            "rd": rd,
             "sales": np.exp(log_sales),
             "patents": patents,
             "exporter": exporter,

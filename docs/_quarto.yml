@@ -42,6 +42,11 @@ quartodoc:
           children: embedded
     - title: "Functions"
       contents:
+        - plot_curve
+        - subsets_by
+    - title: "Example data"
+      contents:
+        - load_example_panel
         - load_example_data1
         - load_example_data2
         - load_example_data3

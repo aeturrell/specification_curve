@@ -11,7 +11,7 @@ from pathlib import Path
 import pandas as pd
 import specification_curve as sc
 
-CONTROLS = ["size", "age", "leverage", "size:leverage", "log(age)"]
+CONTROLS = ["size", "leverage", "rd", "size:leverage", "size:rd"]
 
 
 def timed(sco: sc.SpecificationCurve, batch: bool = True, n_jobs: int = 1) -> float:
@@ -44,6 +44,16 @@ def scenarios(df: pd.DataFrame) -> dict[str, float]:
         fe=[None, "firm"],
         model="fepois",
     )
+    small = sc.SpecificationCurve(
+        df,
+        y="log(sales)",
+        x="treated",
+        controls=CONTROLS[:3],
+        fe=["firm", "firm + year"],
+    ).fit(progress=False)
+    tic = time.perf_counter()
+    small.fit_null(n_boot=50, cluster="firm", seed=0, progress=False)
+    null_time = time.perf_counter() - tic
     return {
         f"feols, {one_vcov.n_specs} specs, one fit each": timed(one_vcov, batch=False),
         f"feols, {one_vcov.n_specs} specs, batched": timed(one_vcov, batch=True),
@@ -56,6 +66,7 @@ def scenarios(df: pd.DataFrame) -> dict[str, float]:
         f"feols, {three_vcov.n_specs} specs (3 vcov), batched": timed(three_vcov),
         f"fepois, {poisson.n_specs} specs, one fit each": timed(poisson, batch=False),
         f"fepois, {poisson.n_specs} specs, batched": timed(poisson, batch=True),
+        f"fit_null, {small.n_specs} specs, 50 resamples": null_time,
     }
 
 
