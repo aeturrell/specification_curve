@@ -220,8 +220,6 @@ Design principles:
   Stub packages and notebook tooling move to the dev group where still needed.
 - Remove `typeguard_ignore` imports from the package (the typeguard nox session
   installs typeguard itself).
-- Add a weekly scheduled run of the test workflow that installs the newest
-  pyfixest release, so an incompatible upstream change is caught early.
 - Regenerate `uv.lock`. Confirm the CI matrix (Linux, Windows, macOS; Python
   3.12 and 3.13) installs pyfixest.
 
@@ -576,7 +574,7 @@ workflow passes, and the sweep finds nothing.
 
 | Item | Risk or question | Handling |
 |---|---|---|
-| pyfixest internals | Formula expansion is a private function and the parsed-formula interface changed in 0.70.0. With no upper version bound, a new pyfixest release can break an installed copy before we have adapted | Single adapter module; adapter tests that fail loudly; a scheduled CI run against the latest pyfixest so breakage is seen quickly |
+| pyfixest internals | Formula expansion is a private function and the parsed-formula interface changed in 0.70.0. With no upper version bound, a new pyfixest release can break an installed copy before we have adapted | Single adapter module; adapter tests that fail loudly when run against a new pyfixest |
 | Batched execution | Mapping multi-model output back to grid rows could silently misalign | Position mapping is verified against each model's outcome, fixed effects and coefficient names, with fallback to single fits |
 | Batching gain | Measured gain was modest in one quick test | Benchmark in PR 1 decides whether it is on by default |
 | Windows/macOS wheels | Not yet verified in CI | First thing checked in PR 1 |

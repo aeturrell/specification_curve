@@ -1,44 +1,78 @@
+"""Times the estimation engine on a synthetic firm-year panel.
+
+Run from the repository root with ``uv run python benchmarks/benchmark.py``.
+"""
+
 import time
+import warnings
 from datetime import datetime
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 import specification_curve as sc
-import statsmodels.api as sm
 
-tic = time.perf_counter()
-
-df = sc.load_example_data3()
-sco = sc.SpecificationCurve(df, formula="y1 | y2 ~ x1 + c1 | c2 | c3")
-sco.fit()
-sco.fit_null(n_boot=100)
+CONTROLS = ["size", "age", "leverage", "size:leverage", "log(age)"]
 
 
-n_samples = 10000
-x_2 = np.random.randint(2, size=n_samples)
-x_1 = np.random.random(size=n_samples)
-x_3 = np.random.randint(3, size=n_samples)
-x_4 = np.random.random(size=n_samples)
-x_5 = x_1 + 0.05 * np.random.randn(n_samples)
-x_beta = -1 + 3.5 * x_1 + 0.2 * x_2 + 0.3 * x_3
-prob = 1 / (1 + np.exp(-x_beta))
-y = np.random.binomial(n=1, p=prob, size=n_samples)
-y2 = np.random.binomial(n=1, p=prob * 0.98, size=n_samples)
-df = pd.DataFrame(
-    [x_1, x_2, x_3, x_4, x_5, y, y2],
-    ["x_1", "x_2", "x_3", "x_4", "x_5", "y", "y2"],
-).T
-y_endog = ["y", "y2"]
-x_exog = ["x_1", "x_5"]
-controls = ["x_3", "x_2", "x_4"]
-scol = sc.SpecificationCurve(df, y_endog, x_exog, controls, cat_expand="x_3")
-scol.fit(estimator=sm.Logit)
+def timed(sco: sc.SpecificationCurve, batch: bool = True, n_jobs: int = 1) -> float:
+    """Seconds taken to fit a curve."""
+    tic = time.perf_counter()
+    sco.fit(progress=False, batch=batch, n_jobs=n_jobs)
+    return time.perf_counter() - tic
 
-toc = time.perf_counter()
-elapsed = toc - tic
 
-time_stamp_string = datetime.now().strftime("%Y%m%d_%H%M%S")
+def scenarios(df: pd.DataFrame) -> dict[str, float]:
+    """Runs each timing scenario on one data set."""
+    outcomes = ["log(sales)", "sales"]
+    fixed_effects = [None, "firm", "firm + year"]
+    one_vcov = sc.SpecificationCurve(
+        df, y=outcomes, x="treated", controls=CONTROLS, fe=fixed_effects
+    )
+    three_vcov = sc.SpecificationCurve(
+        df,
+        y=outcomes,
+        x="treated",
+        controls=CONTROLS,
+        fe=fixed_effects,
+        vcov=["iid", "hetero", {"CRV1": "firm"}],
+    )
+    poisson = sc.SpecificationCurve(
+        df,
+        y="patents",
+        x="treated",
+        controls=CONTROLS,
+        fe=[None, "firm"],
+        model="fepois",
+    )
+    return {
+        f"feols, {one_vcov.n_specs} specs, one fit each": timed(one_vcov, batch=False),
+        f"feols, {one_vcov.n_specs} specs, batched": timed(one_vcov, batch=True),
+        f"feols, {one_vcov.n_specs} specs, one fit each, 4 jobs": timed(
+            one_vcov, batch=False, n_jobs=4
+        ),
+        f"feols, {one_vcov.n_specs} specs, batched, 4 jobs": timed(
+            one_vcov, batch=True, n_jobs=4
+        ),
+        f"feols, {three_vcov.n_specs} specs (3 vcov), batched": timed(three_vcov),
+        f"fepois, {poisson.n_specs} specs, one fit each": timed(poisson, batch=False),
+        f"fepois, {poisson.n_specs} specs, batched": timed(poisson, batch=True),
+    }
 
-with open(Path(f"outputs/benchmark_time_{time_stamp_string}.txt"), "w") as f:
-    f.write(f"{elapsed:.2f}")
+
+def main() -> None:
+    """Runs the benchmark at two data sizes and saves the timings."""
+    warnings.simplefilter("ignore")
+    columns = {}
+    for n_firms in (500, 20_000):
+        df = sc.load_example_panel(n_firms=n_firms, n_years=10)
+        columns[f"{len(df):,} rows"] = scenarios(df)
+    table = pd.DataFrame(columns).round(2)
+    print(table.to_string())
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    out = Path("outputs") / f"benchmark_time_{stamp}.txt"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(table.to_string() + "\n")
+
+
+if __name__ == "__main__":
+    main()

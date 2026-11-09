@@ -11,18 +11,12 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "joblib>=1.4.2",
     "matplotlib>=3.9.4",
     "numpy>=2.0.2",
-    "pandas-stubs>=2.2.2.240807",
-    "pandas>=2.2.3",
-    "statsmodels>=0.14.4",
-    "typeguard>=4.4.1",
-    "types-setuptools>=75.6.0.20241223",
-    "nbclient>=0.10.2",
+    "pandas>=2.3.3",
+    "pyfixest>=0.70",
     "tqdm>=4.67.1",
-    "pingouin>=0.6.0",
-    "types-tqdm>=4.67.0.20241221",
-    "ipywidgets>=8.1.5",
 ]
 
 [dependency-groups]
@@ -43,6 +37,8 @@ dev = [
     "aquarel>=0.0.6",
     "pydoclint>=0.6.0",
     "ty>=0.0.8",
+    "typeguard>=4.4.1",
+    "types-tqdm>=4.67.0.20241221",
 ]
 
 [tool.ty.rules]
