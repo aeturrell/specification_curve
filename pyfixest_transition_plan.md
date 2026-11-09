@@ -33,7 +33,7 @@ Python >= 3.11, pandas >= 2.3.3). The design below depends on these facts.
 | `fit.vcov(...)` recomputes standard errors in place without refitting, for all four estimators | The standard-error dimension costs no extra fits |
 | `fit.vcov(...)` fails if the model was fitted with `lean=True` or `store_data=False` | Fit with full storage, extract numbers, then drop the model object |
 | `copy_data=False` mutates the data frame passed in | Always pass pyfixest a frame the engine owns |
-| Default `vcov` is `"iid"` with or without fixed effects | Default is predictable; the label is always recorded in results |
+| Default `vcov` is `"iid"` with or without fixed effects | We pass nothing by default and let pyfixest choose; the type actually used is recorded in results |
 | `fit.tidy(alpha=)` and `fit.confint(alpha=)` give intervals at any level | Several confidence levels can be stored per fit |
 | `quantreg` rejects fixed effects, has no `weights` argument, and returns a multi-model object for a list of quantiles | Validated up front; quantile is its own dimension |
 | IV (`y ~ exog \| fe \| endog ~ instr`) works in `feols` only; `fepois` and `feglm` raise `NotImplementedError` | Validated up front |
@@ -41,7 +41,7 @@ Python >= 3.11, pandas >= 2.3.3). The design below depends on these facts.
 | Each fit exposes `capabilities` (for example `crv3_inference`, `multiway_clustering`, `hac_inference`) | Standard-error validity is checked from pyfixest, not a table we maintain |
 | Clustered standard errors fail when the cluster variable has missing values | The engine removes those rows before fitting (see sample handling) |
 | Formula terms can be transforms and interactions (`log(x)`, `i(f)`, `C(f)`, `a:b`), and `context=` supplies user functions | No term parsing of our own is needed |
-| `pyfixest.estimation.formula.parse.Formula.parse` gives outcome, exogenous terms, fixed effects, endogenous terms and instruments; the function that expands multiple-estimation operators is private (`_expand_all_multiple_estimation`) | All parser access goes through one adapter module, and pyfixest is pinned to a tested range |
+| `pyfixest.estimation.formula.parse.Formula.parse` gives outcome, exogenous terms, fixed effects, endogenous terms and instruments; the function that expands multiple-estimation operators is private (`_expand_all_multiple_estimation`) | All parser access goes through one adapter module, with tests that fail loudly if a new pyfixest release changes it |
 | On 200,000 rows with two fixed effects, 12 separate fits took 1.43 s and the same 12 models as four `sw()` calls took 1.15 s | Batching helps but is not dramatic at this size; it must be benchmarked, not assumed |
 
 Not yet checked, to confirm during PR 1: pyfixest wheels install cleanly on
@@ -101,7 +101,7 @@ Arguments:
 | `model` | str or list | `"feols"`, `"fepois"`, `"feglm"`, `"quantreg"` | `"feols"` |
 | `family` | str or list | For `feglm` | `None` |
 | `quantile` | float or list | For `quantreg` | `0.5` |
-| `vcov` | str, dict or list of those | Standard-error types | `"iid"` |
+| `vcov` | str, dict, None or list of those | Standard-error types; `None` means pyfixest's default | `None` |
 | `weights` | str, None or list | Weight column(s) | `None` |
 | `subsets` | dict of name to query string | Sample restrictions; `None` means all rows | `{"all": None}` |
 | `common_sample` | bool | Use one complete-case sample for all specifications within a subset | `True` |
@@ -118,8 +118,7 @@ Rules:
 - `comb(a, b, c)` means every non-empty subset and `comb0(a, b, c)` adds the
   empty subset. They are the only syntax this package adds. A small
   balanced-parenthesis pre-processor rewrites them into `sw(...)`/`sw0(...)`
-  with enumerated sums before pyfixest sees the formula. The names are open to
-  change (see section 8).
+  with enumerated sums before pyfixest sees the formula.
 - `exclude`, `min_controls` and `max_controls` filter the grid after expansion,
   so they work with the formula form too.
 - A helper `sc.subsets_by(data, "region")` returns the `subsets` dict with one
@@ -167,7 +166,7 @@ across runs), with these columns:
 | `always` | Tuple of always-included terms |
 | `fe` | Fixed-effect string or `None` |
 | `iv` | First-stage string or `None` |
-| `vcov` | Readable label: `"iid"`, `"hetero"`, `"CRV1: firm"` |
+| `vcov` | Readable label of the type actually used, read from the fitted model: `"iid"`, `"hetero"`, `"CRV1: firm"` |
 | `weights`, `subset` | Weight column and subset name |
 | `formula` | The exact single-model pyfixest formula |
 | `estimate`, `se`, `statistic`, `pvalue` | For the focal coefficient |
@@ -205,20 +204,24 @@ Design principles:
 - `_pyfixest.py` wraps: formula expansion, `Formula.parse`, estimator
   dispatch, capability lookup, extraction of focal-coefficient numbers and
   `nobs`. If pyfixest changes an internal, one file changes.
-- pyfixest is pinned to a tested minor range in `pyproject.toml` and the upper
-  bound is raised by a test run, not by default.
+- pyfixest has a minimum version only (`pyfixest>=0.70`), with no upper bound.
+  The adapter's tests exercise every internal it touches, so an incompatible
+  pyfixest release shows up as a clear test failure in CI rather than as wrong
+  results.
 
 ## 5. PR 1: core
 
 ### 5.1 Dependencies and packaging
 
-- Runtime dependencies become: `pyfixest`, `pandas>=2.3.3`, `numpy`,
+- Runtime dependencies become: `pyfixest>=0.70` (minimum bound only), `pandas>=2.3.3`, `numpy`,
   `matplotlib`, `joblib`, `scipy`, `tqdm`.
 - Removed from runtime: `statsmodels`, `pingouin`, `typeguard`,
   `pandas-stubs`, `types-setuptools`, `types-tqdm`, `nbclient`, `ipywidgets`.
   Stub packages and notebook tooling move to the dev group where still needed.
 - Remove `typeguard_ignore` imports from the package (the typeguard nox session
   installs typeguard itself).
+- Add a weekly scheduled run of the test workflow that installs the newest
+  pyfixest release, so an incompatible upstream change is caught early.
 - Regenerate `uv.lock`. Confirm the CI matrix (Linux, Windows, macOS; Python
   3.12 and 3.13) installs pyfixest.
 
@@ -288,7 +291,9 @@ Fit groups:
   controls, fixed effects and `vcov`.
 - `vcov` is never a reason to refit: fit once, then for each `vcov` in the
   group call `fit.vcov(v)` and extract immediately (the call mutates the
-  model, so extraction happens before the next call).
+  model, so extraction happens before the next call). For `vcov=None` no
+  argument is passed, pyfixest applies its own default, and the label is read
+  back from the fitted model.
 - Standard-error types the fitted model does not support (per
   `fit.capabilities`) are recorded as errors for those rows only.
 
@@ -552,7 +557,7 @@ a temporary path.
    null inference, and a short results table in the docs' large-grids section.
 7. Packaging: update the project description and classifiers; confirm the
    `Makefile` docs build and the release workflow run end to end; bump the
-   version with `version_bumper.py` (number to be agreed, see section 8).
+   version to the next 0.x minor release (0.4.0) with `version_bumper.py`.
 8. Sweep: search the repository for any wording that implies an earlier
    design (for example "previously", "deprecated", "no longer", "legacy",
    "statsmodels") and remove it. Delete this plan file.
@@ -560,16 +565,20 @@ a temporary path.
 Done when the docs site builds with every notebook executing, the release
 workflow passes, and the sweep finds nothing.
 
-## 8. Risks and open points
+## 8. Decisions made
+
+- `comb()` / `comb0()` are included under those names.
+- Standard errors follow pyfixest's defaults.
+- pyfixest has a minimum version bound only.
+- The release in PR 3 is a 0.x bump.
+
+## 9. Risks
 
 | Item | Risk or question | Handling |
 |---|---|---|
-| pyfixest internals | Formula expansion is a private function and the parsed-formula interface changed in 0.70.0 | Single adapter module, pinned version range, tests that fail loudly on a pyfixest upgrade |
+| pyfixest internals | Formula expansion is a private function and the parsed-formula interface changed in 0.70.0. With no upper version bound, a new pyfixest release can break an installed copy before we have adapted | Single adapter module; adapter tests that fail loudly; a scheduled CI run against the latest pyfixest so breakage is seen quickly |
 | Batched execution | Mapping multi-model output back to grid rows could silently misalign | Position mapping is verified against each model's outcome, fixed effects and coefficient names, with fallback to single fits |
 | Batching gain | Measured gain was modest in one quick test | Benchmark in PR 1 decides whether it is on by default |
 | Windows/macOS wheels | Not yet verified in CI | First thing checked in PR 1 |
 | Permutation inference | Easy to misuse on observational data | Never chosen automatically for non-`feols` grids; assumption stated in the docstring and docs |
 | Grid explosion | Dimensions multiply quickly | Count reported before fitting, warning threshold, `max_specs` |
-| `comb` / `comb0` names | Our only added syntax; names are a suggestion | Decide before PR 1 merges |
-| Default `vcov` | pyfixest's default is `"iid"`; `"hetero"` may be the better default for this audience | Decide before PR 1 merges |
-| Version number | 1.0.0 or a 0.x bump | Decide in PR 3 |
