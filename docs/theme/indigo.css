@@ -485,6 +485,15 @@ body.quarto-dark .quarto-figure img {
 .doc-parameter-annotation { color: var(--sc-blue) !important; }
 .doc-parameter-default { color: var(--sc-muted) !important; }
 
+/* ---------- references ---------- */
+/* Quarto's theme gives the appendix (references, footnotes) a hard-coded white
+   background; let it sit on the page's own background in both themes. */
+#quarto-appendix.default,
+body.quarto-dark #quarto-appendix.default {
+  background-color: transparent !important;
+  border-top-color: var(--sc-line) !important;
+}
+
 /* ---------- buttons & misc ---------- */
 .btn, .gd-copy-page, [class*="copy-page"], .page-navigation .pagination-link,
 .badge, input, .form-control, .dropdown-menu, .aa-Form, .aa-Panel {

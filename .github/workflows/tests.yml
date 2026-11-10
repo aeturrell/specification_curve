@@ -1,13 +1,25 @@
 name: Tests
 
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # a new push to a pull request cancels the runs for its previous commits
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   tests:
     name: ${{ matrix.session }} ${{ matrix.python-version }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -26,6 +38,8 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v7.1.0
@@ -38,13 +52,13 @@ jobs:
           # Install a specific version of uv.
           version: "0.9.17"
 
-
       - name: Compute pre-commit cache key
         if: matrix.session == 'pre-commit'
         id: pre-commit-cache
         shell: python
         run: |
           import hashlib
+          import os
           import sys
 
           python = "py{}.{}".format(*sys.version_info[:2])
@@ -52,7 +66,8 @@ jobs:
           digest = hashlib.sha256(payload).hexdigest()
           result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
 
-          print("::set-output name=result::{}".format(result))
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write("result={}\n".format(result))
 
       - name: Restore pre-commit cache
         uses: actions/cache@v6.1.0
@@ -78,10 +93,13 @@ jobs:
 
   coverage:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: tests
     steps:
       - name: Check out the repository
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v7.1.0

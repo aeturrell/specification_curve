@@ -1,59 +1,67 @@
 name: Release
 
-permissions:
-  contents: write
-  pages: write
+# On every push to main:
+# - if the version in pyproject.toml changed, tag it, publish it to PyPI, publish
+#   the release notes and the docs;
+# - otherwise, publish a developmental release (next patch version plus
+#   .dev<timestamp>) to TestPyPI and check that the docs build.
 
 on:
   push:
     branches:
       - main
-      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  UV_VERSION: "0.9.17"
+  PYTHON_VERSION: "3.12"
 
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the version tag and publish the release notes
+      pull-requests: read # release-drafter reads merged pull requests
+    outputs:
+      tag: ${{ steps.check-version.outputs.tag }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
 
-      - name: Set up Python
-        uses: actions/setup-python@v7.1.0
-        with:
-          python-version: "3.12"
-
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
-          # Install a specific version of uv.
-          version: "0.5.2"
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+          # never restore a cache in the job that builds what is published
+          enable-cache: false
 
       - name: Check if there is a parent commit
         id: check-parent-commit
-        run: |
-          echo "::set-output name=sha::$(git rev-parse --verify --quiet HEAD^)"
+        run: echo "sha=$(git rev-parse --verify --quiet HEAD^)" >> "$GITHUB_OUTPUT"
 
       - name: Detect and tag new version
         id: check-version
         if: steps.check-parent-commit.outputs.sha
         uses: salsify/action-detect-and-tag-new-version@v2.0.3
         with:
-          version-command: |
-            uvx --from=toml-cli toml get --toml-path=pyproject.toml project.version
+          version-command: uv version --short
 
       - name: Bump version for developmental release
-        if: "! steps.check-version.outputs.tag"
-        run: |
-          uv run version_bumper.py &&
-          version=$(uvx --from=toml-cli toml get --toml-path=pyproject.toml project.version) &&
-          uvx --from=toml-cli toml set --toml-path=pyproject.toml project.version $version.dev.$(date +%s)
+        if: ${{ ! steps.check-version.outputs.tag }}
+        run: uv version --bump patch --bump "dev=$(date +%s)" --frozen
 
       - name: Build package
-        run: |
-          uv build
+        run: uv build
 
       - name: Publish package on PyPI
         if: steps.check-version.outputs.tag
@@ -63,7 +71,7 @@ jobs:
           password: ${{ secrets.PYPI_TOKEN }}
 
       - name: Publish package on TestPyPI
-        if: "! steps.check-version.outputs.tag"
+        if: ${{ ! steps.check-version.outputs.tag }}
         uses: pypa/gh-action-pypi-publish@v1.14.3
         with:
           user: __token__
@@ -78,10 +86,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  docs:
+    name: Docs
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the site to the gh-pages branch
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+
       - name: Install dependencies
-        run: |
-          uv sync --group dev
-          uv pip install -e .
+        run: uv sync --group dev --frozen
 
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -89,15 +111,14 @@ jobs:
           version: 1.11.9
 
       - name: Build docs
-        run: uv run great-docs build
+        run: uv run --frozen great-docs build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: git config
+      - name: Publish docs
+        if: needs.release.outputs.tag
+        working-directory: great-docs
         run: |
-          git config user.name "$(git log -n 1 --pretty=format:%an)" &&
-          git config user.email "$(git log -n 1 --pretty=format:%ae)"
-
-      - name: Publish
-        if: steps.check-version.outputs.tag
-        run: cd great-docs;uv run quarto publish gh-pages --no-render --no-browser
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          uv run --frozen quarto publish gh-pages --no-render --no-browser

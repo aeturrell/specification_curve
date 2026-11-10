@@ -6,11 +6,14 @@ on:
       - 'main'
     paths:
       - '.github/labels.yml'
-      - '.github/workflows/labels.yml'
+      - '.github/workflows/labeler.yml'
   pull_request:
     paths:
       - '.github/labels.yml'
-      - '.github/workflows/labels.yml'
+      - '.github/workflows/labeler.yml'
+
+permissions:
+  contents: read
 
 jobs:
   labeler:
@@ -21,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Run Labeler
         uses: crazy-max/ghaction-github-labeler@v6
         with:

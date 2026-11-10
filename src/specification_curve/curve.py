@@ -291,21 +291,27 @@ class SpecificationCurve:
 
         With ``method="bootstrap"``, each specification's estimated effect is
         removed from its outcome and rows are resampled with replacement. This
-        applies when every specification uses ``model="feols"``. With
-        ``method="permutation"``, the focal variable is shuffled between rows.
+        applies when every specification uses ``model="feols"``.
+        ``method="bayesian-bootstrap"`` (the Bayesian bootstrap of Rubin, 1981;
+        see Andrews, Moon and Shapiro, 2026) imposes the null in the same way
+        and has the same requirement, but gives rows random Dirichlet weights
+        instead of resampling them, so that no row (or cluster) is ever left out.
+        With ``method="permutation"``, the focal variable is shuffled between rows.
         This applies to any estimator, but it is only valid if the focal
         variable is as good as randomly assigned (within ``strata``, if given),
-        as in an experiment.
+        as in an experiment, and it does not apply to instrumental-variable
+        specifications.
 
         Args:
             n_boot (int): Number of resamples. Use several hundred for results
                 you rely on; every resample re-estimates the whole curve.
-            method (str): "bootstrap", "permutation" or "auto". "auto" uses the
-                bootstrap if every specification uses "feols", and otherwise
-                asks you to choose.
+            method (str): "bootstrap", "bayesian-bootstrap", "permutation" or
+                "auto". "auto" uses the bootstrap if every specification uses
+                "feols", and otherwise asks you to choose.
             cluster (Optional[str]): Column identifying clusters. Whole clusters
-                are resampled (bootstrap) or swap their focal values
-                (permutation; the focal variable must be constant within them).
+                are resampled (bootstrap), share one weight (Bayesian bootstrap)
+                or swap their focal values (permutation; the focal variable must
+                be constant within them).
             strata (Optional[str]): Column identifying strata. Resampling is done
                 within each stratum.
             alpha (float): Significance level for the share of significant
