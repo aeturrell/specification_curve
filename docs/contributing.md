@@ -94,7 +94,7 @@ submit changes to this project.
 Your pull request needs to meet the following guidelines for acceptance:
 
 - The Nox test suite must pass without errors and warnings.
-- Include unit tests. This project aims to maintain 96% code
+- Include unit tests. This project aims to maintain 98% code
   coverage.
 - If your changes add functionality, update the documentation
   accordingly.
@@ -119,7 +119,7 @@ your approach.
 
 - Open a new branch with the version name
 
-- Change the version in pyproject.toml (you can run `uv run version_bumper.py`, which has script-level dependencies)
+- Change the version in pyproject.toml using `uv version --bump <major|minor|patch>`
 
 - Commit the change with a new version label as the commit message (checking the tests pass)
 
