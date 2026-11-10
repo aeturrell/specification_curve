@@ -119,7 +119,7 @@ your approach.
 
 - Open a new branch with the version name
 
-- Change the version in pyproject.toml (you can run `uv run version_bumper.py`, which has script-level dependencies)
+- Change the version in pyproject.toml using `uv version --bump <major|minor|patch>`
 
 - Commit the change with a new version label as the commit message (checking the tests pass)
 

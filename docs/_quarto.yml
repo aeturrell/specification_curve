@@ -21,6 +21,10 @@ format:
     theme: flatly
     css: styles.css
     toc: true
+    fig-format: svg
+    # Quarto otherwise appends ".png" to extensionless image URLs, which
+    # breaks badges such as https://static.pepy.tech/badge/<package>
+    default-image-extension: ""
 
 # tell quarto to read the generated sidebar
 metadata-files:
