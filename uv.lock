@@ -2961,18 +2961,6 @@ wheels = [
 ]
 
 [[package]]
-name = "types-requests"
-version = "2.32.0.20241016"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "urllib3" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/fa/3c/4f2a430c01a22abd49a583b6b944173e39e7d01b688190a5618bd59a2e22/types-requests-2.32.0.20241016.tar.gz", hash = "sha256:0d9cad2f27515d0e3e3da7134a1b6f28fb97129d86b867f24d9c726452634d95", size = 18065, upload-time = "2024-10-16T02:46:10.818Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d7/01/485b3026ff90e5190b5e24f1711522e06c79f4a56c8f4b95848ac072e20f/types_requests-2.32.0.20241016-py3-none-any.whl", hash = "sha256:4195d62d6d3e043a4eaaf08ff8a62184584d2e8684e9d2aa178c7915a7da3747", size = 15836, upload-time = "2024-10-16T02:46:09.734Z" },
-]
-
-[[package]]
 name = "types-setuptools"
 version = "82.0.0.20260508"
 source = { registry = "https://pypi.org/simple" }
@@ -2983,14 +2971,11 @@ wheels = [
 
 [[package]]
 name = "types-tqdm"
-version = "4.67.3.20260508"
+version = "4.70.0.20261106"
 source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "types-requests" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/c9/d9/add71c78db72e934747f7467ffe7b8fa9f3e9fb38ffa5377d5dd390ac036/types_tqdm-4.67.3.20260508.tar.gz", hash = "sha256:9acfdd179bdf5cc81f7ce7353b5b85eb92b16667bba89ec6c187b5e7ce617986", size = 18141, upload-time = "2026-05-08T04:52:34.866Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f1/c7/742d7c26986dfa2afb88f208f3439d6f7bff7270c5aec42d71623415a4a3/types_tqdm-4.70.0.20261106.tar.gz", hash = "sha256:4e0b61731624c8430e60ded705ea4f4270c37a9263d19d69946375a522ef9e79", size = 19601, upload-time = "2026-11-06T08:40:25.742Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d4/64/e66c98e951deb5985fbff40a11ba0a1f0528505e0734fa6c39534fc0b113/types_tqdm-4.67.3.20260508-py3-none-any.whl", hash = "sha256:0440759cc861a90c1cc98870f2c15ac633c0b6b14651dcafb83f98ab83bad0f4", size = 24546, upload-time = "2026-05-08T04:52:33.995Z" },
+    { url = "https://files.pythonhosted.org/packages/b6/53/a581c64cc05ccbfd8077145913f63eac6b087b15129fdae583d2c6eff546/types_tqdm-4.70.0.20261106-py3-none-any.whl", hash = "sha256:4ba3eeea27ca863522c4814c5c6954b83d51bbdec8056214e0dddc132f5964d5", size = 25317, upload-time = "2026-11-06T08:40:24.81Z" },
 ]
 
 [[package]]
