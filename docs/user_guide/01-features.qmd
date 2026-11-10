@@ -336,14 +336,57 @@ sco.fit(max_specs=500, seed=0, n_jobs=2)
 sco.plot();
 ```
 
-As a guide to speed, here are timings for a curve of 192 OLS specifications with up to two sets of fixed effects, on a machine with four cores. They come from `benchmarks/benchmark.py` in the repository.
+```{python}
+#| echo: false
+#| output: asis
 
-| | 5,000 rows | 200,000 rows |
-|---|---|---|
-| `fit()` | 2.5 s | 8.2 s |
-| `fit(n_jobs=4)` | 0.7 s | 3.2 s |
-| `fit()` with three kinds of standard errors (576 specifications) | 3.2 s | 12.0 s |
-| `fit_null(n_boot=50)` for a curve of 16 specifications | 10.6 s | 63.4 s |
+# The timings come from the most recent run of benchmarks/benchmark.py, which
+# appends each run to benchmarks/results.csv. Re-run that script to update them.
+from pathlib import Path
+
+import pandas as pd
+
+
+def _find(relative: str) -> Path:
+    for folder in [Path.cwd(), *Path.cwd().parents]:
+        if (folder / relative).exists():
+            return folder / relative
+    raise FileNotFoundError(relative)
+
+
+_bench = pd.read_csv(_find("benchmarks/results.csv"))
+_latest = _bench[_bench["run_at"] == _bench["run_at"].max()]
+_sizes = sorted(_latest["n_rows"].unique())
+_specs = _latest.groupby("scenario")["n_specs"].first()
+_rows = [
+    ("feols_batched", "`fit()`"),
+    ("feols_batched_jobs4", "`fit(n_jobs=4)`"),
+    (
+        "feols_3vcov_batched",
+        f"`fit()` with three kinds of standard errors ({_specs['feols_3vcov_batched']:,} specifications)",
+    ),
+    (
+        "fit_null_50",
+        f"`fit_null(n_boot=50)` for a curve of {_specs['fit_null_50']:,} specifications",
+    ),
+]
+_meta = _latest.iloc[0]
+_when = pd.Timestamp(_meta["run_at"]).strftime("%B %Y")
+
+print(
+    f"As a guide to speed, here are timings for a curve of {_specs['feols_batched']:,} OLS "
+    "specifications with up to two sets of fixed effects. They come from "
+    "`benchmarks/benchmark.py` in the repository, last run in "
+    f"{_when} with version {_meta['package_version']} (pyfixest "
+    f"{_meta['pyfixest_version']}, Python {_meta['python_version']}) on {_meta['cpu']} "
+    f"with {_meta['cpu_count']} cores. Every run is logged in `benchmarks/results.csv`.\n"
+)
+print("| | " + " | ".join(f"{n:,} rows" for n in _sizes) + " |")
+print("|---|" + "---|" * len(_sizes))
+for _scenario, _label in _rows:
+    _times = _latest[_latest["scenario"] == _scenario].set_index("n_rows")["seconds"]
+    print(f"| {_label} | " + " | ".join(f"{_times[n]:.1f} s" for n in _sizes) + " |")
+```
 
 ## Customising the chart
 
