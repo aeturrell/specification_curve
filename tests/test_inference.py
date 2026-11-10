@@ -9,6 +9,8 @@ from scipy.stats import norm
 from specification_curve.inference import (
     _null_grid,
     _units,
+    _weighted_grid,
+    bayesian_weights,
     bootstrap_rows,
     curve_statistics,
     permute_rows,
@@ -164,6 +166,74 @@ def test_units_and_bootstrap_rows() -> None:
     assert [[list(u) for u in s] for s in both] == [[[0, 1], [2, 3, 4]], [[5], [6, 7]]]
 
 
+def test_bayesian_weights() -> None:
+    data = pd.DataFrame({"cluster": [0, 0, 1, 1, 1, 2], "stratum": [0, 0, 0, 0, 0, 1]})
+    rng = np.random.default_rng(0)
+    for cluster in (None, "cluster"):
+        units = _units(data, cluster, "stratum")
+        draws = np.array([bayesian_weights(units, len(data), rng) for _ in range(2000)])
+        assert (draws > 0).all()
+        # like the counts of an ordinary bootstrap, each unit's weight averages
+        # one and the units of a stratum have as much weight as their number
+        n_units = 5 if cluster is None else 2
+        first = draws[:, [0, 1, 2, 3, 4]] if cluster is None else draws[:, [0, 2]]
+        np.testing.assert_allclose(first.sum(axis=1), n_units)
+        np.testing.assert_allclose(draws[:, 5], 1)
+        np.testing.assert_allclose(draws.mean(axis=0), 1, atol=0.05)
+    # every row of a cluster shares its weight
+    assert (draws[:, 0] == draws[:, 1]).all() and (draws[:, 2] == draws[:, 4]).all()
+    assert not (draws[:, 0] == draws[:, 2]).any()
+
+
+def test_weighted_grid_keeps_user_weights_apart() -> None:
+    grid = pd.DataFrame({"weights": [None, "w", None, "w"]})
+    data = pd.DataFrame({"w": [1.0, 2.0]})
+    new_grid, frame, sources = _weighted_grid(grid, data)
+    assert list(new_grid["weights"]) == ["sc_bb_w0", "sc_bb_w1", "sc_bb_w0", "sc_bb_w1"]
+    assert sources == {"sc_bb_w0": None, "sc_bb_w1": "w"}
+    assert {"w", "sc_bb_w0", "sc_bb_w1"} <= set(frame.columns)
+
+
+def test_bayesian_bootstrap(fitted) -> None:
+    fitted.fit_null(n_boot=8, method="bayesian-bootstrap", seed=1, keep_draws=True)
+    assert "bayesian-bootstrap, 8 resamples" in repr(fitted)
+    # the effect is strong, so the observed curve is beyond every resample
+    np.testing.assert_allclose(fitted.null_summary["p-value"], 1 / 9)
+    draws = fitted.null_draws
+    # under the null the estimates are centred on zero
+    assert abs(np.median(draws.to_numpy())) < 0.1
+    again = fitted.fit_null(
+        n_boot=8, method="bayesian-bootstrap", seed=1, keep_draws=True, n_jobs=2
+    ).null_draws
+    pd.testing.assert_frame_equal(draws, again, check_exact=False, rtol=1e-9)
+    fitted.fit_null(
+        n_boot=3, method="bayesian-bootstrap", cluster="firm", strata="industry"
+    )
+
+
+def test_bayesian_bootstrap_with_weights_and_iv(panel) -> None:
+    sco = sc.SpecificationCurve(
+        panel,
+        y="log(sales)",
+        x="treated",
+        controls=["size"],
+        iv=[None, "treated ~ eligible"],
+        weights=[None, "weight"],
+    ).fit()
+    sco.fit_null(n_boot=5, method="bayesian-bootstrap", seed=0, keep_draws=True)
+    assert sco.null_draws.notna().all().all()
+    with pytest.raises(ValueError, match="aweights"):
+        sco.fit(weights_type="fweights").fit_null(n_boot=2, method="bayesian-bootstrap")
+
+
+def test_bayesian_bootstrap_needs_linear_models(panel) -> None:
+    sco = sc.SpecificationCurve(
+        panel, y="patents", x="eligible", model=["feols", "fepois"]
+    ).fit()
+    with pytest.raises(ValueError, match='method="bayesian-bootstrap" needs'):
+        sco.fit_null(n_boot=2, method="bayesian-bootstrap")
+
+
 def test_permute_rows() -> None:
     data = pd.DataFrame(
         {
@@ -209,6 +279,15 @@ def test_permutation_detects_a_real_effect(panel) -> None:
     np.testing.assert_allclose(sco.null_summary["p-value"], 1 / 10)
     sco.fit_null(n_boot=9, method="permutation", seed=3, alternative="less")
     assert (sco.null_summary.loc[["median", "Stouffer Z"], "p-value"] == 1).all()
+
+
+def test_permutation_refuses_iv(panel) -> None:
+    sco = sc.SpecificationCurve(
+        panel, y="patents", x="treated", controls=["size"], iv="treated ~ eligible"
+    ).fit()
+    with pytest.raises(ValueError, match="instrumental-variable"):
+        sco.fit_null(n_boot=2, method="permutation")
+    sco.fit_null(n_boot=2, method="bootstrap", seed=0)
 
 
 def test_permutation_by_cluster(panel) -> None:
@@ -285,7 +364,7 @@ def test_no_successful_specification(panel) -> None:
 @pytest.mark.slow
 def test_pvalues_are_calibrated_when_there_is_no_effect() -> None:
     rng = np.random.default_rng(0)
-    pvalues = {"bootstrap": [], "permutation": []}
+    pvalues = {"bootstrap": [], "bayesian-bootstrap": [], "permutation": []}
     for _ in range(20):
         n = 150
         data = pd.DataFrame({"x": rng.normal(size=n), "a": rng.normal(size=n)})

@@ -129,11 +129,9 @@ your approach.
 
 - Head to GitHub and merge into main (again, if the CI works)
 
-- Draft a new release based on that most recent merge commit, using the new version as the tag
+- The release GitHub Action then sees that the version has changed. It tags the merge commit with the new version, publishes the package to PyPI, publishes the release notes that Release Drafter has been collecting from merged pull requests, and publishes the documentation. Don't create the tag yourself: if the tag already exists, the action treats the push as an ordinary one.
 
-- Confirm the release draft on GitHub
-
-- The automatic release GitHub Action will push to PyPI.
+Every other push to main publishes a developmental release (the next patch version with a `.dev<timestamp>` suffix) to TestPyPI and checks that the documentation builds.
 
 If you ever need distributable files, you can use the `uv build` command locally.
 

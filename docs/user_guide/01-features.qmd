@@ -485,9 +485,80 @@ The curve expected under the null, with a band covering 95% of the resamples, ca
 sco.plot(show_null_curve=True);
 ```
 
-The bootstrap is available when every specification is a linear model (`model="feols"`). For other estimators, `method="permutation"` shuffles the regressor of interest between rows instead. That breaks any link between it and the outcome, but it is only a valid test if the regressor is as good as randomly assigned, as in an experiment (within `strata`, if you give them).
+### Choosing a resampling method
 
-In the example data `eligible` was assigned at random and has no effect of its own on patents once treatment is controlled for, so here we expect large p-values:
+There are three ways of generating data in which the null is true, chosen with `method`:
+
+- **`"bootstrap"`** (the default for linear models). Each specification's estimated effect is removed from its outcome, $y^* = y - \hat\beta x$, so that the regressor of interest has no effect on $y^*$ by construction, and then rows (or whole clusters) are drawn with replacement.
+- **`"bayesian-bootstrap"`**, the Bayesian bootstrap [@rubin1981bayesian; @andrews2026praise]. The null is imposed in the same way, but instead of drawing rows with replacement every row (or cluster) is kept and given a random weight from a flat Dirichlet distribution, scaled so that the weights average one. Where the ordinary bootstrap gives each row a whole number of copies, possibly zero, the Bayesian bootstrap gives it a positive, continuously varying weight.
+- **`"permutation"`**. The regressor of interest is shuffled between rows (or clusters), which breaks any link between it and the outcome.
+
+Which methods you can use depends on the estimators and designs in the curve:
+
+| Specifications | `"bootstrap"` | `"bayesian-bootstrap"` | `"permutation"` |
+|---|:-:|:-:|:-:|
+| Linear (`model="feols"`) | ✓ | ✓ | ✓ † |
+| Instrumental variables (`feols` with `iv`) | ✓ | ✓ | ✗ |
+| Poisson (`"fepois"`) and other GLMs (`"feglm"`) | ✗ | ✗ | ✓ † |
+| Quantile regression (`"quantreg"`) | ✗ | ✗ | ✓ † |
+| With `weights` | ✓ | ✓ ‡ | ✓ † |
+| With `cluster` | ✓ (resamples clusters) | ✓ (one weight per cluster) | ✓ † (the regressor must be constant within clusters) |
+| With `strata` | ✓ | ✓ | ✓ † |
+
+† Only valid if the regressor of interest is as good as randomly assigned (within `strata`, if given).<br>
+‡ The random weights multiply your own; your weights must be analytic weights (pyfixest's default, `weights_type="aweights"`).
+
+The two bootstraps need every specification to be linear because removing $\hat\beta x$ from the outcome only imposes the null in a linear model: in a Poisson model or a logit it does not. If the curve mixes linear and non-linear estimators, `method="auto"` raises an error and asks you to choose. Permutation is not available for instrumental-variable specifications, because shuffling the endogenous regressor but not its instruments breaks the first stage.
+
+### The Bayesian bootstrap
+
+The two bootstraps give very similar answers in large samples. The Bayesian bootstrap does better when resampling can produce data in which a specification cannot be estimated. With the ordinary bootstrap a resample may, by chance, contain no treated units, no rows of some fixed-effect level, or too few clusters; the specifications that cannot be estimated are missing from that resample, and a resample in which fewer than `min_valid` of them could be estimated is left out (with a warning). Because the Bayesian bootstrap never leaves a row out, that does not happen. Its null distributions are also smoother, which helps with few clusters.
+
+Here is an extreme case: eight clusters, only one of them treated. Every ordinary bootstrap resample that misses the treated cluster has no variation in the regressor of interest.
+
+```{python}
+import warnings
+
+import numpy as np
+import pandas as pd
+
+rng = np.random.default_rng(0)
+small = pd.DataFrame({"group": np.repeat(np.arange(8), 5), "a": rng.normal(size=40)})
+small["x"] = (small["group"] == 0).astype(float)
+small["y"] = small["a"] + 0.5 * small["x"] + rng.normal(size=40)
+sco_small = sc.SpecificationCurve(small, y="y", x="x", controls=["a"]).fit()
+
+for method in ["bootstrap", "bayesian-bootstrap"]:
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        sco_small.fit_null(
+            n_boot=200, method=method, cluster="group", seed=0, progress=False
+        )
+    left_out = [str(w.message) for w in caught if "left out" in str(w.message)]
+    print(f"{method}: {left_out[0] if left_out else 'no resamples were left out.'}")
+```
+
+On the panel data from above, it is used like this:
+
+```{python}
+sco = sc.SpecificationCurve(
+    df,
+    y="log(sales)",
+    x="treated",
+    controls=["size", "leverage"],
+    fe=["firm", "firm + year"],
+    vcov={"CRV1": "firm"},
+)
+sco.fit()
+sco.fit_null(n_boot=50, method="bayesian-bootstrap", cluster="firm", seed=0)
+sco.null_summary
+```
+
+Although it has "Bayesian" in its name, the result here is the same kind of frequentist p-value as with the other methods: the Bayesian bootstrap is simply used as a way of generating resamples in which the null holds.
+
+### Permutation
+
+For non-linear estimators, permutation is the option. In the example data `eligible` was assigned at random and has no effect of its own on patents once treatment is controlled for, so here we expect large p-values:
 
 ```{python}
 sco = sc.SpecificationCurve(
@@ -502,6 +573,8 @@ sco.fit()
 sco.fit_null(n_boot=50, method="permutation", seed=0)
 sco.null_summary
 ```
+
+### Other options
 
 Other options: `alternative="greater"` or `"less"` gives one-sided tests, `alpha` sets the significance level used for the share of significant estimates, and `keep_draws=True` keeps the estimates from every resample in `sco.null_draws`.
 

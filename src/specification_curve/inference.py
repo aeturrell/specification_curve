@@ -1,7 +1,10 @@
 """Inference on a specification curve under the null of no effect.
 
 The tests follow Simonsohn, Simmons and Nelson (2020), "Specification curve
-analysis", Nature Human Behaviour 4, 1208-1214.
+analysis", Nature Human Behaviour 4, 1208-1214. The Bayesian bootstrap is due to
+Rubin (1981), "The Bayesian bootstrap", Annals of Statistics 9(1), 130-134; see
+also Andrews, Moon and Shapiro (2026), "In praise of the Bayesian bootstrap",
+Journal of Economic Perspectives 40(4), 137-158.
 """
 
 import warnings
@@ -21,7 +24,11 @@ from .grid import GRID_COLUMNS, variables_in
 
 NULL_QUANTILES: tuple[float, ...] = (0.025, 0.5, 0.975)
 STATISTICS: tuple[str, ...] = ("median", "share significant", "Stouffer Z")
-METHODS: tuple[str, ...] = ("auto", "bootstrap", "permutation")
+METHODS: tuple[str, ...] = ("auto", "bootstrap", "bayesian-bootstrap", "permutation")
+#: Methods that impose the null by removing the estimated effect from the outcome.
+NULL_OUTCOME_METHODS: tuple[str, ...] = ("bootstrap", "bayesian-bootstrap")
+#: Prefix of the weight columns added for the Bayesian bootstrap.
+WEIGHT_PREFIX = "sc_bb_w"
 ALTERNATIVES: tuple[str, ...] = ("two-sided", "greater", "less")
 
 
@@ -191,6 +198,60 @@ def bootstrap_rows(
     return np.concatenate(drawn)
 
 
+def bayesian_weights(
+    units: Sequence[Sequence[np.ndarray]], n_rows: int, rng: np.random.Generator
+) -> np.ndarray:
+    """Draws row weights for one Bayesian bootstrap resample.
+
+    Within each stratum, the units (rows or whole clusters) receive weights
+    drawn from a flat Dirichlet distribution (Rubin, 1981), multiplied by the
+    stratum's number of units so that each averages one. Every row of a cluster
+    gets that cluster's weight. This is the smooth counterpart of
+    ``bootstrap_rows``: a unit's weight plays the role of the number of times it
+    is drawn, but no unit is ever left out entirely.
+
+    Args:
+        units (Sequence[Sequence[np.ndarray]]): Row positions of each unit,
+            grouped by stratum.
+        n_rows (int): Number of rows in the data.
+        rng (np.random.Generator): Random number generator.
+
+    Returns:
+        np.ndarray: One positive weight per row.
+    """
+    weights = np.ones(n_rows)
+    for stratum in units:
+        sizes = [len(unit) for unit in stratum]
+        # normalised standard exponentials are a flat Dirichlet draw
+        draw = rng.standard_exponential(len(stratum))
+        multipliers = draw * len(stratum) / draw.sum()
+        weights[np.concatenate(stratum)] = np.repeat(multipliers, sizes)
+    return weights
+
+
+def _weighted_grid(
+    grid: pd.DataFrame, data: pd.DataFrame
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Optional[str]]]:
+    """Points each specification at a Bayesian bootstrap weight column.
+
+    Returns the new grid, the data with placeholder weight columns, and a map
+    from each new weight column to the user's weight column it multiplies (or
+    None).
+    """
+    grid = grid.copy()
+    sources: dict[str, Optional[str]] = {}
+    names: dict[Optional[str], str] = {}
+    for weight in grid["weights"].unique():
+        source = None if pd.isna(weight) else str(weight)
+        names[source] = f"{WEIGHT_PREFIX}{len(names)}"
+        sources[names[source]] = source
+    grid["weights"] = [
+        names[None if pd.isna(weight) else str(weight)] for weight in grid["weights"]
+    ]
+    placeholders = pd.DataFrame(1.0, index=data.index, columns=list(sources))
+    return grid, pd.concat([data, placeholders], axis=1), sources
+
+
 def permute_rows(
     units: Sequence[Sequence[np.ndarray]], n_rows: int, rng: np.random.Generator
 ) -> np.ndarray:
@@ -226,11 +287,19 @@ def _one_resample(
     units: Sequence[Sequence[np.ndarray]],
     focal_columns: Sequence[str],
     engine_kwargs: Mapping[str, Any],
+    weight_sources: Mapping[str, Optional[str]],
 ) -> tuple[np.ndarray, np.ndarray]:
     """Re-estimates the curve on one resample; returns estimates and p-values."""
     rng = np.random.default_rng(seed)
     if method == "bootstrap":
         draw = data.iloc[bootstrap_rows(units, rng)].reset_index(drop=True)
+    elif method == "bayesian-bootstrap":
+        weights = bayesian_weights(units, len(data), rng)
+        draw = data.copy()
+        for column, source in weight_sources.items():
+            draw[column] = (
+                weights if source is None else weights * data[source].to_numpy()
+            )
     else:
         source = permute_rows(units, len(data), rng)
         draw = data.copy()
@@ -307,11 +376,16 @@ def fit_null(
 
     Two ways of making the null hold are available. ``"bootstrap"`` removes each
     specification's estimated effect from its outcome (``y* = y - b * x``) and
-    then resamples rows with replacement; it applies to linear models. With
-    ``"permutation"`` the focal variable is shuffled between rows, which breaks
-    any link with the outcome; it applies to any estimator but is only valid if
-    the focal variable is as good as randomly assigned (within ``strata``, if
-    given).
+    then resamples rows with replacement; it applies to linear models.
+    ``"bayesian-bootstrap"`` imposes the null in the same way but, instead of
+    resampling rows, gives them random weights from a flat Dirichlet
+    distribution (Rubin, 1981; Andrews, Moon and Shapiro, 2026). No row is ever
+    left out, so resamples rarely fail to estimate. With ``"permutation"`` the
+    focal variable is shuffled between rows, which breaks any link with the
+    outcome; it applies to any estimator but is only valid if the focal variable
+    is as good as randomly assigned (within ``strata``, if given). Permutation
+    does not apply to instrumental-variable specifications, since shuffling the
+    endogenous regressor alone breaks the first stage.
 
     Args:
         results (pd.DataFrame): Results of the fitted curve.
@@ -319,10 +393,12 @@ def fit_null(
         vcov_specs (Mapping[str, VcovSpec]): Maps ``vcov`` labels to pyfixest values.
         subsets (Mapping[str, Optional[str]]): Maps subset names to queries.
         n_boot (int): Number of resamples.
-        method (str): "bootstrap", "permutation" or "auto". "auto" uses the
-            bootstrap if every specification uses "feols".
+        method (str): "bootstrap", "bayesian-bootstrap", "permutation" or
+            "auto". "auto" uses the bootstrap if every specification uses
+            "feols".
         cluster (Optional[str]): Column identifying clusters. Whole clusters are
-            resampled (bootstrap) or swap their focal values (permutation).
+            resampled (bootstrap), share a weight (Bayesian bootstrap) or swap
+            their focal values (permutation).
         strata (Optional[str]): Column identifying strata. Resampling is done
             within each stratum.
         alpha (float): Significance level for the share of significant estimates.
@@ -362,15 +438,29 @@ def fit_null(
                 'randomly assigned, use method="permutation".'
             )
         method = "bootstrap"
-    if method == "bootstrap" and not all_linear:
+    if method in NULL_OUTCOME_METHODS and not all_linear:
         raise ValueError(
-            'method="bootstrap" needs every specification to use model="feols": '
+            f'method="{method}" needs every specification to use model="feols": '
             "removing the estimated effect from the outcome does not impose the "
             "null in non-linear models."
+        )
+    if (
+        method == "bayesian-bootstrap"
+        and (fit_kwargs or {}).get("weights_type", "aweights") != "aweights"
+    ):
+        raise ValueError(
+            'method="bayesian-bootstrap" needs weights_type="aweights": its '
+            "weights are not whole numbers."
         )
     ok = results[results["error"].isna()].reset_index(drop=True)
     if ok.empty:
         raise ValueError("No specification was estimated successfully")
+    if method == "permutation" and ok["iv"].notna().any():
+        raise ValueError(
+            'method="permutation" does not apply to instrumental-variable '
+            "specifications: shuffling the endogenous regressor but not its "
+            'instruments breaks the first stage. Use method="bootstrap".'
+        )
 
     focal_columns: list[str] = []
     for term in ok["x"].unique():
@@ -381,8 +471,11 @@ def fit_null(
 
     grid = ok
     frame = data
-    if method == "bootstrap":
+    weight_sources: dict[str, Optional[str]] = {}
+    if method in NULL_OUTCOME_METHODS:
         grid, frame = _null_grid(ok, data)
+    if method == "bayesian-bootstrap":
+        grid, frame, weight_sources = _weighted_grid(grid, frame)
     grid = grid[GRID_COLUMNS].copy()
     grid["vcov"] = ok["vcov"].map(lambda v: v if v in vcov_specs else "default")
     engine_kwargs = {
@@ -395,7 +488,7 @@ def fit_null(
     seeds = np.random.SeedSequence(seed).spawn(n_boot)
     show = n_boot >= 20 if progress is None else progress
     iterator = tqdm(seeds, desc="Resampling under the null", disable=not show)
-    args = (method, grid, frame, units, focal_columns, engine_kwargs)
+    args = (method, grid, frame, units, focal_columns, engine_kwargs, weight_sources)
     if n_jobs == 1:
         outputs = [_one_resample(child, *args) for child in iterator]
     else:
