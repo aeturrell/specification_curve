@@ -1,0 +1,211 @@
+---
+title: Specification Curve
+body-classes: sc-home
+---
+
+```{=html}
+<section class="sc-hero" aria-label="Specification Curve">
+  <div class="sc-hero-text">
+    <p class="sc-eyebrow">Specification curve analysis for Python</p>
+    <h1 class="sc-hero-title">Specification Curve</h1>
+    <p class="sc-tagline">Run every defensible regression and see all of the estimates in one chart.</p>
+    <code class="sc-install">uv add specification-curve</code>
+    <div class="sc-cta">
+      <a class="sc-btn" href="user-guide/features.html">See the features</a>
+      <a class="sc-btn ghost" href="reference/index.html">API reference</a>
+    </div>
+  </div>
+  <div class="sc-hero-figure">
+    <canvas id="sc-hero-canvas" role="img" aria-label="A specification curve assembling itself: 48 estimates drop into sorted order, their confidence intervals extend, the indicator matrix underneath fills in column by column, and a dashed median line draws across."></canvas>
+    <button class="sc-replay" id="sc-hero-replay" type="button">Replay</button>
+  </div>
+</section>
+<script>
+(() => {
+  const cv = document.getElementById('sc-hero-canvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const TAU = Math.PI * 2;
+  const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+  const ease = x => { x = clamp(x); return 1 - Math.pow(1 - x, 3); };
+  const pr = (t, a, b) => ease((t - a) / (b - a));
+  const lin = (t, a, b) => clamp((t - a) / (b - a));
+  const lerp = (a, b, u) => a + (b - a) * u;
+  function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function gauss(r) { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(TAU * r()); }
+  const pop = m => (m & 1) + (m >> 1 & 1) + (m >> 2 & 1);
+  // Illustrative estimates shaped like the quickstart: 3 controls x 3 fixed-effect choices x 2 standard errors.
+  const Q = (() => { const r = rng(7), out = [];
+    for (let fe = 0; fe < 3; fe++) for (let m = 0; m < 8; m++) { let c, se;
+      if (fe === 0) { c = .6 + .33 * (m >> 1 & 1) + .025 * pop(m) + .01 * gauss(r); se = .055 + .02 * (m >> 1 & 1); }
+      else if (fe === 1) { c = .332 + .004 * gauss(r); se = .038; } else { c = .322 + .004 * gauss(r); se = .042; }
+      for (let v = 0; v < 2; v++) out.push({ c, se: se * (v ? 1.3 : 1), fe, m, v }); }
+    return out.sort((a, b) => a.c - b.c || a.v - b.v); })();
+  const MED = (() => { const s = Q.map(q => q.c).sort((a, b) => a - b); return (s[23] + s[24]) / 2; })();
+  const on = (s, k) => k < 3 ? !!(s.m >> k & 1) : k < 6 ? s.fe === 5 - k : s.v === k - 6;
+  const line = (x1, y1, x2, y2) => { ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); };
+  const dot = (x, y, r) => { ctx.beginPath(); ctx.arc(x, y, Math.max(.01, r), 0, TAU); ctx.fill(); };
+  const tok = n => getComputedStyle(document.body).getPropertyValue(n).trim();
+  let P = {};
+  const readTheme = () => { P = { bg: tok('--sc-paper') || '#FAFAFD', ink: tok('--sc-ink') || '#1B1B3A', dot: tok('--sc-blue') || '#3030E8', on: tok('--sc-ind') || '#8585F4', off: tok('--sc-off') || '#E6E6EC' }; };
+  function draw(W, H, t) {
+    ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, H);
+    const l = 18, r = W - 14, top = 16, b = H - 12, cb = top + (b - top) * .56, mt = cb + 12, gw = .7;
+    const rh = (b - mt) / (8 + 2 * gw), cw = (r - l) / 48;
+    const X = i => l + (i + .5) * cw, RY = k => mt + (k + (k >= 3 ? gw : 0) + (k >= 6 ? gw : 0) + .5) * rh;
+    const y = v => (cb - 4) - (v - .2) * (cb - 4 - top);
+    ctx.globalAlpha = pr(t, 0, .6); ctx.strokeStyle = P.ink; ctx.lineWidth = 1; line(l - 6, top, l - 6, cb);
+    const sz = Math.min(cw * .72, rh * .72);
+    Q.forEach((s, i) => { const u = pr(t, 2.4 + i * .03, 2.85 + i * .03), x = X(i);
+      for (let k = 0; k < 8; k++) { const cy = RY(k);
+        ctx.globalAlpha = pr(t, 1.8, 2.4); ctx.fillStyle = P.off; ctx.fillRect(x - sz / 2, cy - sz / 2, sz, sz);
+        if (on(s, k) && u > 0) { ctx.globalAlpha = 1; ctx.fillStyle = P.on; const z = sz * u; ctx.fillRect(x - z / 2, cy - z / 2, z, z); } } });
+    Q.forEach((s, i) => { const u = pr(t, 1.3 + i * .015, 1.9 + i * .015), x = X(i), yc = y(s.c);
+      if (u <= 0) return; ctx.globalAlpha = .28; ctx.strokeStyle = P.dot; ctx.lineWidth = Math.max(1.5, cw * .24);
+      line(x, yc - (yc - y(s.c + 1.96 * s.se)) * u, x, yc + (y(s.c - 1.96 * s.se) - yc) * u); });
+    Q.forEach((s, i) => { const u = pr(t, .2 + i * .02, .9 + i * .02); ctx.globalAlpha = u; ctx.fillStyle = P.dot; dot(X(i), lerp(top - 20, y(s.c), u), Math.min(3.4, cw * .32)); });
+    const m = pr(t, 4.2, 5.1); ctx.globalAlpha = .8; ctx.strokeStyle = P.ink; ctx.lineWidth = .8; ctx.setLineDash([7, 4]);
+    if (m > 0) line(l, y(MED), l + (r - l) * m, y(MED)); ctx.setLineDash([]);
+    ctx.globalAlpha = pr(t, 4.9, 5.5) * .75; ctx.fillStyle = P.ink; ctx.font = 'italic 13px "STIX Two Text", serif'; ctx.fillText('Median', l + 2, y(MED) - 18);
+    ctx.globalAlpha = 1;
+  }
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const PERIOD = 10.5, REST = 8;
+  let W = 0, H = 0, start = performance.now() - REST * 1000, once = true, vis = true;
+  function size() { const b = cv.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1); if (!b.width) return;
+    W = b.width; H = b.height; cv.width = Math.round(W * d); cv.height = Math.round(H * d); ctx.setTransform(d, 0, 0, d, 0, 0); }
+  function frame(now) { if (!W) size(); if (!W) return;
+    let t = (now - start) / 1000; t = once ? Math.min(t, REST) : t % PERIOD;
+    ctx.save(); draw(W, H, t); ctx.restore();
+    if (!once) { const f = Math.max(lin(t, PERIOD - .6, PERIOD), 1 - lin(t, 0, .25));
+      if (f > 0) { ctx.globalAlpha = f; ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; } } }
+  readTheme(); size(); frame(performance.now());
+  new MutationObserver(() => { readTheme(); frame(performance.now()); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  if ('ResizeObserver' in window) new ResizeObserver(() => { size(); frame(performance.now()); }).observe(cv);
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { vis = es[0].isIntersecting; }).observe(cv);
+  document.getElementById('sc-hero-replay').addEventListener('click', () => { start = performance.now(); once = reduced; });
+  const loop = now => { if (vis) frame(now); requestAnimationFrame(loop); };
+  const go = () => { readTheme(); if (!reduced) { start = performance.now(); once = false; } requestAnimationFrame(loop); };
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(go, go);
+})();
+</script>
+```
+
+Specification Curve is a Python package that performs specification curve analysis; it helps with the problem of the "garden of forking paths" (many defensible choices) when doing analysis by running many regressions and summarising the effects in an easy to digest chart. Estimation is done by [pyfixest](https://pyfixest.org/), so specifications can vary the outcome, the regressor of interest, controls, fixed effects, instruments, standard errors, weights, the sample and the estimator (OLS, Poisson, logit, probit and quantile regression).
+
+::: {.sc-badges}
+[![PyPI](https://img.shields.io/pypi/v/specification_curve.svg)](https://pypi.org/project/specification_curve/)
+[![Python Version](https://img.shields.io/pypi/pyversions/specification_curve)](https://pypi.org/project/specification_curve)
+[![License](https://img.shields.io/pypi/l/specification_curve)](https://opensource.org/licenses/MIT)
+[![Tests](https://github.com/aeturrell/specification_curve/workflows/Tests/badge.svg)](https://github.com/aeturrell/specification_curve/actions?workflow=Tests)
+[![Codecov](https://codecov.io/gh/aeturrell/specification_curve/branch/main/graph/badge.svg)](https://codecov.io/gh/aeturrell/specification_curve)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17523510.svg)](https://doi.org/10.5281/zenodo.17523510)
+[![Downloads](https://static.pepy.tech/badge/specification-curve)](https://pepy.tech/projects/Specification_curve)
+:::
+
+## Introduction
+
+When specifying a causal model, modellers have a number of options. These can be informed by field intelligence, priors, and even misguided attempts to find a significant result. Even with the best of intentions, research teams can reach entirely different conclusions using the same, or similar, data because of different choices made in preparing data or in modelling it.
+
+Typically this happens when there isn’t a clear way to do "feature engineering" on the data or the data are imperfect in some way. For example, you have a high frequency time series which needs to be aggregated to a lower frequency: you could take the maximum, the minimum, or the average over each high frequency time period. A different choice may be appropriate in different settings.
+
+There's formal evidence that researchers really do make different decisions; one study [@silberzahn2018many] gave the same research question---whether soccer referees are more likely to give red cards to players with dark skin tones than to players with light skin tones---to 29 different teams. From the abstract of that paper:
+
+> Analytic approaches varied widely across the teams, and the estimated effect sizes ranged from 0.89 to 2.93 (Mdn = 1.31) in odds-ratio units. Twenty teams (69%) found a statistically significant positive effect, and 9 teams (31%) did not observe a significant relationship. Overall, the 29 different analyses used 21 unique combinations of covariates. Neither analysts’ prior beliefs about the effect of interest nor their level of expertise readily explained the variation in the outcomes of the analyses. Peer ratings of the quality of the analyses also did not account for the variability.
+
+So not only can different decisions made, but there seems to be no clearly identifiable reason for them!
+
+There have since been a number of papers that find similar conclusions [@huntington2021influence].
+
+Specification curves have been invented [@simonsohn2020specification] as a way to better grasp the garden of forking paths that analysts face, and help them show how sensitive their results are to alternative specifications.
+
+More than one piece of software [@masur2019specr] has appeared to help researchers and analysts use this technique: **specification curve** is one such package!
+
+## Quickstart
+
+Here's an example of using **Specification Curve**. The example data are a made-up panel of firms, in which being `treated` raises log sales by 0.3, but firms that would have had high sales anyway are more likely to be treated.
+
+We ask how the estimated effect of treatment depends on which controls are included, whether firm and year fixed effects are used, and how the standard errors are computed.
+
+```{python}
+#| echo: false
+
+import matplotlib_inline.backend_inline
+
+matplotlib_inline.backend_inline.set_matplotlib_formats("svg")
+```
+
+```{python}
+import specification_curve as sc
+
+df = sc.load_example_panel()
+df.head()
+```
+
+```{python}
+sco = sc.SpecificationCurve(
+    df,
+    y="log(sales)",
+    x="treated",
+    controls=["size", "leverage", "rd"],
+    fe=[None, "firm", "firm + year"],
+    vcov=["hetero", {"CRV1": "firm"}],
+)
+sco.fit()
+sco.plot();
+```
+
+Each column is one specification. The top panel shows the estimated coefficient on `treated` with its confidence interval, and the panels underneath show which choices that specification makes. Markers are coloured blue when the coefficient is positive and significant (at the 0.05 level), red when it is negative and significant, and black otherwise.
+
+Here, the specifications without firm fixed effects overstate the effect, and those with them are close to the true value.
+
+You can also describe the specifications with a [pyfixest formula](https://pyfixest.org/quickstart.html). Its multiple-estimation operators define the choices: several outcomes (`y1 + y2 ~ ...`), `sw()` (one of these terms at a time) and `sw0()` (one at a time, or none). **Specification Curve** adds `comb()` and `comb0()`, which stand for every combination of their terms (with `comb0()` including none of them). The `x` argument names the coefficient to plot.
+
+This formula describes the same specifications as above:
+
+```{python}
+sco = sc.SpecificationCurve(
+    df,
+    "log(sales) ~ treated + comb0(size, leverage, rd) | sw0(firm, firm + year)",
+    x="treated",
+    vcov=["hetero", {"CRV1": "firm"}],
+)
+sco.fit()
+sco.plot();
+```
+
+The [features page](user-guide/features.qmd) shows everything else: other estimators, instrumental variables, samples, customising the chart, and statistical inference on the curve as a whole.
+
+## Installation
+
+You can install **Specification Curve** via uv:
+
+```bash
+$ uv add specification-curve
+```
+
+To install the development version from git, use:
+
+```bash
+$ pip install git+https://github.com/aeturrell/specification_curve.git
+```
+
+## License
+
+Distributed under the terms of the [MIT license](https://opensource.org/licenses/MIT).
+
+## Citing Specification Curve
+
+You can find full citation information at the following link: [https://zenodo.org/badge/latestdoi/282989537](https://zenodo.org/badge/latestdoi/282989537).
+
+Using **Specification Curve** in your paper? Let us know by raising an issue beginning with "citation".
+
+## Similar Packages
+
+In RStats, there is [specr](https://github.com/masurp/specr) (which inspired many design choices in this package) and [spec_chart](https://github.com/ArielOrtizBobea/spec_chart). Some of the example data in this package is the same as in specr, but please note that results have not been cross-checked across packages.
+
+## References
+
+::: {#refs}
+:::
+

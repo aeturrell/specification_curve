@@ -1,0 +1,17 @@
+run_at,package_version,pyfixest_version,python_version,os,cpu,cpu_count,n_rows,scenario,description,n_specs,seconds
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,5000,feols_single,"feols, one fit each",192,1.026
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,5000,feols_batched,"feols, batched",192,1.008
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,5000,feols_single_jobs4,"feols, one fit each, 4 jobs",192,2.068
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,5000,feols_batched_jobs4,"feols, batched, 4 jobs",192,0.301
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,5000,feols_3vcov_batched,"feols, 3 vcov, batched",576,1.408
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,5000,fepois_single,"fepois, one fit each",64,0.429
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,5000,fepois_batched,"fepois, batched",64,0.436
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,5000,fit_null_50,"fit_null, 50 resamples",16,4.803
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,200000,feols_single,"feols, one fit each",192,3.526
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,200000,feols_batched,"feols, batched",192,3.277
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,200000,feols_single_jobs4,"feols, one fit each, 4 jobs",192,3.981
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,200000,feols_batched_jobs4,"feols, batched, 4 jobs",192,1.341
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,200000,feols_3vcov_batched,"feols, 3 vcov, batched",576,6.611
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,200000,fepois_single,"fepois, one fit each",64,4.854
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,200000,fepois_batched,"fepois, batched",64,4.967
+2026-11-10T12:34:39Z,0.4.0,0.70.0,3.12.12,Darwin,Apple M5 Max,18,200000,fit_null_50,"fit_null, 50 resamples",16,17.86

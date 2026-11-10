@@ -1,4 +1,6 @@
-# Contributing
+---
+title: Contributing
+---
 
 Thank you for your interest in improving this project. This project is
 open-source under the [MIT license](https://opensource.org/licenses/MIT)
@@ -49,7 +51,9 @@ To also update packages, do not use the `--frozen` flag.
 
 To build the documentation locally, you will also need [Make](https://www.gnu.org/software/make/) and [Quarto](https://quarto.org/) (these are non-Python dependencies).
 
-You can build the docs locally to look at them with `make`, which runs a command to build the README and then another to build the website which can then be found in `docs/_site/.` It's `make clean` to remove the existing README.
+The documentation is built with [Great Docs](https://posit-dev.github.io/great-docs/). Its configuration is in `great-docs.yml`, the pages are in `docs/user_guide/`, and the site's theme is in `docs/theme/indigo.css`. You can build the docs locally with `make`, which runs `uv run great-docs build` and writes the website to `great-docs/_site/`. Run `make preview` to serve it locally.
+
+The timings table on the features page is built from `benchmarks/results.csv`. To update it, run `uv run python benchmarks/benchmark.py` from the repository root and commit the updated file. Each run is appended to that file along with the date, the package and pyfixest versions and a description of the machine, so it also serves as a performance log. The docs show the most recent run.
 
 To publish new docs to GitHub Pages (where the documentation is displayed as web pages), it's `make publish`—but only devs with admin rights will be able to execute this.
 
