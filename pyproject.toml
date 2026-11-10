@@ -1,6 +1,6 @@
 [project]
 name = "specification_curve"
-version = "0.4.0"
+version = "0.4.1"
 description = "Specification curve analysis for econometrics, built on pyfixest"
 readme = "README.md"
 license = "MIT"
