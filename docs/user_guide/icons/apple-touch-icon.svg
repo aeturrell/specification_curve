@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#FAFAFD"/>
+  <g stroke="#8585F4" stroke-width="1.5">
+    <line x1="7" y1="12.1" x2="7" y2="18.9"/>
+    <line x1="13" y1="10.1" x2="13" y2="16.9"/>
+    <line x1="19" y1="6.1" x2="19" y2="12.9"/>
+    <line x1="25" y1="2.1" x2="25" y2="8.9"/>
+  </g>
+  <g fill="#3030E8">
+    <circle cx="7" cy="15.5" r="1.9"/>
+    <circle cx="13" cy="13.5" r="1.9"/>
+    <circle cx="19" cy="9.5" r="1.9"/>
+    <circle cx="25" cy="5.5" r="1.9"/>
+  </g>
+  <rect x="4.75" y="21" width="4.5" height="4.5" fill="#8585F4"/>
+  <rect x="10.75" y="21" width="4.5" height="4.5" fill="#E6E6EC"/>
+  <rect x="16.75" y="21" width="4.5" height="4.5" fill="#8585F4"/>
+  <rect x="22.75" y="21" width="4.5" height="4.5" fill="#8585F4"/>
+  <rect x="4.75" y="26.5" width="4.5" height="4.5" fill="#E6E6EC"/>
+  <rect x="10.75" y="26.5" width="4.5" height="4.5" fill="#8585F4"/>
+  <rect x="16.75" y="26.5" width="4.5" height="4.5" fill="#8585F4"/>
+  <rect x="22.75" y="26.5" width="4.5" height="4.5" fill="#E6E6EC"/>
+</svg>

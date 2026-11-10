@@ -32,7 +32,6 @@ dev = [
     "pre-commit-hooks>=5.0.0",
     "pre-commit>=4.0.1",
     "pytest>=8.3.4",
-    "quartodoc>=0.9.1",
     "ruff>=0.8.4",
     "toml>=0.10.2",
     "types-setuptools>=75.6.0.20241223",
@@ -42,6 +41,8 @@ dev = [
     "ty>=0.0.8",
     "typeguard>=4.4.1",
     "types-tqdm>=4.67.0.20241221",
+    "great-docs>=0.17.0",
+    "panache-cli>=3.17.2",
 ]
 
 [tool.ty.rules]

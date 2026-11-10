@@ -1,0 +1,83 @@
+# Great Docs configuration for specification_curve
+# Build with `uv run great-docs build`; the site is written to great-docs/_site.
+# See https://posit-dev.github.io/great-docs/user-guide/configuration.html
+
+display_name: "Specification Curve"
+parser: google
+jupyter: python3
+
+repo: https://github.com/aeturrell/specification_curve
+site_url: "https://aeturrell.github.io/specification_curve/"
+
+# Pages: the first user-guide page becomes the landing page.
+homepage: user_guide
+user_guide: docs/user_guide
+bibliography: docs/biblio.bib
+
+# Indigo Matrix design
+hero: false
+accent_color:
+  light: "#3030E8"
+  dark: "#9A9AFF"
+include_in_header:
+  # Favicons live in docs/user_guide/icons/ (copied to the site as user-guide/icons/).
+  # great-docs only applies its `favicon:` key when a logo is set, so the links are
+  # added here, resolved against each page's depth via Quarto's offset meta tag.
+  - text: |
+      <script>
+      (function () {
+        var m = document.querySelector('meta[name="quarto:offset"]');
+        var base = (m ? m.content : './') + 'user-guide/icons/';
+        [['icon', 'image/svg+xml', 'favicon.svg', null],
+         ['icon', 'image/png', 'favicon-32x32.png', '32x32'],
+         ['icon', 'image/png', 'favicon-16x16.png', '16x16'],
+         ['apple-touch-icon', null, 'apple-touch-icon.png', '180x180']].forEach(function (d) {
+          var l = document.createElement('link');
+          l.rel = d[0]; if (d[1]) l.type = d[1]; if (d[3]) l.sizes = d[3];
+          l.href = base + d[2];
+          document.head.appendChild(l);
+        });
+      })();
+      </script>
+  - text: |
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;600&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap">
+site:
+  theme: flatly
+  toc: true
+  toc-depth: 2
+  fig-format: svg
+  # Quarto otherwise appends ".png" to extensionless image URLs, which
+  # breaks badges such as https://static.pepy.tech/badge/<package>
+  default-image-extension: ""
+  css:
+    - docs/theme/indigo.css
+
+reference:
+  - title: Classes
+    desc: The main entry point. Describe the specifications, estimate them, and plot the curve.
+    contents:
+      - name: SpecificationCurve
+        members:
+          - fit
+          - plot
+          - fit_null
+          - results
+          - grid
+          - n_specs
+          - null_curves
+          - null_summary
+          - null_draws
+  - title: Functions
+    desc: Plot a results table directly, and select subsets of specifications.
+    contents:
+      - plot_curve
+      - subsets_by
+  - title: Example data
+    desc: Data sets used in the documentation and tests.
+    contents:
+      - load_example_panel
+      - load_example_data1
+      - load_example_data2
+      - load_example_data3

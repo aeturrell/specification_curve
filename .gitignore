@@ -6,10 +6,10 @@ outputs/*
 /docs/.quarto/
 /.quarto/
 .venv/
-docs/reference/*
-docs/_sidebar.yml
 /.luarc.json
-docs/_site/
+# great-docs build directory and execution cache
+/great-docs/
+/_freeze/
 
 .DS_Store
 

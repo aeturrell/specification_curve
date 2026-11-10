@@ -86,13 +86,12 @@ jobs:
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
-          version: 1.6.39
-
-      - name: Build autodocs
-        run: uv run quartodoc build --config docs/_quarto.yml
+          version: 1.11.9
 
       - name: Build docs
-        run: cd docs;uv run quarto render --execute
+        run: uv run great-docs build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: git config
         run: |
@@ -101,4 +100,4 @@ jobs:
 
       - name: Publish
         if: steps.check-version.outputs.tag
-        run: cd docs;uv run quarto publish gh-pages --no-render --no-browser
+        run: cd great-docs;uv run quarto publish gh-pages --no-render --no-browser
