@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.39">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Specification Curve</title>
+<title>Specification Curve | Specification Curve</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -21,8 +27,9 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -33,7 +40,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -58,7 +65,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -77,23 +83,25 @@ div.csl-indent {
 }</style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<link href="./user-guide/features.html" rel="next">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-543c82155551e5607ff1c46c52538d86.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-9ec6d0bacfee18682fb645e4ac94e31e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -121,83 +129,152 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script>
+(function () {
+  var m = document.querySelector('meta[name="quarto:offset"]');
+  var base = (m ? m.content : './') + 'user-guide/icons/';
+  [['icon', 'image/svg+xml', 'favicon.svg', null],
+   ['icon', 'image/png', 'favicon-32x32.png', '32x32'],
+   ['icon', 'image/png', 'favicon-16x16.png', '16x16'],
+   ['apple-touch-icon', null, 'apple-touch-icon.png', '180x180']].forEach(function (d) {
+    var l = document.createElement('link');
+    l.rel = d[0]; if (d[1]) l.type = d[1]; if (d[3]) l.sizes = d[3];
+    l.href = base + d[2];
+    document.head.appendChild(l);
+  });
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;600&amp;family=Instrument+Sans:ital,wght@0,400..700;1,400..700&amp;family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&amp;display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'termshow.css'}));</script>
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'gd-lightbox.css'}));</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'gd-lightbox.js';s.defer=true;document.head.appendChild(s);})();</script>
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'gd-lightbox-compare.css'}));</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'gd-lightbox-compare.js';s.defer=true;document.head.appendChild(s);})();</script>
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'gd-lightbox-annotate.css'}));</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'gd-lightbox-annotate.js';s.defer=true;document.head.appendChild(s);})();</script>
+<script src="theme-init.js"></script>
 
 
-<link rel="stylesheet" href="styles.css">
-<meta name="twitter:title" content="Specification Curve">
-<meta name="twitter:description" content="">
-<meta name="twitter:image" content="index_files/figure-html/cell-4-output-1.svg">
-<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="indigo.css">
+  <link rel="alternate" type="text/markdown" href="index.md">
+  <link rel="canonical" href="https://aeturrell.github.io/specification_curve/">
+  <meta name="description" content="Specification curve analysis for Python">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "Specification Curve",
+  "description": "Specification curve analysis for econometrics, built on pyfixest",
+  "license": "https://opensource.org/licenses/MIT",
+  "url": "https://aeturrell.github.io/specification_curve",
+  "documentation": "https://aeturrell.github.io/specification_curve",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "Python"
+  }
+}
+</script>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Specification Curve | Specification Curve">
+  <meta property="og:description" content="Specification curve analysis for Python">
+  <meta property="og:url" content="https://aeturrell.github.io/specification_curve">
+  <meta property="og:site_name" content="Specification Curve">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Specification Curve | Specification Curve">
+  <meta name="twitter:description" content="Specification curve analysis for Python">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-sidebar floating nav-fixed sc-home fullcontent quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Specification Curve</span>
+    <span class="navbar-title">Specification Curve <span class="version-badge" title="Released 2026-11-10">v0.4.1</span></span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
-<span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./features.html"> 
-<span class="menu-text">Features</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./reference/index.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./contributing.html"> 
-<span class="menu-text">Contributing</span></a>
+    <a class="nav-link" href="./changelog.html"> 
+<span class="menu-text">Changelog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <span class="nav-link">
+<div id="github-widget" data-owner="aeturrell" data-repo="specification_curve" data-stars="33" data-forks="4"></div>
+    </span>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
+            <div id="quarto-search" class=""></div>
       </div> <!-- /container-fluid -->
     </nav>
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <h1 class="quarto-secondary-nav-title no-breadcrumbs">Specification Curve</h1>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#quickstart" id="toc-quickstart" class="nav-link" data-scroll-target="#quickstart">Quickstart</a></li>
-  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
-  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
-  <li><a href="#citing-specification-curve" id="toc-citing-specification-curve" class="nav-link" data-scroll-target="#citing-specification-curve">Citing Specification Curve</a></li>
-  <li><a href="#similar-packages" id="toc-similar-packages" class="nav-link" data-scroll-target="#similar-packages">Similar Packages</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
-  </ul>
-</nav>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Specification Curve</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./user-guide/features.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Features</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./user-guide/contributing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Contributing</span></a>
+  </div>
+</li>
+    </ul>
     </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Specification Curve</h1>
+<h1 class="title d-none d-lg-block">Specification Curve</h1>
 </div>
 
 
@@ -214,112 +291,242 @@ div.csl-indent {
 </header>
 
 
-<p>Specification Curve is a Python package that performs specification curve analysis; it helps with the problem of the “garden of forking paths” (many defensible choices) when doing analysis by running many regressions and summarising the effects in an easy to digest chart.</p>
-<p><a href="https://pypi.org/project/specification_curve/"><img src="https://img.shields.io/pypi/v/specification_curve.svg" class="img-fluid" alt="PyPI"></a> <a href="https://pypi.org/project/specification_curve/"><img src="https://img.shields.io/pypi/status/specification_curve.svg" class="img-fluid" alt="Status"></a> <a href="https://pypi.org/project/specification_curve"><img src="https://img.shields.io/pypi/pyversions/specification_curve.png" class="img-fluid" alt="Python Version"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/pypi/l/specification_curve.png" class="img-fluid" alt="License"></a> <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" class="img-fluid" alt="Ruff"></a> <a href="https://github.com/pre-commit/pre-commit"><img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&amp;logoColor=white.png" class="img-fluid" alt="pre-commit"></a> <a href="https://github.com/aeturrell/specification_curve/actions?workflow=Tests"><img src="https://github.com/aeturrell/specification_curve/workflows/Tests/badge.svg" class="img-fluid" alt="Tests"></a> <a href="https://codecov.io/gh/aeturrell/specification_curve"><img src="https://codecov.io/gh/aeturrell/specification_curve/branch/main/graph/badge.svg" class="img-fluid" alt="Codecov"></a> <a href="https://aeturrell.github.io/specification_curve/"><img src="https://img.shields.io/badge/Go%20to%20the%20docs-purple?style=flat.png" class="img-fluid" alt="Read the documentation at https://aeturrell.github.io/specification_curve/"></a> <a href="https://doi.org/10.5281/zenodo.17523510"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17523510.svg" class="img-fluid" alt="DOI"></a> <a href="https://pepy.tech/projects/Specification_curve"><img src="https://static.pepy.tech/badge/specification-curve.png" class="img-fluid" alt="Downloads"></a></p>
-<p><img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&amp;logo=linux&amp;logoColor=black.png" class="img-fluid" alt="Linux"> <img src="https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&amp;logo=macos&amp;logoColor=F0F0F0.png" class="img-fluid" alt="macOS"> <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&amp;logo=windows&amp;logoColor=white.png" class="img-fluid" alt="Windows"> <a href="https://github.com/aeturrell/specification_curve"><img src="https://img.shields.io/badge/source%20code-github-lightgrey?style=for-the-badge.png" class="img-fluid" alt="Source"></a></p>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section class="sc-hero" aria-label="Specification Curve">
+  <div class="sc-hero-text">
+    <p class="sc-eyebrow">Specification curve analysis for Python</p>
+    <h1 class="sc-hero-title">Specification Curve</h1>
+    <p class="sc-tagline">Run every defensible regression and see all of the estimates in one chart.</p>
+    <code class="sc-install">uv add specification-curve</code>
+    <div class="sc-cta">
+      <a class="sc-btn" href="user-guide/features.html">See the features</a>
+      <a class="sc-btn ghost" href="reference/index.html">API reference</a>
+    </div>
+  </div>
+  <div class="sc-hero-figure">
+    <canvas id="sc-hero-canvas" role="img" aria-label="A specification curve assembling itself: 48 estimates drop into sorted order, their confidence intervals extend, the indicator matrix underneath fills in column by column, and a dashed median line draws across."></canvas>
+    <button class="sc-replay" id="sc-hero-replay" type="button">Replay</button>
+  </div>
+</section>
+<script>
+(() => {
+  const cv = document.getElementById('sc-hero-canvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const TAU = Math.PI * 2;
+  const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+  const ease = x => { x = clamp(x); return 1 - Math.pow(1 - x, 3); };
+  const pr = (t, a, b) => ease((t - a) / (b - a));
+  const lin = (t, a, b) => clamp((t - a) / (b - a));
+  const lerp = (a, b, u) => a + (b - a) * u;
+  function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function gauss(r) { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(TAU * r()); }
+  const pop = m => (m & 1) + (m >> 1 & 1) + (m >> 2 & 1);
+  // Illustrative estimates shaped like the quickstart: 3 controls x 3 fixed-effect choices x 2 standard errors.
+  const Q = (() => { const r = rng(7), out = [];
+    for (let fe = 0; fe < 3; fe++) for (let m = 0; m < 8; m++) { let c, se;
+      if (fe === 0) { c = .6 + .33 * (m >> 1 & 1) + .025 * pop(m) + .01 * gauss(r); se = .055 + .02 * (m >> 1 & 1); }
+      else if (fe === 1) { c = .332 + .004 * gauss(r); se = .038; } else { c = .322 + .004 * gauss(r); se = .042; }
+      for (let v = 0; v < 2; v++) out.push({ c, se: se * (v ? 1.3 : 1), fe, m, v }); }
+    return out.sort((a, b) => a.c - b.c || a.v - b.v); })();
+  const MED = (() => { const s = Q.map(q => q.c).sort((a, b) => a - b); return (s[23] + s[24]) / 2; })();
+  const on = (s, k) => k < 3 ? !!(s.m >> k & 1) : k < 6 ? s.fe === 5 - k : s.v === k - 6;
+  const line = (x1, y1, x2, y2) => { ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); };
+  const dot = (x, y, r) => { ctx.beginPath(); ctx.arc(x, y, Math.max(.01, r), 0, TAU); ctx.fill(); };
+  const tok = n => getComputedStyle(document.body).getPropertyValue(n).trim();
+  let P = {};
+  const readTheme = () => { P = { bg: tok('--sc-paper') || '#FAFAFD', ink: tok('--sc-ink') || '#1B1B3A', dot: tok('--sc-blue') || '#3030E8', on: tok('--sc-ind') || '#8585F4', off: tok('--sc-off') || '#E6E6EC' }; };
+  function draw(W, H, t) {
+    ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, H);
+    const l = 18, r = W - 14, top = 16, b = H - 12, cb = top + (b - top) * .56, mt = cb + 12, gw = .7;
+    const rh = (b - mt) / (8 + 2 * gw), cw = (r - l) / 48;
+    const X = i => l + (i + .5) * cw, RY = k => mt + (k + (k >= 3 ? gw : 0) + (k >= 6 ? gw : 0) + .5) * rh;
+    const y = v => (cb - 4) - (v - .2) * (cb - 4 - top);
+    ctx.globalAlpha = pr(t, 0, .6); ctx.strokeStyle = P.ink; ctx.lineWidth = 1; line(l - 6, top, l - 6, cb);
+    const sz = Math.min(cw * .72, rh * .72);
+    Q.forEach((s, i) => { const u = pr(t, 2.4 + i * .03, 2.85 + i * .03), x = X(i);
+      for (let k = 0; k < 8; k++) { const cy = RY(k);
+        ctx.globalAlpha = pr(t, 1.8, 2.4); ctx.fillStyle = P.off; ctx.fillRect(x - sz / 2, cy - sz / 2, sz, sz);
+        if (on(s, k) && u > 0) { ctx.globalAlpha = 1; ctx.fillStyle = P.on; const z = sz * u; ctx.fillRect(x - z / 2, cy - z / 2, z, z); } } });
+    Q.forEach((s, i) => { const u = pr(t, 1.3 + i * .015, 1.9 + i * .015), x = X(i), yc = y(s.c);
+      if (u <= 0) return; ctx.globalAlpha = .28; ctx.strokeStyle = P.dot; ctx.lineWidth = Math.max(1.5, cw * .24);
+      line(x, yc - (yc - y(s.c + 1.96 * s.se)) * u, x, yc + (y(s.c - 1.96 * s.se) - yc) * u); });
+    Q.forEach((s, i) => { const u = pr(t, .2 + i * .02, .9 + i * .02); ctx.globalAlpha = u; ctx.fillStyle = P.dot; dot(X(i), lerp(top - 20, y(s.c), u), Math.min(3.4, cw * .32)); });
+    const m = pr(t, 4.2, 5.1); ctx.globalAlpha = .8; ctx.strokeStyle = P.ink; ctx.lineWidth = .8; ctx.setLineDash([7, 4]);
+    if (m > 0) line(l, y(MED), l + (r - l) * m, y(MED)); ctx.setLineDash([]);
+    ctx.globalAlpha = pr(t, 4.9, 5.5) * .75; ctx.fillStyle = P.ink; ctx.font = 'italic 13px "STIX Two Text", serif'; ctx.fillText('Median', l + 2, y(MED) - 18);
+    ctx.globalAlpha = 1;
+  }
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const PERIOD = 10.5, REST = 8;
+  let W = 0, H = 0, start = performance.now() - REST * 1000, once = true, vis = true;
+  function size() { const b = cv.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1); if (!b.width) return;
+    W = b.width; H = b.height; cv.width = Math.round(W * d); cv.height = Math.round(H * d); ctx.setTransform(d, 0, 0, d, 0, 0); }
+  function frame(now) { if (!W) size(); if (!W) return;
+    let t = (now - start) / 1000; t = once ? Math.min(t, REST) : t % PERIOD;
+    ctx.save(); draw(W, H, t); ctx.restore();
+    if (!once) { const f = Math.max(lin(t, PERIOD - .6, PERIOD), 1 - lin(t, 0, .25));
+      if (f > 0) { ctx.globalAlpha = f; ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; } } }
+  readTheme(); size(); frame(performance.now());
+  new MutationObserver(() => { readTheme(); frame(performance.now()); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  if ('ResizeObserver' in window) new ResizeObserver(() => { size(); frame(performance.now()); }).observe(cv);
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { vis = es[0].isIntersecting; }).observe(cv);
+  document.getElementById('sc-hero-replay').addEventListener('click', () => { start = performance.now(); once = reduced; });
+  const loop = now => { if (vis) frame(now); requestAnimationFrame(loop); };
+  const go = () => { readTheme(); if (!reduced) { start = performance.now(); once = false; } requestAnimationFrame(loop); };
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(go, go);
+})();
+</script>
+<p>Specification Curve is a Python package that performs specification curve analysis; it helps with the problem of the “garden of forking paths” (many defensible choices) when doing analysis by running many regressions and summarising the effects in an easy to digest chart. Estimation is done by <a href="https://pyfixest.org/">pyfixest</a>, so specifications can vary the outcome, the regressor of interest, controls, fixed effects, instruments, standard errors, weights, the sample and the estimator (OLS, Poisson, logit, probit and quantile regression).</p>
+<div class="sc-badges">
+<p><a href="https://pypi.org/project/specification_curve/"><img src="https://img.shields.io/pypi/v/specification_curve.svg" class="img-fluid" alt="PyPI"></a> <a href="https://pypi.org/project/specification_curve"><img src="https://img.shields.io/pypi/pyversions/specification_curve" class="img-fluid" alt="Python Version"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/pypi/l/specification_curve" class="img-fluid" alt="License"></a> <a href="https://github.com/aeturrell/specification_curve/actions?workflow=Tests"><img src="https://github.com/aeturrell/specification_curve/workflows/Tests/badge.svg" class="img-fluid" alt="Tests"></a> <a href="https://codecov.io/gh/aeturrell/specification_curve"><img src="https://codecov.io/gh/aeturrell/specification_curve/branch/main/graph/badge.svg" class="img-fluid" alt="Codecov"></a> <a href="https://doi.org/10.5281/zenodo.17523510"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17523510.svg" class="img-fluid" alt="DOI"></a> <a href="https://pepy.tech/projects/Specification_curve"><img src="https://static.pepy.tech/badge/specification-curve" class="img-fluid" alt="Downloads"></a></p>
+</div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>When specifying a causal model, modellers have a number of options. These can be informed by field intelligence, priors, and even misguided attempts to find a significant result. Even with the best of intentions, research teams can reach entirely different conclusions using the same, or similar, data because of different choices made in preparing data or in modelling it.</p>
 <p>Typically this happens when there isn’t a clear way to do “feature engineering” on the data or the data are imperfect in some way. For example, you have a high frequency time series which needs to be aggregated to a lower frequency: you could take the maximum, the minimum, or the average over each high frequency time period. A different choice may be appropriate in different settings.</p>
-<p>There’s formal evidence that researchers really do make different decisions; one study <span class="citation" data-cites="silberzahn2018many">(<a href="#ref-silberzahn2018many" role="doc-biblioref">Silberzahn et al. 2018</a>)</span> gave the same research question—whether soccer referees are more likely to give red cards to players with dark skin tones than to players with light skin tones—to 29 different teams. From the abstract of that paper:</p>
+<p>There’s formal evidence that researchers really do make different decisions; one study <span class="citation" data-cites="silberzahn2018many">(<a href="#ref-silberzahn2018many" role="doc-biblioref"><span class="nocase">Silberzahn et al.</span> 2018</a>)</span> gave the same research question—whether soccer referees are more likely to give red cards to players with dark skin tones than to players with light skin tones—to 29 different teams. From the abstract of that paper:</p>
 <blockquote class="blockquote">
 <p>Analytic approaches varied widely across the teams, and the estimated effect sizes ranged from 0.89 to 2.93 (Mdn = 1.31) in odds-ratio units. Twenty teams (69%) found a statistically significant positive effect, and 9 teams (31%) did not observe a significant relationship. Overall, the 29 different analyses used 21 unique combinations of covariates. Neither analysts’ prior beliefs about the effect of interest nor their level of expertise readily explained the variation in the outcomes of the analyses. Peer ratings of the quality of the analyses also did not account for the variability.</p>
 </blockquote>
 <p>So not only can different decisions made, but there seems to be no clearly identifiable reason for them!</p>
-<p>There have since been a number of papers that find similar conclusions <span class="citation" data-cites="huntington2021influence">(<a href="#ref-huntington2021influence" role="doc-biblioref">Huntington-Klein et al. 2021</a>)</span>.</p>
-<p>Specification curves have been invented <span class="citation" data-cites="simonsohn2020specification">(<a href="#ref-simonsohn2020specification" role="doc-biblioref">Simonsohn, Simmons, and Nelson 2020</a>)</span> as a way to better grasp the garden of forking paths that analysts face, and help them show how sensitive their results are to alternative specifications.</p>
+<p>There have since been a number of papers that find similar conclusions <span class="citation" data-cites="huntington2021influence">(<a href="#ref-huntington2021influence" role="doc-biblioref"><span class="nocase">Huntington-Klein et al.</span> 2021</a>)</span>.</p>
+<p>Specification curves have been invented <span class="citation" data-cites="simonsohn2020specification">(<a href="#ref-simonsohn2020specification" role="doc-biblioref">Simonsohn et al. 2020</a>)</span> as a way to better grasp the garden of forking paths that analysts face, and help them show how sensitive their results are to alternative specifications.</p>
 <p>More than one piece of software <span class="citation" data-cites="masur2019specr">(<a href="#ref-masur2019specr" role="doc-biblioref">Masur and Scharkow 2019</a>)</span> has appeared to help researchers and analysts use this technique: <strong>specification curve</strong> is one such package!</p>
 </section>
-<section id="quickstart" class="level2">
-<h2 class="anchored" data-anchor-id="quickstart">Quickstart</h2>
-<p>Here’s an example of using <strong>Specification Curve</strong>.</p>
-<div id="cell-6" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> specification_curve <span class="im">as</span> sc</span>
+<section id="quickstart" class="level1">
+<h1>Quickstart</h1>
+<p>Here’s an example of using <strong>Specification Curve</strong>. The example data are a made-up panel of firms, in which being <code>treated</code> raises log sales by 0.3, but firms that would have had high sales anyway are more likely to be treated.</p>
+<p>We ask how the estimated effect of treatment depends on which controls are included, whether firm and year fixed effects are used, and how the standard errors are computed.</p>
+<div id="c7a871ab" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> specification_curve <span class="im">as</span> sc</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sc.load_example_data3()</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sc.load_example_panel()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
-
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">y1</th>
-<th data-quarto-table-cell-role="th">y2</th>
-<th data-quarto-table-cell-role="th">x1</th>
-<th data-quarto-table-cell-role="th">c1</th>
-<th data-quarto-table-cell-role="th">c2</th>
-<th data-quarto-table-cell-role="th">c3</th>
-<th data-quarto-table-cell-role="th">ccat</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>0.408694</td>
-<td>-0.677861</td>
-<td>0.319844</td>
-<td>0.873945</td>
-<td>0.315051</td>
-<td>0.317730</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>0.823288</td>
-<td>0.220807</td>
-<td>0.879205</td>
-<td>0.603677</td>
-<td>0.044192</td>
-<td>0.313405</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>1.314995</td>
-<td>1.100182</td>
-<td>0.980309</td>
-<td>0.937964</td>
-<td>0.790195</td>
-<td>0.684977</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>0.481942</td>
-<td>0.305384</td>
-<td>0.210092</td>
-<td>0.718184</td>
-<td>0.079917</td>
-<td>0.719236</td>
-<td>1</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>1.013794</td>
-<td>0.773417</td>
-<td>0.267960</td>
-<td>0.239086</td>
-<td>0.789400</td>
-<td>0.279626</td>
-<td>1</td>
-</tr>
-</tbody>
+<table class="dataframe table table-sm table-striped small">
+  <thead>
+    <tr>
+      <th></th>
+      <th>firm</th>
+      <th>year</th>
+      <th>industry</th>
+      <th>state</th>
+      <th>treated</th>
+      <th>eligible</th>
+      <th>size</th>
+      <th>age</th>
+      <th>leverage</th>
+      <th>rd</th>
+      <th>sales</th>
+      <th>patents</th>
+      <th>exporter</th>
+      <th>weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2010</td>
+      <td>5</td>
+      <td>24</td>
+      <td>1</td>
+      <td>1</td>
+      <td>3.759599</td>
+      <td>13.0</td>
+      <td>0.517282</td>
+      <td>0.066929</td>
+      <td>447.968245</td>
+      <td>4</td>
+      <td>1</td>
+      <td>1.49689</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>2011</td>
+      <td>5</td>
+      <td>24</td>
+      <td>1</td>
+      <td>0</td>
+      <td>4.021226</td>
+      <td>14.0</td>
+      <td>0.528749</td>
+      <td>0.064437</td>
+      <td>532.575250</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.49689</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>2012</td>
+      <td>5</td>
+      <td>24</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4.284728</td>
+      <td>15.0</td>
+      <td>0.343254</td>
+      <td>0.054897</td>
+      <td>158.264040</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.49689</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>2013</td>
+      <td>5</td>
+      <td>24</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2.724891</td>
+      <td>16.0</td>
+      <td>0.154377</td>
+      <td>0.066043</td>
+      <td>202.515415</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.49689</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>2014</td>
+      <td>5</td>
+      <td>24</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3.813143</td>
+      <td>17.0</td>
+      <td>0.145118</td>
+      <td>0.045717</td>
+      <td>170.363117</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1.49689</td>
+    </tr>
+  </tbody>
 </table>
-
 </div>
 </div>
 </div>
-<div id="cell-7" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specification Curve Analysis</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    df, y_endog<span class="op">=</span>[<span class="st">"y1"</span>, <span class="st">"y2"</span>], x_exog<span class="op">=</span><span class="st">"x1"</span>, controls<span class="op">=</span>[<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"c3"</span>]</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>sco.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e4deb1d5" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>, <span class="st">"rd"</span>],</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span>[<span class="va">None</span>, <span class="st">"firm"</span>, <span class="st">"firm + year"</span>],</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    vcov<span class="op">=</span>[<span class="st">"hetero"</span>, {<span class="st">"CRV1"</span>: <span class="st">"firm"</span>}],</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -328,19 +535,19 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>Grey squares (black lines when there are many specifications) show whether a variable is included in a specification or not. Blue or red markers and error bars show whether the coefficient is positive and significant (at the 0.05 level) or red and significant, respectively.</p>
-<p>You can also specify the same model by passing a string to the formula API. This takes specifications in the form:</p>
-<p>“endogenous ~ exogenous + controls to always include + controls”</p>
-<p>with any alternatives given by the “|” character.</p>
-<p>For example:</p>
-<p>“y1 | y2 ~ x1 | x2 | x3 + c1 + c2 + c3 | c4”</p>
-<p>would run specifications of y1, y2 on x1, x2, with c1 and c2 always included as controls and c3 and c4 included controls that are included combinatorially.</p>
-<p>Here’s an example:</p>
-<div id="cell-10" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sc.load_example_data1()</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(df<span class="op">=</span>df, formula<span class="op">=</span><span class="st">"y1 ~ x1 | x2 + group1 + c1 | c2"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>sco.plot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Each column is one specification. The top panel shows the estimated coefficient on <code>treated</code> with its confidence interval, and the panels underneath show which choices that specification makes. Markers are coloured blue when the coefficient is positive and significant (at the 0.05 level), red when it is negative and significant, and black otherwise.</p>
+<p>Here, the specifications without firm fixed effects overstate the effect, and those with them are close to the true value.</p>
+<p>You can also describe the specifications with a <a href="https://pyfixest.org/quickstart.html">pyfixest formula</a>. Its multiple-estimation operators define the choices: several outcomes (<code>y1 + y2 ~ ...</code>), <code>sw()</code> (one of these terms at a time) and <code>sw0()</code> (one at a time, or none). <strong>Specification Curve</strong> adds <code>comb()</code> and <code>comb0()</code>, which stand for every combination of their terms (with <code>comb0()</code> including none of them). The <code>x</code> argument names the coefficient to plot.</p>
+<p>This formula describes the same specifications as above:</p>
+<div id="66971f30" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"log(sales) ~ treated + comb0(size, leverage, rd) | sw0(firm, firm + year)"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    vcov<span class="op">=</span>[<span class="st">"hetero"</span>, {<span class="st">"CRV1"</span>: <span class="st">"firm"</span>}],</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -349,42 +556,57 @@ div.csl-indent {
 </div>
 </div>
 </div>
+<p>The <a href="./user-guide/features.html">features page</a> shows everything else: other estimators, instrumental variables, samples, customising the chart, and statistical inference on the curve as a whole.</p>
 </section>
-<section id="installation" class="level2">
-<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<section id="installation" class="level1">
+<h1>Installation</h1>
 <p>You can install <strong>Specification Curve</strong> via uv:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> uv add specification-curve</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> uv add specification-curve</span></code></pre></div>
 <p>To install the development version from git, use:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install git+https://github.com/aeturrell/specification_curve.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install git+https://github.com/aeturrell/specification_curve.git</span></code></pre></div>
 </section>
-<section id="license" class="level2">
-<h2 class="anchored" data-anchor-id="license">License</h2>
+<section id="license" class="level1">
+<h1>License</h1>
 <p>Distributed under the terms of the <a href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 </section>
-<section id="citing-specification-curve" class="level2">
-<h2 class="anchored" data-anchor-id="citing-specification-curve">Citing Specification Curve</h2>
+<section id="citing-specification-curve" class="level1">
+<h1>Citing Specification Curve</h1>
 <p>You can find full citation information at the following link: <a href="https://zenodo.org/badge/latestdoi/282989537">https://zenodo.org/badge/latestdoi/282989537</a>.</p>
 <p>Using <strong>Specification Curve</strong> in your paper? Let us know by raising an issue beginning with “citation”.</p>
 </section>
-<section id="similar-packages" class="level2">
-<h2 class="anchored" data-anchor-id="similar-packages">Similar Packages</h2>
+<section id="similar-packages" class="level1">
+<h1>Similar Packages</h1>
 <p>In RStats, there is <a href="https://github.com/masurp/specr">specr</a> (which inspired many design choices in this package) and <a href="https://github.com/ArielOrtizBobea/spec_chart">spec_chart</a>. Some of the example data in this package is the same as in specr, but please note that results have not been cross-checked across packages.</p>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<section id="references" class="level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-huntington2021influence" class="csl-entry" role="listitem">
-Huntington-Klein, Nick, Andreu Arenas, Emily Beam, Marco Bertoni, Jeffrey R Bloem, Pralhad Burli, Naibin Chen, et al. 2021. <span>“The Influence of Hidden Researcher Decisions in Applied Microeconomics.”</span> <em>Economic Inquiry</em> 59 (3): 944–60.
+<span class="nocase">Huntington-Klein, Nick, Andreu Arenas, Emily Beam, et al.</span> 2021. <span>“The Influence of Hidden Researcher Decisions in Applied Microeconomics.”</span> <em>Economic Inquiry</em> 59 (3): 944–60.
 </div>
 <div id="ref-masur2019specr" class="csl-entry" role="listitem">
-Masur, Philipp K., and Michael Scharkow. 2019. <span>“Specr: Statistical Functions for Conducting Specification Curve Analyses (Version 0.2.1).”</span> <a href="https://github.com/masurp/specr">https://github.com/masurp/specr</a>.
+Masur, Philipp K., and Michael Scharkow. 2019. <em>Specr: Statistical Functions for Conducting Specification Curve Analyses (Version 0.2.1)</em>. <a href="https://github.com/masurp/specr">https://github.com/masurp/specr</a>.
 </div>
 <div id="ref-silberzahn2018many" class="csl-entry" role="listitem">
-Silberzahn, Raphael, Eric L Uhlmann, Daniel P Martin, Pasquale Anselmi, Frederik Aust, Eli Awtrey, Štěpán Bahnı́k, et al. 2018. <span>“Many Analysts, One Data Set: Making Transparent How Variations in Analytic Choices Affect Results.”</span> <em>Advances in Methods and Practices in Psychological Science</em> 1 (3): 337–56.
+<span class="nocase">Silberzahn, Raphael, Eric L Uhlmann, Daniel P Martin, et al.</span> 2018. <span>“Many Analysts, One Data Set: Making Transparent How Variations in Analytic Choices Affect Results.”</span> <em>Advances in Methods and Practices in Psychological Science</em> 1 (3): 337–56.
 </div>
 <div id="ref-simonsohn2020specification" class="csl-entry" role="listitem">
 Simonsohn, Uri, Joseph P Simmons, and Leif D Nelson. 2020. <span>“Specification Curve Analysis.”</span> <em>Nature Human Behaviour</em> 4 (11): 1208–14.
 </div>
+</div>
+<div class="gd-meta-sidebar">
+<section id="links" class="level3">
+<h3 class="anchored" data-anchor-id="links">Links</h3>
+<p><a href="https://pypi.org/project/specification_curve/">View on PyPI<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -0.05em; margin-left: 0em; margin-top: 0.1em;" viewbox="0 0 24 24"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a><br></p>
+</section>
+<section id="ai-agents" class="level3">
+<h3 class="anchored" data-anchor-id="ai-agents">AI / Agents</h3>
+<p><a href="skills.html">Skills<svg class="gd-sparkle" xmlns="http://www.w3.org/2000/svg" width="0.85em" height="0.85em" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -0.1em; margin-left: 0.25em;"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .963L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path></svg></a><br> <a href="llms.txt">llms.txt</a><br> <a href="llms-full.txt">llms-full.txt</a><br></p>
+</section>
+<section id="meta" class="level3">
+<h3 class="anchored" data-anchor-id="meta">Meta</h3>
+<p><strong>Requires:</strong> Python <code>&gt;=3.12</code><br> <a href="package-info.html">Package Info</a></p>
+</section>
 </div>
 
 
@@ -392,236 +614,244 @@ Simonsohn, Uri, Joseph P Simmons, and Leif D Nelson. 2020. <span>“Specificatio
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
+    anchorJS.add('.anchored');
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/aeturrell\.github\.io\/specification_curve\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        return container.innerHTML
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -629,65 +859,55 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
             }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
             const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
             const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
             let div = window.document.getElementById("code-annotation-line-highlight");
             if (div === null) {
               div = window.document.createElement("div");
@@ -695,9 +915,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
               div.style.position = 'absolute';
               parent.appendChild(div);
             }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -707,108 +925,151 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
               const gutter = codeCell.querySelector('.code-annotation-gutter');
               gutter.appendChild(gutterDiv);
             }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
           }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
         };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
           }
-          popup.appendChild(citeDiv);
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
         });
-        return popup.innerHTML;
-      });
+      }
     }
-  }
-});
-</script>
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./user-guide/features.html" class="pagination-link" aria-label="Features">
+        <span class="nav-page-text">Features</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+<div class="nav-footer-center">
+<p>Site created with <strong>Great&nbsp;Docs</strong>.</p>
+</div>
+</div>
+</footer>
+<script src="github-widget.js"></script>
+<script src="sidebar-wrap.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'sidebar-float.js';document.body.appendChild(s);})();</script>
+<script src="sidebar-filter.js"></script>
+<script src="dark-mode-toggle.js"></script>
+<script src="back-to-top.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'on-this-page.js';document.body.appendChild(s);})();</script>
+<script src="keyboard-nav.js"></script>
+<script src="copy-code.js"></script>
+<script src="details.js"></script>
+<script src="mermaid-renderer.js"></script>
+<script src="tooltips.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'color-swatch.js';document.body.appendChild(s);})();</script>
+<script src="responsive-tables.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'video-embed.js';document.body.appendChild(s);})();</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'termshow.js';document.body.appendChild(s);})();</script>
+<script src="navbar-widgets.js"></script>
+<style>
+/* Great Docs: accent_color overrides */
+:root, html.quarto-light, :root[data-bs-theme='light'] {
+    --gd-accent: #3030E8;
+}
+html.quarto-dark, :root[data-bs-theme='dark'] {
+    --gd-accent: #9A9AFF;
+}
+</style>
 
 
 

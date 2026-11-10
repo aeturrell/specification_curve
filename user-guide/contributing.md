@@ -1,0 +1,134 @@
+# Contributing
+
+Thank you for your interest in improving this project. This project is open-source under the [MIT license](https://opensource.org/licenses/MIT) and welcomes contributions in the form of bug reports, feature requests, and pull requests.
+
+Here is a list of important resources for contributors:
+
+- [Source Code](https://github.com/aeturrell/specification_curve)
+- [Documentation](https://aeturrell.github.io/specification_curve/)
+- [Issue Tracker](https://github.com/aeturrell/specification_curve/issues)
+
+
+# How to report a bug
+
+Report bugs on the [Issue Tracker](https://github.com/aeturrell/specification_curve/issues).
+
+When filing an issue, make sure to answer these questions:
+
+- Which operating system and Python version are you using?
+- Which version of this project are you using?
+- What did you do?
+- What did you expect to see?
+- What did you see instead?
+
+The best way to get your bug fixed is to provide a test case, and/or steps to reproduce the issue.
+
+
+# How to request a feature
+
+Request features on the [Issue Tracker](https://github.com/aeturrell/specification_curve/issues).
+
+
+# How to set up your development environment
+
+You need Python and the following tools:
+
+- [uv](https://docs.astral.sh/uv/)
+- [Nox](https://nox.thea.codes/)
+- [Make](https://www.gnu.org/software/make/)
+- [Quarto](https://quarto.org/)
+
+Install the package with the existing development requirements:
+
+``` bash
+$ uv sync --frozen
+```
+
+To also update packages, do not use the `--frozen` flag.
+
+To build the documentation locally, you will also need [Make](https://www.gnu.org/software/make/) and [Quarto](https://quarto.org/) (these are non-Python dependencies).
+
+The documentation is built with [Great Docs](https://posit-dev.github.io/great-docs/). Its configuration is in `great-docs.yml`, the pages are in `docs/user_guide/`, and the site's theme is in `docs/theme/indigo.css`. You can build the docs locally with `make`, which runs `uv run great-docs build` and writes the website to `great-docs/_site/`. Run `make preview` to serve it locally.
+
+The timings table on the features page is built from `benchmarks/results.csv`. To update it, run `uv run python benchmarks/benchmark.py` from the repository root and commit the updated file. Each run is appended to that file along with the date, the package and pyfixest versions and a description of the machine, so it also serves as a performance log. The docs show the most recent run.
+
+To publish new docs to GitHub Pages (where the documentation is displayed as web pages), it's `make publish`--but only devs with admin rights will be able to execute this.
+
+
+# How to test the project
+
+Run the full test suite:
+
+``` bash
+$ uv run nox
+```
+
+List the available Nox sessions:
+
+``` bash
+$ uv run nox --list-sessions
+```
+
+You can also run a specific Nox session. For example, invoke the unit test suite like this:
+
+``` bash
+$ uv run nox --session=tests
+```
+
+Unit tests are located in the `tests` directory, and are written using the [pytest](https://pytest.readthedocs.io/) testing framework.
+
+You may need to use, for example, `uv run nox` to ensure that the tests are run in the right environment.
+
+For the pre-commit checks, use
+
+``` bash
+$ uv run pre-commit run --all-files
+```
+
+
+# How to submit changes
+
+Open a [pull request](https://github.com/aeturrell/specification_curve/pulls) to submit changes to this project.
+
+Your pull request needs to meet the following guidelines for acceptance:
+
+- The Nox test suite must pass without errors and warnings.
+- Include unit tests. This project aims to maintain 98% code coverage.
+- If your changes add functionality, update the documentation accordingly.
+- Run make to generate the new documentation.
+- Run the pre-commit suite before committing.
+
+Feel free to submit early, though--we can always iterate on this.
+
+To run linting and code formatting checks before committing your change, you need to run the following command:
+
+``` bash
+$ uv run nox --session=pre-commit -- install
+```
+
+It is recommended to open an issue before starting work on anything. This will allow a chance to talk it over with the owners and validate your approach.
+
+
+# How to create a package release
+
+- Open a new branch with the version name
+
+- Change the version in pyproject.toml using `uv version --bump <major|minor|patch>`
+
+- Commit the change with a new version label as the commit message (checking the tests pass)
+
+- Head to GitHub and merge into main (again, if the CI works)
+
+- The release GitHub Action then sees that the version has changed. It tags the merge commit with the new version, publishes the package to PyPI, publishes the release notes that Release Drafter has been collecting from merged pull requests, and publishes the documentation. Don't create the tag yourself: if the tag already exists, the action treats the push as an ordinary one.
+
+Every other push to main publishes a developmental release (the next patch version with a `.dev<timestamp>` suffix) to TestPyPI and checks that the documentation builds.
+
+If you ever need distributable files, you can use the `uv build` command locally.
+
+
+# How to build the documentation manually and locally
+
+You shouldn't need to publish the documentation because there's a GitHub action that covers it automatically whenever there's a new release. But to upload the documentation manually, it's
+
+- Run `make` to build the documentation
+- Run `make publish` to publish the documentation

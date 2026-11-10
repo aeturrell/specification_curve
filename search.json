@@ -1,91 +1,55 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Specification Curve",
+    "objectID": "user-guide/contributing.html",
+    "href": "user-guide/contributing.html",
+    "title": "Contributing",
     "section": "",
-    "text": "Specification Curve is a Python package that performs specification curve analysis; it helps with the problem of the “garden of forking paths” (many defensible choices) when doing analysis by running many regressions and summarising the effects in an easy to digest chart."
-  },
-  {
-    "objectID": "index.html#introduction",
-    "href": "index.html#introduction",
-    "title": "Specification Curve",
-    "section": "Introduction",
-    "text": "Introduction\nWhen specifying a causal model, modellers have a number of options. These can be informed by field intelligence, priors, and even misguided attempts to find a significant result. Even with the best of intentions, research teams can reach entirely different conclusions using the same, or similar, data because of different choices made in preparing data or in modelling it.\nTypically this happens when there isn’t a clear way to do “feature engineering” on the data or the data are imperfect in some way. For example, you have a high frequency time series which needs to be aggregated to a lower frequency: you could take the maximum, the minimum, or the average over each high frequency time period. A different choice may be appropriate in different settings.\nThere’s formal evidence that researchers really do make different decisions; one study (Silberzahn et al. 2018) gave the same research question—whether soccer referees are more likely to give red cards to players with dark skin tones than to players with light skin tones—to 29 different teams. From the abstract of that paper:\n\nAnalytic approaches varied widely across the teams, and the estimated effect sizes ranged from 0.89 to 2.93 (Mdn = 1.31) in odds-ratio units. Twenty teams (69%) found a statistically significant positive effect, and 9 teams (31%) did not observe a significant relationship. Overall, the 29 different analyses used 21 unique combinations of covariates. Neither analysts’ prior beliefs about the effect of interest nor their level of expertise readily explained the variation in the outcomes of the analyses. Peer ratings of the quality of the analyses also did not account for the variability.\n\nSo not only can different decisions made, but there seems to be no clearly identifiable reason for them!\nThere have since been a number of papers that find similar conclusions (Huntington-Klein et al. 2021).\nSpecification curves have been invented (Simonsohn, Simmons, and Nelson 2020) as a way to better grasp the garden of forking paths that analysts face, and help them show how sensitive their results are to alternative specifications.\nMore than one piece of software (Masur and Scharkow 2019) has appeared to help researchers and analysts use this technique: specification curve is one such package!"
-  },
-  {
-    "objectID": "index.html#quickstart",
-    "href": "index.html#quickstart",
-    "title": "Specification Curve",
-    "section": "Quickstart",
-    "text": "Quickstart\nHere’s an example of using Specification Curve.\n\nimport specification_curve as sc\n\ndf = sc.load_example_data3()\ndf.head()\n\n\n\n\n\n\n\n\ny1\ny2\nx1\nc1\nc2\nc3\nccat\n\n\n\n\n0\n0.408694\n-0.677861\n0.319844\n0.873945\n0.315051\n0.317730\n0\n\n\n1\n0.823288\n0.220807\n0.879205\n0.603677\n0.044192\n0.313405\n0\n\n\n2\n1.314995\n1.100182\n0.980309\n0.937964\n0.790195\n0.684977\n1\n\n\n3\n0.481942\n0.305384\n0.210092\n0.718184\n0.079917\n0.719236\n1\n\n\n4\n1.013794\n0.773417\n0.267960\n0.239086\n0.789400\n0.279626\n1\n\n\n\n\n\n\n\n\n# Specification Curve Analysis\n# -----------------------------\nsco = sc.SpecificationCurve(\n    df, y_endog=[\"y1\", \"y2\"], x_exog=\"x1\", controls=[\"c1\", \"c2\", \"c3\"]\n)\nsco.fit()\nsco.plot()\n\n\n\n\n\n\n\n\nGrey squares (black lines when there are many specifications) show whether a variable is included in a specification or not. Blue or red markers and error bars show whether the coefficient is positive and significant (at the 0.05 level) or red and significant, respectively.\nYou can also specify the same model by passing a string to the formula API. This takes specifications in the form:\n“endogenous ~ exogenous + controls to always include + controls”\nwith any alternatives given by the “|” character.\nFor example:\n“y1 | y2 ~ x1 | x2 | x3 + c1 + c2 + c3 | c4”\nwould run specifications of y1, y2 on x1, x2, with c1 and c2 always included as controls and c3 and c4 included controls that are included combinatorially.\nHere’s an example:\n\ndf = sc.load_example_data1()\nsco = sc.SpecificationCurve(df=df, formula=\"y1 ~ x1 | x2 + group1 + c1 | c2\")\nsco.fit()\nsco.plot()"
-  },
-  {
-    "objectID": "index.html#installation",
-    "href": "index.html#installation",
-    "title": "Specification Curve",
-    "section": "Installation",
-    "text": "Installation\nYou can install Specification Curve via uv:\n$ uv add specification-curve\nTo install the development version from git, use:\n$ pip install git+https://github.com/aeturrell/specification_curve.git"
-  },
-  {
-    "objectID": "index.html#license",
-    "href": "index.html#license",
-    "title": "Specification Curve",
-    "section": "License",
-    "text": "License\nDistributed under the terms of the MIT license."
-  },
-  {
-    "objectID": "index.html#citing-specification-curve",
-    "href": "index.html#citing-specification-curve",
-    "title": "Specification Curve",
-    "section": "Citing Specification Curve",
-    "text": "Citing Specification Curve\nYou can find full citation information at the following link: https://zenodo.org/badge/latestdoi/282989537.\nUsing Specification Curve in your paper? Let us know by raising an issue beginning with “citation”."
-  },
-  {
-    "objectID": "index.html#similar-packages",
-    "href": "index.html#similar-packages",
-    "title": "Specification Curve",
-    "section": "Similar Packages",
-    "text": "Similar Packages\nIn RStats, there is specr (which inspired many design choices in this package) and spec_chart. Some of the example data in this package is the same as in specr, but please note that results have not been cross-checked across packages."
-  },
-  {
-    "objectID": "index.html#references",
-    "href": "index.html#references",
-    "title": "Specification Curve",
-    "section": "References",
-    "text": "References\n\n\nHuntington-Klein, Nick, Andreu Arenas, Emily Beam, Marco Bertoni, Jeffrey R Bloem, Pralhad Burli, Naibin Chen, et al. 2021. “The Influence of Hidden Researcher Decisions in Applied Microeconomics.” Economic Inquiry 59 (3): 944–60.\n\n\nMasur, Philipp K., and Michael Scharkow. 2019. “Specr: Statistical Functions for Conducting Specification Curve Analyses (Version 0.2.1).” https://github.com/masurp/specr.\n\n\nSilberzahn, Raphael, Eric L Uhlmann, Daniel P Martin, Pasquale Anselmi, Frederik Aust, Eli Awtrey, Štěpán Bahnı́k, et al. 2018. “Many Analysts, One Data Set: Making Transparent How Variations in Analytic Choices Affect Results.” Advances in Methods and Practices in Psychological Science 1 (3): 337–56.\n\n\nSimonsohn, Uri, Joseph P Simmons, and Leif D Nelson. 2020. “Specification Curve Analysis.” Nature Human Behaviour 4 (11): 1208–14."
-  },
-  {
-    "objectID": "reference/index.html",
-    "href": "reference/index.html",
-    "title": "Function reference",
-    "section": "",
-    "text": "SpecificationCurve\nSpecification curve object.\n\n\n\n\n\n\n\n\n\nload_example_data1\nRetrieves example data from a file included with the package.\n\n\nload_example_data2\nGenerates fake data.\n\n\nload_example_data3\nGenerates fake data.",
+    "text": "Thank you for your interest in improving this project. This project is open-source under the MIT license and welcomes contributions in the form of bug reports, feature requests, and pull requests.\nHere is a list of important resources for contributors:\n\nSource Code\nDocumentation\nIssue Tracker\n\n\nHow to report a bug\nReport bugs on the Issue Tracker.\nWhen filing an issue, make sure to answer these questions:\n\nWhich operating system and Python version are you using?\nWhich version of this project are you using?\nWhat did you do?\nWhat did you expect to see?\nWhat did you see instead?\n\nThe best way to get your bug fixed is to provide a test case, and/or steps to reproduce the issue.\n\n\nHow to request a feature\nRequest features on the Issue Tracker.\n\n\nHow to set up your development environment\nYou need Python and the following tools:\n\nuv\nNox\nMake\nQuarto\n\nInstall the package with the existing development requirements:\n$ uv sync --frozen\nTo also update packages, do not use the --frozen flag.\nTo build the documentation locally, you will also need Make and Quarto (these are non-Python dependencies).\nThe documentation is built with Great Docs. Its configuration is in great-docs.yml, the pages are in docs/user_guide/, and the site’s theme is in docs/theme/indigo.css. You can build the docs locally with make, which runs uv run great-docs build and writes the website to great-docs/_site/. Run make preview to serve it locally.\nThe timings table on the features page is built from benchmarks/results.csv. To update it, run uv run python benchmarks/benchmark.py from the repository root and commit the updated file. Each run is appended to that file along with the date, the package and pyfixest versions and a description of the machine, so it also serves as a performance log. The docs show the most recent run.\nTo publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s make publish—but only devs with admin rights will be able to execute this.\n\n\nHow to test the project\nRun the full test suite:\n$ uv run nox\nList the available Nox sessions:\n$ uv run nox --list-sessions\nYou can also run a specific Nox session. For example, invoke the unit test suite like this:\n$ uv run nox --session=tests\nUnit tests are located in the tests directory, and are written using the pytest testing framework.\nYou may need to use, for example, uv run nox to ensure that the tests are run in the right environment.\nFor the pre-commit checks, use\n$ uv run pre-commit run --all-files\n\n\nHow to submit changes\nOpen a pull request to submit changes to this project.\nYour pull request needs to meet the following guidelines for acceptance:\n\nThe Nox test suite must pass without errors and warnings.\nInclude unit tests. This project aims to maintain 98% code coverage.\nIf your changes add functionality, update the documentation accordingly.\nRun make to generate the new documentation.\nRun the pre-commit suite before committing.\n\nFeel free to submit early, though—we can always iterate on this.\nTo run linting and code formatting checks before committing your change, you need to run the following command:\n$ uv run nox --session=pre-commit -- install\nIt is recommended to open an issue before starting work on anything. This will allow a chance to talk it over with the owners and validate your approach.\n\n\nHow to create a package release\n\nOpen a new branch with the version name\nChange the version in pyproject.toml using uv version --bump &lt;major|minor|patch&gt;\nCommit the change with a new version label as the commit message (checking the tests pass)\nHead to GitHub and merge into main (again, if the CI works)\nThe release GitHub Action then sees that the version has changed. It tags the merge commit with the new version, publishes the package to PyPI, publishes the release notes that Release Drafter has been collecting from merged pull requests, and publishes the documentation. Don’t create the tag yourself: if the tag already exists, the action treats the push as an ordinary one.\n\nEvery other push to main publishes a developmental release (the next patch version with a .dev&lt;timestamp&gt; suffix) to TestPyPI and checks that the documentation builds.\nIf you ever need distributable files, you can use the uv build command locally.\n\n\nHow to build the documentation manually and locally\nYou shouldn’t need to publish the documentation because there’s a GitHub action that covers it automatically whenever there’s a new release. But to upload the documentation manually, it’s\n\nRun make to build the documentation\nRun make publish to publish the documentation",
     "crumbs": [
-      "Reference",
-      "Function reference"
+      "Contributing"
     ]
   },
   {
-    "objectID": "reference/index.html#classes",
-    "href": "reference/index.html#classes",
-    "title": "Function reference",
+    "objectID": "skills.html",
+    "href": "skills.html",
+    "title": "Skills",
     "section": "",
-    "text": "SpecificationCurve\nSpecification curve object.",
+    "text": "A skill is a package of structured files that teaches an AI coding agent how to work with a specific tool or framework. The skill below was generated by Great Docs from this project’s documentation. Install it in your agent and it will be able to run commands, edit configuration, write content, and troubleshoot problems without step-by-step guidance from you.\n\n  \n    ▶    Install this skill\n  \n  \n    \n      \nAny agent — install with npx:\nnpx skills add https://aeturrell.github.io/specification_curve/\nCodex / OpenCode\nTell the agent:Fetch the skill file at https://aeturrell.github.io/specification_curve/skill.md and follow the instructions.\nManual — download the skill file:\ncurl -O https://aeturrell.github.io/specification_curve/skill.md\nOr browse the SKILL.md file.\n      \n    \n  \n\n\nSKILL.md\n---\nname: specification_curve\ndescription: &gt;\n  Specification curve analysis for econometrics, built on pyfixest. Use when writing Python code that uses the specification_curve package.\nlicense: MIT\ncompatibility: Requires Python &gt;=3.12.\n---\n\n# Specification Curve\n\nSpecification curve analysis for econometrics, built on pyfixest\n\n## Installation\n\n```bash\npip install specification_curve\n```\n\n## API overview\n\n### Classes\n\nThe main entry point. Describe the specifications, estimate them, and plot the curve.\n\n- `SpecificationCurve`: Runs and plots every variant of a regression specification\n\n### Functions\n\nPlot a results table directly, and select subsets of specifications.\n\n- `plot_curve`: Draws a specification curve\n- `subsets_by`: Builds a ``subsets`` argument with one sample per level of a column\n\n### Example data\n\nData sets used in the documentation and tests.\n\n- `load_example_panel`: Generates a synthetic firm-year panel\n- `load_example_data1`: Retrieves example data from a file included with the package\n- `load_example_data2`: Generates example data with one outcome and four regressors\n- `load_example_data3`: Generates example data with two outcomes, where the true effect of x1 is 0.4\n\n## Resources\n\n- [Full documentation](https://aeturrell.github.io/specification_curve/)\n- [llms.txt](llms.txt) — Indexed API reference for LLMs\n- [llms-full.txt](llms-full.txt) — Comprehensive documentation for LLMs"
+  },
+  {
+    "objectID": "reference/plot_curve.html",
+    "href": "reference/plot_curve.html",
+    "title": "plot_curve()",
+    "section": "",
+    "text": "Draws a specification curve.\n\n\nUsage\nSource\n\n\nplot_curve(\n    results,\n    null_curves=None,\n    *,\n    alpha=0.05,\n    ci_levels=None,\n    sort_by=\"estimate\",\n    color_by=\"significance\",\n    panels=None,\n    labels=None,\n    highlight=None,\n    show_median=True,\n    show_nobs=False,\n    colors=None,\n    figsize=None,\n    fig=None,\n    style=True\n)\n\n\nThe top panel shows the focal estimate of every specification with its confidence interval(s). Below it, one panel per dimension that varies shows which choice each specification makes. Specifications that could not be estimated are left out.\nThe function works on any data frame with the columns of SpecificationCurve.results, so results that were saved, filtered or combined from several curves can be drawn too. It does not call plt.show() and does not change matplotlib’s global settings.\n\n\nParameters\n\n\nresults: pd.DataFrame\n\nResults as produced by SpecificationCurve.fit.\n\nnull_curves: Optional[pd.DataFrame] = None\n\nQuantiles of the curve under the null, as produced by SpecificationCurve.fit_null. Can only be shown when sorting by estimate.\n\nalpha: float = 0.05\n\nSignificance level used when colouring by significance.\n\nci_levels: Optional[Sequence[float]] = None\n\nWhich of the stored confidence levels to draw. By default, all of them.\n\nsort_by: Union[str, Sequence[str]] = \"estimate\"\n\nOrder of the specifications: “estimate”, another column of the results, or a list of columns. Ties are ordered by estimate.\n\ncolor_by: str = \"significance\"\n\n“significance” colours estimates by sign and significance. A dimension (“y”, “x”, “fe”, “iv”, “vcov”, “model”, “weights” or “subset”) colours by the value of that dimension and adds a legend.\n\npanels: Optional[Sequence[str]] = None\n\nWhich dimensions to show under the curve, in order. By default, every dimension that varies.\n\nlabels: Optional[Mapping[str, str]] = None\n\nReplacement display text for panel titles (keyed by dimension, e.g. {\"fe\": \"Fixed effects\"}) and for values (keyed by the value, e.g. {\"firm + year\": \"Firm and year\"}).\n\nhighlight: Union[Selector, Sequence[Selector], None] = None\n\nA preferred specification to mark and annotate, given as a spec_id, a dict of column values (e.g. {\"y\": \"log(wage)\", \"controls\": [\"age\"], \"fe\": None}) or a query string. It must match exactly one specification. Pass a list to mark several.\n\nshow_median: bool = True\n\nDraw a line at the median estimate.\n\nshow_nobs: bool = False\n\nAdd a panel with the number of observations used by each specification.\n\ncolors: ColorSpec = None\n\nColours to use. When colouring by significance, a dict with any of the keys “positive”, “negative”, “insignificant”. When colouring by a dimension, a list of colours or a dict keyed by the dimension’s values.\n\nfigsize: Optional[tuple[float, float]] = None\n\nFigure size in inches. By default, chosen from the number of panels.\n\nfig: Union[Figure, SubFigure, None] = None\n\nAn existing figure or subfigure to draw into. By default a new figure is created.\n\nstyle: bool = True\n\nUse this package’s fonts and sizes for the figure.\n\n\n\n\n\nReturns\n\n\n tuple[Union[Figure, SubFigure], dict[str, Axes]]\n\ntuple[Union[Figure, SubFigure], dict[str, Axes]]: The figure and its axes keyed by panel name: “curve”, then the dimensions shown, then “nobs” if requested.\n\n\n\n\n\nRaises\n\n\n ValueError\n\nIf no specification was estimated successfully, or an argument does not fit the results.",
     "crumbs": [
       "Reference",
-      "Function reference"
+      "Functions",
+      "plot_curve"
     ]
   },
   {
-    "objectID": "reference/index.html#functions",
-    "href": "reference/index.html#functions",
-    "title": "Function reference",
+    "objectID": "reference/load_example_data3.html",
+    "href": "reference/load_example_data3.html",
+    "title": "load_example_data3()",
     "section": "",
-    "text": "load_example_data1\nRetrieves example data from a file included with the package.\n\n\nload_example_data2\nGenerates fake data.\n\n\nload_example_data3\nGenerates fake data.",
+    "text": "Generates example data with two outcomes, where the true effect of x1 is 0.4.\n\n\nUsage\nSource\n\n\nload_example_data3()\n\n\nReturns\n\n\n pd.DataFrame\n\npd.DataFrame: Example data suitable for regression.",
     "crumbs": [
       "Reference",
-      "Function reference"
+      "Example data",
+      "load_example_data3"
+    ]
+  },
+  {
+    "objectID": "reference/load_example_data1.html",
+    "href": "reference/load_example_data1.html",
+    "title": "load_example_data1()",
+    "section": "",
+    "text": "Retrieves example data from a file included with the package.\n\n\nUsage\nSource\n\n\nload_example_data1()\n\n\nReturns\n\n\n pd.DataFrame\n\npd.DataFrame: Example data suitable for regression.",
+    "crumbs": [
+      "Reference",
+      "Example data",
+      "load_example_data1"
     ]
   },
   {
@@ -93,7 +57,7 @@
     "href": "reference/SpecificationCurve.html",
     "title": "SpecificationCurve",
     "section": "",
-    "text": "SpecificationCurve(\n    df,\n    y_endog=None,\n    x_exog=None,\n    controls=None,\n    exclu_grps=[[None]],\n    cat_expand=[],\n    always_include=None,\n    formula=None,\n)\nSpecification curve object. Uses a model to perform all variants of a specification. Stores the results of those regressions in a tidy format pandas dataframe. Plots the regressions in chart that can optionally be saved. Will iterate over multiple inputs for exog. and endog. variables. Note that categorical variables that are expanded cannot be mutually excluded from other categorical variables that are expanded.\nThe class can be initialized in two mutually exclusive ways: 1. Using a formula string (e.g., “y ~ x1 + x2”) 2. Using separate y_endog, x_exog, controls, and always_include parameters\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ndf\npd.DataFrame\nInput DataFrame\nrequired\n\n\nformula\nstr\nR-style formula string (e.g., “y ~ x1 + x2”)\nNone\n\n\ny_endog\nUnion[str, List[str]]\nDependent variable(s)\nNone\n\n\nx_exog\nUnion[str, List[str]]\nIndependent variable(s)\nNone\n\n\ncontrols\nList[str]\nControl variables\nNone\n\n\nexclu_grps\nUnion[List[List[None]], List[str], str, List[List[str]]]\nGroups of variables to exclude. Defaults to [[None]]\n[[None]]\n\n\ncat_expand\nUnion[str, List[None], List[str], List[List[str]]]\nCategorical variables to expand. Defaults to []\n[]\n\n\nalways_include\nUnion[str, List[str]]\nVariables to always include\nNone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf neither formula nor (y_endog, x_exog, controls) are provided\n\n\n\nValueError\nIf both formula and (y_endog, x_exog, controls) are provided\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nfit\nFits a specification curve by performing regressions.\n\n\nfit_null\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\)\n\n\nplot\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\nSpecificationCurve.fit(estimator=sm.OLS)\nFits a specification curve by performing regressions.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nestimator\nstatsmodels.regression.linear_model or statsmodels.discrete.discrete_model\nstatsmodels estimator. Defaults to sm.OLS.\nsm.OLS\n\n\n\n\n\n\n\nSpecificationCurve.fit_null(n_boot=30, f_sample=0.1)\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\) where i is over rows and k is over specifications and i is a function of k as y and x rows can change depending on the k when there are multiple y_endog and multiple x_exog. Each bootstrap sees a fraction of rows f_sample taken and then a new specification curve fit under the null. Then summary statistics are created by specification, and statistical tests.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nn_boot\nint\nNumber of bootstraps. Defaults to 30.\n30\n\n\nf_sample\nfloat\nFraction of rows to sample in each bootstrap. Defaults to 0.1.\n0.1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .fit() has not been run first.\n\n\n\nValueError\nIf estimator is not OLS (null inference only valid for OLS).\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nNone\nNone\nResults saved in self.null_stats_summary.\n\n\n\n\n\n\n\nSpecificationCurve.plot(\n    save_path=None,\n    pretty_plots=True,\n    preferred_spec=[],\n    show_null_curve=False,\n    return_fig=False,\n    **kwargs,\n)\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstring or path\nExported fig filename. Defaults to None.\nNone\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to True.\nTrue\n\n\npreferred_spec\nlist\nPreferred specification. Defaults to [].\n[]\n\n\nshow_null_curve\nbool\nWhether to include the curve under the null. Defaults to False.\nFalse\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to False.\nTrue\n\n\nreturn_fig\nbool\nWhether to return the figure and axes objects. Defaults to False.\nFalse\n\n\n**kwargs\ndict\nAdditional arguments passed to .fit_null() when show_null_curve is True. Parameters: n_boot (int): Number of bootstrap iterations for null curve calculation. eg the argument would be **{\"n_boot\": 5}. f_sample (float): Fraction of rows to sample in each bootstrap. Defaults to 0.1.\n{}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nUnion[None, tuple[Figure, List[Axes]]]\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]: None or the fig and axes with chart on.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .plot() is called before .fit() - the fit must be run first.",
+    "text": "Runs and plots every variant of a regression specification.",
     "crumbs": [
       "Reference",
       "Classes",
@@ -101,11 +65,11 @@
     ]
   },
   {
-    "objectID": "reference/SpecificationCurve.html#parameters",
-    "href": "reference/SpecificationCurve.html#parameters",
+    "objectID": "reference/SpecificationCurve.html#results",
+    "href": "reference/SpecificationCurve.html#results",
     "title": "SpecificationCurve",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ndf\npd.DataFrame\nInput DataFrame\nrequired\n\n\nformula\nstr\nR-style formula string (e.g., “y ~ x1 + x2”)\nNone\n\n\ny_endog\nUnion[str, List[str]]\nDependent variable(s)\nNone\n\n\nx_exog\nUnion[str, List[str]]\nIndependent variable(s)\nNone\n\n\ncontrols\nList[str]\nControl variables\nNone\n\n\nexclu_grps\nUnion[List[List[None]], List[str], str, List[List[str]]]\nGroups of variables to exclude. Defaults to [[None]]\n[[None]]\n\n\ncat_expand\nUnion[str, List[None], List[str], List[List[str]]]\nCategorical variables to expand. Defaults to []\n[]\n\n\nalways_include\nUnion[str, List[str]]\nVariables to always include\nNone",
+    "section": "results",
+    "text": "results\n\nThe grid with estimates; one row per fitted specification.\n\n\nresults: pd.DataFrame",
     "crumbs": [
       "Reference",
       "Classes",
@@ -113,11 +77,11 @@
     ]
   },
   {
-    "objectID": "reference/SpecificationCurve.html#raises",
-    "href": "reference/SpecificationCurve.html#raises",
+    "objectID": "reference/SpecificationCurve.html#grid",
+    "href": "reference/SpecificationCurve.html#grid",
     "title": "SpecificationCurve",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\nValueError\nIf neither formula nor (y_endog, x_exog, controls) are provided\n\n\n\nValueError\nIf both formula and (y_endog, x_exog, controls) are provided",
+    "section": "grid",
+    "text": "grid\n\nOne row per specification.\n\n\ngrid: pd.DataFrame",
     "crumbs": [
       "Reference",
       "Classes",
@@ -125,227 +89,386 @@
     ]
   },
   {
-    "objectID": "reference/SpecificationCurve.html#methods",
-    "href": "reference/SpecificationCurve.html#methods",
+    "objectID": "reference/SpecificationCurve.html#n_specs",
+    "href": "reference/SpecificationCurve.html#n_specs",
     "title": "SpecificationCurve",
-    "section": "",
-    "text": "Name\nDescription\n\n\n\n\nfit\nFits a specification curve by performing regressions.\n\n\nfit_null\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\)\n\n\nplot\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\nSpecificationCurve.fit(estimator=sm.OLS)\nFits a specification curve by performing regressions.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nestimator\nstatsmodels.regression.linear_model or statsmodels.discrete.discrete_model\nstatsmodels estimator. Defaults to sm.OLS.\nsm.OLS\n\n\n\n\n\n\n\nSpecificationCurve.fit_null(n_boot=30, f_sample=0.1)\nRefits all of the specifications under the null of \\(y_{i(k)}^* = y_{i(k)} - b_k*x_{i(k)}\\) where i is over rows and k is over specifications and i is a function of k as y and x rows can change depending on the k when there are multiple y_endog and multiple x_exog. Each bootstrap sees a fraction of rows f_sample taken and then a new specification curve fit under the null. Then summary statistics are created by specification, and statistical tests.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nn_boot\nint\nNumber of bootstraps. Defaults to 30.\n30\n\n\nf_sample\nfloat\nFraction of rows to sample in each bootstrap. Defaults to 0.1.\n0.1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .fit() has not been run first.\n\n\n\nValueError\nIf estimator is not OLS (null inference only valid for OLS).\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nNone\nNone\nResults saved in self.null_stats_summary.\n\n\n\n\n\n\n\nSpecificationCurve.plot(\n    save_path=None,\n    pretty_plots=True,\n    preferred_spec=[],\n    show_null_curve=False,\n    return_fig=False,\n    **kwargs,\n)\nMakes plot of fitted specification curve. Optionally returns figure and axes for onward adjustment.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsave_path\nstring or path\nExported fig filename. Defaults to None.\nNone\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to True.\nTrue\n\n\npreferred_spec\nlist\nPreferred specification. Defaults to [].\n[]\n\n\nshow_null_curve\nbool\nWhether to include the curve under the null. Defaults to False.\nFalse\n\n\npretty_plots\nbool\nWhether to use this package’s figure formatting. Defaults to False.\nTrue\n\n\nreturn_fig\nbool\nWhether to return the figure and axes objects. Defaults to False.\nFalse\n\n\n**kwargs\ndict\nAdditional arguments passed to .fit_null() when show_null_curve is True. Parameters: n_boot (int): Number of bootstrap iterations for null curve calculation. eg the argument would be **{\"n_boot\": 5}. f_sample (float): Fraction of rows to sample in each bootstrap. Defaults to 0.1.\n{}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nUnion[None, tuple[Figure, List[Axes]]]\nUnion[None, tuple[mpl.figure.Figure, List[mpl.axes._axes.Axes]]]: None or the fig and axes with chart on.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf .plot() is called before .fit() - the fit must be run first.",
+    "section": "n_specs",
+    "text": "n_specs\n\nNumber of specifications in the grid.\n\n\nn_specs: int",
     "crumbs": [
       "Reference",
       "Classes",
       "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html#null_curves",
+    "href": "reference/SpecificationCurve.html#null_curves",
+    "title": "SpecificationCurve",
+    "section": "null_curves",
+    "text": "null_curves\n\nQuantiles of the sorted curve under the null, one row per rank.\n\n\nnull_curves: pd.DataFrame",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html#null_summary",
+    "href": "reference/SpecificationCurve.html#null_summary",
+    "title": "SpecificationCurve",
+    "section": "null_summary",
+    "text": "null_summary\n\nObserved statistics of the curve and their p-values under the null.\n\n\nnull_summary: pd.DataFrame",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html#null_draws",
+    "href": "reference/SpecificationCurve.html#null_draws",
+    "title": "SpecificationCurve",
+    "section": "null_draws",
+    "text": "null_draws\n\nEstimates in every resample, if fit_null(keep_draws=True) was used.\n\n\nnull_draws: pd.DataFrame",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html#fit",
+    "href": "reference/SpecificationCurve.html#fit",
+    "title": "SpecificationCurve",
+    "section": "fit()",
+    "text": "fit()\n\nEstimates the specifications.\n\n\nUsage\nSource\n\n\nfit(\n    *,\n    ci_levels=(0.95,),\n    n_jobs=1,\n    max_specs=None,\n    seed=None,\n    on_error=\"record\",\n    keep_models=False,\n    batch=True,\n    progress=None,\n    **kwargs\n)\n\n\nParameters\n\n\nci_levels: Sequence[float] = (0.95,)\n\nConfidence levels to store. Each gives a pair of columns such as ci_low_95 and ci_high_95.\n\nn_jobs: int = 1\n\nNumber of parallel workers.\n\nmax_specs: Optional[int] = None\n\nEstimate a random sample of this many specifications instead of the whole grid.\n\nseed: Optional[int] = None\n\nSeed for the random sample.\n\non_error: str = \"record\"\n\n“record” keeps specifications that fail in the results with their error message; “raise” stops at the first failure.\n\nkeep_models: bool = False\n\nKeep the fitted pyfixest models in .models, keyed by spec_id. Specifications that differ only in vcov share one model object.\n\nbatch: bool = True\n\nSend specifications that share a sample, estimator, focal regressor and fixed effects to pyfixest in a single call. The results are the same either way.\n\nprogress: Optional[bool] = None\n\nShow a progress bar. By default one is shown when there are many pyfixest calls to make.\n\n**kwargs: Any\n\nPassed to the pyfixest estimators, for example ssc, fixef_rm, demeaner or context. Each estimator receives the arguments it accepts.\n\n\n\n\n\nReturns\n\n\nSpecificationCurve: SpecificationCurve\n\nThe object itself, so calls can be chained.\n\n\n\n\n\nRaises\n\n\n TypeError\n\nIf a keyword argument is not accepted by any of the estimators in the grid.",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html#plot",
+    "href": "reference/SpecificationCurve.html#plot",
+    "title": "SpecificationCurve",
+    "section": "plot()",
+    "text": "plot()\n\nPlots the fitted specification curve.\n\n\nUsage\nSource\n\n\nplot(save_path=None, *, show_null_curve=False, **kwargs)\n\n\nParameters\n\n\nsave_path: Union[str, os.PathLike[str], None] = None\n\nFile to save the figure to; the format is taken from the extension.\n\nshow_null_curve: bool = False\n\nOverlay the curve expected under the null. Requires fit_null to have been run.\n\n**kwargs: Any\n\nPassed to plot_curve, for example sort_by, color_by, panels, labels, highlight or fig.\n\n\n\n\n\nReturns\n\n\n tuple[Union[Figure, SubFigure], dict[str, Axes]]\n\ntuple[Union[Figure, SubFigure], dict[str, Axes]]: The figure and its axes keyed by panel name.",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "reference/SpecificationCurve.html#fit_null",
+    "href": "reference/SpecificationCurve.html#fit_null",
+    "title": "SpecificationCurve",
+    "section": "fit_null()",
+    "text": "fit_null()\n\nTests the curve against the null hypothesis of no effect.\n\n\nUsage\nSource\n\n\nfit_null(\n    n_boot=500,\n    *,\n    method=\"auto\",\n    cluster=None,\n    strata=None,\n    alpha=0.05,\n    alternative=\"two-sided\",\n    seed=None,\n    n_jobs=1,\n    keep_draws=False,\n    min_valid=0.5,\n    progress=None\n)\n\n\nThe curve is re-estimated on many resamples in which the null holds. Three statistics of the observed curve are then compared with their distribution across resamples: the median estimate, the share of significant estimates, and Stouffer’s Z, which combines the evidence of all specifications. The results are in .null_summary and .null_curves.\nWith method=\"bootstrap\", each specification’s estimated effect is removed from its outcome and rows are resampled with replacement. This applies when every specification uses model=\"feols\". method=\"bayesian-bootstrap\" (the Bayesian bootstrap of Rubin, 1981; see Andrews, Moon and Shapiro, 2026) imposes the null in the same way and has the same requirement, but gives rows random Dirichlet weights instead of resampling them, so that no row (or cluster) is ever left out. With method=\"permutation\", the focal variable is shuffled between rows. This applies to any estimator, but it is only valid if the focal variable is as good as randomly assigned (within strata, if given), as in an experiment, and it does not apply to instrumental-variable specifications.\n\n\nParameters\n\n\nn_boot: int = 500\n\nNumber of resamples. Use several hundred for results you rely on; every resample re-estimates the whole curve.\n\nmethod: str = \"auto\"\n\n“bootstrap”, “bayesian-bootstrap”, “permutation” or “auto”. “auto” uses the bootstrap if every specification uses “feols”, and otherwise asks you to choose.\n\ncluster: Optional[str] = None\n\nColumn identifying clusters. Whole clusters are resampled (bootstrap), share one weight (Bayesian bootstrap) or swap their focal values (permutation; the focal variable must be constant within them).\n\nstrata: Optional[str] = None\n\nColumn identifying strata. Resampling is done within each stratum.\n\nalpha: float = 0.05\n\nSignificance level for the share of significant estimates.\n\nalternative: str = \"two-sided\"\n\n“two-sided”, “greater” (the effect is positive) or “less” (the effect is negative).\n\nseed: Optional[int] = None\n\nSeed for the resampling. Results do not depend on n_jobs.\n\nn_jobs: int = 1\n\nNumber of parallel workers.\n\nkeep_draws: bool = False\n\nKeep the estimates from every resample in .null_draws.\n\nmin_valid: float = 0.5\n\nA resample is left out if fewer than this share of the specifications could be estimated in it.\n\nprogress: Optional[bool] = None\n\nShow a progress bar. By default one is shown when there are at least 20 resamples.\n\n\n\n\n\nReturns\n\n\nSpecificationCurve: SpecificationCurve\n\nThe object itself, so calls can be chained.",
+    "crumbs": [
+      "Reference",
+      "Classes",
+      "SpecificationCurve"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Specification Curve",
+    "section": "",
+    "text": "Specification curve analysis for Python\n    Specification Curve\n    Run every defensible regression and see all of the estimates in one chart.\n    uv add specification-curve\n    \n      See the features\n      API reference\n    \n  \n  \n    \n    Replay\n  \n\n\nSpecification Curve is a Python package that performs specification curve analysis; it helps with the problem of the “garden of forking paths” (many defensible choices) when doing analysis by running many regressions and summarising the effects in an easy to digest chart. Estimation is done by pyfixest, so specifications can vary the outcome, the regressor of interest, controls, fixed effects, instruments, standard errors, weights, the sample and the estimator (OLS, Poisson, logit, probit and quantile regression).\n\n      \n\n\nIntroduction\nWhen specifying a causal model, modellers have a number of options. These can be informed by field intelligence, priors, and even misguided attempts to find a significant result. Even with the best of intentions, research teams can reach entirely different conclusions using the same, or similar, data because of different choices made in preparing data or in modelling it.\nTypically this happens when there isn’t a clear way to do “feature engineering” on the data or the data are imperfect in some way. For example, you have a high frequency time series which needs to be aggregated to a lower frequency: you could take the maximum, the minimum, or the average over each high frequency time period. A different choice may be appropriate in different settings.\nThere’s formal evidence that researchers really do make different decisions; one study (Silberzahn et al. 2018) gave the same research question—whether soccer referees are more likely to give red cards to players with dark skin tones than to players with light skin tones—to 29 different teams. From the abstract of that paper:\n\nAnalytic approaches varied widely across the teams, and the estimated effect sizes ranged from 0.89 to 2.93 (Mdn = 1.31) in odds-ratio units. Twenty teams (69%) found a statistically significant positive effect, and 9 teams (31%) did not observe a significant relationship. Overall, the 29 different analyses used 21 unique combinations of covariates. Neither analysts’ prior beliefs about the effect of interest nor their level of expertise readily explained the variation in the outcomes of the analyses. Peer ratings of the quality of the analyses also did not account for the variability.\n\nSo not only can different decisions made, but there seems to be no clearly identifiable reason for them!\nThere have since been a number of papers that find similar conclusions (Huntington-Klein et al. 2021).\nSpecification curves have been invented (Simonsohn et al. 2020) as a way to better grasp the garden of forking paths that analysts face, and help them show how sensitive their results are to alternative specifications.\nMore than one piece of software (Masur and Scharkow 2019) has appeared to help researchers and analysts use this technique: specification curve is one such package!\n\n\nQuickstart\nHere’s an example of using Specification Curve. The example data are a made-up panel of firms, in which being treated raises log sales by 0.3, but firms that would have had high sales anyway are more likely to be treated.\nWe ask how the estimated effect of treatment depends on which controls are included, whether firm and year fixed effects are used, and how the standard errors are computed.\n\nimport specification_curve as sc\n\ndf = sc.load_example_panel()\ndf.head()\n\n\n\n\n  \n    \n      \n      firm\n      year\n      industry\n      state\n      treated\n      eligible\n      size\n      age\n      leverage\n      rd\n      sales\n      patents\n      exporter\n      weight\n    \n  \n  \n    \n      0\n      0\n      2010\n      5\n      24\n      1\n      1\n      3.759599\n      13.0\n      0.517282\n      0.066929\n      447.968245\n      4\n      1\n      1.49689\n    \n    \n      1\n      0\n      2011\n      5\n      24\n      1\n      0\n      4.021226\n      14.0\n      0.528749\n      0.064437\n      532.575250\n      1\n      0\n      1.49689\n    \n    \n      2\n      0\n      2012\n      5\n      24\n      0\n      0\n      4.284728\n      15.0\n      0.343254\n      0.054897\n      158.264040\n      1\n      1\n      1.49689\n    \n    \n      3\n      0\n      2013\n      5\n      24\n      0\n      1\n      2.724891\n      16.0\n      0.154377\n      0.066043\n      202.515415\n      1\n      1\n      1.49689\n    \n    \n      4\n      0\n      2014\n      5\n      24\n      0\n      0\n      3.813143\n      17.0\n      0.145118\n      0.045717\n      170.363117\n      2\n      0\n      1.49689\n    \n  \n\n\n\n\n\nsco = sc.SpecificationCurve(\n    df,\n    y=\"log(sales)\",\n    x=\"treated\",\n    controls=[\"size\", \"leverage\", \"rd\"],\n    fe=[None, \"firm\", \"firm + year\"],\n    vcov=[\"hetero\", {\"CRV1\": \"firm\"}],\n)\nsco.fit()\nsco.plot();\n\n\n\n\n\n\n\n\nEach column is one specification. The top panel shows the estimated coefficient on treated with its confidence interval, and the panels underneath show which choices that specification makes. Markers are coloured blue when the coefficient is positive and significant (at the 0.05 level), red when it is negative and significant, and black otherwise.\nHere, the specifications without firm fixed effects overstate the effect, and those with them are close to the true value.\nYou can also describe the specifications with a pyfixest formula. Its multiple-estimation operators define the choices: several outcomes (y1 + y2 ~ ...), sw() (one of these terms at a time) and sw0() (one at a time, or none). Specification Curve adds comb() and comb0(), which stand for every combination of their terms (with comb0() including none of them). The x argument names the coefficient to plot.\nThis formula describes the same specifications as above:\n\nsco = sc.SpecificationCurve(\n    df,\n    \"log(sales) ~ treated + comb0(size, leverage, rd) | sw0(firm, firm + year)\",\n    x=\"treated\",\n    vcov=[\"hetero\", {\"CRV1\": \"firm\"}],\n)\nsco.fit()\nsco.plot();\n\n\n\n\n\n\n\n\nThe features page shows everything else: other estimators, instrumental variables, samples, customising the chart, and statistical inference on the curve as a whole.\n\n\nInstallation\nYou can install Specification Curve via uv:\n$ uv add specification-curve\nTo install the development version from git, use:\n$ pip install git+https://github.com/aeturrell/specification_curve.git\n\n\nLicense\nDistributed under the terms of the MIT license.\n\n\nCiting Specification Curve\nYou can find full citation information at the following link: https://zenodo.org/badge/latestdoi/282989537.\nUsing Specification Curve in your paper? Let us know by raising an issue beginning with “citation”.\n\n\nSimilar Packages\nIn RStats, there is specr (which inspired many design choices in this package) and spec_chart. Some of the example data in this package is the same as in specr, but please note that results have not been cross-checked across packages.\n\n\nReferences\n\n\nHuntington-Klein, Nick, Andreu Arenas, Emily Beam, et al. 2021. “The Influence of Hidden Researcher Decisions in Applied Microeconomics.” Economic Inquiry 59 (3): 944–60.\n\n\nMasur, Philipp K., and Michael Scharkow. 2019. Specr: Statistical Functions for Conducting Specification Curve Analyses (Version 0.2.1). https://github.com/masurp/specr.\n\n\nSilberzahn, Raphael, Eric L Uhlmann, Daniel P Martin, et al. 2018. “Many Analysts, One Data Set: Making Transparent How Variations in Analytic Choices Affect Results.” Advances in Methods and Practices in Psychological Science 1 (3): 337–56.\n\n\nSimonsohn, Uri, Joseph P Simmons, and Leif D Nelson. 2020. “Specification Curve Analysis.” Nature Human Behaviour 4 (11): 1208–14.\n\n\n\n\nLinks\nView on PyPI\n\n\nAI / Agents\nSkills llms.txt llms-full.txt\n\n\nMeta\nRequires: Python &gt;=3.12 Package Info",
+    "crumbs": [
+      "Specification Curve"
+    ]
+  },
+  {
+    "objectID": "changelog.html",
+    "href": "changelog.html",
+    "title": "Changelog",
+    "section": "",
+    "text": "This changelog is generated automatically from GitHub Releases."
+  },
+  {
+    "objectID": "changelog.html#changes",
+    "href": "changelog.html#changes",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.4.1 (#773) (aeturrell?)\nnew bayesian bootstrap (#772) (aeturrell?)\nimproving sc style (#771) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#package-dependencies",
+    "href": "changelog.html#package-dependencies",
+    "title": "Changelog",
+    "section": ":package: Dependencies",
+    "text": ":package: Dependencies\n\nBump codecov/codecov-action from 7.0.0 to 7.1.1 (#760) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump ty from 0.0.34 to 0.0.99 (#768) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump pandas-stubs from 2.3.3.260113 to 3.1.0.261029 (#769) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump numpy from 2.2.6 to 2.5.4 (#770) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#changes-1",
+    "href": "changelog.html#changes-1",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nBuild Specification Curve on pyfixest (#766) (aeturrell?), (claude?)"
+  },
+  {
+    "objectID": "changelog.html#package-dependencies-1",
+    "href": "changelog.html#package-dependencies-1",
+    "title": "Changelog",
+    "section": ":package: Dependencies",
+    "text": ":package: Dependencies\n\nBump release-drafter/release-drafter from 7.4.0 to 7.10.0 (#761) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump typeguard from 4.5.1 to 4.6.0 (#762) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump ipywidgets from 8.1.8 to 8.1.9 (#763) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump coverage from 7.13.5 to 7.17.2 (#764) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump nbclient from 0.10.4 to 0.11.0 (#765) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump pandas from 2.3.3 to 3.1.0 (#756) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump tqdm from 4.67.3 to 4.70.1 (#755) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump pytest from 9.0.3 to 9.1.1 (#754) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump actions/cache from 6.0.0 to 6.1.0 (#753) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump actions/setup-python from 6.3.0 to 7.1.0 (#752) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump pre-commit from 4.6.0 to 4.7.0 (#757) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump pypa/gh-action-pypi-publish from 1.14.0 to 1.14.3 (#751) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)\nBump tornado from 6.5.9 to 6.6 (#759) [(dependabot?)](https://github.com/dependabot)[bot], (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#changes-2",
+    "href": "changelog.html#changes-2",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.3.10 (#750) (aeturrell?)\ndependabot uses uv and change to new pg output names (#658) (aeturrell?)\nFix incorrect median under null for non-OLS estimators (#608) (#643) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#package-dependencies-2",
+    "href": "changelog.html#package-dependencies-2",
+    "title": "Changelog",
+    "section": ":package: Dependencies",
+    "text": ":package: Dependencies\n\nBump black from 26.3.1 to 26.10.1 (#749) @dependabot[bot]\nBump matplotlib from 3.10.8 to 3.10.9 (#721) @dependabot[bot]\nBump types-setuptools from 82.0.0.20260408 to 82.0.0.20260508 (#727) @dependabot[bot]\nBump types-tqdm from 4.67.3.20260408 to 4.67.3.20260508 (#728) @dependabot[bot]\nBump idna from 3.10 to 3.15 (#731) @dependabot[bot]\nBump codecov/codecov-action from 6.0.0 to 7.0.0 (#733) @dependabot[bot]\nBump release-drafter/release-drafter from 7.2.0 to 7.4.0 (#735) @dependabot[bot]\nBump actions/checkout from 6 to 7 (#737) @dependabot[bot]\nBump actions/cache from 5.0.5 to 6.0.0 (#738) @dependabot[bot]\nBump actions/setup-python from 6.2.0 to 6.3.0 (#739) @dependabot[bot]\nBump urllib3 from 2.7.0 to 2.8.0 (#743) @dependabot[bot]\nBump tornado from 6.5.5 to 6.5.9 (#745) @dependabot[bot]\nBump certifi from 2024.12.14 to 2026.10.19 (#747) @dependabot[bot]\nBump virtualenv from 20.36.1 to 21.14.13 (#748) @dependabot[bot]\nBump ty from 0.0.32 to 0.0.34 (#725) @dependabot[bot]\nBump ruff from 0.15.11 to 0.15.12 (#722) @dependabot[bot]\nBump pillow from 12.2.0 to 12.3.0 (#740) @dependabot[bot]\nBump urllib3 from 2.6.3 to 2.7.0 (#729) @dependabot[bot]\nBump pre-commit from 4.5.1 to 4.6.0 (#720) @dependabot[bot]\nBump ty from 0.0.31 to 0.0.32 (#719) @dependabot[bot]\nBump ruff from 0.15.10 to 0.15.11 (#718) @dependabot[bot]\nBump ty from 0.0.30 to 0.0.31 (#717) @dependabot[bot]\nBump nox from 2026.2.9 to 2026.4.10 (#713) @dependabot[bot]\nBump pillow from 12.1.1 to 12.2.0 (#714) @dependabot[bot]\nBump actions/cache from 5.0.4 to 5.0.5 (#715) @dependabot[bot]\nBump ty from 0.0.29 to 0.0.30 (#716) @dependabot[bot]\nBump release-drafter/release-drafter from 7.1.1 to 7.2.0 (#711) @dependabot[bot]\nBump ruff from 0.15.9 to 0.15.10 (#712) @dependabot[bot]\nBump pypa/gh-action-pypi-publish from 1.13.0 to 1.14.0 (#707) @dependabot[bot]\nBump types-tqdm from 4.67.3.20260402 to 4.67.3.20260408 (#708) @dependabot[bot]\nBump types-setuptools from 82.0.0.20260402 to 82.0.0.20260408 (#709) @dependabot[bot]\nBump pytest from 9.0.2 to 9.0.3 (#710) @dependabot[bot]\nBump ty from 0.0.26 to 0.0.29 (#706) @dependabot[bot]\nBump types-setuptools from 82.0.0.20260210 to 82.0.0.20260402 (#705) @dependabot[bot]\nBump types-tqdm from 4.67.3.20260303 to 4.67.3.20260402 (#703) @dependabot[bot]\nBump pingouin from 0.6.0 to 0.6.1 (#701) @dependabot[bot]\nBump ruff from 0.15.7 to 0.15.9 (#704) @dependabot[bot]\nBump actions/cache from 5.0.3 to 5.0.4 (#689) @dependabot[bot]\nBump pygments from 2.18.0 to 2.20.0 (#699) @dependabot[bot]\nBump aquarel from 0.0.6 to 0.0.7 (#685) @dependabot[bot]\nBump ty from 0.0.25 to 0.0.26 (#697) @dependabot[bot]\nBump coverage from 7.13.4 to 7.13.5 (#686) @dependabot[bot]\nBump xdoctest from 1.3.0 to 1.3.2 (#698) @dependabot[bot]\nBump pre-commit from 4.0.1 to 4.5.1 (#683) @dependabot[bot]\nBump ty from 0.0.23 to 0.0.25 (#695) @dependabot[bot]\nBump codecov/codecov-action from 5.5.3 to 6.0.0 (#696) @dependabot[bot]\nBump codecov/codecov-action from 5.5.2 to 5.5.3 (#690) @dependabot[bot]\nBump release-drafter/release-drafter from 7.0.0 to 7.1.1 (#691) @dependabot[bot]\nBump xdoctest from 1.2.0 to 1.3.0 (#684) @dependabot[bot]\nBump requests from 2.32.4 to 2.33.0 (#693) @dependabot[bot]\nBump ruff from 0.8.4 to 0.15.7 (#692) @dependabot[bot]\nBump ipywidgets from 8.1.5 to 8.1.8 (#687) @dependabot[bot]\nBump nbclient from 0.10.2 to 0.10.4 (#682) @dependabot[bot]\nBump ipykernel from 6.29.5 to 7.2.0 (#679) @dependabot[bot]\nBump release-drafter/release-drafter from 6.4.0 to 7.0.0 (#677) @dependabot[bot]\nBump pandas from 2.2.3 to 2.3.3 (#681) @dependabot[bot]\nBump statsmodels from 0.14.4 to 0.14.6 (#678) @dependabot[bot]\nBump ty from 0.0.8 to 0.0.23 (#680) @dependabot[bot]\nBump black from 24.10.0 to 26.3.1 (#672) @dependabot[bot]\nBump nbstripout from 0.8.1 to 0.9.1 (#673) @dependabot[bot]\nBump pydoclint from 0.6.0 to 0.8.3 (#674) @dependabot[bot]\nBump pre-commit-hooks from 5.0.0 to 6.0.0 (#675) @dependabot[bot]\nBump tqdm from 4.67.1 to 4.67.3 (#676) @dependabot[bot]\nBump types-tqdm from 4.67.0.20241221 to 4.67.3.20260303 (#668) @dependabot[bot]\nBump nox from 2024.10.9 to 2026.2.9 (#669) @dependabot[bot]\nBump typeguard from 4.4.1 to 4.5.1 (#667) @dependabot[bot]\nBump numpy from 2.0.2 to 2.2.6 (#670) @dependabot[bot]\nBump pytest from 8.3.4 to 9.0.2 (#671) @dependabot[bot]\nBump actions/download-artifact from 7 to 8 (#656) @dependabot[bot]\nBump actions/upload-artifact from 6 to 7 (#657) @dependabot[bot]\nBump tornado from 6.5 to 6.5.5 (#666) @dependabot[bot]\nBump release-drafter/release-drafter from 6.2.0 to 6.4.0 (#660) @dependabot[bot]\nBump crazy-max/ghaction-github-labeler from 5 to 6 (#659) @dependabot[bot]\nBump coverage from 7.6.9 to 7.13.4 (#661) @dependabot[bot]\nBump quartodoc from 0.9.1 to 0.11.1 (#662) @dependabot[bot]\nBump types-setuptools from 75.6.0.20241223 to 82.0.0.20260210 (#663) @dependabot[bot]\nBump pandas-stubs from 2.2.2.240807 to 2.3.3.260113 (#665) @dependabot[bot]\nBump matplotlib from 3.9.4 to 3.10.8 (#664) @dependabot[bot]\nBump release-drafter/release-drafter from 6.1.1 to 6.2.0 (#652) @dependabot[bot]\nBump actions/setup-python from 6.1.0 to 6.2.0 (#653) @dependabot[bot]\nBump actions/cache from 5.0.2 to 5.0.3 (#654) @dependabot[bot]\nBump pillow from 11.0.0 to 12.1.1 (#655) @dependabot[bot]\nBump tornado from 6.4.2 to 6.5 (#651) @dependabot[bot]\nBump virtualenv from 20.28.0 to 20.36.1 (#646) @dependabot[bot]\nBump filelock from 3.16.1 to 3.20.3 (#647) @dependabot[bot]\nBump requests from 2.32.3 to 2.32.4 (#648) @dependabot[bot]\nBump urllib3 from 2.3.0 to 2.6.3 (#649) @dependabot[bot]\nBump fonttools from 4.55.3 to 4.60.2 (#650) @dependabot[bot]\nBump actions/cache from 5.0.1 to 5.0.2 (#645) @dependabot[bot]\nBump release-drafter/release-drafter from 6.1.0 to 6.1.1 (#644) @dependabot[bot]"
+  },
+  {
+    "objectID": "changelog.html#changes-3",
+    "href": "changelog.html#changes-3",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.3.9 (#642) (aeturrell?)\nClaude/fix type checking errors j343 v (#641) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#package-dependencies-3",
+    "href": "changelog.html#package-dependencies-3",
+    "title": "Changelog",
+    "section": ":package: Dependencies",
+    "text": ":package: Dependencies\n\nBump actions/upload-artifact from 5 to 6 (#638) @dependabot[bot]\nBump actions/download-artifact from 6 to 7 (#639) @dependabot[bot]\nBump actions/cache from 4.3.0 to 5.0.1 (#640) @dependabot[bot]\nBump codecov/codecov-action from 5.5.1 to 5.5.2 (#636) @dependabot[bot]\nBump actions/setup-python from 6.0.0 to 6.1.0 (#635) @dependabot[bot]\nBump actions/checkout from 5 to 6 (#634) @dependabot[bot]\nBump actions/cache from 4.2.3 to 4.3.0 (#626) @dependabot[bot]\nBump astral-sh/setup-uv from 6 to 7 (#629) @dependabot[bot]"
+  },
+  {
+    "objectID": "changelog.html#changes-4",
+    "href": "changelog.html#changes-4",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.3.8 (#632) (aeturrell?)\ndropping 3.9; adding 3.12 support (#631) (aeturrell?)\nFix Windows tkinter initialization error in CI tests (#630) (aeturrell?)\nAdding pydoclint check (#600) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#racehorse-performance",
+    "href": "changelog.html#racehorse-performance",
+    "title": "Changelog",
+    "section": ":racehorse: Performance",
+    "text": ":racehorse: Performance\n\nBenchmarks (#609) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#package-dependencies-4",
+    "href": "changelog.html#package-dependencies-4",
+    "title": "Changelog",
+    "section": ":package: Dependencies",
+    "text": ":package: Dependencies\n\nBump codecov/codecov-action from 5.4.3 to 5.5.1 (#625) @dependabot[bot]\nBump actions/setup-python from 5.6.0 to 6.0.0 (#623) @dependabot[bot]\nBump actions/checkout from 4 to 5 (#621) @dependabot[bot]\nBump actions/upload-artifact from 4 to 5 (#628) @dependabot[bot]\nBump pypa/gh-action-pypi-publish from 1.12.4 to 1.13.0 in /.github/workflows (#624) @dependabot[bot]\nBump actions/download-artifact from 4 to 6 (#627) @dependabot[bot]\nBump astral-sh/setup-uv from 5 to 6 (#617) @dependabot[bot]\nBump codecov/codecov-action from 5.4.0 to 5.4.3 (#618) @dependabot[bot]\nBump actions/setup-python from 5.5.0 to 5.6.0 (#616) @dependabot[bot]\nBump codecov/codecov-action from 5.3.1 to 5.4.0 (#611) @dependabot[bot]\nBump actions/cache from 4.2.0 to 4.2.3 (#613) @dependabot[bot]\nBump actions/setup-python from 5.4.0 to 5.5.0 (#614) @dependabot[bot]\nBump pypa/gh-action-pypi-publish from 1.12.3 to 1.12.4 (#603) @dependabot[bot]\nBump codecov/codecov-action from 5.1.2 to 5.3.1 (#605) @dependabot[bot]\nBump release-drafter/release-drafter from 6.0.0 to 6.1.0 (#601) @dependabot[bot]\nBump actions/setup-python from 5.3.0 to 5.4.0 (#606) @dependabot[bot]"
+  },
+  {
+    "objectID": "changelog.html#changes-5",
+    "href": "changelog.html#changes-5",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.3.7 (#597) (aeturrell?)\nDocs improve (#596) (aeturrell?)\nCode clean (#595) (aeturrell?)\nBootstrap under null tests added in spirit of Simonsohn et al. (2020) (#594) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#changes-6",
+    "href": "changelog.html#changes-6",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.3.6 (#592) (aeturrell?)\nFix formula parser (#591) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#package-dependencies-5",
+    "href": "changelog.html#package-dependencies-5",
+    "title": "Changelog",
+    "section": ":package: Dependencies",
+    "text": ":package: Dependencies\n\nBump astral-sh/setup-uv from 4 to 5 (#590) (dependabot?)"
+  },
+  {
+    "objectID": "changelog.html#changes-7",
+    "href": "changelog.html#changes-7",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.3.5 (#589) (aeturrell?)\ncontributing and req’d lib (#588) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#changes-8",
+    "href": "changelog.html#changes-8",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.3.4 (#587) (aeturrell?)\nAdd version info and facilitate releases with versions (#586) (aeturrell?)\nSwitching to uv for package management and build (#585) (aeturrell?)\nAdds support for specifications via formulae (#584) (aeturrell?)\nblock colours reflect significance; fix for rhs variable name positions (#512) (aeturrell?)\nremoved extraneous dependencies (#511) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#package-dependencies-6",
+    "href": "changelog.html#package-dependencies-6",
+    "title": "Changelog",
+    "section": ":package: Dependencies",
+    "text": ":package: Dependencies\n\nBump virtualenv from 20.27.1 to 20.28.0 in /.github/workflows (#578) (dependabot?)\nBump pip from 24.2 to 24.3.1 in /.github/workflows (#569) (dependabot?)\nBump nox from 2024.4.15 to 2024.10.9 in /.github/workflows (#563) (dependabot?)\nBump actions/cache from 4.0.2 to 4.1.2 (#566) (dependabot?)\nBump crazy-max/ghaction-github-labeler from 5.0.0 to 5.1.0 (#568) (dependabot?)\nBump actions/setup-python from 5.2.0 to 5.3.0 (#567) (dependabot?)\nBump virtualenv from 20.26.4 to 20.27.1 in /.github/workflows (#570) (dependabot?)\nBump codecov/codecov-action from 4.5.0 to 5.0.7 (#577) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.10.2 to 1.12.2 (#573) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.10.1 to 1.10.2 (#557) (dependabot?)\nBump virtualenv from 20.26.3 to 20.26.4 in /.github/workflows (#553) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.9.0 to 1.10.1 (#552) (dependabot?)\nBump actions/setup-python from 5.1.1 to 5.2.0 (#550) (dependabot?)\nBump codecov/codecov-action from 4.4.1 to 4.5.0 (#528) (dependabot?)\nBump tornado from 6.4 to 6.4.1 (#524) (dependabot?)\nBump authlib from 1.3.0 to 1.3.1 (#527) (dependabot?)\nBump pandas-stubs from 2.2.2.240514 to 2.2.2.240603 (#521) (dependabot?)\nBump xdoctest from 1.1.3 to 1.1.5 (#525) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.8.14 to 1.9.0 (#529) (dependabot?)\nBump urllib3 from 2.2.1 to 2.2.2 (#532) (dependabot?)\nBump virtualenv from 20.26.2 to 20.26.3 in /.github/workflows (#536) (dependabot?)\nBump quartodoc from 0.7.2 to 0.7.5 (#533) (dependabot?)\nBump certifi from 2024.2.2 to 2024.7.4 (#540) (dependabot?)\nBump zipp from 3.18.2 to 3.19.1 (#543) (dependabot?)\nBump actions/setup-python from 5.1.0 to 5.1.1 (#544) (dependabot?)\nBump pip from 24.0 to 24.2 in /.github/workflows (#549) (dependabot?)\nBump safety from 3.2.0 to 3.2.4 (#539) (dependabot?)\nBump ruff from 0.4.6 to 0.5.5 (#548) (dependabot?)\nBump coverage from 7.5.1 to 7.5.3 (#516) (dependabot?)\nBump typeguard from 4.2.1 to 4.3.0 (#513) (dependabot?)\nBump ruff from 0.4.5 to 0.4.6 (#515) (dependabot?)\nBump codecov/codecov-action from 4.4.0 to 4.4.1 (#507) (dependabot?)\nBump types-setuptools from 69.5.0.20240519 to 70.0.0.20240523 (#510) (dependabot?)\nBump ruff from 0.4.4 to 0.4.5 (#509) (dependabot?)\nBump types-setuptools from 69.5.0.20240513 to 69.5.0.20240519 (#504) (dependabot?)\nBump pytest from 8.2.0 to 8.2.1 (#505) (dependabot?)\nBump codecov/codecov-action from 4.3.0 to 4.4.0 (#496) (dependabot?)\nBump release-drafter/release-drafter from 5.25.0 to 6.0.0 (#424) (dependabot?)\nBump virtualenv from 20.25.3 to 20.26.2 in /.github/workflows (#494) (dependabot?)"
+  },
+  {
+    "objectID": "changelog.html#changes-9",
+    "href": "changelog.html#changes-9",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.3.3 (#499) (aeturrell?)\nSwitching documentation to quarto and quartodoc (#498) (aeturrell?)\nMainly infrastructure improvements (#497) (aeturrell?)\nsphinx to 5 (#325) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#package-dependencies-7",
+    "href": "changelog.html#package-dependencies-7",
+    "title": "Changelog",
+    "section": ":package: Dependencies",
+    "text": ":package: Dependencies\n\nBump safety from 3.1.0 to 3.2.0 (#490) (dependabot?)\nBump coverage from 7.4.3 to 7.5.1 (#491) (dependabot?)\nBump jinja2 from 3.1.3 to 3.1.4 (#492) (dependabot?)\nBump poetry from 1.8.2 to 1.8.3 in /.github/workflows (#493) (dependabot?)\nBump pytest from 8.1.1 to 8.2.0 (#487) (dependabot?)\nBump types-setuptools from 69.2.0.20240317 to 69.5.0.20240423 (#481) (dependabot?)\nBump black from 24.4.0 to 24.4.2 (#486) (dependabot?)\nBump actions/setup-python from 5.0.0 to 5.1.0 (#467) (dependabot?)\nBump black from 24.3.0 to 24.4.0 (#474) (dependabot?)\nBump pre-commit-hooks from 4.5.0 to 4.6.0 (#475) (dependabot?)\nBump nox from 2024.3.2 to 2024.4.15 (#476) (dependabot?)\nBump nox from 2024.3.2 to 2024.4.15 in /.github/workflows (#477) (dependabot?)\nBump virtualenv from 20.25.1 to 20.25.3 in /.github/workflows (#479) (dependabot?)\nBump ipykernel from 6.29.3 to 6.29.4 (#469) (dependabot?)\nBump codecov/codecov-action from 4.2.0 to 4.3.0 (#472) (dependabot?)\nBump typeguard from 4.1.5 to 4.2.1 (#465) (dependabot?)\nBump safety from 3.0.1 to 3.1.0 (#466) (dependabot?)\nBump idna from 3.4 to 3.7 (#473) (dependabot?)\nBump pillow from 10.2.0 to 10.3.0 (#470) (dependabot?)\nBump codecov/codecov-action from 4.1.0 to 4.2.0 (#471) (dependabot?)\nBump nox from 2023.4.22 to 2024.3.2 (#452) (dependabot?)\nBump nox from 2023.4.22 to 2024.3.2 in /.github/workflows (#453) (dependabot?)\nBump poetry from 1.8.1 to 1.8.2 in /.github/workflows (#454) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.8.12 to 1.8.14 (#457) (dependabot?)\nBump pytest from 8.0.2 to 8.1.1 (#459) (dependabot?)\nBump mypy from 1.8.0 to 1.9.0 (#460) (dependabot?)\nBump types-setuptools from 69.1.0.20240223 to 69.2.0.20240317 (#461) (dependabot?)\nBump actions/cache from 4.0.0 to 4.0.2 (#462) (dependabot?)\nBump black from 24.2.0 to 24.3.0 (#463) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.8.11 to 1.8.12 (#445) (dependabot?)\nBump codecov/codecov-action from 4.0.1 to 4.1.0 (#444) (dependabot?)\nBump coverage from 7.4.2 to 7.4.3 (#442) (dependabot?)\nBump pytest from 8.0.1 to 8.0.2 (#443) (dependabot?)\nBump ipykernel from 6.29.2 to 6.29.3 (#446) (dependabot?)\nBump poetry from 1.7.1 to 1.8.1 in /.github/workflows (#447) (dependabot?)\nBump virtualenv from 20.25.0 to 20.25.1 in /.github/workflows (#438) (dependabot?)\nBump types-setuptools from 69.1.0.20240217 to 69.1.0.20240223 (#439) (dependabot?)\nBump types-setuptools from 69.0.0.20240125 to 69.1.0.20240217 (#433) (dependabot?)\nBump pytest from 8.0.0 to 8.0.1 (#434) (dependabot?)\nBump matplotlib from 3.7.4 to 3.7.5 (#435) (dependabot?)\nBump coverage from 7.4.1 to 7.4.2 (#436) (dependabot?)\nBump cryptography from 42.0.2 to 42.0.4 (#437) (dependabot?)\nBump cryptography from 41.0.7 to 42.0.2 (#432) (dependabot?)\nBump black from 24.1.1 to 24.2.0 (#430) (dependabot?)\nBump nbstripout from 0.6.1 to 0.7.1 (#429) (dependabot?)\nBump black from 24.1.0 to 24.1.1 (#418) (dependabot?)\nBump coverage from 7.4.0 to 7.4.1 (#419) (dependabot?)\nBump ipykernel from 6.29.0 to 6.29.2 (#428) (dependabot?)\nBump pytest from 7.4.4 to 8.0.0 (#420) (dependabot?)\nBump xdoctest from 1.1.2 to 1.1.3 (#422) (dependabot?)\nBump codecov/codecov-action from 3.1.4 to 4.0.1 (#425) (dependabot?)\nBump pip from 23.3.2 to 24.0 in /.github/workflows (#426) (dependabot?)\nBump black from 23.12.1 to 24.1.0 (#417) (dependabot?)\nBump types-setuptools from 69.0.0.20240115 to 69.0.0.20240125 (#415) (dependabot?)\nBump pillow from 10.0.1 to 10.2.0 (#414) (dependabot?)\nBump safety from 3.0.0 to 3.0.1 (#413) (dependabot?)\nBump virtualenv from 20.24.6 to 20.25.0 in /.github/workflows (#392) (dependabot?)\nBump types-setuptools from 69.0.0.20240106 to 69.0.0.20240115 (#409) (dependabot?)\nBump safety from 2.3.4 to 3.0.0 (#412) (dependabot?)\nBump actions/cache from 3.3.3 to 4.0.0 (#410) (dependabot?)\nBump ipykernel from 6.28.0 to 6.29.0 (#411) (dependabot?)\nBump jinja2 from 3.1.2 to 3.1.3 (#407) (dependabot?)\nBump actions/cache from 3.3.2 to 3.3.3 (#408) (dependabot?)\nBump fonttools from 4.41.1 to 4.43.0 (#406) (dependabot?)\nBump types-setuptools from 69.0.0.0 to 69.0.0.20240106 (#405) (dependabot?)\nBump pytest from 7.4.3 to 7.4.4 (#403) (dependabot?)\nBump ipykernel from 6.26.0 to 6.28.0 (#401) (dependabot?)\nBump statsmodels from 0.14.0 to 0.14.1 (#402) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.8.10 to 1.8.11 (#390) (dependabot?)\nBump coverage from 7.3.2 to 7.4.0 (#404) (dependabot?)\nBump matplotlib from 3.7.3 to 3.7.4 (#386) (dependabot?)\nBump types-setuptools from 68.2.0.0 to 69.0.0.0 (#391) (dependabot?)\nBump actions/setup-python from 4.7.1 to 5.0.0 (#394) (dependabot?)\nBump actions/download-artifact from 3 to 4 (#397) (dependabot?)\nBump pip from 23.3.1 to 23.3.2 in /.github/workflows (#398) (dependabot?)\nBump mypy from 1.6.1 to 1.8.0 (#399) (dependabot?)\nBump black from 23.10.1 to 23.12.1 (#400) (dependabot?)\nBump poetry from 1.6.1 to 1.7.1 in /.github/workflows (#385) (dependabot?)\nBump xdoctest from 1.1.1 to 1.1.2 (#380) (dependabot?)\nBump pytest from 7.4.2 to 7.4.3 (#378) (dependabot?)\nBump ipykernel from 6.25.2 to 6.26.0 (#379) (dependabot?)\nBump virtualenv from 20.24.5 to 20.24.6 in /.github/workflows (#376) (dependabot?)\nBump black from 23.10.0 to 23.10.1 (#377) (dependabot?)\nBump pip from 23.3 to 23.3.1 in /.github/workflows (#375) (dependabot?)\nBump pre-commit from 3.4.0 to 3.5.0 (#372) (dependabot?)\nBump mypy from 1.5.1 to 1.6.1 (#373) (dependabot?)\nBump black from 23.9.1 to 23.10.0 (#374) (dependabot?)\nBump reorder-python-imports from 3.11.0 to 3.12.0 (#365) (dependabot?)\nBump pip from 23.2.1 to 23.3 in /.github/workflows (#369) (dependabot?)\nBump pillow from 10.0.0 to 10.0.1 (#367) (dependabot?)\nBump coverage from 7.3.1 to 7.3.2 (#366) (dependabot?)\nBump pre-commit-hooks from 4.4.0 to 4.5.0 (#368) (dependabot?)\nBump release-drafter/release-drafter from 5.24.0 to 5.25.0 (#370) (dependabot?)\nBump urllib3 from 2.0.6 to 2.0.7 (#371) (dependabot?)\nBump urllib3 from 2.0.4 to 2.0.6 (#364) (dependabot?)\nBump actions/setup-python from 4.7.0 to 4.7.1 (#363) (dependabot?)\nBump tornado from 6.3.2 to 6.3.3 (#362) (dependabot?)\nBump reorder-python-imports from 3.10.0 to 3.11.0 (#361) (dependabot?)\nBump matplotlib from 3.7.2 to 3.7.3 (#360) (dependabot?)\nBump crazy-max/ghaction-github-labeler from 4.2.0 to 5.0.0 (#359) (dependabot?)\nBump typeguard from 4.1.3 to 4.1.5 (#357) (dependabot?)\nBump virtualenv from 20.24.4 to 20.24.5 in /.github/workflows (#356) (dependabot?)\nBump black from 23.7.0 to 23.9.1 (#358) (dependabot?)\nBump coverage from 7.3.0 to 7.3.1 (#351) (dependabot?)\nBump pytest from 7.4.1 to 7.4.2 (#354) (dependabot?)\nBump actions/cache from 3.3.1 to 3.3.2 (#355) (dependabot?)\nBump types-setuptools from 68.1.0.1 to 68.2.0.0 (#352) (dependabot?)\nBump ipykernel from 6.25.1 to 6.25.2 (#350) (dependabot?)\nBump types-setuptools from 68.1.0.0 to 68.1.0.1 (#344) (dependabot?)\nBump virtualenv from 20.24.3 to 20.24.4 in /.github/workflows (#345) (dependabot?)\nBump pre-commit from 3.3.3 to 3.4.0 (#347) (dependabot?)\nBump crazy-max/ghaction-github-labeler from 4.1.0 to 4.2.0 (#346) (dependabot?)\nBump typeguard from 4.1.2 to 4.1.3 (#343) (dependabot?)\nBump pytest from 7.4.0 to 7.4.1 (#348) (dependabot?)\nBump actions/checkout from 3 to 4 (#349) (dependabot?)\nBump poetry from 1.5.1 to 1.6.1 in /.github/workflows (#342) (dependabot?)\nBump types-setuptools from 68.0.0.3 to 68.1.0.0 (#337) (dependabot?)\nBump mypy from 1.5.0 to 1.5.1 (#339) (dependabot?)\nBump typeguard from 4.1.0 to 4.1.2 (#340) (dependabot?)\nBump mypy from 1.4.1 to 1.5.0 (#332) (dependabot?)\nBump ipykernel from 6.25.0 to 6.25.1 (#331) (dependabot?)\nBump virtualenv from 20.24.2 to 20.24.3 in /.github/workflows (#334) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.8.8 to 1.8.10 (#333) (dependabot?)\nBump coverage from 7.2.7 to 7.3.0 (#335) (dependabot?)\nBump typeguard from 4.0.1 to 4.1.0 (#330) (dependabot?)\nBump typeguard from 4.0.0 to 4.0.1 (#329) (dependabot?)\nBump ipykernel from 6.24.0 to 6.25.0 (#328) (dependabot?)\nBump virtualenv from 20.24.1 to 20.24.2 in /.github/workflows (#327) (dependabot?)\nBump furo from 2022.9.29 to 2023.3.27 (#326) (dependabot?)"
+  },
+  {
+    "objectID": "changelog.html#changes-10",
+    "href": "changelog.html#changes-10",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\nv0.3.2 (#324) (aeturrell?)\npandas 2.0 issues fixed (#323) (aeturrell?)\nVarious bumps (#318) (aeturrell?)\nstatsmodels to 14 (#312) (aeturrell?)\nNo typeguard test (#276) (aeturrell?)\nattempt to put all constraints up to latest v (#214) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#package-dependencies-8",
+    "href": "changelog.html#package-dependencies-8",
+    "title": "Changelog",
+    "section": ":package: Dependencies",
+    "text": ":package: Dependencies\n\nBump typeguard from 3.0.2 to 4.0.0 (#321) (dependabot?)\nBump types-setuptools from 67.8.0.0 to 68.0.0.3 (#319) (dependabot?)\nBump nox from 2022.11.21 to 2023.4.22 (#320) (dependabot?)\nBump pip from 23.2 to 23.2.1 in /.github/workflows (#322) (dependabot?)\nBump pre-commit from 3.3.1 to 3.3.3 (#314) (dependabot?)\nBump pytest from 7.3.1 to 7.4.0 (#317) (dependabot?)\nBump black from 23.3.0 to 23.7.0 (#315) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.8.6 to 1.8.8 (#308) (dependabot?)\nBump nox-poetry from 1.0.2 to 1.0.3 in /.github/workflows (#307) (dependabot?)\nBump codecov/codecov-action from 3.1.3 to 3.1.4 (#293) (dependabot?)\nBump release-drafter/release-drafter from 5.23.0 to 5.24.0 (#305) (dependabot?)\nBump requests from 2.28.1 to 2.31.0 (#295) (dependabot?)\nBump scipy from 1.9.3 to 1.10.0 (#313) (dependabot?)\nBump pandas-stubs from 1.5.3.230321 to 2.0.2.230605 (#302) (dependabot?)\nBump tornado from 6.2 to 6.3.2 (#298) (dependabot?)\nBump actions/setup-python from 4.6.0 to 4.7.0 (#309) (dependabot?)\nBump pip from 23.1.2 to 23.2 in /.github/workflows (#311) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.8.5 to 1.8.6 (#290) (dependabot?)\nBump pre-commit from 3.2.1 to 3.3.1 (#291) (dependabot?)\nBump actions/setup-python from 4.5.0 to 4.6.0 (#278) (dependabot?)\nBump pytest from 7.2.2 to 7.3.1 (#280) (dependabot?)\nBump codecov/codecov-action from 3.1.2 to 3.1.3 (#281) (dependabot?)\nBump pip from 23.1 to 23.1.2 in /.github/workflows (#285) (dependabot?)\nBump pip from 23.0.1 to 23.1 in /.github/workflows (#273) (dependabot?)\nBump types-setuptools from 67.6.0.5 to 67.6.0.8 (#275) (dependabot?)\nBump mypy from 1.1.1 to 1.2.0 (#274) (dependabot?)\nBump markdown-it-py from 1.1.0 to 2.2.0 (#272) (dependabot?)\nBump poetry from 1.4.1 to 1.4.2 in /.github/workflows (#264) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.8.3 to 1.8.5 (#266) (dependabot?)\nBump coverage from 7.2.2 to 7.2.3 (#270) (dependabot?)\nBump codecov/codecov-action from 3.1.1 to 3.1.2 (#271) (dependabot?)\nBump black from 23.1.0 to 23.3.0 (#263) (dependabot?)\nBump pre-commit from 3.2.0 to 3.2.1 (#261) (dependabot?)\nBump types-setuptools from 67.6.0.0 to 67.6.0.5 (#254) (dependabot?)\nBump pandas-stubs from 1.5.3.230304 to 1.5.3.230321 (#257) (dependabot?)\nBump typeguard from 3.0.0 to 3.0.2 (#259) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.8.1 to 1.8.3 (#258) (dependabot?)\nBump coverage from 7.2.1 to 7.2.2 (#251) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.7.1 to 1.8.1 (#248) (dependabot?)\nBump ipykernel from 6.21.3 to 6.22.0 (#256) (dependabot?)\nBump poetry from 1.4.0 to 1.4.1 in /.github/workflows (#253) (dependabot?)\nBump pre-commit from 3.1.1 to 3.2.0 (#255) (dependabot?)\nBump safety from 2.3.1 to 2.3.4 (#243) (dependabot?)\nBump jupyter-book from 0.13.1 to 0.15.1 (#244) (dependabot?)\nBump typeguard from 2.13.3 to 3.0.0 (#246) (dependabot?)\nBump pytest from 7.2.0 to 7.2.2 (#245) (dependabot?)\nBump statsmodels from 0.13.2 to 0.13.5 (#175) (dependabot?)\nBump mypy from 0.991 to 1.1.1 (#239) (dependabot?)\nBump xdoctest from 1.1.0 to 1.1.1 (#240) (dependabot?)\nBump actions/cache from 3.3.0 to 3.3.1 (#237) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.6.4 to 1.7.1 (#238) (dependabot?)\nBump matplotlib from 3.6.2 to 3.7.1 (#241) (dependabot?)\nBump pre-commit-hooks from 4.3.0 to 4.4.0 (#242) (dependabot?)\nBump coverage from 6.5.0 to 7.2.1 (#231) (dependabot?)\nBump poetry from 1.3.2 to 1.4.0 in /.github/workflows (#232) (dependabot?)\nBump ipython from 8.5.0 to 8.10.0 (#225) (dependabot?)\nBump black from 22.10.0 to 23.1.0 (#218) (dependabot?)\nBump pip from 23.0 to 23.0.1 in /.github/workflows (#226) (dependabot?)\nBump release-drafter/release-drafter from 5.22.0 to 5.23.0 (#227) (dependabot?)\nBump actions/cache from 3.2.4 to 3.3.0 (#235) (dependabot?)\nBump nox from 2022.8.7 to 2022.11.21 (#217) (dependabot?)\nBump pre-commit from 2.20.0 to 3.1.1 (#233) (dependabot?)\nBump pandas from 1.5.1 to 1.5.3 (#219) (dependabot?)\nBump pillow from 9.2.0 to 9.3.0 (#182) (dependabot?)\nBump salsify/action-detect-and-tag-new-version from 2.0.2 to 2.0.3 (#187) (dependabot?)\nBump certifi from 2022.9.24 to 2022.12.7 (#192) (dependabot?)\nBump pypa/gh-action-pypi-publish from 1.5.1 to 1.6.4 (#190) (dependabot?)\nBump wheel from 0.37.1 to 0.38.1 (#201) (dependabot?)\nBump setuptools from 65.5.0 to 65.5.1 (#203) (dependabot?)\nBump actions/setup-python from 4.3.0 to 4.5.0 (#208) (dependabot?)\nBump mypy from 0.982 to 0.991 (#181) (dependabot?)\nBump gitpython from 3.1.29 to 3.1.30 (#213) (dependabot?)\nBump release-drafter/release-drafter from 5.21.1 to 5.22.0 (#204) (dependabot?)\nBump actions/cache from 3.0.11 to 3.2.4 (#210) (dependabot?)\nBump pip from 22.3 to 23.0 in /.github/workflows (#211) (dependabot?)\nBump ipykernel from 6.16.2 to 6.21.0 (#212) (dependabot?)\nBump poetry from 1.2.2 to 1.3.1 in /.github/workflows (#194) (dependabot?)\nBump matplotlib from 3.6.1 to 3.6.2 (#174) (dependabot?)\nBump salsify/action-detect-and-tag-new-version from 2.0.1 to 2.0.2 (#163) (dependabot?)\nBump virtualenv from 20.16.5 to 20.16.6 in /.github/workflows (#162) (dependabot?)"
+  },
+  {
+    "objectID": "changelog.html#changes-11",
+    "href": "changelog.html#changes-11",
+    "title": "Changelog",
+    "section": "Changes",
+    "text": "Changes\n\n0.3.1 (#165) (aeturrell?)"
+  },
+  {
+    "objectID": "changelog.html#whats-changed",
+    "href": "changelog.html#whats-changed",
+    "title": "Changelog",
+    "section": "What’s Changed",
+    "text": "What’s Changed\n\ndocs are now created by Jupyter Book, and served up via GitHub pages.\nthere are labels saying which variables are exog, endog, controls, or subsets of controls that now appear on the plot.\nbetter errorbars.\nUpdate flake8 to 3.9.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/74\nUpdate sphinx to 4.0.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/75\nUpdate watchdog to 2.1.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/76\nUpdate sphinx to 4.0.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/77\nUpdate sphinx to 4.0.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/79\nUpdate watchdog to 2.1.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/78\nUpdate pip to 21.1.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/80\nUpdate pip to 21.1.3 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/81\nUpdate watchdog to 2.1.3 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/82\nUpdate sphinx to 4.0.3 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/83\nUpdate sphinx to 4.1.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/84\nUpdate tox to 3.24.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/85\nUpdate twine to 3.4.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/86\nUpdate sphinx to 4.1.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/89\nUpdate pip to 21.2.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/90\nUpdate tox to 3.24.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/91\nUpdate pip to 21.2.3 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/92\nUpdate wheel to 0.37.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/93\nUpdate watchdog to 2.1.4 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/96\nUpdate tox to 3.24.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/95\nUpdate tox to 3.24.3 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/97\nUpdate watchdog to 2.1.5 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/98\nUpdate pip to 21.2.4 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/94\nUpdate sphinx to 4.2.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/99\nUpdate tox to 3.24.4 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/101\nUpdate watchdog to 2.1.6 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/102\nUpdate coverage to 6.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/103\nUpdate coverage to 6.0.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/104\nUpdate flake8 to 4.0.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/105\nUpdate flake8 to 4.0.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/106\nUpdate pip to 21.3 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/107\nUpdate coverage to 6.0.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/108\nUpdate pip to 21.3.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/109\nUpdate coverage to 6.1.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/110\nUpdate twine to 3.6.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/111\nUpdate sphinx to 4.3.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/112\nUpdate sphinx to 4.3.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/113\nUpdate sphinx to 4.3.2 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/115\nUpdate wheel to 0.37.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/116\nUpdate tox to 3.24.5 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/117\nUpdate coverage to 6.3 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/119\nUpdate pip to 22.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/120\nUpdate twine to 4.0.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/127\nUpdate coverage to 6.4 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/133\nUpdate twine to 4.0.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/136\nUpdate watchdog to 2.1.9 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/138\nUpdate pip to 22.2.1 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/143\nUpdate tox to 3.26.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/149\nUpdate pip to 22.3 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/157\nUpdate sphinx to 5.3.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/158\nUpdate wheel to 0.38.0 by (pyup-bot?) in https://github.com/aeturrell/specification_curve/pull/159\nRight labels by (aeturrell?) in https://github.com/aeturrell/specification_curve/pull/161\n0.3.0 by (aeturrell?) in https://github.com/aeturrell/specification_curve/pull/164\n\nFull Changelog: https://github.com/aeturrell/specification_curve/compare/v0.2.6…v0.3.0"
+  },
+  {
+    "objectID": "changelog.html#specification-curve-v0.2.2-plausible-rod",
+    "href": "changelog.html#specification-curve-v0.2.2-plausible-rod",
+    "title": "Changelog",
+    "section": "Specification curve v0.2.2, “Plausible Rod”",
+    "text": "Specification curve v0.2.2, “Plausible Rod”\nVersion name from here.\nThis release is the first to feature the new object oriented design. Full release notes:"
+  },
+  {
+    "objectID": "package-info.html",
+    "href": "package-info.html",
+    "title": "Package Info",
+    "section": "",
+    "text": "Runtime Dependencies\n\n\n\nPackage\nVersion Constraint\nLast Published\nPyPI\n\n\n\n\njoblib\n&gt;=1.4.2\n2026-08-31\n\n\n\nmatplotlib\n&gt;=3.9.4\n2026-09-11\n\n\n\nnumpy\n&gt;=2.0.2\n2026-10-10\n\n\n\npandas\n&gt;=2.3.3\n2026-11-04\n\n\n\npyfixest\n&gt;=0.70\n2026-11-08\n\n\n\nscipy\n&gt;=1.13\n2026-08-21\n\n\n\ntqdm\n&gt;=4.67.1\n2026-09-11\n\n\n\n\n\n\nSummary\n\nRequires: Python &gt;=3.12\nRuntime Dependencies: 7\nTotal unique dependencies: 7"
+  },
+  {
+    "objectID": "reference/index.html",
+    "href": "reference/index.html",
+    "title": "API Reference",
+    "section": "",
+    "text": "Classes\n\nThe main entry point. Describe the specifications, estimate them, and plot the curve.\n\n\nSpecificationCurve\n\nRuns and plots every variant of a regression specification.\n\n\n\n\nFunctions\n\nPlot a results table directly, and select subsets of specifications.\n\n\nplot_curve()\n\nDraws a specification curve.\n\nsubsets_by()\n\nBuilds a subsets argument with one sample per level of a column.\n\n\n\n\nExample data\n\nData sets used in the documentation and tests.\n\n\nload_example_panel()\n\nGenerates a synthetic firm-year panel.\n\nload_example_data1()\n\nRetrieves example data from a file included with the package.\n\nload_example_data2()\n\nGenerates example data with one outcome and four regressors.\n\nload_example_data3()\n\nGenerates example data with two outcomes, where the true effect of x1 is 0.4.",
+    "crumbs": [
+      "Reference",
+      "API Index"
     ]
   },
   {
     "objectID": "reference/load_example_data2.html",
     "href": "reference/load_example_data2.html",
-    "title": "load_example_data2",
+    "title": "load_example_data2()",
     "section": "",
-    "text": "load_example_data2()\nGenerates fake data.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "text": "Generates example data with one outcome and four regressors.\n\n\nUsage\nSource\n\n\nload_example_data2()\n\n\nReturns\n\n\n pd.DataFrame\n\npd.DataFrame: Example data suitable for regression.",
     "crumbs": [
       "Reference",
-      "Functions",
+      "Example data",
       "load_example_data2"
     ]
   },
   {
-    "objectID": "reference/load_example_data2.html#returns",
-    "href": "reference/load_example_data2.html#returns",
-    "title": "load_example_data2",
+    "objectID": "reference/load_example_panel.html",
+    "href": "reference/load_example_panel.html",
+    "title": "load_example_panel()",
     "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "text": "Generates a synthetic firm-year panel.\n\n\nUsage\nSource\n\n\nload_example_panel(n_firms=300, n_years=8)\n\n\nThe true effect of treated on log(sales) is 0.3. Treatment is more likely for firms with a high unobserved firm effect, so specifications without firm fixed effects overstate it. eligible is a randomly assigned instrument for treated.\nColumns: firm, year, industry, state (identifiers); treated (0/1), eligible (0/1); size, age, leverage, rd (controls; age and leverage have a few missing values); sales (positive), patents (count), exporter (0/1) (outcomes); weight. Note that age rises by one each year, so it cannot be separated from firm and year fixed effects used together.\n\n\nParameters\n\n\nn_firms: int = 300\n\nNumber of firms.\n\nn_years: int = 8\n\nNumber of years, starting in 2010.\n\n\n\n\n\nReturns\n\n\n pd.DataFrame\n\npd.DataFrame: One row per firm and year.",
     "crumbs": [
       "Reference",
-      "Functions",
-      "load_example_data2"
+      "Example data",
+      "load_example_panel"
     ]
   },
   {
-    "objectID": "features.html",
-    "href": "features.html",
-    "title": "Features",
+    "objectID": "reference/subsets_by.html",
+    "href": "reference/subsets_by.html",
+    "title": "subsets_by()",
     "section": "",
-    "text": "Let’s see some of Specification Curve’s features in action."
-  },
-  {
-    "objectID": "features.html#basic-use",
-    "href": "features.html#basic-use",
-    "title": "Features",
-    "section": "Basic Use",
-    "text": "Basic Use\nHere’s an example of using Specification Curve. Note that, in the below, we can pass strings or lists of string into the arguments of the class SpecificationCurve. The programme then automatically performs all of possible regressions of endogeneous variables on exogeneous variables and controls. The estimate that is picked out is the coefficient on the given combination of endogeneous and exogenous variables (with conditioning on the given controls).\nIf a control variable is categorical, rather than continuous, it will be treated as a fixed effect.\n\nimport specification_curve as sc\n\ndf = sc.load_example_data1()\ny_endog = \"y1\"  # endogeneous variable\nx_exog = \"x1\"  # exogeneous variable\ncontrols = [\"c1\", \"c2\", \"group1\", \"group2\"]\nsco = sc.SpecificationCurve(\n    df,\n    y_endog,\n    x_exog,\n    controls,\n)\nsco.fit()\nsco.plot()\n\n\n\n\n\n\n\n\nGrey squares (black lines when there are many specifications) show whether a variable is included in a specification or not. Blue or red markers and error bars show whether the coefficient is positive and significant (at the 0.05 level) or red and significant, respectively.\nYou can also specify models with the formula API. An example string would be “y1 | y2 ~ x1 | x2 | x3 + c1 + c2 + c3 | c4”. This would produce a specification curve in which there two endogenous variables, two exogenous variables, two variables that are always included (c1 and c2), and two controls that are included in all possible combinations.\nHere’s an example, for which we first generate some data.\n\nimport numpy as np\nimport pandas as pd\nimport statsmodels.api as sm\n\n# Set seed for random numbers\nseed_for_prng = 78557\n# prng=probabilistic random number generator\nprng = np.random.default_rng(seed_for_prng)\n\n# generate some fake data\nn_samples = 1000\nx_2 = prng.integers(2, size=n_samples)\nx_1 = prng.random(size=n_samples)\nx_3 = prng.integers(3, size=n_samples)\nx_4 = prng.random(size=n_samples)\nx_5 = x_1 + 0.05 * np.random.randn(n_samples)\nx_beta = -1 - 3.5 * x_1 + 0.2 * x_2 + 0.3 * x_3  # NB: coefficient is -3.5\nprob = 1 / (1 + np.exp(-x_beta))\ny = prng.binomial(n=1, p=prob, size=n_samples)\ny2 = prng.binomial(n=1, p=prob * 0.98, size=n_samples)\ndf_logit = pd.DataFrame(\n    [x_1, x_2, x_3, x_4, x_5, y, y2], [\"x_1\", \"x_2\", \"x_3\", \"x_4\", \"x_5\", \"y\", \"y2\"]\n).T\n\n\nsc_form = sc.SpecificationCurve(\n    df_logit, formula=\"y | y2 ~ x_1 | x_5 + x_2 + x_3 | x_4\"\n)\nsc_form.fit()\nsc_form.plot()\n\n\n\n\n\n\n\n\nNote that “x_2” is included in all specifications."
-  },
-  {
-    "objectID": "features.html#retrieving-estimates",
-    "href": "features.html#retrieving-estimates",
-    "title": "Features",
-    "section": "Retrieving estimates",
-    "text": "Retrieving estimates\nYou can retrieve the estimates from the data frame:\n\nsco = sc.SpecificationCurve(df, y_endog, x_exog, controls)\nsco.fit()\nsco.df_r.head()\n\n\n\n\n\n\n\n\nx_exog\ny_endog\nResults\nCoefficient\nSpecification\nbse\nconf_int\npvalues\nSpecificationCounts\n\n\nSpecification No.\n\n\n\n\n\n\n\n\n\n\n\n\n\n0\nx1\ny1\n&lt;statsmodels.regression.linear_model.Regressio...\n6.205962\n[c1, c2, x1, y1]\n0.385317\n[5.4488963405666, 6.963027714134407]\n{'const': 1.2704500980837183e-23, 'x1': 3.3571...\n{'c1': 1, 'c2': 1, 'x1': 1, 'y1': 1}\n\n\n1\nx1\ny1\n&lt;statsmodels.regression.linear_model.Regressio...\n6.205962\n[c1, c2, group1, group2, x1, y1]\n0.385317\n[5.4488963405666, 6.963027714134407]\n{'const': 1.2704500980837183e-23, 'x1': 3.3571...\n{'c1': 1, 'c2': 1, 'group1': 1, 'group2': 1, '...\n\n\n2\nx1\ny1\n&lt;statsmodels.regression.linear_model.Regressio...\n6.205962\n[c1, c2, group2, x1, y1]\n0.385317\n[5.4488963405666, 6.963027714134407]\n{'const': 1.2704500980837183e-23, 'x1': 3.3571...\n{'c1': 1, 'c2': 1, 'group2': 1, 'x1': 1, 'y1': 1}\n\n\n3\nx1\ny1\n&lt;statsmodels.regression.linear_model.Regressio...\n6.205962\n[c1, c2, group1, x1, y1]\n0.385317\n[5.4488963405666, 6.963027714134407]\n{'const': 1.2704500980837183e-23, 'x1': 3.3571...\n{'c1': 1, 'c2': 1, 'group1': 1, 'x1': 1, 'y1': 1}\n\n\n4\nx1\ny1\n&lt;statsmodels.regression.linear_model.Regressio...\n6.492386\n[c1, group1, group2, x1, y1]\n0.592879\n[5.327511339458251, 7.65726091179649]\n{'const': 0.7410410238698516, 'x1': 3.92271332...\n{'c1': 1, 'group1': 1, 'group2': 1, 'x1': 1, '..."
-  },
-  {
-    "objectID": "features.html#inference-under-the-null",
-    "href": "features.html#inference-under-the-null",
-    "title": "Features",
-    "section": "Inference under the null",
-    "text": "Inference under the null\nAlthough not everyone is convinced, it may be informative to run some statistical inferences on the specification curve. These ask: considering the full set of reasonable specifications jointly, how inconsistent are the results with the null hypothesis of no effect? You can find more details in [@simonsohn2020specification].\n\ndfn = sc.load_example_data3()\ndfn.head()\n\n\n\n\n\n\n\n\ny1\ny2\nx1\nc1\nc2\nc3\nccat\n\n\n\n\n0\n0.408694\n-0.677861\n0.319844\n0.873945\n0.315051\n0.317730\n0\n\n\n1\n0.823288\n0.220807\n0.879205\n0.603677\n0.044192\n0.313405\n0\n\n\n2\n1.314995\n1.100182\n0.980309\n0.937964\n0.790195\n0.684977\n1\n\n\n3\n0.481942\n0.305384\n0.210092\n0.718184\n0.079917\n0.719236\n1\n\n\n4\n1.013794\n0.773417\n0.267960\n0.239086\n0.789400\n0.279626\n1\n\n\n\n\n\n\n\nAs normal, we create a specification curve object and fit it.\n\nsco = sc.SpecificationCurve(\n    dfn, y_endog=[\"y1\", \"y2\"], x_exog=\"x1\", controls=[\"c1\", \"c2\", \"c3\"]\n)\nsco.fit()\n\nNow, to look at the fit under the null, we can choose to either fit it directly, using .fit_null() or to use .plot(show_null_curve=True), which will run the inference automatically and plot it. For either case, you can also pass the number of bootstraps as an argument: for example, .fit_null(n_boot=10) or .plot(show_null_curve=True, **{\"n_boot\": 10}) respectively.\nYou should really use a large number of bootstraps (eg 500) but be warned it takes a long time to run this many.\nLet’s fit the null first:\n\nsco.fit_null(n_boot=10)\n\n\n\n\nAnd now we can plot it to see what the likely range of the coefficient would be under the null:\n\nsco.plot(show_null_curve=True)\n\n\n\n\n\n\n\n\nFinally, there is a summary of some statistical tests that are relevant to whether coefficient under the null is zero (hypothesis) or not, and whether the share of positives and negatives is what you would expect from chance or not.\n\nsco.null_stats_summary\n\n\n\n\n\n\n\n\nestimate\np-value\n\n\n\n\nmedian\n0.00593\n&lt;0.001\n\n\nshare positive\n16 of 16\nNA\n\n\nshare negative\n0 of 16\nNA\n\n\n\n\n\n\n\nAnd, once you have done all of this fitting, you can examine it all simply by calling the object:\n\nsco\n\n--------------------------\nSpecification Curve object\n--------------------------\ny vars: y1, y2\nx vars: x1\ncontrols: c1, c2, c3\nalways included: \n\nSpecifications have run\n-----------------------\nEstimator: &lt;class 'statsmodels.regression.linear_model.OLS'&gt;\nNo. specifications: 16\n\nCoefficient stats:\n    min  median    max\n  0.399     0.4  0.401\n\nCoeffs under null have run\n--------------------------\n                estimate p-value\nmedian           0.00593  &lt;0.001\nshare positive  16 of 16      NA\nshare negative   0 of 16      NA"
-  },
-  {
-    "objectID": "features.html#saving-results-to-file",
-    "href": "features.html#saving-results-to-file",
-    "title": "Features",
-    "section": "Saving results to file",
-    "text": "Saving results to file\nSave the plot to file (the format is inferred from file extension):\nsco = sc.SpecificationCurve(df, y_endog, x_exog, controls,\n                                  cat_expand=['group1'])\nsco.fit()\nsco.plot(save_path='test_fig.pdf')"
-  },
-  {
-    "objectID": "features.html#expanding-a-categorical-variable",
-    "href": "features.html#expanding-a-categorical-variable",
-    "title": "Features",
-    "section": "Expanding a categorical variable",
-    "text": "Expanding a categorical variable\nShould you need to, you can expand a categorical variable into its different elements and run those separately. In the example below, the \"group2\" categorical variable is expanded like this.\n\ny_endog = \"y1\"  # endogeneous variable\nx_exog = \"x1\"  # exogeneous variable\ncontrols = [\"c1\", \"c2\", \"group1\", \"group2\"]\nsco = sc.SpecificationCurve(\n    df,\n    y_endog,\n    x_exog,\n    controls,\n    cat_expand=[\"group2\"],  # have each fixed effect run separately\n)\nsco.fit()\nsco.plot()"
-  },
-  {
-    "objectID": "features.html#using-multiple-exogeneous-variables",
-    "href": "features.html#using-multiple-exogeneous-variables",
-    "title": "Features",
-    "section": "Using multiple exogeneous variables",
-    "text": "Using multiple exogeneous variables\nSometimes, you’d like to check different independent variables (and the coefficients they come with following a regression). This is achieved by passing a list to the exogeneous argument of SpecificationCurve. These variations on the independent variables are labelled by x in the plot.\n\ndf = sc.load_example_data1()\nx_exog = [\"x1\", \"x2\"]\ny_endog = \"y1\"\ncontrols = [\"c1\", \"c2\", \"group1\", \"group2\"]\nsco = sc.SpecificationCurve(df, y_endog, x_exog, controls)\nsco.fit()\nsco.plot()"
-  },
-  {
-    "objectID": "features.html#excluding-some-combinations-of-controls",
-    "href": "features.html#excluding-some-combinations-of-controls",
-    "title": "Features",
-    "section": "Excluding some combinations of controls",
-    "text": "Excluding some combinations of controls\nSome controls may be redundant, and you might want to exclude them both being used together. The exclu_grps keyword argument achieves this.\nIn the below example, \"c1\" and \"c2\" are never run in the same specification.\n\ndf = sc.load_example_data1()\n\ny_endog = \"y1\"\nx_exog = \"x1\"\ncontrols = [\"c1\", \"c2\", \"group1\", \"group2\"]\nsco = sc.SpecificationCurve(df, y_endog, x_exog, controls, exclu_grps=[[\"c1\", \"c2\"]])\nsco.fit()\nsco.plot()"
-  },
-  {
-    "objectID": "features.html#always-include-some-controls-in-all-specifications",
-    "href": "features.html#always-include-some-controls-in-all-specifications",
-    "title": "Features",
-    "section": "Always include some controls in all specifications",
-    "text": "Always include some controls in all specifications\nLikewise, there will be times when you always wish to include a particular control in specifications, and to show this on the plot. The always_include= keyword argument helps you to achieve this.\nIn the example below, we ask that \"c1\" is included in every specification.\n\ndf = sc.load_example_data1()\nx_exog = \"x1\"\ny_endog = \"y1\"\ncontrols = [\"c2\", \"group1\", \"group2\"]\nsco = sc.SpecificationCurve(df, y_endog, x_exog, controls, always_include=\"c1\")\nsco.fit()\nsco.plot()"
-  },
-  {
-    "objectID": "features.html#flexing-the-style-for-very-large-numbers-of-specifications",
-    "href": "features.html#flexing-the-style-for-very-large-numbers-of-specifications",
-    "title": "Features",
-    "section": "Flexing the style for very large numbers of specifications",
-    "text": "Flexing the style for very large numbers of specifications\nThe default plot type isn’t suitable for very large numbers of specifications, but it does automatically switch to a style suited to a large number of specifications.\nHere’s an example\n\n# Generate some fake data\n\nn_samples = 2000\n# Number of dimensions of continuous\nn_dim = 8\nc_rnd_vars = prng.random(size=(n_dim, n_samples))\nc_rnd_vars_names = [f\"c_{i}\" for i in range(np.shape(c_rnd_vars)[0])]\ny_1 = (\n    0.4 * c_rnd_vars[0, :]  # This is the true value of the coefficient\n    - 0.2 * c_rnd_vars[1, :]\n    + 0.3 * prng.standard_normal(n_samples)\n)\n# Next line causes y_2 ests to be much more noisy\ny_2 = y_1 - 0.3 * np.abs(prng.standard_normal(n_samples))\ndf = pd.DataFrame([y_1, y_2], [\"y1\", \"y2\"]).T\nfor i, col_name in enumerate(c_rnd_vars_names):\n    df[col_name] = c_rnd_vars[i, :]\n\ncontrols = c_rnd_vars_names[1:]\n\n# Run it with Specification Curve\nsco = sc.SpecificationCurve(df, [\"y1\", \"y2\"], c_rnd_vars_names[0], controls)\nsco.fit()\nsco.plot()"
-  },
-  {
-    "objectID": "features.html#flagging-a-preferred-specification",
-    "href": "features.html#flagging-a-preferred-specification",
-    "title": "Features",
-    "section": "Flagging a preferred specification",
-    "text": "Flagging a preferred specification\nOften, in practice, you will have a preferred specification that you will use as your estimate. You can specify this and have it be flagged.\nYou can achieve this by passing a list of variables that you’d like to be used in your preferred specification via the preferred_spec keyword argument.\nIn the example below, the preferred specification comes out as being close to the known answer that we constructed.\n\nsco = sc.SpecificationCurve(df, [\"y1\", \"y2\"], c_rnd_vars_names[0], controls)\nsco.fit()\nsco.plot(preferred_spec=[\"y1\", c_rnd_vars_names[0]] + controls)"
-  },
-  {
-    "objectID": "features.html#using-models-other-than-ordinary-least-squares",
-    "href": "features.html#using-models-other-than-ordinary-least-squares",
-    "title": "Features",
-    "section": "Using models other than Ordinary Least Squares",
-    "text": "Using models other than Ordinary Least Squares\nThe default model is OLS, but you can pass through other models too.\n\n# Specify the regressions to run\ny_endog = [\"y\", \"y2\"]\nx_exog = [\"x_1\", \"x_5\"]\ncontrols = [\"x_3\", \"x_2\", \"x_4\"]\nsco = sc.SpecificationCurve(df_logit, y_endog, x_exog, controls)\n# Fit using the logit estimator\nsco.fit(estimator=sm.Logit)  # sm.Probit also works\nsco.plot()\n\nOptimization terminated successfully.\n         Current function value: 0.350088\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346934\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.349797\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347686\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.346750\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344251\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347407\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344075\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.350793\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347768\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.350508\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.348114\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347585\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344777\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347851\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344609\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345884\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.342386\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344798\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.345878\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341527\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.342360\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344793\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.341502\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.348216\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344861\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347166\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.348190\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344023\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.344797\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.347145\n         Iterations 7\nOptimization terminated successfully.\n         Current function value: 0.343965\n         Iterations 7"
-  },
-  {
-    "objectID": "reference/load_example_data1.html",
-    "href": "reference/load_example_data1.html",
-    "title": "load_example_data1",
-    "section": "",
-    "text": "load_example_data1()\nRetrieves example data from a file included with the package.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "text": "Builds a subsets argument with one sample per level of a column.\n\n\nUsage\nSource\n\n\nsubsets_by(data, column, include_all=False)\n\n\nParameters\n\n\ndata: pd.DataFrame\n\nThe data.\n\ncolumn: str\n\nColumn whose levels define the samples.\n\ninclude_all: bool = False\n\nAlso include the full sample, named “all”.\n\n\n\n\n\nReturns\n\n\n dict[str, Optional[str]]\n\ndict[str, Optional[str]]: Maps a name for each sample to its query.\n\n\n\n\n\nExamples\n\n    &gt;&gt;&gt; import pandas as pd\n    &gt;&gt;&gt; subsets_by(pd.DataFrame({\"g\": [\"a\", \"b\", \"a\"]}), \"g\")\n{'g = a': \"`g` == 'a'\", 'g = b': \"`g` == 'b'\"}",
     "crumbs": [
       "Reference",
       "Functions",
-      "load_example_data1"
+      "subsets_by"
     ]
   },
   {
-    "objectID": "reference/load_example_data1.html#returns",
-    "href": "reference/load_example_data1.html#returns",
-    "title": "load_example_data1",
+    "objectID": "user-guide/features.html",
+    "href": "user-guide/features.html",
+    "title": "Features",
     "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "text": "Let’s see Specification Curve’s features in action.",
     "crumbs": [
-      "Reference",
-      "Functions",
-      "load_example_data1"
+      "Features"
     ]
   },
   {
-    "objectID": "reference/load_example_data3.html",
-    "href": "reference/load_example_data3.html",
-    "title": "load_example_data3",
-    "section": "",
-    "text": "load_example_data3()\nGenerates fake data.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "objectID": "user-guide/features.html#missing-values",
+    "href": "user-guide/features.html#missing-values",
+    "title": "Features",
+    "section": "Missing values",
+    "text": "Missing values\nIn the example data, age and leverage have some missing values. (Firm age rises by one each year, so it should not be combined with firm and year fixed effects together: pyfixest would drop it as collinear.) By default, within each sample every specification is estimated on the same rows: those that are complete for all the variables used by any specification. That way differences between estimates come from the specification and not from a changing sample. Passing common_sample=False lets each specification use every row it can instead. The number of observations each one used is in the results, and show_nobs=True adds it to the chart.\n\nsco = sc.SpecificationCurve(\n    df,\n    y=\"log(sales)\",\n    x=\"treated\",\n    controls=[\"size\", \"age\", \"leverage\"],\n    common_sample=False,\n)\nsco.fit()\nsco.plot(show_nobs=True);",
     "crumbs": [
-      "Reference",
-      "Functions",
-      "load_example_data3"
+      "Features"
     ]
   },
   {
-    "objectID": "reference/load_example_data3.html#returns",
-    "href": "reference/load_example_data3.html#returns",
-    "title": "load_example_data3",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\npd.DataFrame: Example data suitable for regression.",
+    "objectID": "user-guide/features.html#choosing-a-resampling-method",
+    "href": "user-guide/features.html#choosing-a-resampling-method",
+    "title": "Features",
+    "section": "Choosing a resampling method",
+    "text": "Choosing a resampling method\nThere are three ways of generating data in which the null is true, chosen with method:\n\n\"bootstrap\" (the default for linear models). Each specification’s estimated effect is removed from its outcome, y^* = y - \\hat\\beta x, so that the regressor of interest has no effect on y^* by construction, and then rows (or whole clusters) are drawn with replacement.\n\"bayesian-bootstrap\", the Bayesian bootstrap (Rubin 1981; Andrews et al. 2026). The null is imposed in the same way, but instead of drawing rows with replacement every row (or cluster) is kept and given a random weight from a flat Dirichlet distribution, scaled so that the weights average one. Where the ordinary bootstrap gives each row a whole number of copies, possibly zero, the Bayesian bootstrap gives it a positive, continuously varying weight.\n\"permutation\". The regressor of interest is shuffled between rows (or clusters), which breaks any link between it and the outcome.\n\nWhich methods you can use depends on the estimators and designs in the curve:\n\n\n\n\n\n\n\n\n\nSpecifications\n\"bootstrap\"\n\"bayesian-bootstrap\"\n\"permutation\"\n\n\n\n\nLinear (model=\"feols\")\n✓\n✓\n✓ †\n\n\nInstrumental variables (feols with iv)\n✓\n✓\n✗\n\n\nPoisson (\"fepois\") and other GLMs (\"feglm\")\n✗\n✗\n✓ †\n\n\nQuantile regression (\"quantreg\")\n✗\n✗\n✓ †\n\n\nWith weights\n✓\n✓ ‡\n✓ †\n\n\nWith cluster\n✓ (resamples clusters)\n✓ (one weight per cluster)\n✓ † (the regressor must be constant within clusters)\n\n\nWith strata\n✓\n✓\n✓ †\n\n\n\n† Only valid if the regressor of interest is as good as randomly assigned (within strata, if given). ‡ The random weights multiply your own; your weights must be analytic weights (pyfixest’s default, weights_type=\"aweights\").\nThe two bootstraps need every specification to be linear because removing \\hat\\beta x from the outcome only imposes the null in a linear model: in a Poisson model or a logit it does not. If the curve mixes linear and non-linear estimators, method=\"auto\" raises an error and asks you to choose. Permutation is not available for instrumental-variable specifications, because shuffling the endogenous regressor but not its instruments breaks the first stage.",
     "crumbs": [
-      "Reference",
-      "Functions",
-      "load_example_data3"
+      "Features"
     ]
   },
   {
-    "objectID": "contributing.html",
-    "href": "contributing.html",
-    "title": "Contributing",
-    "section": "",
-    "text": "Thank you for your interest in improving this project. This project is open-source under the MIT license and welcomes contributions in the form of bug reports, feature requests, and pull requests.\nHere is a list of important resources for contributors:\n\nSource Code\nDocumentation\nIssue Tracker\n\n\n\nReport bugs on the Issue Tracker.\nWhen filing an issue, make sure to answer these questions:\n\nWhich operating system and Python version are you using?\nWhich version of this project are you using?\nWhat did you do?\nWhat did you expect to see?\nWhat did you see instead?\n\nThe best way to get your bug fixed is to provide a test case, and/or steps to reproduce the issue.\n\n\n\nRequest features on the Issue Tracker.\n\n\n\nYou need Python and the following tools:\n\nuv\nNox\nMake\nQuarto\n\nInstall the package with the existing development requirements:\n$ uv sync --frozen\nTo also update packages, do not use the --frozen flag.\nTo build the documentation locally, you will also need Make and Quarto (these are non-Python dependencies).\nYou can build the docs locally to look at them with make, which runs a command to build the README and then another to build the website which can then be found in docs/_site/. It’s make clean to remove the existing README.\nTo publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s make publish—but only devs with admin rights will be able to execute this.\n\n\n\nRun the full test suite:\n$ uv run nox\nList the available Nox sessions:\n$ uv run nox --list-sessions\nYou can also run a specific Nox session. For example, invoke the unit test suite like this:\n$ uv run nox --session=tests\nUnit tests are located in the tests directory, and are written using the pytest testing framework.\nYou may need to use, for example, uv run nox to ensure that the tests are run in the right environment.\nFor the pre-commit checks, use\n$ uv run pre-commit run --all-files\n\n\n\nOpen a pull request to submit changes to this project.\nYour pull request needs to meet the following guidelines for acceptance:\n\nThe Nox test suite must pass without errors and warnings.\nInclude unit tests. This project aims to maintain 96% code coverage.\nIf your changes add functionality, update the documentation accordingly.\nRun make to generate the new documentation.\nRun the pre-commit suite before committing.\n\nFeel free to submit early, though—we can always iterate on this.\nTo run linting and code formatting checks before committing your change, you need to run the following command:\n$ uv run nox --session=pre-commit -- install\nIt is recommended to open an issue before starting work on anything. This will allow a chance to talk it over with the owners and validate your approach.\n\n\n\n\nOpen a new branch with the version name\nChange the version in pyproject.toml (you can run uv run version_bumper.py, which has script-level dependencies)\nCommit the change with a new version label as the commit message (checking the tests pass)\nHead to GitHub and merge into main (again, if the CI works)\nDraft a new release based on that most recent merge commit, using the new version as the tag\nConfirm the release draft on GitHub\nThe automatic release GitHub Action will push to PyPI.\n\nIf you ever need distributable files, you can use the uv build command locally.\n\n\n\nYou shouldn’t need to publish the documentation because there’s a GitHub action that covers it automatically whenever there’s a new release. But to upload the documentation manually, it’s\n\nRun make to build the documentation\nRun make publish to publish the documentation"
+    "objectID": "user-guide/features.html#the-bayesian-bootstrap",
+    "href": "user-guide/features.html#the-bayesian-bootstrap",
+    "title": "Features",
+    "section": "The Bayesian bootstrap",
+    "text": "The Bayesian bootstrap\nThe two bootstraps give very similar answers in large samples. The Bayesian bootstrap does better when resampling can produce data in which a specification cannot be estimated. With the ordinary bootstrap a resample may, by chance, contain no treated units, no rows of some fixed-effect level, or too few clusters; the specifications that cannot be estimated are missing from that resample, and a resample in which fewer than min_valid of them could be estimated is left out (with a warning). Because the Bayesian bootstrap never leaves a row out, that does not happen. Its null distributions are also smoother, which helps with few clusters.\nHere is an extreme case: eight clusters, only one of them treated. Every ordinary bootstrap resample that misses the treated cluster has no variation in the regressor of interest.\n\nimport warnings\n\nimport numpy as np\nimport pandas as pd\n\nrng = np.random.default_rng(0)\nsmall = pd.DataFrame({\"group\": np.repeat(np.arange(8), 5), \"a\": rng.normal(size=40)})\nsmall[\"x\"] = (small[\"group\"] == 0).astype(float)\nsmall[\"y\"] = small[\"a\"] + 0.5 * small[\"x\"] + rng.normal(size=40)\nsco_small = sc.SpecificationCurve(small, y=\"y\", x=\"x\", controls=[\"a\"]).fit()\n\nfor method in [\"bootstrap\", \"bayesian-bootstrap\"]:\n    with warnings.catch_warnings(record=True) as caught:\n        warnings.simplefilter(\"always\")\n        sco_small.fit_null(\n            n_boot=200, method=method, cluster=\"group\", seed=0, progress=False\n        )\n    left_out = [str(w.message) for w in caught if \"left out\" in str(w.message)]\n    print(f\"{method}: {left_out[0] if left_out else 'no resamples were left out.'}\")\n\nbootstrap: 79 of 200 resamples were left out because fewer than 50% of the specifications could be estimated in them.\nbayesian-bootstrap: no resamples were left out.\n\n\nOn the panel data from above, it is used like this:\n\nsco = sc.SpecificationCurve(\n    df,\n    y=\"log(sales)\",\n    x=\"treated\",\n    controls=[\"size\", \"leverage\"],\n    fe=[\"firm\", \"firm + year\"],\n    vcov={\"CRV1\": \"firm\"},\n)\nsco.fit()\nsco.fit_null(n_boot=50, method=\"bayesian-bootstrap\", cluster=\"firm\", seed=0)\nsco.null_summary\n\n\n\n\n\n\n\n  \n    \n      \n      observed\n      p-value\n    \n  \n  \n    \n      median\n      0.325776\n      0.019608\n    \n    \n      share significant\n      1.000000\n      0.019608\n    \n    \n      Stouffer Z\n      104.837880\n      0.019608\n    \n  \n\n\n\n\nAlthough it has “Bayesian” in its name, the result here is the same kind of frequentist p-value as with the other methods: the Bayesian bootstrap is simply used as a way of generating resamples in which the null holds.",
+    "crumbs": [
+      "Features"
+    ]
   },
   {
-    "objectID": "contributing.html#how-to-report-a-bug",
-    "href": "contributing.html#how-to-report-a-bug",
-    "title": "Contributing",
-    "section": "",
-    "text": "Report bugs on the Issue Tracker.\nWhen filing an issue, make sure to answer these questions:\n\nWhich operating system and Python version are you using?\nWhich version of this project are you using?\nWhat did you do?\nWhat did you expect to see?\nWhat did you see instead?\n\nThe best way to get your bug fixed is to provide a test case, and/or steps to reproduce the issue."
+    "objectID": "user-guide/features.html#permutation",
+    "href": "user-guide/features.html#permutation",
+    "title": "Features",
+    "section": "Permutation",
+    "text": "Permutation\nFor non-linear estimators, permutation is the option. In the example data eligible was assigned at random and has no effect of its own on patents once treatment is controlled for, so here we expect large p-values:\n\nsco = sc.SpecificationCurve(\n    df,\n    y=\"patents\",\n    x=\"eligible\",\n    controls=[\"size\", \"leverage\"],\n    always=\"treated\",\n    model=\"fepois\",\n)\nsco.fit()\nsco.fit_null(n_boot=50, method=\"permutation\", seed=0)\nsco.null_summary\n\n\n\n\n\n\n\n  \n    \n      \n      observed\n      p-value\n    \n  \n  \n    \n      median\n      -0.022283\n      0.470588\n    \n    \n      share significant\n      0.000000\n      1.000000\n    \n    \n      Stouffer Z\n      -1.218778\n      0.470588",
+    "crumbs": [
+      "Features"
+    ]
   },
   {
-    "objectID": "contributing.html#how-to-request-a-feature",
-    "href": "contributing.html#how-to-request-a-feature",
-    "title": "Contributing",
-    "section": "",
-    "text": "Request features on the Issue Tracker."
-  },
-  {
-    "objectID": "contributing.html#how-to-set-up-your-development-environment",
-    "href": "contributing.html#how-to-set-up-your-development-environment",
-    "title": "Contributing",
-    "section": "",
-    "text": "You need Python and the following tools:\n\nuv\nNox\nMake\nQuarto\n\nInstall the package with the existing development requirements:\n$ uv sync --frozen\nTo also update packages, do not use the --frozen flag.\nTo build the documentation locally, you will also need Make and Quarto (these are non-Python dependencies).\nYou can build the docs locally to look at them with make, which runs a command to build the README and then another to build the website which can then be found in docs/_site/. It’s make clean to remove the existing README.\nTo publish new docs to GitHub Pages (where the documentation is displayed as web pages), it’s make publish—but only devs with admin rights will be able to execute this."
-  },
-  {
-    "objectID": "contributing.html#how-to-test-the-project",
-    "href": "contributing.html#how-to-test-the-project",
-    "title": "Contributing",
-    "section": "",
-    "text": "Run the full test suite:\n$ uv run nox\nList the available Nox sessions:\n$ uv run nox --list-sessions\nYou can also run a specific Nox session. For example, invoke the unit test suite like this:\n$ uv run nox --session=tests\nUnit tests are located in the tests directory, and are written using the pytest testing framework.\nYou may need to use, for example, uv run nox to ensure that the tests are run in the right environment.\nFor the pre-commit checks, use\n$ uv run pre-commit run --all-files"
-  },
-  {
-    "objectID": "contributing.html#how-to-submit-changes",
-    "href": "contributing.html#how-to-submit-changes",
-    "title": "Contributing",
-    "section": "",
-    "text": "Open a pull request to submit changes to this project.\nYour pull request needs to meet the following guidelines for acceptance:\n\nThe Nox test suite must pass without errors and warnings.\nInclude unit tests. This project aims to maintain 96% code coverage.\nIf your changes add functionality, update the documentation accordingly.\nRun make to generate the new documentation.\nRun the pre-commit suite before committing.\n\nFeel free to submit early, though—we can always iterate on this.\nTo run linting and code formatting checks before committing your change, you need to run the following command:\n$ uv run nox --session=pre-commit -- install\nIt is recommended to open an issue before starting work on anything. This will allow a chance to talk it over with the owners and validate your approach."
-  },
-  {
-    "objectID": "contributing.html#how-to-create-a-package-release",
-    "href": "contributing.html#how-to-create-a-package-release",
-    "title": "Contributing",
-    "section": "",
-    "text": "Open a new branch with the version name\nChange the version in pyproject.toml (you can run uv run version_bumper.py, which has script-level dependencies)\nCommit the change with a new version label as the commit message (checking the tests pass)\nHead to GitHub and merge into main (again, if the CI works)\nDraft a new release based on that most recent merge commit, using the new version as the tag\nConfirm the release draft on GitHub\nThe automatic release GitHub Action will push to PyPI.\n\nIf you ever need distributable files, you can use the uv build command locally."
-  },
-  {
-    "objectID": "contributing.html#how-to-build-the-documentation-manually-and-locally",
-    "href": "contributing.html#how-to-build-the-documentation-manually-and-locally",
-    "title": "Contributing",
-    "section": "",
-    "text": "You shouldn’t need to publish the documentation because there’s a GitHub action that covers it automatically whenever there’s a new release. But to upload the documentation manually, it’s\n\nRun make to build the documentation\nRun make publish to publish the documentation"
+    "objectID": "user-guide/features.html#other-options",
+    "href": "user-guide/features.html#other-options",
+    "title": "Features",
+    "section": "Other options",
+    "text": "Other options\nOther options: alternative=\"greater\" or \"less\" gives one-sided tests, alpha sets the significance level used for the share of significant estimates, and keep_draws=True keeps the estimates from every resample in sco.null_draws.",
+    "crumbs": [
+      "Features"
+    ]
   }
 ]

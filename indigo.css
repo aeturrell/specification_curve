@@ -1,0 +1,580 @@
+/* ==========================================================================
+   Indigo Matrix: the Specification Curve docs theme
+   --------------------------------------------------------------------------
+   Layered on top of great-docs' own theme. The palette comes from the
+   package's default chart: the estimate blue, the lavender "on" cells and the
+   grey "off" cells of the indicator matrix. Headings use STIX Two Text (the
+   chart's face), body text Instrument Sans, and code Google Sans Code.
+   Corners are square everywhere, like the matrix cells.
+   ========================================================================== */
+
+/* ---------- tokens ---------- */
+:root {
+  --sc-paper: #FAFAFD;
+  --sc-surface: #FFFFFF;
+  --sc-panel: #F1F1FB;
+  --sc-ink: #1B1B3A;
+  --sc-ink-2: #33335A;
+  --sc-muted: #5C5C80;
+  --sc-line: #E3E3EE;
+  --sc-blue: #3030E8;
+  --sc-blue-hover: #2020B8;
+  --sc-ind: #8585F4;
+  --sc-off: #E6E6EC;
+  --sc-red: #D0342C;
+  --sc-select: rgba(133, 133, 244, 0.28);
+
+  --sc-display: "STIX Two Text", "STIXGeneral", Georgia, "Times New Roman", serif;
+  --sc-body: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sc-code: "Google Sans Code", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* great-docs tokens */
+  --gd-bg-primary: var(--sc-paper);
+  --gd-bg-secondary: #F4F4FA;
+  --gd-bg-tertiary: var(--sc-panel);
+  --gd-text-primary: var(--sc-ink);
+  --gd-text-secondary: var(--sc-ink-2);
+  --gd-text-muted: var(--sc-muted);
+  --gd-border-color: var(--sc-line);
+  --gd-border-light: #ECECF6;
+  --gd-link-color: var(--sc-blue);
+  --gd-code-bg: var(--sc-panel);
+  --gd-code-color: var(--sc-ink);
+  --gd-blockquote-bg: var(--sc-panel);
+  --gd-sidebar-bg: var(--sc-paper);
+  --gd-navbar-bg: var(--sc-paper);
+  --gd-navbar-text: var(--sc-ink);
+  --gd-footer-text: var(--sc-muted);
+  --gd-highlight-color: var(--sc-select);
+  --gd-active-link: var(--sc-blue);
+  --gd-accent-blue: rgba(48, 48, 232, 0.45);
+  --gd-citation-color: var(--sc-blue);
+
+  --gd-syn-class: #3030E8;
+  --gd-syn-name: #1B1B3A;
+  --gd-syn-none: #7A3E9D;
+  --gd-syn-bool: #7A3E9D;
+  --gd-syn-operator: #5C5C80;
+  --gd-syn-keyword: #3030E8;
+  --gd-syn-string: #7A3E9D;
+  --gd-syn-number: #A2462B;
+  --gd-syn-comment: #73739A;
+  --gd-syn-function: #2424B0;
+  --gd-syn-builtin: #3030E8;
+
+  /* Bootstrap tokens */
+  --bs-body-bg: var(--sc-paper);
+  --bs-body-color: var(--sc-ink);
+  --bs-body-font-family: var(--sc-body);
+  --bs-font-sans-serif: var(--sc-body);
+  --bs-font-monospace: var(--sc-code);
+  --bs-link-color: var(--sc-blue);
+  --bs-link-color-rgb: 48, 48, 232;
+  --bs-link-hover-color: var(--sc-blue-hover);
+  --bs-link-hover-color-rgb: 32, 32, 184;
+  --bs-border-radius: 0;
+  --bs-border-radius-sm: 0;
+  --bs-border-radius-lg: 0;
+  --bs-border-color: var(--sc-line);
+  --bs-secondary-color: var(--sc-muted);
+}
+
+html.quarto-dark,
+body.quarto-dark {
+  --sc-paper: #10111C;
+  --sc-surface: #161827;
+  --sc-panel: #191B2E;
+  --sc-ink: #E6E6F2;
+  --sc-ink-2: #C9C9DE;
+  --sc-muted: #9A9ABD;
+  --sc-line: #2A2C44;
+  --sc-blue: #9A9AFF;
+  --sc-blue-hover: #BDBDFF;
+  --sc-ind: #6B6BE0;
+  --sc-off: #2A2C40;
+  --sc-red: #FF7B70;
+  --sc-select: rgba(133, 133, 244, 0.3);
+
+  --gd-bg-primary: var(--sc-paper);
+  --gd-bg-secondary: #141627;
+  --gd-bg-tertiary: var(--sc-panel);
+  --gd-text-primary: var(--sc-ink);
+  --gd-text-secondary: var(--sc-ink-2);
+  --gd-text-muted: var(--sc-muted);
+  --gd-border-color: var(--sc-line);
+  --gd-border-light: #23253A;
+  --gd-link-color: var(--sc-blue);
+  --gd-code-bg: var(--sc-panel);
+  --gd-code-color: var(--sc-ink);
+  --gd-blockquote-bg: var(--sc-panel);
+  --gd-sidebar-bg: var(--sc-paper);
+  --gd-navbar-bg: var(--sc-paper);
+  --gd-navbar-text: var(--sc-ink);
+  --gd-footer-text: var(--sc-muted);
+  --gd-highlight-color: var(--sc-select);
+  --gd-active-link: var(--sc-blue);
+  --gd-accent-blue: rgba(154, 154, 255, 0.5);
+  --gd-citation-color: var(--sc-blue);
+
+  --gd-syn-class: #A8A8FF;
+  --gd-syn-name: #E6E6F2;
+  --gd-syn-none: #D7A6F0;
+  --gd-syn-bool: #D7A6F0;
+  --gd-syn-operator: #A0A0C4;
+  --gd-syn-keyword: #9A9AFF;
+  --gd-syn-string: #D7A6F0;
+  --gd-syn-number: #F0A58A;
+  --gd-syn-comment: #8686AC;
+  --gd-syn-function: #BDBDFF;
+  --gd-syn-builtin: #9A9AFF;
+
+  --bs-body-bg: var(--sc-paper);
+  --bs-body-color: var(--sc-ink);
+  --bs-link-color: var(--sc-blue);
+  --bs-link-color-rgb: 154, 154, 255;
+  --bs-link-hover-color: var(--sc-blue-hover);
+  --bs-link-hover-color-rgb: 189, 189, 255;
+  --bs-border-color: var(--sc-line);
+  --bs-secondary-color: var(--sc-muted);
+}
+
+/* ---------- base ---------- */
+html, body {
+  background-color: var(--sc-paper);
+}
+body {
+  color: var(--sc-ink);
+  font-family: var(--sc-body);
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+::selection { background: var(--sc-select); }
+
+/* great-docs sets several prose elements to its own sans; bring them back */
+p, li, dd, dt, td, th, blockquote, figcaption, .table, .footer, .nav-footer,
+.gd-meta-sidebar, .gd-meta-sidebar *:not(code):not(i),
+#quarto-sidebar .sidebar-item-text,
+a.sidebar-item-text.sidebar-link.text-start > span,
+.gd-ref-sidebar #quarto-sidebar a.sidebar-item-text[href$="/"],
+#TOC, #TOC a, .nav-page-text, .navbar .nav-link, .menu-text {
+  font-family: var(--sc-body) !important;
+}
+
+/* ---------- headings ---------- */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4,
+.quarto-title h1.title, #title-block-header h1 {
+  font-family: var(--sc-display);
+  font-weight: 600 !important;
+  color: var(--sc-ink);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+.quarto-title h1.title { font-size: 2.6rem; line-height: 1.08; }
+main.content > section > h1, main.content section.level1 > h1,
+main.content h1.anchored { font-size: 2rem; margin-top: 2.6rem; }
+main.content h2.anchored { font-size: 1.45rem; margin-top: 2rem; }
+main.content h3.anchored { font-size: 1.2rem; }
+
+/* Section headings carry a row of indicator cells, like one row of the matrix */
+main.content section.level1 > h1::after,
+main.content > section > h1.anchored::after {
+  content: "";
+  display: block;
+  width: 116px;
+  height: 8px;
+  margin-top: 0.7rem;
+  background:
+    linear-gradient(var(--sc-ind), var(--sc-ind)) 0 0 / 8px 8px no-repeat,
+    linear-gradient(var(--sc-ind), var(--sc-ind)) 24px 0 / 8px 8px no-repeat,
+    linear-gradient(var(--sc-ind), var(--sc-ind)) 36px 0 / 8px 8px no-repeat,
+    linear-gradient(var(--sc-ind), var(--sc-ind)) 72px 0 / 8px 8px no-repeat,
+    repeating-linear-gradient(90deg, var(--sc-off) 0 8px, transparent 8px 12px) 0 0 / 116px 8px no-repeat;
+}
+
+/* API reference titles are object names: keep them in the code face */
+.doc-api-page .quarto-title h1.title,
+.gd-ref-title, .gd-ref-title *, .doc-object-name {
+  font-family: var(--sc-code) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- links ---------- */
+main.content a:not(.btn):not(.sc-btn):not(.nav-link):not(.sidebar-link) {
+  color: var(--sc-blue);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--sc-blue) 35%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+main.content a:not(.btn):not(.sc-btn):hover {
+  color: var(--sc-blue-hover);
+  text-decoration-color: currentColor;
+}
+:focus-visible { outline: 2px solid var(--sc-blue); outline-offset: 2px; }
+
+/* ---------- navbar ---------- */
+.navbar {
+  background: var(--sc-paper) !important;
+  border-bottom: 1px solid var(--sc-line);
+  box-shadow: none !important;
+}
+.navbar-title {
+  font-family: var(--sc-display) !important;
+  font-weight: 600 !important;
+  font-size: 1.3rem !important;
+  border: 0 !important;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--sc-ink) !important;
+}
+/* Brand mark: three indicator cells */
+.navbar-title::before {
+  content: "";
+  width: 30px;
+  height: 8px;
+  flex: none;
+  background:
+    linear-gradient(var(--sc-blue), var(--sc-blue)) 0 0 / 8px 8px no-repeat,
+    linear-gradient(var(--sc-off), var(--sc-off)) 11px 0 / 8px 8px no-repeat,
+    linear-gradient(var(--sc-ind), var(--sc-ind)) 22px 0 / 8px 8px no-repeat;
+}
+.version-badge {
+  font-family: var(--sc-code) !important;
+  border-radius: 0 !important;
+  background: var(--sc-panel) !important;
+  color: var(--sc-muted) !important;
+  border: 0 !important;
+}
+.navbar .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 500 !important;
+  font-size: 0.98rem;
+  color: var(--sc-muted) !important;
+  text-decoration: none !important;
+}
+.navbar .navbar-nav .nav-link::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--sc-off);
+}
+.navbar .nav-link:hover { color: var(--sc-ink) !important; }
+.navbar .nav-link.active { color: var(--sc-ink) !important; }
+.navbar .navbar-nav .nav-link.active::before { background: var(--sc-blue); }
+.navbar .btn, .navbar button, .navbar .gd-github-widget, .navbar [class*="widget"] {
+  border-radius: 0 !important;
+}
+
+/* ---------- sidebar & table of contents ---------- */
+#quarto-sidebar, .sidebar-navigation {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#quarto-sidebar .sidebar-item-container .sidebar-link {
+  color: var(--sc-muted);
+  text-decoration: none !important;
+  border: 0 !important;
+}
+#quarto-sidebar .sidebar-link:hover { color: var(--sc-ink); }
+#quarto-sidebar .sidebar-link.active {
+  color: var(--sc-ink) !important;
+  font-weight: 600;
+  text-decoration: none !important;
+  border: 0 !important;
+}
+#quarto-sidebar .sidebar-link.active .menu-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  text-decoration: none !important;
+  border: 0 !important;
+}
+#quarto-sidebar .sidebar-link.active .menu-text::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: none;
+  transform: translateY(-1px);
+  background: var(--sc-blue);
+}
+a.sidebar-item-text.sidebar-link.text-start > span {
+  color: var(--sc-muted) !important;
+  letter-spacing: 0.08em;
+  font-size: 0.78em !important;
+}
+.gd-ref-sidebar #quarto-sidebar .sidebar-item .menu-text {
+  font-family: var(--sc-code) !important;
+  font-size: 12.5px;
+}
+#TOC .nav-link, #quarto-margin-sidebar .nav-link {
+  color: var(--sc-muted) !important;
+  border-left-color: var(--sc-line) !important;
+}
+#TOC .nav-link.active, #quarto-margin-sidebar .nav-link.active {
+  color: var(--sc-blue) !important;
+  border-left-color: var(--sc-blue) !important;
+}
+#toc-title, .toc-title, .gd-meta-sidebar h2, .gd-meta-sidebar h3, .gd-meta-sidebar h4 {
+  font-family: var(--sc-body) !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sc-muted) !important;
+}
+
+/* ---------- code ---------- */
+code, kbd, samp, pre, pre code, .sourceCode, .sourceCode *, .cell-output pre,
+a.gdls-code, .doc-signature, .doc-signature *, .doc-parameter-name,
+.doc-parameter-annotation, .doc-parameter-default, .version-badge {
+  font-family: var(--sc-code) !important;
+}
+code {
+  font-size: 0.86em;
+}
+p code, li code, td code, dd code, .table code, blockquote code {
+  background: var(--sc-panel) !important;
+  color: var(--sc-ink) !important;
+  border-radius: 0 !important;
+  padding: 0.1em 0.35em;
+  border: 0 !important;
+}
+div.sourceCode, pre.sourceCode, .cell-output pre, .doc-signature div.sourceCode {
+  background: var(--sc-panel) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+pre.sourceCode, div.sourceCode pre, .cell-output pre {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  padding: 1rem 1.15rem;
+}
+pre.sourceCode code, div.sourceCode code { color: var(--sc-ink) !important; background: transparent !important; }
+.cell-output pre {
+  background: transparent !important;
+  border-left: 2px solid var(--sc-line) !important;
+  padding: 0.4rem 1rem;
+}
+.cell-output-stderr pre { color: var(--sc-muted); }
+
+/* Syntax colours: indigo for keywords, plum for strings and literals */
+code span.kw, code span.cf, code span.im, code span.bu, code span.cn { color: var(--gd-syn-keyword) !important; font-style: normal; }
+code span.st, code span.ch, code span.ss, code span.sc, code span.vs { color: var(--gd-syn-string) !important; }
+code span.dv, code span.fl, code span.bn, code span.dt { color: var(--gd-syn-number) !important; }
+code span.co, code span.cv, code span.do, code span.an, code span.in { color: var(--gd-syn-comment) !important; font-style: italic; }
+code span.fu, code span.at { color: var(--gd-syn-function) !important; }
+code span.op, code span.ot { color: var(--gd-syn-operator) !important; }
+code span.va, code span.ex { color: var(--sc-ink) !important; }
+code span.cn-none, code span.cn-bool { color: var(--gd-syn-none) !important; }
+
+/* ---------- callouts: a three-cell header that says which kind ---------- */
+.callout {
+  border-radius: 0 !important;
+  border: 1px solid var(--sc-line) !important;
+  border-left-width: 1px !important;
+  background: var(--sc-surface) !important;
+  box-shadow: none !important;
+}
+.callout .callout-header {
+  background: transparent !important;
+  border: 0 !important;
+}
+.callout .callout-icon-container { display: none !important; }
+.callout .callout-title-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--sc-body) !important;
+  font-weight: 600;
+  color: var(--sc-ink) !important;
+}
+.callout .callout-title-container::before {
+  content: "";
+  width: 30px;
+  height: 8px;
+  flex: none;
+  --c1: var(--sc-off); --c2: var(--sc-off); --c3: var(--sc-off);
+  background:
+    linear-gradient(var(--c1), var(--c1)) 0 0 / 8px 8px no-repeat,
+    linear-gradient(var(--c2), var(--c2)) 11px 0 / 8px 8px no-repeat,
+    linear-gradient(var(--c3), var(--c3)) 22px 0 / 8px 8px no-repeat;
+}
+.callout-note .callout-title-container::before { --c1: var(--sc-ink); }
+.callout-tip .callout-title-container::before { --c2: var(--sc-blue); }
+.callout-warning .callout-title-container::before,
+.callout-important .callout-title-container::before,
+.callout-caution .callout-title-container::before { --c3: var(--sc-red); }
+
+blockquote, .blockquote {
+  background: var(--sc-panel) !important;
+  border-left: 0 !important;
+  border-radius: 0;
+  padding: 1rem 1.25rem;
+  color: var(--sc-ink-2) !important;
+  font-size: 0.97rem;
+}
+
+/* ---------- tables ---------- */
+main.content table {
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+}
+main.content table th {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--sc-muted) !important;
+  border-bottom: 1px solid var(--sc-ink) !important;
+}
+main.content table td { border-color: var(--sc-line) !important; }
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-accent-bg: transparent;
+  --bs-table-striped-bg: color-mix(in srgb, var(--sc-panel) 60%, transparent);
+  color: var(--sc-ink);
+}
+.dataframe td, .dataframe th { font-family: var(--sc-code) !important; font-size: 0.82rem; }
+main.content table.dataframe :is(td, th), main.content table.dataframe tr { border-color: var(--sc-line) !important; }
+main.content table.dataframe thead th { border-bottom-color: var(--sc-muted) !important; }
+
+/* ---------- figures ---------- */
+/* Charts are drawn on white by matplotlib: give them a paper panel so they
+   stay readable in dark mode. */
+.cell-output-display img, .quarto-figure img, figure img {
+  background: #FFFFFF;
+  border-radius: 0;
+}
+body.quarto-dark .cell-output-display img,
+body.quarto-dark .quarto-figure img {
+  padding: 10px;
+}
+
+/* ---------- API reference ---------- */
+.doc-api-page .quarto-title .title { font-size: 1.6rem !important; }
+.doc-object-name.doc-label:not(.doc-object-name) {
+  border: 0 !important;
+  padding: 0 !important;
+  color: var(--sc-ink) !important;
+  background: transparent !important;
+}
+.doc-label:not(.doc-object-name) {
+  border-radius: 0 !important;
+  font-family: var(--sc-code) !important;
+  background: transparent !important;
+  color: var(--sc-blue) !important;
+  border: 1px solid var(--sc-blue) !important;
+}
+.doc-signature, .doc-signature > div:first-child { border-radius: 0 !important; }
+.doc-signature div.sourceCode { border: 0 !important; }
+:is(.doc-parameters, .doc-attributes, .doc-returns, .doc-raises, .doc-init-parameters) dt,
+.doc-definition-items dt {
+  background: var(--sc-panel) !important;
+  color: var(--sc-ink) !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+}
+.doc-parameter-name { color: var(--sc-ink) !important; font-weight: 600; }
+.doc-parameter-annotation { color: var(--sc-blue) !important; }
+.doc-parameter-default { color: var(--sc-muted) !important; }
+
+/* ---------- references ---------- */
+/* Quarto's theme gives the appendix (references, footnotes) a hard-coded white
+   background; let it sit on the page's own background in both themes. */
+#quarto-appendix.default,
+body.quarto-dark #quarto-appendix.default {
+  background-color: transparent !important;
+  border-top-color: var(--sc-line) !important;
+}
+
+/* ---------- buttons & misc ---------- */
+.btn, .gd-copy-page, [class*="copy-page"], .page-navigation .pagination-link,
+.badge, input, .form-control, .dropdown-menu, .aa-Form, .aa-Panel {
+  border-radius: 0 !important;
+}
+.page-navigation { border-top: 1px solid var(--sc-line); }
+.nav-footer { border-top: 1px solid var(--sc-line); color: var(--sc-muted); }
+
+/* ==========================================================================
+   Landing page hero
+   ========================================================================== */
+.sc-home #title-block-header,
+.sc-home .quarto-title-block { display: none; }
+
+.sc-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 1.75rem;
+  align-items: center;
+  padding: 0.5rem 0 2.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--sc-line);
+}
+.sc-hero-text { display: grid; gap: 0.9rem; min-width: 0; }
+.sc-eyebrow {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--sc-muted);
+}
+h1.sc-hero-title, main.content h1.sc-hero-title {
+  margin: 0 !important;
+  font-family: var(--sc-display);
+  font-size: clamp(2.3rem, 5vw, 3.1rem);
+  line-height: 1.02;
+  font-weight: 600 !important;
+}
+h1.sc-hero-title::after { display: none !important; }
+.sc-tagline { margin: 0; font-size: 1.1rem; line-height: 1.5; max-width: 34ch; color: var(--sc-ink-2); }
+.sc-install {
+  justify-self: start;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  font-size: 0.875rem !important;
+  padding: 0.5rem 0.8rem !important;
+  background: var(--sc-panel) !important;
+  color: var(--sc-ink) !important;
+}
+.sc-install::before { content: "$ "; color: var(--sc-muted); }
+.sc-cta { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+main.content a.sc-btn {
+  display: inline-block;
+  padding: 0.45rem 0.95rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none !important;
+  background: var(--sc-blue);
+  color: var(--sc-paper) !important;
+  border: 1px solid var(--sc-blue);
+}
+main.content a.sc-btn:hover { background: var(--sc-blue-hover); border-color: var(--sc-blue-hover); }
+main.content a.sc-btn.ghost { background: transparent; color: var(--sc-ink) !important; border-color: var(--sc-line); }
+main.content a.sc-btn.ghost:hover { border-color: var(--sc-ink); }
+.sc-hero-figure { position: relative; min-width: 0; }
+.sc-hero-figure canvas { display: block; width: 100%; aspect-ratio: 16 / 11; max-width: 100%; }
+.sc-replay {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  font: 500 0.72rem var(--sc-body);
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--sc-line);
+  background: var(--sc-paper);
+  color: var(--sc-muted);
+  cursor: pointer;
+}
+.sc-replay:hover { color: var(--sc-ink); border-color: var(--sc-ink); }
+.sc-badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 1rem; }
+.sc-badges img { background: transparent !important; padding: 0 !important; height: 20px; }
+
+@media (max-width: 991.98px) {
+  .sc-hero { grid-template-columns: 1fr; }
+}

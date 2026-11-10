@@ -1,0 +1,76 @@
+{
+  "build_time": "2026-11-10T13:57:25Z",
+  "total_seconds": 60.382,
+  "pages": [
+    {
+      "page": "user-guide/features.qmd",
+      "seconds": 40.473,
+      "frozen": true
+    },
+    {
+      "page": "index.qmd",
+      "seconds": 5.943,
+      "frozen": true
+    },
+    {
+      "page": "changelog.qmd",
+      "seconds": 3.981,
+      "frozen": false
+    },
+    {
+      "page": "user-guide/contributing.md",
+      "seconds": 3.772,
+      "frozen": false
+    },
+    {
+      "page": "reference/SpecificationCurve.qmd",
+      "seconds": 1.178,
+      "frozen": false
+    },
+    {
+      "page": "package-info.qmd",
+      "seconds": 0.882,
+      "frozen": false
+    },
+    {
+      "page": "reference/plot_curve.qmd",
+      "seconds": 0.596,
+      "frozen": false
+    },
+    {
+      "page": "reference/subsets_by.qmd",
+      "seconds": 0.55,
+      "frozen": false
+    },
+    {
+      "page": "reference/index.qmd",
+      "seconds": 0.543,
+      "frozen": false
+    },
+    {
+      "page": "reference/load_example_panel.qmd",
+      "seconds": 0.532,
+      "frozen": false
+    },
+    {
+      "page": "reference/load_example_data2.qmd",
+      "seconds": 0.511,
+      "frozen": false
+    },
+    {
+      "page": "reference/load_example_data1.qmd",
+      "seconds": 0.489,
+      "frozen": false
+    },
+    {
+      "page": "reference/load_example_data3.qmd",
+      "seconds": 0.474,
+      "frozen": false
+    },
+    {
+      "page": "skills.qmd",
+      "seconds": 0.458,
+      "frozen": false
+    }
+  ]
+}

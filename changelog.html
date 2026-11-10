@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Changelog – Specification Curve | Specification Curve</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-9ec6d0bacfee18682fb645e4ac94e31e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+(function () {
+  var m = document.querySelector('meta[name="quarto:offset"]');
+  var base = (m ? m.content : './') + 'user-guide/icons/';
+  [['icon', 'image/svg+xml', 'favicon.svg', null],
+   ['icon', 'image/png', 'favicon-32x32.png', '32x32'],
+   ['icon', 'image/png', 'favicon-16x16.png', '16x16'],
+   ['apple-touch-icon', null, 'apple-touch-icon.png', '180x180']].forEach(function (d) {
+    var l = document.createElement('link');
+    l.rel = d[0]; if (d[1]) l.type = d[1]; if (d[3]) l.sizes = d[3];
+    l.href = base + d[2];
+    document.head.appendChild(l);
+  });
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;600&amp;family=Instrument+Sans:ital,wght@0,400..700;1,400..700&amp;family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&amp;display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'termshow.css'}));</script>
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'gd-lightbox.css'}));</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'gd-lightbox.js';s.defer=true;document.head.appendChild(s);})();</script>
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'gd-lightbox-compare.css'}));</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'gd-lightbox-compare.js';s.defer=true;document.head.appendChild(s);})();</script>
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'gd-lightbox-annotate.css'}));</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'gd-lightbox-annotate.js';s.defer=true;document.head.appendChild(s);})();</script>
+<script src="theme-init.js"></script>
+
+
+<link rel="stylesheet" href="indigo.css">
+  <link rel="alternate" type="text/markdown" href="changelog.md">
+  <link rel="canonical" href="https://aeturrell.github.io/specification_curve/changelog.html">
+  <meta name="description" content="This changelog is generated automatically from GitHub Releases.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Changelog – Specification Curve | Specification Curve">
+  <meta property="og:description" content="This changelog is generated automatically from GitHub Releases.">
+  <meta property="og:url" content="https://aeturrell.github.io/specification_curve/changelog.html">
+  <meta property="og:site_name" content="Specification Curve">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Changelog – Specification Curve | Specification Curve">
+  <meta name="twitter:description" content="This changelog is generated automatically from GitHub Releases.">
+</head>
+
+<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Specification Curve <span class="version-badge" title="Released 2026-11-10">v0.4.1</span></span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./reference/index.html"> 
+<span class="menu-text">Reference</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./changelog.html" aria-current="page"> 
+<span class="menu-text">Changelog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <span class="nav-link">
+<div id="github-widget" data-owner="aeturrell" data-repo="specification_curve" data-stars="33" data-forks="4"></div>
+    </span>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+            <div id="quarto-search" class=""></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#v0.4.1" id="toc-v0.4.1" class="nav-link active" data-scroll-target="#v0.4.1">v0.4.1</a>
+  <ul class="collapse">
+  <li><a href="#changes" id="toc-changes" class="nav-link" data-scroll-target="#changes">Changes</a></li>
+  <li><a href="#package-dependencies" id="toc-package-dependencies" class="nav-link" data-scroll-target="#package-dependencies">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.4.0" id="toc-v0.4.0" class="nav-link" data-scroll-target="#v0.4.0">v0.4.0</a>
+  <ul class="collapse">
+  <li><a href="#changes-1" id="toc-changes-1" class="nav-link" data-scroll-target="#changes-1">Changes</a></li>
+  <li><a href="#package-dependencies-1" id="toc-package-dependencies-1" class="nav-link" data-scroll-target="#package-dependencies-1">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.10" id="toc-v0.3.10" class="nav-link" data-scroll-target="#v0.3.10">v0.3.10</a>
+  <ul class="collapse">
+  <li><a href="#changes-2" id="toc-changes-2" class="nav-link" data-scroll-target="#changes-2">Changes</a></li>
+  <li><a href="#package-dependencies-2" id="toc-package-dependencies-2" class="nav-link" data-scroll-target="#package-dependencies-2">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.9" id="toc-v0.3.9" class="nav-link" data-scroll-target="#v0.3.9">v0.3.9</a>
+  <ul class="collapse">
+  <li><a href="#changes-3" id="toc-changes-3" class="nav-link" data-scroll-target="#changes-3">Changes</a></li>
+  <li><a href="#package-dependencies-3" id="toc-package-dependencies-3" class="nav-link" data-scroll-target="#package-dependencies-3">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.8" id="toc-v0.3.8" class="nav-link" data-scroll-target="#v0.3.8">v0.3.8</a>
+  <ul class="collapse">
+  <li><a href="#changes-4" id="toc-changes-4" class="nav-link" data-scroll-target="#changes-4">Changes</a></li>
+  <li><a href="#racehorse-performance" id="toc-racehorse-performance" class="nav-link" data-scroll-target="#racehorse-performance">:racehorse: Performance</a></li>
+  <li><a href="#package-dependencies-4" id="toc-package-dependencies-4" class="nav-link" data-scroll-target="#package-dependencies-4">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.7" id="toc-v0.3.7" class="nav-link" data-scroll-target="#v0.3.7">v0.3.7</a>
+  <ul class="collapse">
+  <li><a href="#changes-5" id="toc-changes-5" class="nav-link" data-scroll-target="#changes-5">Changes</a></li>
+  </ul></li>
+  <li><a href="#v0.3.6" id="toc-v0.3.6" class="nav-link" data-scroll-target="#v0.3.6">v0.3.6</a>
+  <ul class="collapse">
+  <li><a href="#changes-6" id="toc-changes-6" class="nav-link" data-scroll-target="#changes-6">Changes</a></li>
+  <li><a href="#package-dependencies-5" id="toc-package-dependencies-5" class="nav-link" data-scroll-target="#package-dependencies-5">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.5" id="toc-v0.3.5" class="nav-link" data-scroll-target="#v0.3.5">v0.3.5</a>
+  <ul class="collapse">
+  <li><a href="#changes-7" id="toc-changes-7" class="nav-link" data-scroll-target="#changes-7">Changes</a></li>
+  </ul></li>
+  <li><a href="#v0.3.4" id="toc-v0.3.4" class="nav-link" data-scroll-target="#v0.3.4">v0.3.4</a>
+  <ul class="collapse">
+  <li><a href="#changes-8" id="toc-changes-8" class="nav-link" data-scroll-target="#changes-8">Changes</a></li>
+  <li><a href="#package-dependencies-6" id="toc-package-dependencies-6" class="nav-link" data-scroll-target="#package-dependencies-6">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.3" id="toc-v0.3.3" class="nav-link" data-scroll-target="#v0.3.3">v0.3.3</a>
+  <ul class="collapse">
+  <li><a href="#changes-9" id="toc-changes-9" class="nav-link" data-scroll-target="#changes-9">Changes</a></li>
+  <li><a href="#package-dependencies-7" id="toc-package-dependencies-7" class="nav-link" data-scroll-target="#package-dependencies-7">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.2" id="toc-v0.3.2" class="nav-link" data-scroll-target="#v0.3.2">v0.3.2</a>
+  <ul class="collapse">
+  <li><a href="#changes-10" id="toc-changes-10" class="nav-link" data-scroll-target="#changes-10">Changes</a></li>
+  <li><a href="#package-dependencies-8" id="toc-package-dependencies-8" class="nav-link" data-scroll-target="#package-dependencies-8">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.1" id="toc-v0.3.1" class="nav-link" data-scroll-target="#v0.3.1">v0.3.1</a>
+  <ul class="collapse">
+  <li><a href="#changes-11" id="toc-changes-11" class="nav-link" data-scroll-target="#changes-11">Changes</a></li>
+  </ul></li>
+  <li><a href="#version-0.3.0" id="toc-version-0.3.0" class="nav-link" data-scroll-target="#version-0.3.0">Version 0.3.0</a>
+  <ul class="collapse">
+  <li><a href="#whats-changed" id="toc-whats-changed" class="nav-link" data-scroll-target="#whats-changed">What’s Changed</a></li>
+  </ul></li>
+  <li><a href="#specification-curve-0.2.6-biosphere-mansion" id="toc-specification-curve-0.2.6-biosphere-mansion" class="nav-link" data-scroll-target="#specification-curve-0.2.6-biosphere-mansion">Specification Curve 0.2.6: Biosphere Mansion</a></li>
+  <li><a href="#specification-curve-0.2.5-adequate-greenhouse" id="toc-specification-curve-0.2.5-adequate-greenhouse" class="nav-link" data-scroll-target="#specification-curve-0.2.5-adequate-greenhouse">Specification Curve 0.2.5: Adequate Greenhouse</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">0.2.5 (2020-11-22)</a></li>
+  <li><a href="#specification-curve-v0.2.4-shocked-earl" id="toc-specification-curve-v0.2.4-shocked-earl" class="nav-link" data-scroll-target="#specification-curve-v0.2.4-shocked-earl">Specification curve v0.2.4: Shocked Earl</a></li>
+  <li><a href="#plausible-rod" id="toc-plausible-rod" class="nav-link" data-scroll-target="#plausible-rod">Plausible Rod</a>
+  <ul class="collapse">
+  <li><a href="#specification-curve-v0.2.2-plausible-rod" id="toc-specification-curve-v0.2.2-plausible-rod" class="nav-link" data-scroll-target="#specification-curve-v0.2.2-plausible-rod">Specification curve v0.2.2, “Plausible Rod”</a></li>
+  </ul></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">0.2.2 (2020-09-02)</a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">0.2.1 (2020-09-02)</a></li>
+  <li><a href="#v0.1.1-released" id="toc-v0.1.1-released" class="nav-link" data-scroll-target="#v0.1.1-released">v0.1.1 Released</a></li>
+  <li><a href="#v0.1.1-2020-08-01" id="toc-v0.1.1-2020-08-01" class="nav-link" data-scroll-target="#v0.1.1-2020-08-01">v0.1.1 (2020-08-01)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Changelog</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This changelog is generated automatically from <a href="https://github.com/aeturrell/specification_curve/releases">GitHub Releases</a>.</p>
+<section id="v0.4.1" class="level1 changelog-version">
+<h1 class="changelog-version">v0.4.1</h1>
+<p><em>2026-11-10</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.4.1">GitHub</a></p>
+<section id="changes" class="level2">
+<h2 class="anchored" data-anchor-id="changes">Changes</h2>
+<ul>
+<li>v0.4.1 (<a href="https://github.com/aeturrell/specification_curve/issues/773">#773</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>new bayesian bootstrap (<a href="https://github.com/aeturrell/specification_curve/issues/772">#772</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>improving sc style (<a href="https://github.com/aeturrell/specification_curve/issues/771">#771</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies">:package: Dependencies</h2>
+<ul>
+<li>Bump codecov/codecov-action from 7.0.0 to 7.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/760">#760</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump ty from 0.0.34 to 0.0.99 (<a href="https://github.com/aeturrell/specification_curve/issues/768">#768</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump pandas-stubs from 2.3.3.260113 to 3.1.0.261029 (<a href="https://github.com/aeturrell/specification_curve/issues/769">#769</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump numpy from 2.2.6 to 2.5.4 (<a href="https://github.com/aeturrell/specification_curve/issues/770">#770</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
+<section id="v0.4.0" class="level1 changelog-version">
+<h1 class="changelog-version">v0.4.0</h1>
+<p><em>2026-11-10</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.4.0">GitHub</a></p>
+<section id="changes-1" class="level2">
+<h2 class="anchored" data-anchor-id="changes-1">Changes</h2>
+<ul>
+<li>Build Specification Curve on pyfixest (<a href="https://github.com/aeturrell/specification_curve/issues/766">#766</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a>, <a href="https://github.com/claude"><span class="citation" data-cites="claude">(<span><strong>claude?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies-1" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-1">:package: Dependencies</h2>
+<ul>
+<li>Bump release-drafter/release-drafter from 7.4.0 to 7.10.0 (<a href="https://github.com/aeturrell/specification_curve/issues/761">#761</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump typeguard from 4.5.1 to 4.6.0 (<a href="https://github.com/aeturrell/specification_curve/issues/762">#762</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump ipywidgets from 8.1.8 to 8.1.9 (<a href="https://github.com/aeturrell/specification_curve/issues/763">#763</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.13.5 to 7.17.2 (<a href="https://github.com/aeturrell/specification_curve/issues/764">#764</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump nbclient from 0.10.4 to 0.11.0 (<a href="https://github.com/aeturrell/specification_curve/issues/765">#765</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump pandas from 2.3.3 to 3.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/756">#756</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump tqdm from 4.67.3 to 4.70.1 (<a href="https://github.com/aeturrell/specification_curve/issues/755">#755</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump pytest from 9.0.3 to 9.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/754">#754</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump actions/cache from 6.0.0 to 6.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/753">#753</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 6.3.0 to 7.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/752">#752</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump pre-commit from 4.6.0 to 4.7.0 (<a href="https://github.com/aeturrell/specification_curve/issues/757">#757</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.14.0 to 1.14.3 (<a href="https://github.com/aeturrell/specification_curve/issues/751">#751</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump tornado from 6.5.9 to 6.6 (<a href="https://github.com/aeturrell/specification_curve/issues/759">#759</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.10" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.10</h1>
+<p><em>2026-10-28</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.10">GitHub</a></p>
+<section id="changes-2" class="level2">
+<h2 class="anchored" data-anchor-id="changes-2">Changes</h2>
+<ul>
+<li>v0.3.10 (<a href="https://github.com/aeturrell/specification_curve/issues/750">#750</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>dependabot uses uv and change to new pg output names (<a href="https://github.com/aeturrell/specification_curve/issues/658">#658</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Fix incorrect median under null for non-OLS estimators (<a href="https://github.com/aeturrell/specification_curve/issues/608">#608</a>) (<a href="https://github.com/aeturrell/specification_curve/issues/643">#643</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies-2" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-2">:package: Dependencies</h2>
+<ul>
+<li>Bump black from 26.3.1 to 26.10.1 (<a href="https://github.com/aeturrell/specification_curve/issues/749">#749</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump matplotlib from 3.10.8 to 3.10.9 (<a href="https://github.com/aeturrell/specification_curve/issues/721">#721</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump types-setuptools from 82.0.0.20260408 to 82.0.0.20260508 (<a href="https://github.com/aeturrell/specification_curve/issues/727">#727</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump types-tqdm from 4.67.3.20260408 to 4.67.3.20260508 (<a href="https://github.com/aeturrell/specification_curve/issues/728">#728</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump idna from 3.10 to 3.15 (<a href="https://github.com/aeturrell/specification_curve/issues/731">#731</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump codecov/codecov-action from 6.0.0 to 7.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/733">#733</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump release-drafter/release-drafter from 7.2.0 to 7.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/735">#735</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/checkout from 6 to 7 (<a href="https://github.com/aeturrell/specification_curve/issues/737">#737</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/cache from 5.0.5 to 6.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/738">#738</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/setup-python from 6.2.0 to 6.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/739">#739</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump urllib3 from 2.7.0 to 2.8.0 (<a href="https://github.com/aeturrell/specification_curve/issues/743">#743</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump tornado from 6.5.5 to 6.5.9 (<a href="https://github.com/aeturrell/specification_curve/issues/745">#745</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump certifi from 2024.12.14 to 2026.10.19 (<a href="https://github.com/aeturrell/specification_curve/issues/747">#747</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump virtualenv from 20.36.1 to 21.14.13 (<a href="https://github.com/aeturrell/specification_curve/issues/748">#748</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ty from 0.0.32 to 0.0.34 (<a href="https://github.com/aeturrell/specification_curve/issues/725">#725</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ruff from 0.15.11 to 0.15.12 (<a href="https://github.com/aeturrell/specification_curve/issues/722">#722</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pillow from 12.2.0 to 12.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/740">#740</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump urllib3 from 2.6.3 to 2.7.0 (<a href="https://github.com/aeturrell/specification_curve/issues/729">#729</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pre-commit from 4.5.1 to 4.6.0 (<a href="https://github.com/aeturrell/specification_curve/issues/720">#720</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ty from 0.0.31 to 0.0.32 (<a href="https://github.com/aeturrell/specification_curve/issues/719">#719</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ruff from 0.15.10 to 0.15.11 (<a href="https://github.com/aeturrell/specification_curve/issues/718">#718</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ty from 0.0.30 to 0.0.31 (<a href="https://github.com/aeturrell/specification_curve/issues/717">#717</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump nox from 2026.2.9 to 2026.4.10 (<a href="https://github.com/aeturrell/specification_curve/issues/713">#713</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pillow from 12.1.1 to 12.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/714">#714</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/cache from 5.0.4 to 5.0.5 (<a href="https://github.com/aeturrell/specification_curve/issues/715">#715</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ty from 0.0.29 to 0.0.30 (<a href="https://github.com/aeturrell/specification_curve/issues/716">#716</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump release-drafter/release-drafter from 7.1.1 to 7.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/711">#711</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ruff from 0.15.9 to 0.15.10 (<a href="https://github.com/aeturrell/specification_curve/issues/712">#712</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.13.0 to 1.14.0 (<a href="https://github.com/aeturrell/specification_curve/issues/707">#707</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump types-tqdm from 4.67.3.20260402 to 4.67.3.20260408 (<a href="https://github.com/aeturrell/specification_curve/issues/708">#708</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump types-setuptools from 82.0.0.20260402 to 82.0.0.20260408 (<a href="https://github.com/aeturrell/specification_curve/issues/709">#709</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pytest from 9.0.2 to 9.0.3 (<a href="https://github.com/aeturrell/specification_curve/issues/710">#710</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ty from 0.0.26 to 0.0.29 (<a href="https://github.com/aeturrell/specification_curve/issues/706">#706</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump types-setuptools from 82.0.0.20260210 to 82.0.0.20260402 (<a href="https://github.com/aeturrell/specification_curve/issues/705">#705</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump types-tqdm from 4.67.3.20260303 to 4.67.3.20260402 (<a href="https://github.com/aeturrell/specification_curve/issues/703">#703</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pingouin from 0.6.0 to 0.6.1 (<a href="https://github.com/aeturrell/specification_curve/issues/701">#701</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ruff from 0.15.7 to 0.15.9 (<a href="https://github.com/aeturrell/specification_curve/issues/704">#704</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/cache from 5.0.3 to 5.0.4 (<a href="https://github.com/aeturrell/specification_curve/issues/689">#689</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pygments from 2.18.0 to 2.20.0 (<a href="https://github.com/aeturrell/specification_curve/issues/699">#699</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump aquarel from 0.0.6 to 0.0.7 (<a href="https://github.com/aeturrell/specification_curve/issues/685">#685</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ty from 0.0.25 to 0.0.26 (<a href="https://github.com/aeturrell/specification_curve/issues/697">#697</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump coverage from 7.13.4 to 7.13.5 (<a href="https://github.com/aeturrell/specification_curve/issues/686">#686</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump xdoctest from 1.3.0 to 1.3.2 (<a href="https://github.com/aeturrell/specification_curve/issues/698">#698</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pre-commit from 4.0.1 to 4.5.1 (<a href="https://github.com/aeturrell/specification_curve/issues/683">#683</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ty from 0.0.23 to 0.0.25 (<a href="https://github.com/aeturrell/specification_curve/issues/695">#695</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump codecov/codecov-action from 5.5.3 to 6.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/696">#696</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump codecov/codecov-action from 5.5.2 to 5.5.3 (<a href="https://github.com/aeturrell/specification_curve/issues/690">#690</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump release-drafter/release-drafter from 7.0.0 to 7.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/691">#691</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump xdoctest from 1.2.0 to 1.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/684">#684</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump requests from 2.32.4 to 2.33.0 (<a href="https://github.com/aeturrell/specification_curve/issues/693">#693</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ruff from 0.8.4 to 0.15.7 (<a href="https://github.com/aeturrell/specification_curve/issues/692">#692</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ipywidgets from 8.1.5 to 8.1.8 (<a href="https://github.com/aeturrell/specification_curve/issues/687">#687</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump nbclient from 0.10.2 to 0.10.4 (<a href="https://github.com/aeturrell/specification_curve/issues/682">#682</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ipykernel from 6.29.5 to 7.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/679">#679</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump release-drafter/release-drafter from 6.4.0 to 7.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/677">#677</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pandas from 2.2.3 to 2.3.3 (<a href="https://github.com/aeturrell/specification_curve/issues/681">#681</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump statsmodels from 0.14.4 to 0.14.6 (<a href="https://github.com/aeturrell/specification_curve/issues/678">#678</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump ty from 0.0.8 to 0.0.23 (<a href="https://github.com/aeturrell/specification_curve/issues/680">#680</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump black from 24.10.0 to 26.3.1 (<a href="https://github.com/aeturrell/specification_curve/issues/672">#672</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump nbstripout from 0.8.1 to 0.9.1 (<a href="https://github.com/aeturrell/specification_curve/issues/673">#673</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pydoclint from 0.6.0 to 0.8.3 (<a href="https://github.com/aeturrell/specification_curve/issues/674">#674</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pre-commit-hooks from 5.0.0 to 6.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/675">#675</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump tqdm from 4.67.1 to 4.67.3 (<a href="https://github.com/aeturrell/specification_curve/issues/676">#676</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump types-tqdm from 4.67.0.20241221 to 4.67.3.20260303 (<a href="https://github.com/aeturrell/specification_curve/issues/668">#668</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump nox from 2024.10.9 to 2026.2.9 (<a href="https://github.com/aeturrell/specification_curve/issues/669">#669</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump typeguard from 4.4.1 to 4.5.1 (<a href="https://github.com/aeturrell/specification_curve/issues/667">#667</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump numpy from 2.0.2 to 2.2.6 (<a href="https://github.com/aeturrell/specification_curve/issues/670">#670</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pytest from 8.3.4 to 9.0.2 (<a href="https://github.com/aeturrell/specification_curve/issues/671">#671</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/download-artifact from 7 to 8 (<a href="https://github.com/aeturrell/specification_curve/issues/656">#656</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/upload-artifact from 6 to 7 (<a href="https://github.com/aeturrell/specification_curve/issues/657">#657</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump tornado from 6.5 to 6.5.5 (<a href="https://github.com/aeturrell/specification_curve/issues/666">#666</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump release-drafter/release-drafter from 6.2.0 to 6.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/660">#660</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump crazy-max/ghaction-github-labeler from 5 to 6 (<a href="https://github.com/aeturrell/specification_curve/issues/659">#659</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump coverage from 7.6.9 to 7.13.4 (<a href="https://github.com/aeturrell/specification_curve/issues/661">#661</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump quartodoc from 0.9.1 to 0.11.1 (<a href="https://github.com/aeturrell/specification_curve/issues/662">#662</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump types-setuptools from 75.6.0.20241223 to 82.0.0.20260210 (<a href="https://github.com/aeturrell/specification_curve/issues/663">#663</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pandas-stubs from 2.2.2.240807 to 2.3.3.260113 (<a href="https://github.com/aeturrell/specification_curve/issues/665">#665</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump matplotlib from 3.9.4 to 3.10.8 (<a href="https://github.com/aeturrell/specification_curve/issues/664">#664</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump release-drafter/release-drafter from 6.1.1 to 6.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/652">#652</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/setup-python from 6.1.0 to 6.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/653">#653</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/cache from 5.0.2 to 5.0.3 (<a href="https://github.com/aeturrell/specification_curve/issues/654">#654</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pillow from 11.0.0 to 12.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/655">#655</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump tornado from 6.4.2 to 6.5 (<a href="https://github.com/aeturrell/specification_curve/issues/651">#651</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump virtualenv from 20.28.0 to 20.36.1 (<a href="https://github.com/aeturrell/specification_curve/issues/646">#646</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump filelock from 3.16.1 to 3.20.3 (<a href="https://github.com/aeturrell/specification_curve/issues/647">#647</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump requests from 2.32.3 to 2.32.4 (<a href="https://github.com/aeturrell/specification_curve/issues/648">#648</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump urllib3 from 2.3.0 to 2.6.3 (<a href="https://github.com/aeturrell/specification_curve/issues/649">#649</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump fonttools from 4.55.3 to 4.60.2 (<a href="https://github.com/aeturrell/specification_curve/issues/650">#650</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/cache from 5.0.1 to 5.0.2 (<a href="https://github.com/aeturrell/specification_curve/issues/645">#645</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump release-drafter/release-drafter from 6.1.0 to 6.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/644">#644</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.9" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.9</h1>
+<p><em>2026-01-04</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.9">GitHub</a></p>
+<section id="changes-3" class="level2">
+<h2 class="anchored" data-anchor-id="changes-3">Changes</h2>
+<ul>
+<li>v0.3.9 (<a href="https://github.com/aeturrell/specification_curve/issues/642">#642</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Claude/fix type checking errors j343 v (<a href="https://github.com/aeturrell/specification_curve/issues/641">#641</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies-3" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-3">:package: Dependencies</h2>
+<ul>
+<li>Bump actions/upload-artifact from 5 to 6 (<a href="https://github.com/aeturrell/specification_curve/issues/638">#638</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/download-artifact from 6 to 7 (<a href="https://github.com/aeturrell/specification_curve/issues/639">#639</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/cache from 4.3.0 to 5.0.1 (<a href="https://github.com/aeturrell/specification_curve/issues/640">#640</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump codecov/codecov-action from 5.5.1 to 5.5.2 (<a href="https://github.com/aeturrell/specification_curve/issues/636">#636</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/setup-python from 6.0.0 to 6.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/635">#635</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/checkout from 5 to 6 (<a href="https://github.com/aeturrell/specification_curve/issues/634">#634</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/cache from 4.2.3 to 4.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/626">#626</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump astral-sh/setup-uv from 6 to 7 (<a href="https://github.com/aeturrell/specification_curve/issues/629">#629</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.8" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.8</h1>
+<p><em>2025-11-04</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.8">GitHub</a></p>
+<section id="changes-4" class="level2">
+<h2 class="anchored" data-anchor-id="changes-4">Changes</h2>
+<ul>
+<li>v0.3.8 (<a href="https://github.com/aeturrell/specification_curve/issues/632">#632</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>dropping 3.9; adding 3.12 support (<a href="https://github.com/aeturrell/specification_curve/issues/631">#631</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Fix Windows tkinter initialization error in CI tests (<a href="https://github.com/aeturrell/specification_curve/issues/630">#630</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Adding pydoclint check (<a href="https://github.com/aeturrell/specification_curve/issues/600">#600</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="racehorse-performance" class="level2">
+<h2 class="anchored" data-anchor-id="racehorse-performance">:racehorse: Performance</h2>
+<ul>
+<li>Benchmarks (<a href="https://github.com/aeturrell/specification_curve/issues/609">#609</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies-4" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-4">:package: Dependencies</h2>
+<ul>
+<li>Bump codecov/codecov-action from 5.4.3 to 5.5.1 (<a href="https://github.com/aeturrell/specification_curve/issues/625">#625</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/setup-python from 5.6.0 to 6.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/623">#623</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/checkout from 4 to 5 (<a href="https://github.com/aeturrell/specification_curve/issues/621">#621</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/upload-artifact from 4 to 5 (<a href="https://github.com/aeturrell/specification_curve/issues/628">#628</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.12.4 to 1.13.0 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/624">#624</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/download-artifact from 4 to 6 (<a href="https://github.com/aeturrell/specification_curve/issues/627">#627</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump astral-sh/setup-uv from 5 to 6 (<a href="https://github.com/aeturrell/specification_curve/issues/617">#617</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump codecov/codecov-action from 5.4.0 to 5.4.3 (<a href="https://github.com/aeturrell/specification_curve/issues/618">#618</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/setup-python from 5.5.0 to 5.6.0 (<a href="https://github.com/aeturrell/specification_curve/issues/616">#616</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump codecov/codecov-action from 5.3.1 to 5.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/611">#611</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/cache from 4.2.0 to 4.2.3 (<a href="https://github.com/aeturrell/specification_curve/issues/613">#613</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/setup-python from 5.4.0 to 5.5.0 (<a href="https://github.com/aeturrell/specification_curve/issues/614">#614</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.12.3 to 1.12.4 (<a href="https://github.com/aeturrell/specification_curve/issues/603">#603</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump codecov/codecov-action from 5.1.2 to 5.3.1 (<a href="https://github.com/aeturrell/specification_curve/issues/605">#605</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump release-drafter/release-drafter from 6.0.0 to 6.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/601">#601</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+<li>Bump actions/setup-python from 5.3.0 to 5.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/606">#606</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.7" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.7</h1>
+<p><em>2025-01-06</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.7">GitHub</a></p>
+<section id="changes-5" class="level2">
+<h2 class="anchored" data-anchor-id="changes-5">Changes</h2>
+<ul>
+<li>v0.3.7 (<a href="https://github.com/aeturrell/specification_curve/issues/597">#597</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Docs improve (<a href="https://github.com/aeturrell/specification_curve/issues/596">#596</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Code clean (<a href="https://github.com/aeturrell/specification_curve/issues/595">#595</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bootstrap under null tests added in spirit of Simonsohn et al.&nbsp;(2020) (<a href="https://github.com/aeturrell/specification_curve/issues/594">#594</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.6" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.6</h1>
+<p><em>2025-01-03</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.6">GitHub</a></p>
+<section id="changes-6" class="level2">
+<h2 class="anchored" data-anchor-id="changes-6">Changes</h2>
+<ul>
+<li>v0.3.6 (<a href="https://github.com/aeturrell/specification_curve/issues/592">#592</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Fix formula parser (<a href="https://github.com/aeturrell/specification_curve/issues/591">#591</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies-5" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-5">:package: Dependencies</h2>
+<ul>
+<li>Bump astral-sh/setup-uv from 4 to 5 (<a href="https://github.com/aeturrell/specification_curve/issues/590">#590</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.5" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.5</h1>
+<p><em>2024-12-25</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.5">GitHub</a></p>
+<section id="changes-7" class="level2">
+<h2 class="anchored" data-anchor-id="changes-7">Changes</h2>
+<ul>
+<li>v0.3.5 (<a href="https://github.com/aeturrell/specification_curve/issues/589">#589</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>contributing and req’d lib (<a href="https://github.com/aeturrell/specification_curve/issues/588">#588</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.4" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.4</h1>
+<p><em>2024-12-25</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.4">GitHub</a></p>
+<section id="changes-8" class="level2">
+<h2 class="anchored" data-anchor-id="changes-8">Changes</h2>
+<ul>
+<li>v0.3.4 (<a href="https://github.com/aeturrell/specification_curve/issues/587">#587</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Add version info and facilitate releases with versions (<a href="https://github.com/aeturrell/specification_curve/issues/586">#586</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Switching to uv for package management and build (<a href="https://github.com/aeturrell/specification_curve/issues/585">#585</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Adds support for specifications via formulae (<a href="https://github.com/aeturrell/specification_curve/issues/584">#584</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>block colours reflect significance; fix for rhs variable name positions (<a href="https://github.com/aeturrell/specification_curve/issues/512">#512</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>removed extraneous dependencies (<a href="https://github.com/aeturrell/specification_curve/issues/511">#511</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies-6" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-6">:package: Dependencies</h2>
+<ul>
+<li>Bump virtualenv from 20.27.1 to 20.28.0 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/578">#578</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 24.2 to 24.3.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/569">#569</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump nox from 2024.4.15 to 2024.10.9 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/563">#563</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/cache from 4.0.2 to 4.1.2 (<a href="https://github.com/aeturrell/specification_curve/issues/566">#566</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump crazy-max/ghaction-github-labeler from 5.0.0 to 5.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/568">#568</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 5.2.0 to 5.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/567">#567</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.26.4 to 20.27.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/570">#570</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 4.5.0 to 5.0.7 (<a href="https://github.com/aeturrell/specification_curve/issues/577">#577</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.10.2 to 1.12.2 (<a href="https://github.com/aeturrell/specification_curve/issues/573">#573</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.10.1 to 1.10.2 (<a href="https://github.com/aeturrell/specification_curve/issues/557">#557</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.26.3 to 20.26.4 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/553">#553</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.9.0 to 1.10.1 (<a href="https://github.com/aeturrell/specification_curve/issues/552">#552</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 5.1.1 to 5.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/550">#550</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 4.4.1 to 4.5.0 (<a href="https://github.com/aeturrell/specification_curve/issues/528">#528</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump tornado from 6.4 to 6.4.1 (<a href="https://github.com/aeturrell/specification_curve/issues/524">#524</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump authlib from 1.3.0 to 1.3.1 (<a href="https://github.com/aeturrell/specification_curve/issues/527">#527</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pandas-stubs from 2.2.2.240514 to 2.2.2.240603 (<a href="https://github.com/aeturrell/specification_curve/issues/521">#521</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump xdoctest from 1.1.3 to 1.1.5 (<a href="https://github.com/aeturrell/specification_curve/issues/525">#525</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.8.14 to 1.9.0 (<a href="https://github.com/aeturrell/specification_curve/issues/529">#529</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump urllib3 from 2.2.1 to 2.2.2 (<a href="https://github.com/aeturrell/specification_curve/issues/532">#532</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.26.2 to 20.26.3 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/536">#536</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump quartodoc from 0.7.2 to 0.7.5 (<a href="https://github.com/aeturrell/specification_curve/issues/533">#533</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump certifi from 2024.2.2 to 2024.7.4 (<a href="https://github.com/aeturrell/specification_curve/issues/540">#540</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump zipp from 3.18.2 to 3.19.1 (<a href="https://github.com/aeturrell/specification_curve/issues/543">#543</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 5.1.0 to 5.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/544">#544</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 24.0 to 24.2 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/549">#549</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump safety from 3.2.0 to 3.2.4 (<a href="https://github.com/aeturrell/specification_curve/issues/539">#539</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ruff from 0.4.6 to 0.5.5 (<a href="https://github.com/aeturrell/specification_curve/issues/548">#548</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.5.1 to 7.5.3 (<a href="https://github.com/aeturrell/specification_curve/issues/516">#516</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump typeguard from 4.2.1 to 4.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/513">#513</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ruff from 0.4.5 to 0.4.6 (<a href="https://github.com/aeturrell/specification_curve/issues/515">#515</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 4.4.0 to 4.4.1 (<a href="https://github.com/aeturrell/specification_curve/issues/507">#507</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 69.5.0.20240519 to 70.0.0.20240523 (<a href="https://github.com/aeturrell/specification_curve/issues/510">#510</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ruff from 0.4.4 to 0.4.5 (<a href="https://github.com/aeturrell/specification_curve/issues/509">#509</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 69.5.0.20240513 to 69.5.0.20240519 (<a href="https://github.com/aeturrell/specification_curve/issues/504">#504</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 8.2.0 to 8.2.1 (<a href="https://github.com/aeturrell/specification_curve/issues/505">#505</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 4.3.0 to 4.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/496">#496</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump release-drafter/release-drafter from 5.25.0 to 6.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/424">#424</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.25.3 to 20.26.2 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/494">#494</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.3" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.3</h1>
+<p><em>2024-05-16</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.3">GitHub</a></p>
+<section id="changes-9" class="level2">
+<h2 class="anchored" data-anchor-id="changes-9">Changes</h2>
+<ul>
+<li>v0.3.3 (<a href="https://github.com/aeturrell/specification_curve/issues/499">#499</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Switching documentation to quarto and quartodoc (<a href="https://github.com/aeturrell/specification_curve/issues/498">#498</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Mainly infrastructure improvements (<a href="https://github.com/aeturrell/specification_curve/issues/497">#497</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>sphinx to 5 (<a href="https://github.com/aeturrell/specification_curve/issues/325">#325</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies-7" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-7">:package: Dependencies</h2>
+<ul>
+<li>Bump safety from 3.1.0 to 3.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/490">#490</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.4.3 to 7.5.1 (<a href="https://github.com/aeturrell/specification_curve/issues/491">#491</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump jinja2 from 3.1.3 to 3.1.4 (<a href="https://github.com/aeturrell/specification_curve/issues/492">#492</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump poetry from 1.8.2 to 1.8.3 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/493">#493</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 8.1.1 to 8.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/487">#487</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 69.2.0.20240317 to 69.5.0.20240423 (<a href="https://github.com/aeturrell/specification_curve/issues/481">#481</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 24.4.0 to 24.4.2 (<a href="https://github.com/aeturrell/specification_curve/issues/486">#486</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 5.0.0 to 5.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/467">#467</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 24.3.0 to 24.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/474">#474</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit-hooks from 4.5.0 to 4.6.0 (<a href="https://github.com/aeturrell/specification_curve/issues/475">#475</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump nox from 2024.3.2 to 2024.4.15 (<a href="https://github.com/aeturrell/specification_curve/issues/476">#476</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump nox from 2024.3.2 to 2024.4.15 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/477">#477</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.25.1 to 20.25.3 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/479">#479</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.29.3 to 6.29.4 (<a href="https://github.com/aeturrell/specification_curve/issues/469">#469</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 4.2.0 to 4.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/472">#472</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump typeguard from 4.1.5 to 4.2.1 (<a href="https://github.com/aeturrell/specification_curve/issues/465">#465</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump safety from 3.0.1 to 3.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/466">#466</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump idna from 3.4 to 3.7 (<a href="https://github.com/aeturrell/specification_curve/issues/473">#473</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pillow from 10.2.0 to 10.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/470">#470</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 4.1.0 to 4.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/471">#471</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump nox from 2023.4.22 to 2024.3.2 (<a href="https://github.com/aeturrell/specification_curve/issues/452">#452</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump nox from 2023.4.22 to 2024.3.2 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/453">#453</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump poetry from 1.8.1 to 1.8.2 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/454">#454</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.8.12 to 1.8.14 (<a href="https://github.com/aeturrell/specification_curve/issues/457">#457</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 8.0.2 to 8.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/459">#459</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump mypy from 1.8.0 to 1.9.0 (<a href="https://github.com/aeturrell/specification_curve/issues/460">#460</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 69.1.0.20240223 to 69.2.0.20240317 (<a href="https://github.com/aeturrell/specification_curve/issues/461">#461</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/cache from 4.0.0 to 4.0.2 (<a href="https://github.com/aeturrell/specification_curve/issues/462">#462</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 24.2.0 to 24.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/463">#463</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.8.11 to 1.8.12 (<a href="https://github.com/aeturrell/specification_curve/issues/445">#445</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 4.0.1 to 4.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/444">#444</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.4.2 to 7.4.3 (<a href="https://github.com/aeturrell/specification_curve/issues/442">#442</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 8.0.1 to 8.0.2 (<a href="https://github.com/aeturrell/specification_curve/issues/443">#443</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.29.2 to 6.29.3 (<a href="https://github.com/aeturrell/specification_curve/issues/446">#446</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump poetry from 1.7.1 to 1.8.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/447">#447</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.25.0 to 20.25.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/438">#438</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 69.1.0.20240217 to 69.1.0.20240223 (<a href="https://github.com/aeturrell/specification_curve/issues/439">#439</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 69.0.0.20240125 to 69.1.0.20240217 (<a href="https://github.com/aeturrell/specification_curve/issues/433">#433</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 8.0.0 to 8.0.1 (<a href="https://github.com/aeturrell/specification_curve/issues/434">#434</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump matplotlib from 3.7.4 to 3.7.5 (<a href="https://github.com/aeturrell/specification_curve/issues/435">#435</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.4.1 to 7.4.2 (<a href="https://github.com/aeturrell/specification_curve/issues/436">#436</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump cryptography from 42.0.2 to 42.0.4 (<a href="https://github.com/aeturrell/specification_curve/issues/437">#437</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump cryptography from 41.0.7 to 42.0.2 (<a href="https://github.com/aeturrell/specification_curve/issues/432">#432</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 24.1.1 to 24.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/430">#430</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump nbstripout from 0.6.1 to 0.7.1 (<a href="https://github.com/aeturrell/specification_curve/issues/429">#429</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 24.1.0 to 24.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/418">#418</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.4.0 to 7.4.1 (<a href="https://github.com/aeturrell/specification_curve/issues/419">#419</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.29.0 to 6.29.2 (<a href="https://github.com/aeturrell/specification_curve/issues/428">#428</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 7.4.4 to 8.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/420">#420</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump xdoctest from 1.1.2 to 1.1.3 (<a href="https://github.com/aeturrell/specification_curve/issues/422">#422</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 3.1.4 to 4.0.1 (<a href="https://github.com/aeturrell/specification_curve/issues/425">#425</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 23.3.2 to 24.0 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/426">#426</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 23.12.1 to 24.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/417">#417</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 69.0.0.20240115 to 69.0.0.20240125 (<a href="https://github.com/aeturrell/specification_curve/issues/415">#415</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pillow from 10.0.1 to 10.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/414">#414</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump safety from 3.0.0 to 3.0.1 (<a href="https://github.com/aeturrell/specification_curve/issues/413">#413</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.24.6 to 20.25.0 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/392">#392</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 69.0.0.20240106 to 69.0.0.20240115 (<a href="https://github.com/aeturrell/specification_curve/issues/409">#409</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump safety from 2.3.4 to 3.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/412">#412</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/cache from 3.3.3 to 4.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/410">#410</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.28.0 to 6.29.0 (<a href="https://github.com/aeturrell/specification_curve/issues/411">#411</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump jinja2 from 3.1.2 to 3.1.3 (<a href="https://github.com/aeturrell/specification_curve/issues/407">#407</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/cache from 3.3.2 to 3.3.3 (<a href="https://github.com/aeturrell/specification_curve/issues/408">#408</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump fonttools from 4.41.1 to 4.43.0 (<a href="https://github.com/aeturrell/specification_curve/issues/406">#406</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 69.0.0.0 to 69.0.0.20240106 (<a href="https://github.com/aeturrell/specification_curve/issues/405">#405</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 7.4.3 to 7.4.4 (<a href="https://github.com/aeturrell/specification_curve/issues/403">#403</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.26.0 to 6.28.0 (<a href="https://github.com/aeturrell/specification_curve/issues/401">#401</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump statsmodels from 0.14.0 to 0.14.1 (<a href="https://github.com/aeturrell/specification_curve/issues/402">#402</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.8.10 to 1.8.11 (<a href="https://github.com/aeturrell/specification_curve/issues/390">#390</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.3.2 to 7.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/404">#404</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump matplotlib from 3.7.3 to 3.7.4 (<a href="https://github.com/aeturrell/specification_curve/issues/386">#386</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 68.2.0.0 to 69.0.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/391">#391</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 4.7.1 to 5.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/394">#394</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/download-artifact from 3 to 4 (<a href="https://github.com/aeturrell/specification_curve/issues/397">#397</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 23.3.1 to 23.3.2 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/398">#398</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump mypy from 1.6.1 to 1.8.0 (<a href="https://github.com/aeturrell/specification_curve/issues/399">#399</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 23.10.1 to 23.12.1 (<a href="https://github.com/aeturrell/specification_curve/issues/400">#400</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump poetry from 1.6.1 to 1.7.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/385">#385</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump xdoctest from 1.1.1 to 1.1.2 (<a href="https://github.com/aeturrell/specification_curve/issues/380">#380</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 7.4.2 to 7.4.3 (<a href="https://github.com/aeturrell/specification_curve/issues/378">#378</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.25.2 to 6.26.0 (<a href="https://github.com/aeturrell/specification_curve/issues/379">#379</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.24.5 to 20.24.6 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/376">#376</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 23.10.0 to 23.10.1 (<a href="https://github.com/aeturrell/specification_curve/issues/377">#377</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 23.3 to 23.3.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/375">#375</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit from 3.4.0 to 3.5.0 (<a href="https://github.com/aeturrell/specification_curve/issues/372">#372</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump mypy from 1.5.1 to 1.6.1 (<a href="https://github.com/aeturrell/specification_curve/issues/373">#373</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 23.9.1 to 23.10.0 (<a href="https://github.com/aeturrell/specification_curve/issues/374">#374</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump reorder-python-imports from 3.11.0 to 3.12.0 (<a href="https://github.com/aeturrell/specification_curve/issues/365">#365</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 23.2.1 to 23.3 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/369">#369</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pillow from 10.0.0 to 10.0.1 (<a href="https://github.com/aeturrell/specification_curve/issues/367">#367</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.3.1 to 7.3.2 (<a href="https://github.com/aeturrell/specification_curve/issues/366">#366</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit-hooks from 4.4.0 to 4.5.0 (<a href="https://github.com/aeturrell/specification_curve/issues/368">#368</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump release-drafter/release-drafter from 5.24.0 to 5.25.0 (<a href="https://github.com/aeturrell/specification_curve/issues/370">#370</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump urllib3 from 2.0.6 to 2.0.7 (<a href="https://github.com/aeturrell/specification_curve/issues/371">#371</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump urllib3 from 2.0.4 to 2.0.6 (<a href="https://github.com/aeturrell/specification_curve/issues/364">#364</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 4.7.0 to 4.7.1 (<a href="https://github.com/aeturrell/specification_curve/issues/363">#363</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump tornado from 6.3.2 to 6.3.3 (<a href="https://github.com/aeturrell/specification_curve/issues/362">#362</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump reorder-python-imports from 3.10.0 to 3.11.0 (<a href="https://github.com/aeturrell/specification_curve/issues/361">#361</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump matplotlib from 3.7.2 to 3.7.3 (<a href="https://github.com/aeturrell/specification_curve/issues/360">#360</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump crazy-max/ghaction-github-labeler from 4.2.0 to 5.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/359">#359</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump typeguard from 4.1.3 to 4.1.5 (<a href="https://github.com/aeturrell/specification_curve/issues/357">#357</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.24.4 to 20.24.5 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/356">#356</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 23.7.0 to 23.9.1 (<a href="https://github.com/aeturrell/specification_curve/issues/358">#358</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.3.0 to 7.3.1 (<a href="https://github.com/aeturrell/specification_curve/issues/351">#351</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 7.4.1 to 7.4.2 (<a href="https://github.com/aeturrell/specification_curve/issues/354">#354</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/cache from 3.3.1 to 3.3.2 (<a href="https://github.com/aeturrell/specification_curve/issues/355">#355</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 68.1.0.1 to 68.2.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/352">#352</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.25.1 to 6.25.2 (<a href="https://github.com/aeturrell/specification_curve/issues/350">#350</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 68.1.0.0 to 68.1.0.1 (<a href="https://github.com/aeturrell/specification_curve/issues/344">#344</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.24.3 to 20.24.4 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/345">#345</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit from 3.3.3 to 3.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/347">#347</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump crazy-max/ghaction-github-labeler from 4.1.0 to 4.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/346">#346</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump typeguard from 4.1.2 to 4.1.3 (<a href="https://github.com/aeturrell/specification_curve/issues/343">#343</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 7.4.0 to 7.4.1 (<a href="https://github.com/aeturrell/specification_curve/issues/348">#348</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/checkout from 3 to 4 (<a href="https://github.com/aeturrell/specification_curve/issues/349">#349</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump poetry from 1.5.1 to 1.6.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/342">#342</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 68.0.0.3 to 68.1.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/337">#337</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump mypy from 1.5.0 to 1.5.1 (<a href="https://github.com/aeturrell/specification_curve/issues/339">#339</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump typeguard from 4.1.0 to 4.1.2 (<a href="https://github.com/aeturrell/specification_curve/issues/340">#340</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump mypy from 1.4.1 to 1.5.0 (<a href="https://github.com/aeturrell/specification_curve/issues/332">#332</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.25.0 to 6.25.1 (<a href="https://github.com/aeturrell/specification_curve/issues/331">#331</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.24.2 to 20.24.3 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/334">#334</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.8.8 to 1.8.10 (<a href="https://github.com/aeturrell/specification_curve/issues/333">#333</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.2.7 to 7.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/335">#335</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump typeguard from 4.0.1 to 4.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/330">#330</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump typeguard from 4.0.0 to 4.0.1 (<a href="https://github.com/aeturrell/specification_curve/issues/329">#329</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.24.0 to 6.25.0 (<a href="https://github.com/aeturrell/specification_curve/issues/328">#328</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.24.1 to 20.24.2 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/327">#327</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump furo from 2022.9.29 to 2023.3.27 (<a href="https://github.com/aeturrell/specification_curve/issues/326">#326</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.2" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.2</h1>
+<p><em>2023-07-24</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.2">GitHub</a></p>
+<section id="changes-10" class="level2">
+<h2 class="anchored" data-anchor-id="changes-10">Changes</h2>
+<ul>
+<li>v0.3.2 (<a href="https://github.com/aeturrell/specification_curve/issues/324">#324</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>pandas 2.0 issues fixed (<a href="https://github.com/aeturrell/specification_curve/issues/323">#323</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Various bumps (<a href="https://github.com/aeturrell/specification_curve/issues/318">#318</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>statsmodels to 14 (<a href="https://github.com/aeturrell/specification_curve/issues/312">#312</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>No typeguard test (<a href="https://github.com/aeturrell/specification_curve/issues/276">#276</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>attempt to put all constraints up to latest v (<a href="https://github.com/aeturrell/specification_curve/issues/214">#214</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies-8" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-8">:package: Dependencies</h2>
+<ul>
+<li>Bump typeguard from 3.0.2 to 4.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/321">#321</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 67.8.0.0 to 68.0.0.3 (<a href="https://github.com/aeturrell/specification_curve/issues/319">#319</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump nox from 2022.11.21 to 2023.4.22 (<a href="https://github.com/aeturrell/specification_curve/issues/320">#320</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 23.2 to 23.2.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/322">#322</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit from 3.3.1 to 3.3.3 (<a href="https://github.com/aeturrell/specification_curve/issues/314">#314</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 7.3.1 to 7.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/317">#317</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 23.3.0 to 23.7.0 (<a href="https://github.com/aeturrell/specification_curve/issues/315">#315</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.8.6 to 1.8.8 (<a href="https://github.com/aeturrell/specification_curve/issues/308">#308</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump nox-poetry from 1.0.2 to 1.0.3 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/307">#307</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 3.1.3 to 3.1.4 (<a href="https://github.com/aeturrell/specification_curve/issues/293">#293</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump release-drafter/release-drafter from 5.23.0 to 5.24.0 (<a href="https://github.com/aeturrell/specification_curve/issues/305">#305</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump requests from 2.28.1 to 2.31.0 (<a href="https://github.com/aeturrell/specification_curve/issues/295">#295</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump scipy from 1.9.3 to 1.10.0 (<a href="https://github.com/aeturrell/specification_curve/issues/313">#313</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pandas-stubs from 1.5.3.230321 to 2.0.2.230605 (<a href="https://github.com/aeturrell/specification_curve/issues/302">#302</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump tornado from 6.2 to 6.3.2 (<a href="https://github.com/aeturrell/specification_curve/issues/298">#298</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 4.6.0 to 4.7.0 (<a href="https://github.com/aeturrell/specification_curve/issues/309">#309</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 23.1.2 to 23.2 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/311">#311</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.8.5 to 1.8.6 (<a href="https://github.com/aeturrell/specification_curve/issues/290">#290</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit from 3.2.1 to 3.3.1 (<a href="https://github.com/aeturrell/specification_curve/issues/291">#291</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 4.5.0 to 4.6.0 (<a href="https://github.com/aeturrell/specification_curve/issues/278">#278</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 7.2.2 to 7.3.1 (<a href="https://github.com/aeturrell/specification_curve/issues/280">#280</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 3.1.2 to 3.1.3 (<a href="https://github.com/aeturrell/specification_curve/issues/281">#281</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 23.1 to 23.1.2 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/285">#285</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 23.0.1 to 23.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/273">#273</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 67.6.0.5 to 67.6.0.8 (<a href="https://github.com/aeturrell/specification_curve/issues/275">#275</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump mypy from 1.1.1 to 1.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/274">#274</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump markdown-it-py from 1.1.0 to 2.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/272">#272</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump poetry from 1.4.1 to 1.4.2 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/264">#264</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.8.3 to 1.8.5 (<a href="https://github.com/aeturrell/specification_curve/issues/266">#266</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.2.2 to 7.2.3 (<a href="https://github.com/aeturrell/specification_curve/issues/270">#270</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump codecov/codecov-action from 3.1.1 to 3.1.2 (<a href="https://github.com/aeturrell/specification_curve/issues/271">#271</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 23.1.0 to 23.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/263">#263</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit from 3.2.0 to 3.2.1 (<a href="https://github.com/aeturrell/specification_curve/issues/261">#261</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump types-setuptools from 67.6.0.0 to 67.6.0.5 (<a href="https://github.com/aeturrell/specification_curve/issues/254">#254</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pandas-stubs from 1.5.3.230304 to 1.5.3.230321 (<a href="https://github.com/aeturrell/specification_curve/issues/257">#257</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump typeguard from 3.0.0 to 3.0.2 (<a href="https://github.com/aeturrell/specification_curve/issues/259">#259</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.8.1 to 1.8.3 (<a href="https://github.com/aeturrell/specification_curve/issues/258">#258</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 7.2.1 to 7.2.2 (<a href="https://github.com/aeturrell/specification_curve/issues/251">#251</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.7.1 to 1.8.1 (<a href="https://github.com/aeturrell/specification_curve/issues/248">#248</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.21.3 to 6.22.0 (<a href="https://github.com/aeturrell/specification_curve/issues/256">#256</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump poetry from 1.4.0 to 1.4.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/253">#253</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit from 3.1.1 to 3.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/255">#255</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump safety from 2.3.1 to 2.3.4 (<a href="https://github.com/aeturrell/specification_curve/issues/243">#243</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump jupyter-book from 0.13.1 to 0.15.1 (<a href="https://github.com/aeturrell/specification_curve/issues/244">#244</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump typeguard from 2.13.3 to 3.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/246">#246</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pytest from 7.2.0 to 7.2.2 (<a href="https://github.com/aeturrell/specification_curve/issues/245">#245</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump statsmodels from 0.13.2 to 0.13.5 (<a href="https://github.com/aeturrell/specification_curve/issues/175">#175</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump mypy from 0.991 to 1.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/239">#239</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump xdoctest from 1.1.0 to 1.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/240">#240</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/cache from 3.3.0 to 3.3.1 (<a href="https://github.com/aeturrell/specification_curve/issues/237">#237</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.6.4 to 1.7.1 (<a href="https://github.com/aeturrell/specification_curve/issues/238">#238</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump matplotlib from 3.6.2 to 3.7.1 (<a href="https://github.com/aeturrell/specification_curve/issues/241">#241</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit-hooks from 4.3.0 to 4.4.0 (<a href="https://github.com/aeturrell/specification_curve/issues/242">#242</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump coverage from 6.5.0 to 7.2.1 (<a href="https://github.com/aeturrell/specification_curve/issues/231">#231</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump poetry from 1.3.2 to 1.4.0 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/232">#232</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipython from 8.5.0 to 8.10.0 (<a href="https://github.com/aeturrell/specification_curve/issues/225">#225</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump black from 22.10.0 to 23.1.0 (<a href="https://github.com/aeturrell/specification_curve/issues/218">#218</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 23.0 to 23.0.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/226">#226</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump release-drafter/release-drafter from 5.22.0 to 5.23.0 (<a href="https://github.com/aeturrell/specification_curve/issues/227">#227</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/cache from 3.2.4 to 3.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/235">#235</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump nox from 2022.8.7 to 2022.11.21 (<a href="https://github.com/aeturrell/specification_curve/issues/217">#217</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pre-commit from 2.20.0 to 3.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/233">#233</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pandas from 1.5.1 to 1.5.3 (<a href="https://github.com/aeturrell/specification_curve/issues/219">#219</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pillow from 9.2.0 to 9.3.0 (<a href="https://github.com/aeturrell/specification_curve/issues/182">#182</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump salsify/action-detect-and-tag-new-version from 2.0.2 to 2.0.3 (<a href="https://github.com/aeturrell/specification_curve/issues/187">#187</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump certifi from 2022.9.24 to 2022.12.7 (<a href="https://github.com/aeturrell/specification_curve/issues/192">#192</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pypa/gh-action-pypi-publish from 1.5.1 to 1.6.4 (<a href="https://github.com/aeturrell/specification_curve/issues/190">#190</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump wheel from 0.37.1 to 0.38.1 (<a href="https://github.com/aeturrell/specification_curve/issues/201">#201</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump setuptools from 65.5.0 to 65.5.1 (<a href="https://github.com/aeturrell/specification_curve/issues/203">#203</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/setup-python from 4.3.0 to 4.5.0 (<a href="https://github.com/aeturrell/specification_curve/issues/208">#208</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump mypy from 0.982 to 0.991 (<a href="https://github.com/aeturrell/specification_curve/issues/181">#181</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump gitpython from 3.1.29 to 3.1.30 (<a href="https://github.com/aeturrell/specification_curve/issues/213">#213</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump release-drafter/release-drafter from 5.21.1 to 5.22.0 (<a href="https://github.com/aeturrell/specification_curve/issues/204">#204</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump actions/cache from 3.0.11 to 3.2.4 (<a href="https://github.com/aeturrell/specification_curve/issues/210">#210</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump pip from 22.3 to 23.0 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/211">#211</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump ipykernel from 6.16.2 to 6.21.0 (<a href="https://github.com/aeturrell/specification_curve/issues/212">#212</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump poetry from 1.2.2 to 1.3.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/194">#194</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump matplotlib from 3.6.1 to 3.6.2 (<a href="https://github.com/aeturrell/specification_curve/issues/174">#174</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump salsify/action-detect-and-tag-new-version from 2.0.1 to 2.0.2 (<a href="https://github.com/aeturrell/specification_curve/issues/163">#163</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+<li>Bump virtualenv from 20.16.5 to 20.16.6 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/162">#162</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
+<section id="v0.3.1" class="level1 changelog-version">
+<h1 class="changelog-version">v0.3.1</h1>
+<p><em>2022-10-29</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.1">GitHub</a></p>
+<section id="changes-11" class="level2">
+<h2 class="anchored" data-anchor-id="changes-11">Changes</h2>
+<ul>
+<li>0.3.1 (<a href="https://github.com/aeturrell/specification_curve/issues/165">#165</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
+<section id="version-0.3.0" class="level1 changelog-version">
+<h1 class="changelog-version">Version 0.3.0</h1>
+<p><em>2022-10-29</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.0">GitHub</a></p>
+<section id="whats-changed" class="level2">
+<h2 class="anchored" data-anchor-id="whats-changed">What’s Changed</h2>
+<ul>
+<li>docs are now created by Jupyter Book, and served up via GitHub pages.</li>
+<li>there are labels saying which variables are exog, endog, controls, or subsets of controls that now appear on the plot.</li>
+<li>better errorbars.</li>
+<li>Update flake8 to 3.9.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/74</li>
+<li>Update sphinx to 4.0.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/75</li>
+<li>Update watchdog to 2.1.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/76</li>
+<li>Update sphinx to 4.0.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/77</li>
+<li>Update sphinx to 4.0.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/79</li>
+<li>Update watchdog to 2.1.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/78</li>
+<li>Update pip to 21.1.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/80</li>
+<li>Update pip to 21.1.3 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/81</li>
+<li>Update watchdog to 2.1.3 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/82</li>
+<li>Update sphinx to 4.0.3 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/83</li>
+<li>Update sphinx to 4.1.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/84</li>
+<li>Update tox to 3.24.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/85</li>
+<li>Update twine to 3.4.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/86</li>
+<li>Update sphinx to 4.1.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/89</li>
+<li>Update pip to 21.2.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/90</li>
+<li>Update tox to 3.24.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/91</li>
+<li>Update pip to 21.2.3 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/92</li>
+<li>Update wheel to 0.37.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/93</li>
+<li>Update watchdog to 2.1.4 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/96</li>
+<li>Update tox to 3.24.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/95</li>
+<li>Update tox to 3.24.3 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/97</li>
+<li>Update watchdog to 2.1.5 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/98</li>
+<li>Update pip to 21.2.4 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/94</li>
+<li>Update sphinx to 4.2.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/99</li>
+<li>Update tox to 3.24.4 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/101</li>
+<li>Update watchdog to 2.1.6 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/102</li>
+<li>Update coverage to 6.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/103</li>
+<li>Update coverage to 6.0.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/104</li>
+<li>Update flake8 to 4.0.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/105</li>
+<li>Update flake8 to 4.0.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/106</li>
+<li>Update pip to 21.3 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/107</li>
+<li>Update coverage to 6.0.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/108</li>
+<li>Update pip to 21.3.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/109</li>
+<li>Update coverage to 6.1.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/110</li>
+<li>Update twine to 3.6.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/111</li>
+<li>Update sphinx to 4.3.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/112</li>
+<li>Update sphinx to 4.3.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/113</li>
+<li>Update sphinx to 4.3.2 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/115</li>
+<li>Update wheel to 0.37.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/116</li>
+<li>Update tox to 3.24.5 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/117</li>
+<li>Update coverage to 6.3 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/119</li>
+<li>Update pip to 22.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/120</li>
+<li>Update twine to 4.0.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/127</li>
+<li>Update coverage to 6.4 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/133</li>
+<li>Update twine to 4.0.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/136</li>
+<li>Update watchdog to 2.1.9 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/138</li>
+<li>Update pip to 22.2.1 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/143</li>
+<li>Update tox to 3.26.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/149</li>
+<li>Update pip to 22.3 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/157</li>
+<li>Update sphinx to 5.3.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/158</li>
+<li>Update wheel to 0.38.0 by <a href="https://github.com/pyup-bot"><span class="citation" data-cites="pyup-bot">(<span><strong>pyup-bot?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/159</li>
+<li>Right labels by <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/161</li>
+<li>0.3.0 by <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a> in https://github.com/aeturrell/specification_curve/pull/164</li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/aeturrell/specification_curve/compare/v0.2.6...v0.3.0">https://github.com/aeturrell/specification_curve/compare/v0.2.6…v0.3.0</a></p>
+</section>
+</section>
+<section id="specification-curve-0.2.6-biosphere-mansion" class="level1 changelog-version">
+<h1 class="changelog-version">Specification Curve 0.2.6: Biosphere Mansion</h1>
+<p><em>2021-05-05</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.2.6">GitHub</a></p>
+<p>Adds a Zenodo DOI</p>
+</section>
+<section id="specification-curve-0.2.5-adequate-greenhouse" class="level1 changelog-version">
+<h1 class="changelog-version">Specification Curve 0.2.5: Adequate Greenhouse</h1>
+<p><em>2020-11-22</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.2.5">GitHub</a></p>
+</section>
+<section id="section" class="level1">
+<h1>0.2.5 (2020-11-22)</h1>
+<ul>
+<li>Added option to always include some regressors</li>
+<li>Added option to label preferred specification in plots</li>
+</ul>
+</section>
+<section id="specification-curve-v0.2.4-shocked-earl" class="level1 changelog-version">
+<h1 class="changelog-version">Specification curve v0.2.4: Shocked Earl</h1>
+<p><em>2020-09-15</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.2.4">GitHub</a></p>
+<p>Shocked Earl</p>
+<p>Release name from <a href="http://creativityforyou.com/combomaker.html">here</a>.</p>
+<ul>
+<li>Further fix to pick up example data (needed package sources package and inclusion of directory in setup.py). Fixes <a href="https://github.com/aeturrell/specification_curve/issues/17#issue-701148503">701148503</a></li>
+<li>Fixed auto-deployment to pypi, via travis autodeploy encryption</li>
+<li>Examples available interactively via Google Colab</li>
+</ul>
+</section>
+<section id="plausible-rod" class="level1 changelog-version">
+<h1 class="changelog-version">Plausible Rod</h1>
+<p><em>2020-09-02</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.2.2">GitHub</a></p>
+<section id="specification-curve-v0.2.2-plausible-rod" class="level2">
+<h2 class="anchored" data-anchor-id="specification-curve-v0.2.2-plausible-rod">Specification curve v0.2.2, “Plausible Rod”</h2>
+<p>Version name from <a href="http://creativityforyou.com/combomaker.html">here</a>.</p>
+<p>This release is the first to feature the new object oriented design. Full release notes:</p>
+</section>
+</section>
+<section id="section-1" class="level1">
+<h1>0.2.2 (2020-09-02)</h1>
+<ul>
+<li>More badges in readme</li>
+<li>Dropped support for python 3.5</li>
+</ul>
+</section>
+<section id="section-2" class="level1">
+<h1>0.2.1 (2020-09-02)</h1>
+<ul>
+<li>Switched to object oriented design</li>
+<li>Now supports range of statsmodels estimators!</li>
+<li>Example showing how to save plots to file in docs</li>
+<li>Example showing where estimation results are stored in docs</li>
+<li>Docs example of very large number of specifications</li>
+</ul>
+</section>
+<section id="v0.1.1-released" class="level1 changelog-version">
+<h1 class="changelog-version">v0.1.1 Released</h1>
+<p><em>2020-08-01</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.1.1">GitHub</a></p>
+</section>
+<section id="v0.1.1-2020-08-01" class="level1">
+<h1>v0.1.1 (2020-08-01)</h1>
+<ul>
+<li>Multiple independent, dependent, and control variables implemented as lists. Mutually exclusive control variables implemented. Expansions of categorical variables into mutually exclusive fixed effects implemented.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/aeturrell\.github\.io\/specification_curve\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+<div class="nav-footer-center">
+<p>Site created with <strong>Great&nbsp;Docs</strong>.</p>
+</div>
+</div>
+</footer>
+<script src="github-widget.js"></script>
+<script src="copy-page.js"></script>
+<script src="sidebar-wrap.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'sidebar-float.js';document.body.appendChild(s);})();</script>
+<script src="sidebar-filter.js"></script>
+<script src="dark-mode-toggle.js"></script>
+<script src="back-to-top.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'on-this-page.js';document.body.appendChild(s);})();</script>
+<script src="keyboard-nav.js"></script>
+<script src="copy-code.js"></script>
+<script src="details.js"></script>
+<script src="mermaid-renderer.js"></script>
+<script src="tooltips.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'color-swatch.js';document.body.appendChild(s);})();</script>
+<script src="responsive-tables.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'video-embed.js';document.body.appendChild(s);})();</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'termshow.js';document.body.appendChild(s);})();</script>
+<script src="navbar-widgets.js"></script>
+<style>
+/* Great Docs: accent_color overrides */
+:root, html.quarto-light, :root[data-bs-theme='light'] {
+    --gd-accent: #3030E8;
+}
+html.quarto-dark, :root[data-bs-theme='dark'] {
+    --gd-accent: #9A9AFF;
+}
+</style>
+
+
+
+
+</body></html>

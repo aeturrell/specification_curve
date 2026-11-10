@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Features – Specification Curve | Specification Curve</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../user-guide/contributing.html" rel="next">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-9ec6d0bacfee18682fb645e4ac94e31e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var m = document.querySelector('meta[name="quarto:offset"]');
+  var base = (m ? m.content : './') + 'user-guide/icons/';
+  [['icon', 'image/svg+xml', 'favicon.svg', null],
+   ['icon', 'image/png', 'favicon-32x32.png', '32x32'],
+   ['icon', 'image/png', 'favicon-16x16.png', '16x16'],
+   ['apple-touch-icon', null, 'apple-touch-icon.png', '180x180']].forEach(function (d) {
+    var l = document.createElement('link');
+    l.rel = d[0]; if (d[1]) l.type = d[1]; if (d[3]) l.sizes = d[3];
+    l.href = base + d[2];
+    document.head.appendChild(l);
+  });
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;600&amp;family=Instrument+Sans:ital,wght@0,400..700;1,400..700&amp;family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&amp;display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'termshow.css'}));</script>
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'gd-lightbox.css'}));</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'gd-lightbox.js';s.defer=true;document.head.appendChild(s);})();</script>
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'gd-lightbox-compare.css'}));</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'gd-lightbox-compare.js';s.defer=true;document.head.appendChild(s);})();</script>
+<script>document.head.appendChild(Object.assign(document.createElement('link'),{rel:'stylesheet',href:(document.querySelector('meta[name="quarto:offset"]')||{content:''}).content+'gd-lightbox-annotate.css'}));</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'gd-lightbox-annotate.js';s.defer=true;document.head.appendChild(s);})();</script>
+<script src="../theme-init.js"></script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../indigo.css">
+  <link rel="alternate" type="text/markdown" href="features.md">
+  <link rel="canonical" href="https://aeturrell.github.io/specification_curve/user-guide/features.html">
+  <meta name="description" content="Let’s see Specification Curve’s features in action.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Features – Specification Curve | Specification Curve">
+  <meta property="og:description" content="Let’s see Specification Curve’s features in action.">
+  <meta property="og:url" content="https://aeturrell.github.io/specification_curve/user-guide/features.html">
+  <meta property="og:site_name" content="Specification Curve">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Features – Specification Curve | Specification Curve">
+  <meta name="twitter:description" content="Let’s see Specification Curve’s features in action.">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Specification Curve <span class="version-badge" title="Released 2026-11-10">v0.4.1</span></span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../reference/index.html"> 
+<span class="menu-text">Reference</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../changelog.html"> 
+<span class="menu-text">Changelog</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <span class="nav-link">
+<div id="github-widget" data-owner="aeturrell" data-repo="specification_curve" data-stars="33" data-forks="4"></div>
+    </span>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+            <div id="quarto-search" class=""></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <h1 class="quarto-secondary-nav-title no-breadcrumbs">Features</h1>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Specification Curve</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../user-guide/features.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Features</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../user-guide/contributing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Contributing</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#basic-use" id="toc-basic-use" class="nav-link active" data-scroll-target="#basic-use">Basic use</a></li>
+  <li><a href="#choosing-controls" id="toc-choosing-controls" class="nav-link" data-scroll-target="#choosing-controls">Choosing controls</a></li>
+  <li><a href="#fixed-effects" id="toc-fixed-effects" class="nav-link" data-scroll-target="#fixed-effects">Fixed effects</a></li>
+  <li><a href="#standard-errors" id="toc-standard-errors" class="nav-link" data-scroll-target="#standard-errors">Standard errors</a></li>
+  <li><a href="#describing-specifications-with-a-formula" id="toc-describing-specifications-with-a-formula" class="nav-link" data-scroll-target="#describing-specifications-with-a-formula">Describing specifications with a formula</a></li>
+  <li><a href="#several-outcomes-and-regressors-of-interest" id="toc-several-outcomes-and-regressors-of-interest" class="nav-link" data-scroll-target="#several-outcomes-and-regressors-of-interest">Several outcomes and regressors of interest</a></li>
+  <li><a href="#different-samples" id="toc-different-samples" class="nav-link" data-scroll-target="#different-samples">Different samples</a>
+  <ul class="collapse">
+  <li><a href="#missing-values" id="toc-missing-values" class="nav-link" data-scroll-target="#missing-values">Missing values</a></li>
+  </ul></li>
+  <li><a href="#other-estimators" id="toc-other-estimators" class="nav-link" data-scroll-target="#other-estimators">Other estimators</a></li>
+  <li><a href="#instrumental-variables" id="toc-instrumental-variables" class="nav-link" data-scroll-target="#instrumental-variables">Instrumental variables</a></li>
+  <li><a href="#weights" id="toc-weights" class="nav-link" data-scroll-target="#weights">Weights</a></li>
+  <li><a href="#working-with-the-results" id="toc-working-with-the-results" class="nav-link" data-scroll-target="#working-with-the-results">Working with the results</a></li>
+  <li><a href="#large-numbers-of-specifications" id="toc-large-numbers-of-specifications" class="nav-link" data-scroll-target="#large-numbers-of-specifications">Large numbers of specifications</a></li>
+  <li><a href="#customising-the-chart" id="toc-customising-the-chart" class="nav-link" data-scroll-target="#customising-the-chart">Customising the chart</a></li>
+  <li><a href="#inference-under-the-null" id="toc-inference-under-the-null" class="nav-link" data-scroll-target="#inference-under-the-null">Inference under the null</a>
+  <ul class="collapse">
+  <li><a href="#choosing-a-resampling-method" id="toc-choosing-a-resampling-method" class="nav-link" data-scroll-target="#choosing-a-resampling-method">Choosing a resampling method</a></li>
+  <li><a href="#the-bayesian-bootstrap" id="toc-the-bayesian-bootstrap" class="nav-link" data-scroll-target="#the-bayesian-bootstrap">The Bayesian bootstrap</a></li>
+  <li><a href="#permutation" id="toc-permutation" class="nav-link" data-scroll-target="#permutation">Permutation</a></li>
+  <li><a href="#other-options" id="toc-other-options" class="nav-link" data-scroll-target="#other-options">Other options</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Features</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Let’s see <strong>Specification Curve</strong>’s features in action.</p>
+<section id="basic-use" class="level1">
+<h1>Basic use</h1>
+<p>We’ll use an example data set that comes with the package: a synthetic panel of firms observed over several years. Some firms are <code>treated</code> in some years, and the question is what effect treatment has on <code>sales</code>. Because the data are made up, we know the answer: treatment raises log sales by 0.3. But firms with a high unobserved firm-level effect are more likely to be treated, so analyses that ignore this will overstate the effect.</p>
+<div id="13b71afd" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> specification_curve <span class="im">as</span> sc</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sc.load_example_panel()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+<table class="dataframe table table-sm table-striped small">
+  <thead>
+    <tr>
+      <th></th>
+      <th>firm</th>
+      <th>year</th>
+      <th>industry</th>
+      <th>state</th>
+      <th>treated</th>
+      <th>eligible</th>
+      <th>size</th>
+      <th>age</th>
+      <th>leverage</th>
+      <th>rd</th>
+      <th>sales</th>
+      <th>patents</th>
+      <th>exporter</th>
+      <th>weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>2010</td>
+      <td>5</td>
+      <td>24</td>
+      <td>1</td>
+      <td>1</td>
+      <td>3.759599</td>
+      <td>13.0</td>
+      <td>0.517282</td>
+      <td>0.066929</td>
+      <td>447.968245</td>
+      <td>4</td>
+      <td>1</td>
+      <td>1.49689</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>2011</td>
+      <td>5</td>
+      <td>24</td>
+      <td>1</td>
+      <td>0</td>
+      <td>4.021226</td>
+      <td>14.0</td>
+      <td>0.528749</td>
+      <td>0.064437</td>
+      <td>532.575250</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.49689</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>2012</td>
+      <td>5</td>
+      <td>24</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4.284728</td>
+      <td>15.0</td>
+      <td>0.343254</td>
+      <td>0.054897</td>
+      <td>158.264040</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.49689</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>2013</td>
+      <td>5</td>
+      <td>24</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2.724891</td>
+      <td>16.0</td>
+      <td>0.154377</td>
+      <td>0.066043</td>
+      <td>202.515415</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.49689</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>2014</td>
+      <td>5</td>
+      <td>24</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3.813143</td>
+      <td>17.0</td>
+      <td>0.145118</td>
+      <td>0.045717</td>
+      <td>170.363117</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1.49689</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>To create a specification curve, say which outcome (<code>y</code>) and which regressor of interest (<code>x</code>) you care about, and which choices should vary. Below, each of three control variables is switched in and out, giving eight specifications. <a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.fit" class="gdls-link gdls-code">fit()</a> estimates them and <a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.plot" class="gdls-link gdls-code">plot()</a> draws the curve.</p>
+<div id="14b7cec4" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"age"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-4-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Each column is one specification. The top panel shows the estimated coefficient on <code>treated</code> with its 95% confidence interval, sorted from smallest to largest. The panel underneath shows which controls each specification includes. Markers are coloured blue when the coefficient is positive and significant (at the 0.05 level), red when it is negative and significant, and black otherwise.</p>
+<p>All estimation is done by <a href="https://pyfixest.org/">pyfixest</a>, and every term is written in its formula syntax. That means transformations such as <code>log(sales)</code>, interactions such as <code>size:leverage</code>, and categorical terms such as <code>i(industry)</code> or <code>C(industry)</code> can be used anywhere a variable name can.</p>
+</section>
+<section id="choosing-controls" class="level1">
+<h1>Choosing controls</h1>
+<p><code>controls</code> are included in every combination. Three more arguments shape which combinations are run:</p>
+<ul>
+<li><code>always</code> names terms that are in every specification;</li>
+<li><code>exclude</code> lists groups of controls that should never appear together (for example, two measures of the same thing);</li>
+<li><code>min_controls</code> and <code>max_controls</code> limit how many controls a specification has.</li>
+</ul>
+<div id="a99b8830" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"age"</span>, <span class="st">"log(age)"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    always<span class="op">=</span><span class="st">"i(industry)"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    exclude<span class="op">=</span>[[<span class="st">"age"</span>, <span class="st">"log(age)"</span>]],</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    min_controls<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-5-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="fixed-effects" class="level1">
+<h1>Fixed effects</h1>
+<p>Fixed effects are given with <code>fe</code>, as a list of alternatives. Each is written as in a pyfixest formula, and <code>None</code> means no fixed effects. pyfixest absorbs fixed effects rather than estimating a coefficient for each one, so this stays fast even with many firms.</p>
+<p>Here the specifications without firm fixed effects overstate the effect, as we expected, while those with them recover something close to the true value of 0.3. Passing <code>color_by="fe"</code> colours the curve by this choice to make that easy to see.</p>
+<div id="98ba9368" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>, <span class="st">"rd"</span>],</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span>[<span class="va">None</span>, <span class="st">"firm"</span>, <span class="st">"firm + year"</span>],</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>sco.plot(color_by<span class="op">=</span><span class="st">"fe"</span>)<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-6-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="standard-errors" class="level1">
+<h1>Standard errors</h1>
+<p>How standard errors are computed is often as contestable as what is in the model. <code>vcov</code> takes a list of alternatives, each in the form pyfixest accepts: for example <code>"iid"</code>, <code>"hetero"</code>, or <code>{"CRV1": "firm"}</code> for standard errors clustered by firm. Leaving it out uses pyfixest’s default.</p>
+<p>Specifications that differ only in their standard errors share a single model fit, so adding alternatives costs very little.</p>
+<div id="9fbd8ed2" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span>[<span class="st">"firm"</span>, <span class="st">"firm + year"</span>],</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    vcov<span class="op">=</span>[<span class="st">"iid"</span>, <span class="st">"hetero"</span>, {<span class="st">"CRV1"</span>: <span class="st">"firm"</span>}, {<span class="st">"CRV1"</span>: <span class="st">"state"</span>}],</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-7-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="describing-specifications-with-a-formula" class="level1">
+<h1>Describing specifications with a formula</h1>
+<p>Instead of keyword arguments you can describe the specifications with a single pyfixest formula, using its multiple-estimation syntax to define the choices:</p>
+<ul>
+<li>several outcomes: <code>y1 + y2 ~ ...</code></li>
+<li><code>sw(a, b)</code>: <code>a</code> or <code>b</code>, one at a time</li>
+<li><code>sw0(a, b)</code>: as <code>sw</code>, or neither</li>
+<li><code>csw(a, b)</code>: <code>a</code>, then <code>a + b</code> (cumulative); <code>csw0</code> also includes neither</li>
+</ul>
+<p><strong>Specification Curve</strong> adds two operators of its own for the most common need in a specification curve:</p>
+<ul>
+<li><code>comb(a, b)</code>: every combination of <code>a</code> and <code>b</code></li>
+<li><code>comb0(a, b)</code>: every combination, including neither</li>
+</ul>
+<p>These work for fixed effects too, after the <code>|</code>. The <code>x</code> argument is still needed to say which coefficient to plot. The formula below describes the same specifications as the fixed effects example above.</p>
+<div id="eccdacf4" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"log(sales) ~ treated + comb0(size, leverage, rd) | sw0(firm, firm + year)"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-8-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The other arguments (<code>vcov</code>, <code>model</code>, <code>weights</code>, <code>subsets</code>, <code>exclude</code> and so on) can be combined with a formula.</p>
+</section>
+<section id="several-outcomes-and-regressors-of-interest" class="level1">
+<h1>Several outcomes and regressors of interest</h1>
+<p><code>y</code> and <code>x</code> take lists too. With several <code>x</code>, each specification uses one of them, and the coefficient plotted is the one on that variable. Below, the outcome is the log of sales or the log of sales plus one, and the regressor of interest is either treatment or eligibility for it.</p>
+<div id="890117ac" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>[<span class="st">"log(sales)"</span>, <span class="st">"log(sales + 1)"</span>],</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>[<span class="st">"treated"</span>, <span class="st">"eligible"</span>],</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span><span class="st">"firm + year"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-9-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Take care when the alternatives are on different scales: the coefficients of a model for <code>sales</code> and one for <code>log(sales)</code> are not comparable, and putting them on one chart would be misleading.</p>
+</section>
+<section id="different-samples" class="level1">
+<h1>Different samples</h1>
+<p><code>subsets</code> runs every specification on several samples. It maps a name for each sample to a query (as used by <code>DataFrame.query</code>), with <code>None</code> meaning all rows.</p>
+<div id="6d418e5d" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span><span class="st">"firm + year"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    subsets<span class="op">=</span>{</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"all"</span>: <span class="va">None</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"from 2012"</span>: <span class="st">"year &gt;= 2012"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"industries 0 to 2"</span>: <span class="st">"industry &lt;= 2"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-10-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The helper <a href="../reference/subsets_by.html#specification_curve.subsets_by" class="gdls-link gdls-code">subsets_by</a> builds one sample per level of a column, for the common case of running the analysis separately for each group:</p>
+<div id="2da0efaa" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sc.subsets_by(df, <span class="st">"industry"</span>, include_all<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>{'all': None,
+ 'industry = 0': '`industry` == 0',
+ 'industry = 1': '`industry` == 1',
+ 'industry = 2': '`industry` == 2',
+ 'industry = 3': '`industry` == 3',
+ 'industry = 4': '`industry` == 4',
+ 'industry = 5': '`industry` == 5'}</code></pre>
+</div>
+</div>
+<section id="missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="missing-values">Missing values</h2>
+<p>In the example data, <code>age</code> and <code>leverage</code> have some missing values. (Firm <code>age</code> rises by one each year, so it should not be combined with firm and year fixed effects together: pyfixest would drop it as collinear.) By default, within each sample every specification is estimated on the same rows: those that are complete for all the variables used by any specification. That way differences between estimates come from the specification and not from a changing sample. Passing <code>common_sample=False</code> lets each specification use every row it can instead. The number of observations each one used is in the results, and <code>show_nobs=True</code> adds it to the chart.</p>
+<div id="8478e7d2" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"age"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    common_sample<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>sco.plot(show_nobs<span class="op">=</span><span class="va">True</span>)<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-12-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="other-estimators" class="level1">
+<h1>Other estimators</h1>
+<p>The default estimator is OLS (pyfixest’s <code>feols</code>). The <code>model</code> argument selects others:</p>
+<ul>
+<li><code>"fepois"</code>: Poisson regression, for counts and other non-negative outcomes;</li>
+<li><code>"feglm"</code>: generalised linear models, with <code>family</code> set to <code>"logit"</code>, <code>"probit"</code>, <code>"gaussian"</code> or <code>"poisson"</code>;</li>
+<li><code>"quantreg"</code>: quantile regression, with <code>quantile</code> (the median by default).</li>
+</ul>
+<p>Here is a Poisson specification curve for the number of patents, with and without firm fixed effects:</p>
+<div id="e28d5bf2" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"patents"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span>[<span class="va">None</span>, <span class="st">"firm"</span>, <span class="st">"firm + year"</span>],</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"fepois"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    vcov<span class="op">=</span>{<span class="st">"CRV1"</span>: <span class="st">"firm"</span>},</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-13-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>model</code>, <code>family</code> and <code>quantile</code> accept lists as well, so the estimator can itself be one of the choices. Below, whether a firm exports is modelled with a linear probability model, a logit and a probit. (The coefficients of these three are on different scales, so compare signs and significance, not sizes.)</p>
+<div id="3ff1e63e" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"exporter"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>[<span class="st">"feols"</span>, <span class="st">"feglm"</span>],</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    family<span class="op">=</span>[<span class="st">"logit"</span>, <span class="st">"probit"</span>],</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    vcov<span class="op">=</span><span class="st">"hetero"</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-14-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And quantile regressions at three quantiles:</p>
+<div id="fe05860c" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"quantreg"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    quantile<span class="op">=</span>[<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>],</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-15-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Not every estimator supports every option: quantile regression cannot be combined with fixed effects, weights or instruments, and instruments are only available with <code>"feols"</code>. If the choices you ask for include a combination that cannot be estimated you get an error that says which. Passing <code>skip_invalid=True</code> leaves those combinations out instead.</p>
+</section>
+<section id="instrumental-variables" class="level1">
+<h1>Instrumental variables</h1>
+<p><code>iv</code> gives the first stage in pyfixest’s syntax, <code>"endogenous ~ instruments"</code>. As with the other arguments it can be a list, and <code>None</code> means no instruments. In the example data, <code>eligible</code> was assigned at random and makes treatment more likely, so it can be used as an instrument for <code>treated</code>.</p>
+<p>Without firm fixed effects, OLS overstates the effect. The instrumental variable estimates are closer to the true value of 0.3 whether or not fixed effects are included, though they are much less precise.</p>
+<div id="44761ea9" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span>[<span class="va">None</span>, <span class="st">"firm + year"</span>],</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    iv<span class="op">=</span>[<span class="va">None</span>, <span class="st">"treated ~ eligible"</span>],</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    vcov<span class="op">=</span><span class="st">"hetero"</span>,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-16-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="weights" class="level1">
+<h1>Weights</h1>
+<p><code>weights</code> names a column of weights, or a list of alternatives in which <code>None</code> means unweighted.</p>
+<div id="c444818b" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span><span class="st">"firm + year"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    weights<span class="op">=</span>[<span class="va">None</span>, <span class="st">"weight"</span>],</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-17-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="working-with-the-results" class="level1">
+<h1>Working with the results</h1>
+<p>Before fitting, <a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.grid" class="gdls-link gdls-code">grid</a> shows the specifications that will be run. After fitting, <a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.results" class="gdls-link gdls-code">results</a> has the same rows with the estimates added: the coefficient on the regressor of interest, its standard error, test statistic, p-value and confidence interval, and the number of observations.</p>
+<div id="b29f606c" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sco.results.drop(columns<span class="op">=</span>[<span class="st">"model"</span>, <span class="st">"family"</span>, <span class="st">"quantile"</span>, <span class="st">"iv"</span>, <span class="st">"subset"</span>])</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+
+<table class="dataframe table table-sm table-striped small">
+  <thead>
+    <tr>
+      <th></th>
+      <th>spec_id</th>
+      <th>y</th>
+      <th>x</th>
+      <th>controls</th>
+      <th>always</th>
+      <th>fe</th>
+      <th>vcov</th>
+      <th>weights</th>
+      <th>formula</th>
+      <th>estimate</th>
+      <th>se</th>
+      <th>statistic</th>
+      <th>pvalue</th>
+      <th>ci_low_95</th>
+      <th>ci_high_95</th>
+      <th>nobs</th>
+      <th>error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>log(sales)</td>
+      <td>treated</td>
+      <td>()</td>
+      <td>()</td>
+      <td>firm + year</td>
+      <td>iid</td>
+      <td>None</td>
+      <td>log(sales) ~ treated | firm + year</td>
+      <td>0.321758</td>
+      <td>0.025244</td>
+      <td>12.745942</td>
+      <td>0.0</td>
+      <td>0.272251</td>
+      <td>0.371264</td>
+      <td>2355</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>log(sales)</td>
+      <td>treated</td>
+      <td>(size,)</td>
+      <td>()</td>
+      <td>firm + year</td>
+      <td>iid</td>
+      <td>None</td>
+      <td>log(sales) ~ treated + size | firm + year</td>
+      <td>0.324884</td>
+      <td>0.023463</td>
+      <td>13.846509</td>
+      <td>0.0</td>
+      <td>0.278870</td>
+      <td>0.370898</td>
+      <td>2355</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>log(sales)</td>
+      <td>treated</td>
+      <td>(leverage,)</td>
+      <td>()</td>
+      <td>firm + year</td>
+      <td>iid</td>
+      <td>None</td>
+      <td>log(sales) ~ treated + leverage | firm + year</td>
+      <td>0.320697</td>
+      <td>0.025078</td>
+      <td>12.787773</td>
+      <td>0.0</td>
+      <td>0.271515</td>
+      <td>0.369879</td>
+      <td>2355</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>log(sales)</td>
+      <td>treated</td>
+      <td>(size, leverage)</td>
+      <td>()</td>
+      <td>firm + year</td>
+      <td>iid</td>
+      <td>None</td>
+      <td>log(sales) ~ treated + size + leverage | firm ...</td>
+      <td>0.323848</td>
+      <td>0.023296</td>
+      <td>13.901475</td>
+      <td>0.0</td>
+      <td>0.278162</td>
+      <td>0.369534</td>
+      <td>2355</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>log(sales)</td>
+      <td>treated</td>
+      <td>()</td>
+      <td>()</td>
+      <td>firm + year</td>
+      <td>iid</td>
+      <td>weight</td>
+      <td>log(sales) ~ treated | firm + year</td>
+      <td>0.317325</td>
+      <td>0.025161</td>
+      <td>12.611908</td>
+      <td>0.0</td>
+      <td>0.267982</td>
+      <td>0.366669</td>
+      <td>2355</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>log(sales)</td>
+      <td>treated</td>
+      <td>(size,)</td>
+      <td>()</td>
+      <td>firm + year</td>
+      <td>iid</td>
+      <td>weight</td>
+      <td>log(sales) ~ treated + size | firm + year</td>
+      <td>0.317686</td>
+      <td>0.023293</td>
+      <td>13.638792</td>
+      <td>0.0</td>
+      <td>0.272006</td>
+      <td>0.363366</td>
+      <td>2355</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6</td>
+      <td>log(sales)</td>
+      <td>treated</td>
+      <td>(leverage,)</td>
+      <td>()</td>
+      <td>firm + year</td>
+      <td>iid</td>
+      <td>weight</td>
+      <td>log(sales) ~ treated + leverage | firm + year</td>
+      <td>0.317365</td>
+      <td>0.024946</td>
+      <td>12.722286</td>
+      <td>0.0</td>
+      <td>0.268444</td>
+      <td>0.366286</td>
+      <td>2355</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>7</td>
+      <td>log(sales)</td>
+      <td>treated</td>
+      <td>(size, leverage)</td>
+      <td>()</td>
+      <td>firm + year</td>
+      <td>iid</td>
+      <td>weight</td>
+      <td>log(sales) ~ treated + size + leverage | firm ...</td>
+      <td>0.317723</td>
+      <td>0.023070</td>
+      <td>13.771882</td>
+      <td>0.0</td>
+      <td>0.272479</td>
+      <td>0.362967</td>
+      <td>2355</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>This is an ordinary data frame, so it can be filtered, summarised or saved (for example with <code>sco.results.to_csv("results.csv")</code>). Printing the object gives a summary:</p>
+<div id="2f495009" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sco</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>Specification curve
+-------------------
+Specifications: 8
+  y: log(sales)
+  x: treated
+  controls: leverage, size
+  fe: firm + year
+  model: feols
+  vcov: default
+  weights: weight
+  subset: all
+
+Fitted: 8 of 8 succeeded
+  estimate: median 0.319, min 0.317, max 0.325
+  significant at 0.05: 100%</code></pre>
+</div>
+</div>
+<p>A few options to <a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.fit" class="gdls-link gdls-code">fit()</a> are useful here:</p>
+<ul>
+<li><code>ci_levels=(0.9, 0.95)</code> stores (and plots) confidence intervals at several levels;</li>
+<li><code>keep_models=True</code> keeps the fitted pyfixest models in <code>sco.models</code>, keyed by <code>spec_id</code>, for when you want a regression table or further tests for particular specifications;</li>
+<li>other keyword arguments, such as <code>ssc</code> or <code>fixef_rm</code>, are passed on to pyfixest.</li>
+</ul>
+<p>If a specification cannot be estimated, it stays in the results with the reason in its <code>error</code> column and is left out of the chart. Pass <code>on_error="raise"</code> to stop at the first failure instead.</p>
+</section>
+<section id="large-numbers-of-specifications" class="level1">
+<h1>Large numbers of specifications</h1>
+<p>The number of specifications multiplies quickly. Eight controls, two outcomes and three sets of fixed effects already give 1,536. <a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.n_specs" class="gdls-link gdls-code">n_specs</a> tells you how many there are before you fit anything.</p>
+<div id="46c9367e" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>[<span class="st">"log(sales)"</span>, <span class="st">"log(sales + 1)"</span>],</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"size"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"leverage"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"rd"</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"size:leverage"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"size:rd"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"exporter"</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"patents"</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"eligible"</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span>[<span class="va">None</span>, <span class="st">"firm"</span>, <span class="st">"firm + year"</span>],</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>sco.n_specs</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>1536</code></pre>
+</div>
+</div>
+<p>There are two ways to keep this manageable. <code>n_jobs</code> estimates specifications in parallel, and <code>max_specs</code> estimates a random sample of them (with <code>seed</code> to make the sample reproducible). The chart switches to a more compact style when there are many specifications.</p>
+<div id="bdd6aff0" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>sco.fit(max_specs<span class="op">=</span><span class="dv">500</span>, seed<span class="op">=</span><span class="dv">0</span>, n_jobs<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>sco.plot()<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-21-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As a guide to speed, here are timings for a curve of 192 OLS specifications with up to two sets of fixed effects. They come from <code>benchmarks/benchmark.py</code> in the repository, last run in November 2026 with version 0.4.0 (pyfixest 0.70.0, Python 3.12.12) on Apple M5 Max with 18 cores. Every run is logged in <code>benchmarks/results.csv</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>5,000 rows</th>
+<th>200,000 rows</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.fit" class="gdls-link gdls-code">fit()</a></td>
+<td>1.0 s</td>
+<td>3.3 s</td>
+</tr>
+<tr class="even">
+<td><code>fit(n_jobs=4)</code></td>
+<td>0.3 s</td>
+<td>1.3 s</td>
+</tr>
+<tr class="odd">
+<td><a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.fit" class="gdls-link gdls-code">fit()</a> with three kinds of standard errors (576 specifications)</td>
+<td>1.4 s</td>
+<td>6.6 s</td>
+</tr>
+<tr class="even">
+<td><code>fit_null(n_boot=50)</code> for a curve of 16 specifications</td>
+<td>4.8 s</td>
+<td>17.9 s</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="customising-the-chart" class="level1">
+<h1>Customising the chart</h1>
+<p><a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.plot" class="gdls-link gdls-code">plot()</a> has options for the most common changes:</p>
+<ul>
+<li><code>sort_by</code> orders the specifications by a column of the results, or by several;</li>
+<li><code>color_by</code> colours them by one of the choices instead of by significance;</li>
+<li><code>panels</code> says which choices are shown underneath, and in what order;</li>
+<li><code>labels</code> replaces names with nicer ones for display;</li>
+<li><code>highlight</code> flags a preferred specification;</li>
+<li><code>ci_levels</code> and <code>alpha</code> choose the confidence intervals drawn and the significance level used for colouring.</li>
+</ul>
+<p>Often, in practice, you will have a <em>preferred</em> specification that you use as your main estimate. <code>highlight</code> takes the values that identify it (or its <code>spec_id</code>, or a query string).</p>
+<div id="32b3bda3" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>, <span class="st">"rd"</span>],</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span>[<span class="va">None</span>, <span class="st">"firm"</span>, <span class="st">"firm + year"</span>],</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    vcov<span class="op">=</span>[<span class="st">"hetero"</span>, {<span class="st">"CRV1"</span>: <span class="st">"firm"</span>}],</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>sco.fit(ci_levels<span class="op">=</span>(<span class="fl">0.9</span>, <span class="fl">0.99</span>))</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>sco.plot(</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    highlight<span class="op">=</span>{</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"controls"</span>: [<span class="st">"size"</span>, <span class="st">"leverage"</span>, <span class="st">"rd"</span>],</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fe"</span>: <span class="st">"firm + year"</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"vcov"</span>: <span class="st">"CRV1: firm"</span>,</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fe"</span>: <span class="st">"Fixed effects"</span>,</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"none"</span>: <span class="st">"None"</span>,</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"firm"</span>: <span class="st">"Firm"</span>,</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"firm + year"</span>: <span class="st">"Firm and year"</span>,</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"vcov"</span>: <span class="st">"Standard errors"</span>,</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"hetero"</span>: <span class="st">"Robust"</span>,</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CRV1: firm"</span>: <span class="st">"Clustered by firm"</span>,</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>)<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-23-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="c1aaf6b8" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>sco.plot(sort_by<span class="op">=</span>[<span class="st">"fe"</span>, <span class="st">"vcov"</span>], color_by<span class="op">=</span><span class="st">"vcov"</span>, panels<span class="op">=</span>[<span class="st">"fe"</span>, <span class="st">"controls"</span>])<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-24-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.plot" class="gdls-link gdls-code">plot()</a> returns the matplotlib figure and a dictionary of its axes (<code>"curve"</code> for the top panel, then one per panel underneath), so anything else can be changed afterwards. It never changes matplotlib’s global settings, and <code>style=False</code> turns off the package’s own fonts and sizes so that your settings apply.</p>
+<p>To put a curve inside a figure of your own, pass a figure or subfigure as <code>fig</code>. The function <code>sc.plot_curve</code> does the same as the <a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.plot" class="gdls-link gdls-code">plot</a> method for any results data frame, which is handy for results you saved earlier or combined from several curves.</p>
+<div id="290695d0" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>left, right <span class="op">=</span> fig.subfigures(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> sco.results</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>_, axes <span class="op">=</span> sc.plot_curve(results[results[<span class="st">"fe"</span>].isna()], fig<span class="op">=</span>left, panels<span class="op">=</span>[<span class="st">"controls"</span>])</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="st">"curve"</span>].set_title(<span class="st">"No fixed effects"</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>_, axes <span class="op">=</span> sc.plot_curve(results[results[<span class="st">"fe"</span>].notna()], fig<span class="op">=</span>right, panels<span class="op">=</span>[<span class="st">"controls"</span>])</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="st">"curve"</span>].set_title(<span class="st">"With fixed effects"</span>)<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-25-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To save a chart, pass a path to <a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.plot" class="gdls-link gdls-code">plot()</a>; the format is taken from the file extension.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sco.plot(<span class="st">"specification_curve.pdf"</span>)</span></code></pre></div>
+</section>
+<section id="inference-under-the-null" class="level1">
+<h1>Inference under the null</h1>
+<p>A specification curve shows how much an estimate varies, but it is natural to also ask: taking all of these specifications together, how inconsistent are the results with there being no effect at all? Individual p-values cannot answer that, because the specifications are far from independent. <span class="citation" data-cites="simonsohn2020specification">(<a href="#ref-simonsohn2020specification" role="doc-biblioref">Simonsohn et al. 2020</a>)</span> propose answering it by resampling: re-estimate the whole curve many times on data in which the null hypothesis is true, and see how unusual the observed curve is by comparison.</p>
+<p><a href="../reference/SpecificationCurve.html#specification_curve.SpecificationCurve.fit_null" class="gdls-link gdls-code">fit_null()</a> does this. By default it uses a bootstrap in which each specification’s estimated effect is first removed from the outcome, so that the null holds, and then rows are resampled with replacement. Because this is panel data we resample whole firms, with <code>cluster="firm"</code>.</p>
+<p>You should use a large number of resamples for results you rely on (500, say), but be warned that each one re-estimates every specification; <code>n_jobs</code> runs them in parallel. We use a small number here to keep things quick.</p>
+<div id="a81c73c1" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span>[<span class="st">"firm"</span>, <span class="st">"firm + year"</span>],</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    vcov<span class="op">=</span>{<span class="st">"CRV1"</span>: <span class="st">"firm"</span>},</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>sco.fit_null(n_boot<span class="op">=</span><span class="dv">50</span>, cluster<span class="op">=</span><span class="st">"firm"</span>, seed<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>sco.null_summary</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"fc69699981984fa786d174ee0c7041a4","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<div>
+
+<table class="dataframe table table-sm table-striped small">
+  <thead>
+    <tr>
+      <th></th>
+      <th>observed</th>
+      <th>p-value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>median</th>
+      <td>0.325776</td>
+      <td>0.019608</td>
+    </tr>
+    <tr>
+      <th>share significant</th>
+      <td>1.000000</td>
+      <td>0.019608</td>
+    </tr>
+    <tr>
+      <th>Stouffer Z</th>
+      <td>104.837880</td>
+      <td>0.019608</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The summary has three tests. Each compares a feature of the observed curve with its distribution across the resamples: the median estimate, the share of estimates that are statistically significant, and Stouffer’s Z, which combines the evidence of all the specifications. The p-value is the share of resamples at least as extreme as what was observed. Here all three are as small as they can be with this many resamples, as they should be: the effect is real.</p>
+<p>The curve expected under the null, with a band covering 95% of the resamples, can be added to the chart:</p>
+<div id="c7f680e0" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sco.plot(show_null_curve<span class="op">=</span><span class="va">True</span>)<span class="op">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="features_files/figure-html/cell-27-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="choosing-a-resampling-method" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-a-resampling-method">Choosing a resampling method</h2>
+<p>There are three ways of generating data in which the null is true, chosen with <code>method</code>:</p>
+<ul>
+<li><strong><code>"bootstrap"</code></strong> (the default for linear models). Each specification’s estimated effect is removed from its outcome, <span class="math inline">y^* = y - \hat\beta x</span>, so that the regressor of interest has no effect on <span class="math inline">y^*</span> by construction, and then rows (or whole clusters) are drawn with replacement.</li>
+<li><strong><code>"bayesian-bootstrap"</code></strong>, the Bayesian bootstrap <span class="citation" data-cites="rubin1981bayesian andrews2026praise">(<a href="#ref-rubin1981bayesian" role="doc-biblioref">Rubin 1981</a>; <a href="#ref-andrews2026praise" role="doc-biblioref">Andrews et al. 2026</a>)</span>. The null is imposed in the same way, but instead of drawing rows with replacement every row (or cluster) is kept and given a random weight from a flat Dirichlet distribution, scaled so that the weights average one. Where the ordinary bootstrap gives each row a whole number of copies, possibly zero, the Bayesian bootstrap gives it a positive, continuously varying weight.</li>
+<li><strong><code>"permutation"</code></strong>. The regressor of interest is shuffled between rows (or clusters), which breaks any link between it and the outcome.</li>
+</ul>
+<p>Which methods you can use depends on the estimators and designs in the curve:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Specifications</th>
+<th style="text-align: center;"><code>"bootstrap"</code></th>
+<th style="text-align: center;"><code>"bayesian-bootstrap"</code></th>
+<th style="text-align: center;"><code>"permutation"</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linear (<code>model="feols"</code>)</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓ †</td>
+</tr>
+<tr class="even">
+<td>Instrumental variables (<code>feols</code> with <code>iv</code>)</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✗</td>
+</tr>
+<tr class="odd">
+<td>Poisson (<code>"fepois"</code>) and other GLMs (<code>"feglm"</code>)</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✓ †</td>
+</tr>
+<tr class="even">
+<td>Quantile regression (<code>"quantreg"</code>)</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✗</td>
+<td style="text-align: center;">✓ †</td>
+</tr>
+<tr class="odd">
+<td>With <code>weights</code></td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓ ‡</td>
+<td style="text-align: center;">✓ †</td>
+</tr>
+<tr class="even">
+<td>With <code>cluster</code></td>
+<td style="text-align: center;">✓ (resamples clusters)</td>
+<td style="text-align: center;">✓ (one weight per cluster)</td>
+<td style="text-align: center;">✓ † (the regressor must be constant within clusters)</td>
+</tr>
+<tr class="odd">
+<td>With <code>strata</code></td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓ †</td>
+</tr>
+</tbody>
+</table>
+<p>† Only valid if the regressor of interest is as good as randomly assigned (within <code>strata</code>, if given).<br> ‡ The random weights multiply your own; your weights must be analytic weights (pyfixest’s default, <code>weights_type="aweights"</code>).</p>
+<p>The two bootstraps need every specification to be linear because removing <span class="math inline">\hat\beta x</span> from the outcome only imposes the null in a linear model: in a Poisson model or a logit it does not. If the curve mixes linear and non-linear estimators, <code>method="auto"</code> raises an error and asks you to choose. Permutation is not available for instrumental-variable specifications, because shuffling the endogenous regressor but not its instruments breaks the first stage.</p>
+</section>
+<section id="the-bayesian-bootstrap" class="level2">
+<h2 class="anchored" data-anchor-id="the-bayesian-bootstrap">The Bayesian bootstrap</h2>
+<p>The two bootstraps give very similar answers in large samples. The Bayesian bootstrap does better when resampling can produce data in which a specification cannot be estimated. With the ordinary bootstrap a resample may, by chance, contain no treated units, no rows of some fixed-effect level, or too few clusters; the specifications that cannot be estimated are missing from that resample, and a resample in which fewer than <code>min_valid</code> of them could be estimated is left out (with a warning). Because the Bayesian bootstrap never leaves a row out, that does not happen. Its null distributions are also smoother, which helps with few clusters.</p>
+<p>Here is an extreme case: eight clusters, only one of them treated. Every ordinary bootstrap resample that misses the treated cluster has no variation in the regressor of interest.</p>
+<div id="269f21e6" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>small <span class="op">=</span> pd.DataFrame({<span class="st">"group"</span>: np.repeat(np.arange(<span class="dv">8</span>), <span class="dv">5</span>), <span class="st">"a"</span>: rng.normal(size<span class="op">=</span><span class="dv">40</span>)})</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>small[<span class="st">"x"</span>] <span class="op">=</span> (small[<span class="st">"group"</span>] <span class="op">==</span> <span class="dv">0</span>).astype(<span class="bu">float</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>small[<span class="st">"y"</span>] <span class="op">=</span> small[<span class="st">"a"</span>] <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> small[<span class="st">"x"</span>] <span class="op">+</span> rng.normal(size<span class="op">=</span><span class="dv">40</span>)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>sco_small <span class="op">=</span> sc.SpecificationCurve(small, y<span class="op">=</span><span class="st">"y"</span>, x<span class="op">=</span><span class="st">"x"</span>, controls<span class="op">=</span>[<span class="st">"a"</span>]).fit()</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> method <span class="kw">in</span> [<span class="st">"bootstrap"</span>, <span class="st">"bayesian-bootstrap"</span>]:</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> warnings.catch_warnings(record<span class="op">=</span><span class="va">True</span>) <span class="im">as</span> caught:</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        warnings.simplefilter(<span class="st">"always"</span>)</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        sco_small.fit_null(</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>            n_boot<span class="op">=</span><span class="dv">200</span>, method<span class="op">=</span>method, cluster<span class="op">=</span><span class="st">"group"</span>, seed<span class="op">=</span><span class="dv">0</span>, progress<span class="op">=</span><span class="va">False</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    left_out <span class="op">=</span> [<span class="bu">str</span>(w.message) <span class="cf">for</span> w <span class="kw">in</span> caught <span class="cf">if</span> <span class="st">"left out"</span> <span class="kw">in</span> <span class="bu">str</span>(w.message)]</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>method<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>left_out[<span class="dv">0</span>] <span class="cf">if</span> left_out <span class="cf">else</span> <span class="st">'no resamples were left out.'</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>bootstrap: 79 of 200 resamples were left out because fewer than 50% of the specifications could be estimated in them.
+bayesian-bootstrap: no resamples were left out.</code></pre>
+</div>
+</div>
+<p>On the panel data from above, it is used like this:</p>
+<div id="0550ab25" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"log(sales)"</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    fe<span class="op">=</span>[<span class="st">"firm"</span>, <span class="st">"firm + year"</span>],</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    vcov<span class="op">=</span>{<span class="st">"CRV1"</span>: <span class="st">"firm"</span>},</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>sco.fit_null(n_boot<span class="op">=</span><span class="dv">50</span>, method<span class="op">=</span><span class="st">"bayesian-bootstrap"</span>, cluster<span class="op">=</span><span class="st">"firm"</span>, seed<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>sco.null_summary</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"4503f93942c348778311c39ae8473fa6","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<div>
+
+<table class="dataframe table table-sm table-striped small">
+  <thead>
+    <tr>
+      <th></th>
+      <th>observed</th>
+      <th>p-value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>median</th>
+      <td>0.325776</td>
+      <td>0.019608</td>
+    </tr>
+    <tr>
+      <th>share significant</th>
+      <td>1.000000</td>
+      <td>0.019608</td>
+    </tr>
+    <tr>
+      <th>Stouffer Z</th>
+      <td>104.837880</td>
+      <td>0.019608</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Although it has “Bayesian” in its name, the result here is the same kind of frequentist p-value as with the other methods: the Bayesian bootstrap is simply used as a way of generating resamples in which the null holds.</p>
+</section>
+<section id="permutation" class="level2">
+<h2 class="anchored" data-anchor-id="permutation">Permutation</h2>
+<p>For non-linear estimators, permutation is the option. In the example data <code>eligible</code> was assigned at random and has no effect of its own on patents once treatment is controlled for, so here we expect large p-values:</p>
+<div id="e412b73f" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>sco <span class="op">=</span> sc.SpecificationCurve(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"patents"</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"eligible"</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    controls<span class="op">=</span>[<span class="st">"size"</span>, <span class="st">"leverage"</span>],</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    always<span class="op">=</span><span class="st">"treated"</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"fepois"</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>sco.fit()</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>sco.fit_null(n_boot<span class="op">=</span><span class="dv">50</span>, method<span class="op">=</span><span class="st">"permutation"</span>, seed<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>sco.null_summary</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7cc53b3834964f8ba75e8c48f485755e","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<div>
+
+<table class="dataframe table table-sm table-striped small">
+  <thead>
+    <tr>
+      <th></th>
+      <th>observed</th>
+      <th>p-value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>median</th>
+      <td>-0.022283</td>
+      <td>0.470588</td>
+    </tr>
+    <tr>
+      <th>share significant</th>
+      <td>0.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>Stouffer Z</th>
+      <td>-1.218778</td>
+      <td>0.470588</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="other-options" class="level2">
+<h2 class="anchored" data-anchor-id="other-options">Other options</h2>
+<p>Other options: <code>alternative="greater"</code> or <code>"less"</code> gives one-sided tests, <code>alpha</code> sets the significance level used for the share of significant estimates, and <code>keep_draws=True</code> keeps the estimates from every resample in <code>sco.null_draws</code>.</p>
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-andrews2026praise" class="csl-entry" role="listitem">
+Andrews, Isaiah, Sarah Moon, and Jesse M Shapiro. 2026. <span>“In Praise of the <span>B</span>ayesian Bootstrap.”</span> <em>Journal of Economic Perspectives</em> 40 (4): 137–58. <a href="https://doi.org/10.1257/jep.20261514">https://doi.org/10.1257/jep.20261514</a>.
+</div>
+<div id="ref-rubin1981bayesian" class="csl-entry" role="listitem">
+Rubin, Donald B. 1981. <span>“The <span>B</span>ayesian Bootstrap.”</span> <em>The Annals of Statistics</em> 9 (1): 130–34. <a href="https://doi.org/10.1214/aos/1176345338">https://doi.org/10.1214/aos/1176345338</a>.
+</div>
+<div id="ref-simonsohn2020specification" class="csl-entry" role="listitem">
+Simonsohn, Uri, Joseph P Simmons, and Leif D Nelson. 2020. <span>“Specification Curve Analysis.”</span> <em>Nature Human Behaviour</em> 4 (11): 1208–14.
+</div>
+</div></section></div></main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{"020a6c8015bf45e781aa1fa3a2603e8b":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"08f12d6ac564452fa5d26cc9876b8d43":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_2bece4fe69b849fd99bd7ca78f4aaca1","placeholder":"​","style":"IPY_MODEL_2a413430df3c4dce8f48f00e8bcc02d4","tabbable":null,"tooltip":null,"value":"Resampling under the null: 100%"}},"126589fa4ab84604b06a46daf1afd135":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_879954854d8d4c00a9cb839126151415","placeholder":"​","style":"IPY_MODEL_c0f2989d8de14b9ca806400679455848","tabbable":null,"tooltip":null,"value":"Resampling under the null: 100%"}},"17ac9d923b2943758c7a4de9e03a4f62":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"ProgressStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"1bd12a090ff04c2a8fd503ea98624e68":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"1bdfd3ec4ccc4083bfc4d9e79ebf1723":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_d8f6397bc63147fb80ff29de08e0d99e","placeholder":"​","style":"IPY_MODEL_f3ee60082543495991e47eed2bbaf23d","tabbable":null,"tooltip":null,"value":" 50/50 [00:06&lt;00:00,  7.91it/s]"}},"2a413430df3c4dce8f48f00e8bcc02d4":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"2bece4fe69b849fd99bd7ca78f4aaca1":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"393ab927cdfe40c3801dbea178a4fad5":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"39dc1aa42a534f78a5ebb69841620d89":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"39f953e22ab74598a9378519fc7343bd":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_55f2bfa5a10c47f6b729f097c4cfe443","placeholder":"​","style":"IPY_MODEL_39dc1aa42a534f78a5ebb69841620d89","tabbable":null,"tooltip":null,"value":" 50/50 [00:05&lt;00:00,  8.60it/s]"}},"442531e1280045c5ae4dc403086dc80e":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"4503f93942c348778311c39ae8473fa6":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HBoxModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_b0d32acab03c401a98cdb7042e0a6d51","IPY_MODEL_4e586b4ac4314562a53d5a9581f36302","IPY_MODEL_1bdfd3ec4ccc4083bfc4d9e79ebf1723"],"layout":"IPY_MODEL_e33bc011518442d69002f7b6ff603032","tabbable":null,"tooltip":null}},"4e586b4ac4314562a53d5a9581f36302":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"FloatProgressModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"ProgressView","bar_style":"success","description":"","description_allow_html":false,"layout":"IPY_MODEL_bdb6b7dac2f84151a56c32f287b68894","max":50,"min":0,"orientation":"horizontal","style":"IPY_MODEL_6df21a900fed4121a8eb94bc853d2760","tabbable":null,"tooltip":null,"value":50}},"55f2bfa5a10c47f6b729f097c4cfe443":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"6df21a900fed4121a8eb94bc853d2760":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"ProgressStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"7cc53b3834964f8ba75e8c48f485755e":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HBoxModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_126589fa4ab84604b06a46daf1afd135","IPY_MODEL_ed920d7af4a04e42aecaa981c90f556f","IPY_MODEL_e67e2a7e952747aba4573c6dd3a78e85"],"layout":"IPY_MODEL_1bd12a090ff04c2a8fd503ea98624e68","tabbable":null,"tooltip":null}},"8126d62779c74c0ab1d6562de5d9b69e":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"84f88bc53bef4a40af0be4ab77a3e112":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"ProgressStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"879954854d8d4c00a9cb839126151415":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"a5c369fbec6f4d2497e0903a88500b0b":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"FloatProgressModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"ProgressView","bar_style":"success","description":"","description_allow_html":false,"layout":"IPY_MODEL_020a6c8015bf45e781aa1fa3a2603e8b","max":50,"min":0,"orientation":"horizontal","style":"IPY_MODEL_17ac9d923b2943758c7a4de9e03a4f62","tabbable":null,"tooltip":null,"value":50}},"b0d32acab03c401a98cdb7042e0a6d51":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_c91f5ed1a470495e99bb80a21122cf84","placeholder":"​","style":"IPY_MODEL_cfd4ab7bfcf14b28946ed60f4b583632","tabbable":null,"tooltip":null,"value":"Resampling under the null: 100%"}},"bdb6b7dac2f84151a56c32f287b68894":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"c0f2989d8de14b9ca806400679455848":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"c91f5ed1a470495e99bb80a21122cf84":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"ccd4f08ab7b34a5c8632060fb56cc1d1":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"cfd4ab7bfcf14b28946ed60f4b583632":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"d8f6397bc63147fb80ff29de08e0d99e":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"e33bc011518442d69002f7b6ff603032":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"e67e2a7e952747aba4573c6dd3a78e85":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_8126d62779c74c0ab1d6562de5d9b69e","placeholder":"​","style":"IPY_MODEL_442531e1280045c5ae4dc403086dc80e","tabbable":null,"tooltip":null,"value":" 50/50 [00:01&lt;00:00, 25.30it/s]"}},"ed920d7af4a04e42aecaa981c90f556f":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"FloatProgressModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"ProgressView","bar_style":"success","description":"","description_allow_html":false,"layout":"IPY_MODEL_393ab927cdfe40c3801dbea178a4fad5","max":50,"min":0,"orientation":"horizontal","style":"IPY_MODEL_84f88bc53bef4a40af0be4ab77a3e112","tabbable":null,"tooltip":null,"value":50}},"f3ee60082543495991e47eed2bbaf23d":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"fc69699981984fa786d174ee0c7041a4":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HBoxModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_08f12d6ac564452fa5d26cc9876b8d43","IPY_MODEL_a5c369fbec6f4d2497e0903a88500b0b","IPY_MODEL_39f953e22ab74598a9378519fc7343bd"],"layout":"IPY_MODEL_ccd4f08ab7b34a5c8632060fb56cc1d1","tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/aeturrell\.github\.io\/specification_curve\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="Specification Curve">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Specification Curve</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../user-guide/contributing.html" class="pagination-link" aria-label="Contributing">
+        <span class="nav-page-text">Contributing</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+<div class="nav-footer-center">
+<p>Site created with <strong>Great&nbsp;Docs</strong>.</p>
+</div>
+</div>
+</footer>
+<script src="../github-widget.js"></script>
+<script src="../copy-page.js"></script>
+<script src="../sidebar-wrap.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'sidebar-float.js';document.body.appendChild(s);})();</script>
+<script src="../sidebar-filter.js"></script>
+<script src="../dark-mode-toggle.js"></script>
+<script src="../back-to-top.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'on-this-page.js';document.body.appendChild(s);})();</script>
+<script src="../keyboard-nav.js"></script>
+<script src="../copy-code.js"></script>
+<script src="../details.js"></script>
+<script src="../mermaid-renderer.js"></script>
+<script src="../tooltips.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'color-swatch.js';document.body.appendChild(s);})();</script>
+<script src="../responsive-tables.js"></script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'video-embed.js';document.body.appendChild(s);})();</script>
+<script>(function(){var s=document.createElement('script');var m=document.querySelector('meta[name="quarto:offset"]');s.src=(m?m.content:'')+'termshow.js';document.body.appendChild(s);})();</script>
+<script src="../navbar-widgets.js"></script>
+<style>
+/* Great Docs: accent_color overrides */
+:root, html.quarto-light, :root[data-bs-theme='light'] {
+    --gd-accent: #3030E8;
+}
+html.quarto-dark, :root[data-bs-theme='dark'] {
+    --gd-accent: #9A9AFF;
+}
+</style>
+
+
+
+
+</body></html>

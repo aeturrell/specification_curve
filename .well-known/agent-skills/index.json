@@ -1,0 +1,11 @@
+{
+  "skills": [
+    {
+      "name": "specification_curve",
+      "description": "Specification curve analysis for econometrics, built on pyfixest. Use when writing Python code that uses the specification_curve package.",
+      "files": [
+        "SKILL.md"
+      ]
+    }
+  ]
+}
