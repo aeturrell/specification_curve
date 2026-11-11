@@ -1,6 +1,7 @@
 """Tests for the formula helpers and the pyfixest adapter's parsing."""
 
 import pytest
+
 from specification_curve import _pyfixest as backend
 from specification_curve.formula import (
     expand,

@@ -1,6 +1,6 @@
 """Drawing a specification curve from a results frame."""
 
-from typing import Any, Mapping, Optional, Sequence, Union
+from typing import Any, Mapping, NamedTuple, Optional, Sequence, Union
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -20,6 +20,26 @@ STYLE: dict[str, Any] = {
     "mathtext.fontset": "stix",
     "font.family": "STIXGeneral",
 }
+
+
+class CurvePlot(NamedTuple):
+    """A drawn specification curve: the figure and its axes.
+
+    This is a tuple, so ``fig, axes = sco.plot()`` works as usual. In Jupyter
+    and Quarto, a plot call that ends a cell shows only the figure, not the
+    text of the returned value, so no trailing semicolon is needed.
+
+    Attributes:
+        fig (Union[Figure, SubFigure]): The figure or subfigure drawn into.
+        axes (dict[str, Axes]): The axes keyed by panel name.
+    """
+
+    fig: Union[Figure, SubFigure]
+    axes: dict[str, Axes]
+
+    def _ipython_display_(self) -> None:
+        """Shows nothing; the matplotlib backend already shows the figure."""
+
 
 SIGNIFICANCE_COLORS: dict[str, str] = {
     "positive": "blue",
@@ -266,7 +286,7 @@ def plot_curve(
     figsize: Optional[tuple[float, float]] = None,
     fig: Union[Figure, SubFigure, None] = None,
     style: bool = True,
-) -> tuple[Union[Figure, SubFigure], dict[str, Axes]]:
+) -> CurvePlot:
     """Draws a specification curve.
 
     The top panel shows the focal estimate of every specification with its
@@ -318,9 +338,9 @@ def plot_curve(
         style (bool): Use this package's fonts and sizes for the figure.
 
     Returns:
-        tuple[Union[Figure, SubFigure], dict[str, Axes]]: The figure and its
-            axes keyed by panel name: "curve", then the dimensions shown, then
-            "nobs" if requested.
+        CurvePlot: The figure and its axes keyed by panel name: "curve",
+            then the dimensions shown, then "nobs" if requested. It unpacks
+            as ``fig, axes``.
 
     Raises:
         ValueError: If no specification was estimated successfully, or an
@@ -407,7 +427,7 @@ def plot_curve(
             ax.set_xlim(-1, len(ok))
             for side in ("right", "top", "bottom"):
                 ax.spines[side].set_visible(False)
-    return fig, axes
+    return CurvePlot(fig, axes)
 
 
 def _draw_curve(

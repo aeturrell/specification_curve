@@ -4,8 +4,9 @@ import numpy as np
 import pandas as pd
 import pyfixest as pf
 import pytest
-import specification_curve as sc
 from scipy.stats import norm
+
+import specification_curve as sc
 from specification_curve.inference import (
     _null_grid,
     _units,

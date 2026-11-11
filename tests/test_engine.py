@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import pyfixest as pf
 import pytest
+
 import specification_curve as sc
 from specification_curve import _pyfixest as backend
 from specification_curve.engine import result_columns, run_grid

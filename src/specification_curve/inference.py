@@ -275,7 +275,7 @@ def permute_rows(
         order = rng.permutation(len(stratum))
         for unit, donor in zip(stratum, order):
             # focal values are constant within a unit, so any donor row will do
-            source[unit] = stratum[donor][0]
+            source[unit] = stratum[int(donor)][0]
     return source
 
 

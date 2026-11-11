@@ -227,7 +227,7 @@ def evaluate_term(term: str, data: pd.DataFrame) -> pd.Series:
         ValueError: If the term does not evaluate to exactly one numeric column.
     """
     try:
-        matrix = _FormulaicFormula(f"{term} - 1").get_model_matrix(
+        matrix = _FormulaicFormula.from_spec(f"{term} - 1").get_model_matrix(
             data, na_action="ignore"
         )
     except Exception as err:
