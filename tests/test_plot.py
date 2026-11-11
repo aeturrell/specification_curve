@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
-import specification_curve as sc
 from matplotlib.figure import Figure
+
+import specification_curve as sc
 
 
 @pytest.fixture(scope="module")
@@ -294,3 +295,13 @@ def test_all_dimensions_and_dense_style(panel) -> None:
 def test_single_specification(panel) -> None:
     _, axes = sc.SpecificationCurve(panel, y="log(sales)", x="treated").fit().plot()
     assert list(axes) == ["curve"]
+
+
+def test_returns_tuple_like_curve_plot(fitted) -> None:
+    result = fitted.plot()
+    assert isinstance(result, sc.CurvePlot)
+    assert isinstance(result, tuple)
+    fig, axes = result
+    assert fig is result.fig and axes is result.axes
+    # shows nothing as text in Jupyter; the backend shows the figure itself
+    assert result._ipython_display_() is None

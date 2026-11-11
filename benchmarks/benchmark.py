@@ -19,6 +19,7 @@ from pathlib import Path
 
 import pandas as pd
 import pyfixest
+
 import specification_curve as sc
 
 RESULTS = Path(__file__).parent / "results.csv"

@@ -4,15 +4,14 @@ import os
 from typing import Any, Mapping, Optional, Sequence, Union
 
 import pandas as pd
-from matplotlib.axes import Axes
-from matplotlib.figure import Figure, SubFigure
+from matplotlib.figure import SubFigure
 
 from . import inference
 from ._pyfixest import VcovSpec, accepted_kwargs
 from .engine import run_grid
 from .grid import build_grid
 from .inference import NullResult
-from .plot import plot_curve
+from .plot import CurvePlot, plot_curve
 
 
 def _format_number(value: float) -> str:
@@ -358,7 +357,7 @@ class SpecificationCurve:
         *,
         show_null_curve: bool = False,
         **kwargs: Any,
-    ) -> tuple[Union[Figure, SubFigure], dict[str, Axes]]:
+    ) -> CurvePlot:
         """Plots the fitted specification curve.
 
         Args:
@@ -370,17 +369,17 @@ class SpecificationCurve:
                 ``color_by``, ``panels``, ``labels``, ``highlight`` or ``fig``.
 
         Returns:
-            tuple[Union[Figure, SubFigure], dict[str, Axes]]: The figure and its
-                axes keyed by panel name.
+            CurvePlot: The figure and its axes keyed by panel name. It unpacks
+                as ``fig, axes``.
         """
         null_curves = self.null_curves if show_null_curve else None
-        fig, axes = plot_curve(self.results, null_curves, **kwargs)
+        result = plot_curve(self.results, null_curves, **kwargs)
         if save_path is not None:
-            root: Any = fig
+            root: Any = result.fig
             while isinstance(root, SubFigure):
                 root = root.get_figure()
             root.savefig(save_path, dpi=300, bbox_inches="tight")
-        return fig, axes
+        return result
 
     def __repr__(self) -> str:
         """Summarises the grid and, once fitted, the estimates.

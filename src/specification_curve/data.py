@@ -17,7 +17,10 @@ def load_example_data1() -> pd.DataFrame:
         df = pd.read_csv(path, index_col=0)
     cat_cols = ["group1", "group2"]
     for col in df.columns:
-        df[col] = df[col].astype("category" if col in cat_cols else np.double)
+        if col in cat_cols:
+            df[col] = df[col].astype("category")
+        else:
+            df[col] = df[col].astype(np.double)
     return df
 
 

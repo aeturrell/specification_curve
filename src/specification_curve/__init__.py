@@ -14,7 +14,7 @@ from .data import (
     load_example_panel,
 )
 from .grid import subsets_by
-from .plot import plot_curve
+from .plot import CurvePlot, plot_curve
 
 try:
     __version__ = version("specification_curve")
@@ -22,6 +22,7 @@ except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
 
 __all__ = [
+    "CurvePlot",
     "SpecificationCurve",
     "load_example_data1",
     "load_example_data2",

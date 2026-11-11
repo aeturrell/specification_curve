@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import pyfixest as pf
 import pytest
+
 import specification_curve as sc
 
 

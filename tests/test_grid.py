@@ -4,6 +4,7 @@ import warnings
 
 import pandas as pd
 import pytest
+
 import specification_curve as sc
 from specification_curve.grid import (
     GRID_COLUMNS,
