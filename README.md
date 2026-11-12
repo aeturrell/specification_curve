@@ -40,7 +40,7 @@ sco.fit()
 sco.plot()
 ```
 
-![A specification curve: the estimated effect of treatment across 48 specifications, with panels showing the controls, fixed effects and standard errors each one uses](https://raw.githubusercontent.com/aeturrell/specification_curve/main/docs/quickstart.png)
+![A specification curve: the estimated effect of treatment across 48 specifications, with panels showing the controls, fixed effects and standard errors each one uses](https://raw.githubusercontent.com/aeturrell/specification_curve/main/docs/quickstart.svg)
 
 Each column is one specification. Here the true effect is 0.3, and the specifications without firm fixed effects overstate it. The estimates are in `sco.results`, one row per specification.
 
