@@ -125,7 +125,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Specification Curve <span class="version-badge" title="Released 2026-11-10">v0.4.1</span></span>
+    <span class="navbar-title">Specification Curve <span class="version-badge" title="Released 2026-11-12">v0.4.2</span></span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -165,63 +165,68 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#v0.4.1" id="toc-v0.4.1" class="nav-link active" data-scroll-target="#v0.4.1">v0.4.1</a>
+  <li><a href="#v0.4.2" id="toc-v0.4.2" class="nav-link active" data-scroll-target="#v0.4.2">v0.4.2</a>
   <ul class="collapse">
   <li><a href="#changes" id="toc-changes" class="nav-link" data-scroll-target="#changes">Changes</a></li>
   <li><a href="#package-dependencies" id="toc-package-dependencies" class="nav-link" data-scroll-target="#package-dependencies">:package: Dependencies</a></li>
   </ul></li>
-  <li><a href="#v0.4.0" id="toc-v0.4.0" class="nav-link" data-scroll-target="#v0.4.0">v0.4.0</a>
+  <li><a href="#v0.4.1" id="toc-v0.4.1" class="nav-link" data-scroll-target="#v0.4.1">v0.4.1</a>
   <ul class="collapse">
   <li><a href="#changes-1" id="toc-changes-1" class="nav-link" data-scroll-target="#changes-1">Changes</a></li>
   <li><a href="#package-dependencies-1" id="toc-package-dependencies-1" class="nav-link" data-scroll-target="#package-dependencies-1">:package: Dependencies</a></li>
   </ul></li>
-  <li><a href="#v0.3.10" id="toc-v0.3.10" class="nav-link" data-scroll-target="#v0.3.10">v0.3.10</a>
+  <li><a href="#v0.4.0" id="toc-v0.4.0" class="nav-link" data-scroll-target="#v0.4.0">v0.4.0</a>
   <ul class="collapse">
   <li><a href="#changes-2" id="toc-changes-2" class="nav-link" data-scroll-target="#changes-2">Changes</a></li>
   <li><a href="#package-dependencies-2" id="toc-package-dependencies-2" class="nav-link" data-scroll-target="#package-dependencies-2">:package: Dependencies</a></li>
   </ul></li>
-  <li><a href="#v0.3.9" id="toc-v0.3.9" class="nav-link" data-scroll-target="#v0.3.9">v0.3.9</a>
+  <li><a href="#v0.3.10" id="toc-v0.3.10" class="nav-link" data-scroll-target="#v0.3.10">v0.3.10</a>
   <ul class="collapse">
   <li><a href="#changes-3" id="toc-changes-3" class="nav-link" data-scroll-target="#changes-3">Changes</a></li>
   <li><a href="#package-dependencies-3" id="toc-package-dependencies-3" class="nav-link" data-scroll-target="#package-dependencies-3">:package: Dependencies</a></li>
   </ul></li>
-  <li><a href="#v0.3.8" id="toc-v0.3.8" class="nav-link" data-scroll-target="#v0.3.8">v0.3.8</a>
+  <li><a href="#v0.3.9" id="toc-v0.3.9" class="nav-link" data-scroll-target="#v0.3.9">v0.3.9</a>
   <ul class="collapse">
   <li><a href="#changes-4" id="toc-changes-4" class="nav-link" data-scroll-target="#changes-4">Changes</a></li>
-  <li><a href="#racehorse-performance" id="toc-racehorse-performance" class="nav-link" data-scroll-target="#racehorse-performance">:racehorse: Performance</a></li>
   <li><a href="#package-dependencies-4" id="toc-package-dependencies-4" class="nav-link" data-scroll-target="#package-dependencies-4">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.8" id="toc-v0.3.8" class="nav-link" data-scroll-target="#v0.3.8">v0.3.8</a>
+  <ul class="collapse">
+  <li><a href="#changes-5" id="toc-changes-5" class="nav-link" data-scroll-target="#changes-5">Changes</a></li>
+  <li><a href="#racehorse-performance" id="toc-racehorse-performance" class="nav-link" data-scroll-target="#racehorse-performance">:racehorse: Performance</a></li>
+  <li><a href="#package-dependencies-5" id="toc-package-dependencies-5" class="nav-link" data-scroll-target="#package-dependencies-5">:package: Dependencies</a></li>
   </ul></li>
   <li><a href="#v0.3.7" id="toc-v0.3.7" class="nav-link" data-scroll-target="#v0.3.7">v0.3.7</a>
   <ul class="collapse">
-  <li><a href="#changes-5" id="toc-changes-5" class="nav-link" data-scroll-target="#changes-5">Changes</a></li>
+  <li><a href="#changes-6" id="toc-changes-6" class="nav-link" data-scroll-target="#changes-6">Changes</a></li>
   </ul></li>
   <li><a href="#v0.3.6" id="toc-v0.3.6" class="nav-link" data-scroll-target="#v0.3.6">v0.3.6</a>
   <ul class="collapse">
-  <li><a href="#changes-6" id="toc-changes-6" class="nav-link" data-scroll-target="#changes-6">Changes</a></li>
-  <li><a href="#package-dependencies-5" id="toc-package-dependencies-5" class="nav-link" data-scroll-target="#package-dependencies-5">:package: Dependencies</a></li>
+  <li><a href="#changes-7" id="toc-changes-7" class="nav-link" data-scroll-target="#changes-7">Changes</a></li>
+  <li><a href="#package-dependencies-6" id="toc-package-dependencies-6" class="nav-link" data-scroll-target="#package-dependencies-6">:package: Dependencies</a></li>
   </ul></li>
   <li><a href="#v0.3.5" id="toc-v0.3.5" class="nav-link" data-scroll-target="#v0.3.5">v0.3.5</a>
   <ul class="collapse">
-  <li><a href="#changes-7" id="toc-changes-7" class="nav-link" data-scroll-target="#changes-7">Changes</a></li>
+  <li><a href="#changes-8" id="toc-changes-8" class="nav-link" data-scroll-target="#changes-8">Changes</a></li>
   </ul></li>
   <li><a href="#v0.3.4" id="toc-v0.3.4" class="nav-link" data-scroll-target="#v0.3.4">v0.3.4</a>
-  <ul class="collapse">
-  <li><a href="#changes-8" id="toc-changes-8" class="nav-link" data-scroll-target="#changes-8">Changes</a></li>
-  <li><a href="#package-dependencies-6" id="toc-package-dependencies-6" class="nav-link" data-scroll-target="#package-dependencies-6">:package: Dependencies</a></li>
-  </ul></li>
-  <li><a href="#v0.3.3" id="toc-v0.3.3" class="nav-link" data-scroll-target="#v0.3.3">v0.3.3</a>
   <ul class="collapse">
   <li><a href="#changes-9" id="toc-changes-9" class="nav-link" data-scroll-target="#changes-9">Changes</a></li>
   <li><a href="#package-dependencies-7" id="toc-package-dependencies-7" class="nav-link" data-scroll-target="#package-dependencies-7">:package: Dependencies</a></li>
   </ul></li>
-  <li><a href="#v0.3.2" id="toc-v0.3.2" class="nav-link" data-scroll-target="#v0.3.2">v0.3.2</a>
+  <li><a href="#v0.3.3" id="toc-v0.3.3" class="nav-link" data-scroll-target="#v0.3.3">v0.3.3</a>
   <ul class="collapse">
   <li><a href="#changes-10" id="toc-changes-10" class="nav-link" data-scroll-target="#changes-10">Changes</a></li>
   <li><a href="#package-dependencies-8" id="toc-package-dependencies-8" class="nav-link" data-scroll-target="#package-dependencies-8">:package: Dependencies</a></li>
   </ul></li>
-  <li><a href="#v0.3.1" id="toc-v0.3.1" class="nav-link" data-scroll-target="#v0.3.1">v0.3.1</a>
+  <li><a href="#v0.3.2" id="toc-v0.3.2" class="nav-link" data-scroll-target="#v0.3.2">v0.3.2</a>
   <ul class="collapse">
   <li><a href="#changes-11" id="toc-changes-11" class="nav-link" data-scroll-target="#changes-11">Changes</a></li>
+  <li><a href="#package-dependencies-9" id="toc-package-dependencies-9" class="nav-link" data-scroll-target="#package-dependencies-9">:package: Dependencies</a></li>
+  </ul></li>
+  <li><a href="#v0.3.1" id="toc-v0.3.1" class="nav-link" data-scroll-target="#v0.3.1">v0.3.1</a>
+  <ul class="collapse">
+  <li><a href="#changes-12" id="toc-changes-12" class="nav-link" data-scroll-target="#changes-12">Changes</a></li>
   </ul></li>
   <li><a href="#version-0.3.0" id="toc-version-0.3.0" class="nav-link" data-scroll-target="#version-0.3.0">Version 0.3.0</a>
   <ul class="collapse">
@@ -265,19 +270,41 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>This changelog is generated automatically from <a href="https://github.com/aeturrell/specification_curve/releases">GitHub Releases</a>.</p>
+<section id="v0.4.2" class="level1 changelog-version">
+<h1 class="changelog-version">v0.4.2</h1>
+<p><em>2026-11-12</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.4.2">GitHub</a></p>
+<section id="changes" class="level2">
+<h2 class="anchored" data-anchor-id="changes">Changes</h2>
+<ul>
+<li>v0.4.2 (<a href="https://github.com/aeturrell/specification_curve/issues/780">#780</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>quickstart image to svg; reproducible (<a href="https://github.com/aeturrell/specification_curve/issues/779">#779</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>semi-colons no longer needed to suppress text output in jupyter noteb… (<a href="https://github.com/aeturrell/specification_curve/issues/778">#778</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+<section id="package-dependencies" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies">:package: Dependencies</h2>
+<ul>
+<li>Bump pytest from 9.1.1 to 9.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/777">#777</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump pydoclint from 0.8.3 to 0.12.0 (<a href="https://github.com/aeturrell/specification_curve/issues/776">#776</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump pandas from 3.1.0 to 3.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/775">#775</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump pillow from 12.3.0 to 13.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/774">#774</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+<li>Bump types-tqdm from 4.67.3.20260508 to 4.70.0.20261106 (<a href="https://github.com/aeturrell/specification_curve/issues/767">#767</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
+</ul>
+</section>
+</section>
 <section id="v0.4.1" class="level1 changelog-version">
 <h1 class="changelog-version">v0.4.1</h1>
 <p><em>2026-11-10</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.4.1">GitHub</a></p>
-<section id="changes" class="level2">
-<h2 class="anchored" data-anchor-id="changes">Changes</h2>
+<section id="changes-1" class="level2">
+<h2 class="anchored" data-anchor-id="changes-1">Changes</h2>
 <ul>
 <li>v0.4.1 (<a href="https://github.com/aeturrell/specification_curve/issues/773">#773</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>new bayesian bootstrap (<a href="https://github.com/aeturrell/specification_curve/issues/772">#772</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>improving sc style (<a href="https://github.com/aeturrell/specification_curve/issues/771">#771</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 </ul>
 </section>
-<section id="package-dependencies" class="level2">
-<h2 class="anchored" data-anchor-id="package-dependencies">:package: Dependencies</h2>
+<section id="package-dependencies-1" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-1">:package: Dependencies</h2>
 <ul>
 <li>Bump codecov/codecov-action from 7.0.0 to 7.1.1 (<a href="https://github.com/aeturrell/specification_curve/issues/760">#760</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>Bump ty from 0.0.34 to 0.0.99 (<a href="https://github.com/aeturrell/specification_curve/issues/768">#768</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
@@ -289,14 +316,14 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.4.0" class="level1 changelog-version">
 <h1 class="changelog-version">v0.4.0</h1>
 <p><em>2026-11-10</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.4.0">GitHub</a></p>
-<section id="changes-1" class="level2">
-<h2 class="anchored" data-anchor-id="changes-1">Changes</h2>
+<section id="changes-2" class="level2">
+<h2 class="anchored" data-anchor-id="changes-2">Changes</h2>
 <ul>
 <li>Build Specification Curve on pyfixest (<a href="https://github.com/aeturrell/specification_curve/issues/766">#766</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a>, <a href="https://github.com/claude"><span class="citation" data-cites="claude">(<span><strong>claude?</strong></span>)</span></a></li>
 </ul>
 </section>
-<section id="package-dependencies-1" class="level2">
-<h2 class="anchored" data-anchor-id="package-dependencies-1">:package: Dependencies</h2>
+<section id="package-dependencies-2" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-2">:package: Dependencies</h2>
 <ul>
 <li>Bump release-drafter/release-drafter from 7.4.0 to 7.10.0 (<a href="https://github.com/aeturrell/specification_curve/issues/761">#761</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>Bump typeguard from 4.5.1 to 4.6.0 (<a href="https://github.com/aeturrell/specification_curve/issues/762">#762</a>) <a href="https://github.com/apps/dependabot">[<span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span>](https://github.com/dependabot)[bot]</a>, <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
@@ -317,16 +344,16 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.10" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.10</h1>
 <p><em>2026-10-28</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.10">GitHub</a></p>
-<section id="changes-2" class="level2">
-<h2 class="anchored" data-anchor-id="changes-2">Changes</h2>
+<section id="changes-3" class="level2">
+<h2 class="anchored" data-anchor-id="changes-3">Changes</h2>
 <ul>
 <li>v0.3.10 (<a href="https://github.com/aeturrell/specification_curve/issues/750">#750</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>dependabot uses uv and change to new pg output names (<a href="https://github.com/aeturrell/specification_curve/issues/658">#658</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>Fix incorrect median under null for non-OLS estimators (<a href="https://github.com/aeturrell/specification_curve/issues/608">#608</a>) (<a href="https://github.com/aeturrell/specification_curve/issues/643">#643</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 </ul>
 </section>
-<section id="package-dependencies-2" class="level2">
-<h2 class="anchored" data-anchor-id="package-dependencies-2">:package: Dependencies</h2>
+<section id="package-dependencies-3" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-3">:package: Dependencies</h2>
 <ul>
 <li>Bump black from 26.3.1 to 26.10.1 (<a href="https://github.com/aeturrell/specification_curve/issues/749">#749</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
 <li>Bump matplotlib from 3.10.8 to 3.10.9 (<a href="https://github.com/aeturrell/specification_curve/issues/721">#721</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
@@ -424,15 +451,15 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.9" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.9</h1>
 <p><em>2026-01-04</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.9">GitHub</a></p>
-<section id="changes-3" class="level2">
-<h2 class="anchored" data-anchor-id="changes-3">Changes</h2>
+<section id="changes-4" class="level2">
+<h2 class="anchored" data-anchor-id="changes-4">Changes</h2>
 <ul>
 <li>v0.3.9 (<a href="https://github.com/aeturrell/specification_curve/issues/642">#642</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>Claude/fix type checking errors j343 v (<a href="https://github.com/aeturrell/specification_curve/issues/641">#641</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 </ul>
 </section>
-<section id="package-dependencies-3" class="level2">
-<h2 class="anchored" data-anchor-id="package-dependencies-3">:package: Dependencies</h2>
+<section id="package-dependencies-4" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-4">:package: Dependencies</h2>
 <ul>
 <li>Bump actions/upload-artifact from 5 to 6 (<a href="https://github.com/aeturrell/specification_curve/issues/638">#638</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
 <li>Bump actions/download-artifact from 6 to 7 (<a href="https://github.com/aeturrell/specification_curve/issues/639">#639</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
@@ -448,8 +475,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.8" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.8</h1>
 <p><em>2025-11-04</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.8">GitHub</a></p>
-<section id="changes-4" class="level2">
-<h2 class="anchored" data-anchor-id="changes-4">Changes</h2>
+<section id="changes-5" class="level2">
+<h2 class="anchored" data-anchor-id="changes-5">Changes</h2>
 <ul>
 <li>v0.3.8 (<a href="https://github.com/aeturrell/specification_curve/issues/632">#632</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>dropping 3.9; adding 3.12 support (<a href="https://github.com/aeturrell/specification_curve/issues/631">#631</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
@@ -463,8 +490,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Benchmarks (<a href="https://github.com/aeturrell/specification_curve/issues/609">#609</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 </ul>
 </section>
-<section id="package-dependencies-4" class="level2">
-<h2 class="anchored" data-anchor-id="package-dependencies-4">:package: Dependencies</h2>
+<section id="package-dependencies-5" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-5">:package: Dependencies</h2>
 <ul>
 <li>Bump codecov/codecov-action from 5.4.3 to 5.5.1 (<a href="https://github.com/aeturrell/specification_curve/issues/625">#625</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
 <li>Bump actions/setup-python from 5.6.0 to 6.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/623">#623</a>) @<a href="https://github.com/apps/dependabot">dependabot[bot]</a></li>
@@ -488,8 +515,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.7" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.7</h1>
 <p><em>2025-01-06</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.7">GitHub</a></p>
-<section id="changes-5" class="level2">
-<h2 class="anchored" data-anchor-id="changes-5">Changes</h2>
+<section id="changes-6" class="level2">
+<h2 class="anchored" data-anchor-id="changes-6">Changes</h2>
 <ul>
 <li>v0.3.7 (<a href="https://github.com/aeturrell/specification_curve/issues/597">#597</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>Docs improve (<a href="https://github.com/aeturrell/specification_curve/issues/596">#596</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
@@ -501,15 +528,15 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.6" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.6</h1>
 <p><em>2025-01-03</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.6">GitHub</a></p>
-<section id="changes-6" class="level2">
-<h2 class="anchored" data-anchor-id="changes-6">Changes</h2>
+<section id="changes-7" class="level2">
+<h2 class="anchored" data-anchor-id="changes-7">Changes</h2>
 <ul>
 <li>v0.3.6 (<a href="https://github.com/aeturrell/specification_curve/issues/592">#592</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>Fix formula parser (<a href="https://github.com/aeturrell/specification_curve/issues/591">#591</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 </ul>
 </section>
-<section id="package-dependencies-5" class="level2">
-<h2 class="anchored" data-anchor-id="package-dependencies-5">:package: Dependencies</h2>
+<section id="package-dependencies-6" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-6">:package: Dependencies</h2>
 <ul>
 <li>Bump astral-sh/setup-uv from 4 to 5 (<a href="https://github.com/aeturrell/specification_curve/issues/590">#590</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
 </ul>
@@ -518,8 +545,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.5" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.5</h1>
 <p><em>2024-12-25</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.5">GitHub</a></p>
-<section id="changes-7" class="level2">
-<h2 class="anchored" data-anchor-id="changes-7">Changes</h2>
+<section id="changes-8" class="level2">
+<h2 class="anchored" data-anchor-id="changes-8">Changes</h2>
 <ul>
 <li>v0.3.5 (<a href="https://github.com/aeturrell/specification_curve/issues/589">#589</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>contributing and req’d lib (<a href="https://github.com/aeturrell/specification_curve/issues/588">#588</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
@@ -529,8 +556,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.4" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.4</h1>
 <p><em>2024-12-25</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.4">GitHub</a></p>
-<section id="changes-8" class="level2">
-<h2 class="anchored" data-anchor-id="changes-8">Changes</h2>
+<section id="changes-9" class="level2">
+<h2 class="anchored" data-anchor-id="changes-9">Changes</h2>
 <ul>
 <li>v0.3.4 (<a href="https://github.com/aeturrell/specification_curve/issues/587">#587</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>Add version info and facilitate releases with versions (<a href="https://github.com/aeturrell/specification_curve/issues/586">#586</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
@@ -540,8 +567,8 @@ ul.task-list li input[type="checkbox"] {
 <li>removed extraneous dependencies (<a href="https://github.com/aeturrell/specification_curve/issues/511">#511</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 </ul>
 </section>
-<section id="package-dependencies-6" class="level2">
-<h2 class="anchored" data-anchor-id="package-dependencies-6">:package: Dependencies</h2>
+<section id="package-dependencies-7" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-7">:package: Dependencies</h2>
 <ul>
 <li>Bump virtualenv from 20.27.1 to 20.28.0 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/578">#578</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
 <li>Bump pip from 24.2 to 24.3.1 in /.github/workflows (<a href="https://github.com/aeturrell/specification_curve/issues/569">#569</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
@@ -588,8 +615,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.3" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.3</h1>
 <p><em>2024-05-16</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.3">GitHub</a></p>
-<section id="changes-9" class="level2">
-<h2 class="anchored" data-anchor-id="changes-9">Changes</h2>
+<section id="changes-10" class="level2">
+<h2 class="anchored" data-anchor-id="changes-10">Changes</h2>
 <ul>
 <li>v0.3.3 (<a href="https://github.com/aeturrell/specification_curve/issues/499">#499</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>Switching documentation to quarto and quartodoc (<a href="https://github.com/aeturrell/specification_curve/issues/498">#498</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
@@ -597,8 +624,8 @@ ul.task-list li input[type="checkbox"] {
 <li>sphinx to 5 (<a href="https://github.com/aeturrell/specification_curve/issues/325">#325</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 </ul>
 </section>
-<section id="package-dependencies-7" class="level2">
-<h2 class="anchored" data-anchor-id="package-dependencies-7">:package: Dependencies</h2>
+<section id="package-dependencies-8" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-8">:package: Dependencies</h2>
 <ul>
 <li>Bump safety from 3.1.0 to 3.2.0 (<a href="https://github.com/aeturrell/specification_curve/issues/490">#490</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
 <li>Bump coverage from 7.4.3 to 7.5.1 (<a href="https://github.com/aeturrell/specification_curve/issues/491">#491</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
@@ -735,8 +762,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.2" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.2</h1>
 <p><em>2023-07-24</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.2">GitHub</a></p>
-<section id="changes-10" class="level2">
-<h2 class="anchored" data-anchor-id="changes-10">Changes</h2>
+<section id="changes-11" class="level2">
+<h2 class="anchored" data-anchor-id="changes-11">Changes</h2>
 <ul>
 <li>v0.3.2 (<a href="https://github.com/aeturrell/specification_curve/issues/324">#324</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 <li>pandas 2.0 issues fixed (<a href="https://github.com/aeturrell/specification_curve/issues/323">#323</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
@@ -746,8 +773,8 @@ ul.task-list li input[type="checkbox"] {
 <li>attempt to put all constraints up to latest v (<a href="https://github.com/aeturrell/specification_curve/issues/214">#214</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 </ul>
 </section>
-<section id="package-dependencies-8" class="level2">
-<h2 class="anchored" data-anchor-id="package-dependencies-8">:package: Dependencies</h2>
+<section id="package-dependencies-9" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies-9">:package: Dependencies</h2>
 <ul>
 <li>Bump typeguard from 3.0.2 to 4.0.0 (<a href="https://github.com/aeturrell/specification_curve/issues/321">#321</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
 <li>Bump types-setuptools from 67.8.0.0 to 68.0.0.3 (<a href="https://github.com/aeturrell/specification_curve/issues/319">#319</a>) <a href="https://github.com/dependabot"><span class="citation" data-cites="dependabot">(<span><strong>dependabot?</strong></span>)</span></a></li>
@@ -835,8 +862,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="v0.3.1" class="level1 changelog-version">
 <h1 class="changelog-version">v0.3.1</h1>
 <p><em>2022-10-29</em> · <a href="https://github.com/aeturrell/specification_curve/releases/tag/v0.3.1">GitHub</a></p>
-<section id="changes-11" class="level2">
-<h2 class="anchored" data-anchor-id="changes-11">Changes</h2>
+<section id="changes-12" class="level2">
+<h2 class="anchored" data-anchor-id="changes-12">Changes</h2>
 <ul>
 <li>0.3.1 (<a href="https://github.com/aeturrell/specification_curve/issues/165">#165</a>) <a href="https://github.com/aeturrell"><span class="citation" data-cites="aeturrell">(<span><strong>aeturrell?</strong></span>)</span></a></li>
 </ul>

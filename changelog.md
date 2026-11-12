@@ -3,6 +3,27 @@
 This changelog is generated automatically from [GitHub Releases](https://github.com/aeturrell/specification_curve/releases).
 
 
+# v0.4.2
+
+*2026-11-12* · [GitHub](https://github.com/aeturrell/specification_curve/releases/tag/v0.4.2)
+
+
+## Changes
+
+- v0.4.2 ([\#780](https://github.com/aeturrell/specification_curve/issues/780)) [<span class="citation" data-cites="aeturrell">(**aeturrell?**)</span>](https://github.com/aeturrell)
+- quickstart image to svg; reproducible ([\#779](https://github.com/aeturrell/specification_curve/issues/779)) [<span class="citation" data-cites="aeturrell">(**aeturrell?**)</span>](https://github.com/aeturrell)
+- semi-colons no longer needed to suppress text output in jupyter noteb… ([\#778](https://github.com/aeturrell/specification_curve/issues/778)) [<span class="citation" data-cites="aeturrell">(**aeturrell?**)</span>](https://github.com/aeturrell)
+
+
+## :package: Dependencies
+
+- Bump pytest from 9.1.1 to 9.2.0 ([\#777](https://github.com/aeturrell/specification_curve/issues/777)) [\[<span class="citation" data-cites="dependabot">(**dependabot?**)</span>\](https://github.com/dependabot)\[bot\]](https://github.com/apps/dependabot), [<span class="citation" data-cites="aeturrell">(**aeturrell?**)</span>](https://github.com/aeturrell)
+- Bump pydoclint from 0.8.3 to 0.12.0 ([\#776](https://github.com/aeturrell/specification_curve/issues/776)) [\[<span class="citation" data-cites="dependabot">(**dependabot?**)</span>\](https://github.com/dependabot)\[bot\]](https://github.com/apps/dependabot), [<span class="citation" data-cites="aeturrell">(**aeturrell?**)</span>](https://github.com/aeturrell)
+- Bump pandas from 3.1.0 to 3.1.1 ([\#775](https://github.com/aeturrell/specification_curve/issues/775)) [\[<span class="citation" data-cites="dependabot">(**dependabot?**)</span>\](https://github.com/dependabot)\[bot\]](https://github.com/apps/dependabot), [<span class="citation" data-cites="aeturrell">(**aeturrell?**)</span>](https://github.com/aeturrell)
+- Bump pillow from 12.3.0 to 13.0.0 ([\#774](https://github.com/aeturrell/specification_curve/issues/774)) [\[<span class="citation" data-cites="dependabot">(**dependabot?**)</span>\](https://github.com/dependabot)\[bot\]](https://github.com/apps/dependabot), [<span class="citation" data-cites="aeturrell">(**aeturrell?**)</span>](https://github.com/aeturrell)
+- Bump types-tqdm from 4.67.3.20260508 to 4.70.0.20261106 ([\#767](https://github.com/aeturrell/specification_curve/issues/767)) [\[<span class="citation" data-cites="dependabot">(**dependabot?**)</span>\](https://github.com/dependabot)\[bot\]](https://github.com/apps/dependabot), [<span class="citation" data-cites="aeturrell">(**aeturrell?**)</span>](https://github.com/aeturrell)
+
+
 # v0.4.1
 
 *2026-11-10* · [GitHub](https://github.com/aeturrell/specification_curve/releases/tag/v0.4.1)

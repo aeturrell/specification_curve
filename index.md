@@ -75,7 +75,7 @@ sco = sc.SpecificationCurve(
     vcov=["hetero", {"CRV1": "firm"}],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -101,7 +101,7 @@ sco = sc.SpecificationCurve(
     vcov=["hetero", {"CRV1": "firm"}],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 

@@ -85,8 +85,8 @@ Use this package's fonts and sizes for the figure.
 ## Returns
 
 
-`tuple[Union[Figure, SubFigure], dict[str, Axes]]`  
-tuple\[Union\[Figure, SubFigure\], dict\[str, Axes\]\]: The figure and its axes keyed by panel name: "curve", then the dimensions shown, then "nobs" if requested.
+`CurvePlot: CurvePlot`  
+The figure and its axes keyed by panel name: "curve", then the dimensions shown, then "nobs" if requested. It unpacks as `fig, axes`.
 
 
 ## Raises

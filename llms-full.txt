@@ -98,7 +98,7 @@ Examples:
 Plot a results table directly, and select subsets of specifications.
 
 
-plot_curve(results: pandas.DataFrame, null_curves: Optional[pandas.DataFrame] = None, *, alpha: float = 0.05, ci_levels: Optional[Sequence[float]] = None, sort_by: Union[str, Sequence[str]] = 'estimate', color_by: str = 'significance', panels: Optional[Sequence[str]] = None, labels: Optional[Mapping[str, str]] = None, highlight: Union[int, str, Mapping[str, Any], Sequence[Union[int, str, Mapping[str, Any]]], NoneType] = None, show_median: bool = True, show_nobs: bool = False, colors: Union[Mapping[str, Any], Sequence[Any], NoneType] = None, figsize: Optional[tuple[float, float]] = None, fig: Union[matplotlib.figure.Figure, matplotlib.figure.SubFigure, NoneType] = None, style: bool = True) -> tuple[typing.Union[matplotlib.figure.Figure, matplotlib.figure.SubFigure], dict[str, matplotlib.axes._axes.Axes]]
+plot_curve(results: pandas.DataFrame, null_curves: Optional[pandas.DataFrame] = None, *, alpha: float = 0.05, ci_levels: Optional[Sequence[float]] = None, sort_by: Union[str, Sequence[str]] = 'estimate', color_by: str = 'significance', panels: Optional[Sequence[str]] = None, labels: Optional[Mapping[str, str]] = None, highlight: Union[int, str, Mapping[str, Any], Sequence[Union[int, str, Mapping[str, Any]]], NoneType] = None, show_median: bool = True, show_nobs: bool = False, colors: Union[Mapping[str, Any], Sequence[Any], NoneType] = None, figsize: Optional[tuple[float, float]] = None, fig: Union[matplotlib.figure.Figure, matplotlib.figure.SubFigure, NoneType] = None, style: bool = True) -> specification_curve.plot.CurvePlot
 
 Draws a specification curve.
 
@@ -151,9 +151,9 @@ Args:
     style (bool): Use this package's fonts and sizes for the figure.
 
 Returns:
-    tuple[Union[Figure, SubFigure], dict[str, Axes]]: The figure and its
-        axes keyed by panel name: "curve", then the dimensions shown, then
-        "nobs" if requested.
+    CurvePlot: The figure and its axes keyed by panel name: "curve",
+        then the dimensions shown, then "nobs" if requested. It unpacks
+        as ``fig, axes``.
 
 Raises:
     ValueError: If no specification was estimated successfully, or an
@@ -337,7 +337,7 @@ Specification Curve is a Python package that performs specification curve analys
 
 When specifying a causal model, modellers have a number of options. These can be informed by field intelligence, priors, and even misguided attempts to find a significant result. Even with the best of intentions, research teams can reach entirely different conclusions using the same, or similar, data because of different choices made in preparing data or in modelling it.
 
-Typically this happens when there isn’t a clear way to do "feature engineering" on the data or the data are imperfect in some way. For example, you have a high frequency time series which needs to be aggregated to a lower frequency: you could take the maximum, the minimum, or the average over each high frequency time period. A different choice may be appropriate in different settings.
+Typically this happens when there isn't a clear way to do "feature engineering" on the data or the data are imperfect in some way. For example, you have a high frequency time series which needs to be aggregated to a lower frequency: you could take the maximum, the minimum, or the average over each high frequency time period. A different choice may be appropriate in different settings.
 
 There's formal evidence that researchers really do make different decisions; one study [@silberzahn2018many] gave the same research question---whether soccer referees are more likely to give red cards to players with dark skin tones than to players with light skin tones---to 29 different teams. From the abstract of that paper:
 
@@ -382,7 +382,7 @@ sco = sc.SpecificationCurve(
     vcov=["hetero", {"CRV1": "firm"}],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 Each column is one specification. The top panel shows the estimated coefficient on `treated` with its confidence interval, and the panels underneath show which choices that specification makes. Markers are coloured blue when the coefficient is positive and significant (at the 0.05 level), red when it is negative and significant, and black otherwise.
@@ -401,7 +401,7 @@ sco = sc.SpecificationCurve(
     vcov=["hetero", {"CRV1": "firm"}],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 The [features page](user-guide/features.qmd) shows everything else: other estimators, instrumental variables, samples, customising the chart, and statistical inference on the curve as a whole.
@@ -440,7 +440,6 @@ In RStats, there is [specr](https://github.com/masurp/specr) (which inspired man
 :::
 
 
-
 ### Features
 
 Let's see **Specification Curve**'s features in action.
@@ -474,7 +473,7 @@ sco = sc.SpecificationCurve(
     controls=["size", "age", "leverage"],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 Each column is one specification. The top panel shows the estimated coefficient on `treated` with its 95% confidence interval, sorted from smallest to largest. The panel underneath shows which controls each specification includes. Markers are coloured blue when the coefficient is positive and significant (at the 0.05 level), red when it is negative and significant, and black otherwise.
@@ -500,7 +499,7 @@ sco = sc.SpecificationCurve(
     min_controls=1,
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 ## Fixed effects
@@ -518,7 +517,7 @@ sco = sc.SpecificationCurve(
     fe=[None, "firm", "firm + year"],
 )
 sco.fit()
-sco.plot(color_by="fe");
+sco.plot(color_by="fe")
 ```
 
 ## Standard errors
@@ -537,7 +536,7 @@ sco = sc.SpecificationCurve(
     vcov=["iid", "hetero", {"CRV1": "firm"}, {"CRV1": "state"}],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 ## Describing specifications with a formula
@@ -563,7 +562,7 @@ sco = sc.SpecificationCurve(
     x="treated",
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 The other arguments (`vcov`, `model`, `weights`, `subsets`, `exclude` and so on) can be combined with a formula.
@@ -581,7 +580,7 @@ sco = sc.SpecificationCurve(
     fe="firm + year",
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 Take care when the alternatives are on different scales: the coefficients of a model for `sales` and one for `log(sales)` are not comparable, and putting them on one chart would be misleading.
@@ -604,7 +603,7 @@ sco = sc.SpecificationCurve(
     },
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 The helper `subsets_by` builds one sample per level of a column, for the common case of running the analysis separately for each group:
@@ -626,7 +625,7 @@ sco = sc.SpecificationCurve(
     common_sample=False,
 )
 sco.fit()
-sco.plot(show_nobs=True);
+sco.plot(show_nobs=True)
 ```
 
 ## Other estimators
@@ -650,7 +649,7 @@ sco = sc.SpecificationCurve(
     vcov={"CRV1": "firm"},
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 `model`, `family` and `quantile` accept lists as well, so the estimator can itself be one of the choices. Below, whether a firm exports is modelled with a linear probability model, a logit and a probit. (The coefficients of these three are on different scales, so compare signs and significance, not sizes.)
@@ -666,7 +665,7 @@ sco = sc.SpecificationCurve(
     vcov="hetero",
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 And quantile regressions at three quantiles:
@@ -681,7 +680,7 @@ sco = sc.SpecificationCurve(
     quantile=[0.25, 0.5, 0.75],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 Not every estimator supports every option: quantile regression cannot be combined with fixed effects, weights or instruments, and instruments are only available with `"feols"`. If the choices you ask for include a combination that cannot be estimated you get an error that says which. Passing `skip_invalid=True` leaves those combinations out instead.
@@ -703,7 +702,7 @@ sco = sc.SpecificationCurve(
     vcov="hetero",
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 ## Weights
@@ -720,7 +719,7 @@ sco = sc.SpecificationCurve(
     weights=[None, "weight"],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 ## Working with the results
@@ -773,7 +772,7 @@ There are two ways to keep this manageable. `n_jobs` estimates specifications in
 
 ```{python}
 sco.fit(max_specs=500, seed=0, n_jobs=2)
-sco.plot();
+sco.plot()
 ```
 
 ```{python}
@@ -866,11 +865,11 @@ sco.plot(
         "hetero": "Robust",
         "CRV1: firm": "Clustered by firm",
     },
-);
+)
 ```
 
 ```{python}
-sco.plot(sort_by=["fe", "vcov"], color_by="vcov", panels=["fe", "controls"]);
+sco.plot(sort_by=["fe", "vcov"], color_by="vcov", panels=["fe", "controls"])
 ```
 
 `plot()` returns the matplotlib figure and a dictionary of its axes (`"curve"` for the top panel, then one per panel underneath), so anything else can be changed afterwards. It never changes matplotlib's global settings, and `style=False` turns off the package's own fonts and sizes so that your settings apply.
@@ -886,7 +885,7 @@ results = sco.results
 _, axes = sc.plot_curve(results[results["fe"].isna()], fig=left, panels=["controls"])
 axes["curve"].set_title("No fixed effects")
 _, axes = sc.plot_curve(results[results["fe"].notna()], fig=right, panels=["controls"])
-axes["curve"].set_title("With fixed effects");
+axes["curve"].set_title("With fixed effects")
 ```
 
 To save a chart, pass a path to `plot()`; the format is taken from the file extension.
@@ -922,7 +921,7 @@ The summary has three tests. Each compares a feature of the observed curve with 
 The curve expected under the null, with a band covering 95% of the resamples, can be added to the chart:
 
 ```{python}
-sco.plot(show_null_curve=True);
+sco.plot(show_null_curve=True)
 ```
 
 ### Choosing a resampling method
@@ -935,15 +934,15 @@ There are three ways of generating data in which the null is true, chosen with `
 
 Which methods you can use depends on the estimators and designs in the curve:
 
-| Specifications | `"bootstrap"` | `"bayesian-bootstrap"` | `"permutation"` |
-|---|:-:|:-:|:-:|
-| Linear (`model="feols"`) | ✓ | ✓ | ✓ † |
-| Instrumental variables (`feols` with `iv`) | ✓ | ✓ | ✗ |
-| Poisson (`"fepois"`) and other GLMs (`"feglm"`) | ✗ | ✗ | ✓ † |
-| Quantile regression (`"quantreg"`) | ✗ | ✗ | ✓ † |
-| With `weights` | ✓ | ✓ ‡ | ✓ † |
-| With `cluster` | ✓ (resamples clusters) | ✓ (one weight per cluster) | ✓ † (the regressor must be constant within clusters) |
-| With `strata` | ✓ | ✓ | ✓ † |
+  | Specifications                                  | `"bootstrap"`          | `"bayesian-bootstrap"`     | `"permutation"`                                      |
+  | ---                                             | :-:                    | :-:                        | :-:                                                  |
+  | Linear (`model="feols"`)                        |           ✓            |             ✓              |                         ✓ †                          |
+  | Instrumental variables (`feols` with `iv`)      |           ✓            |             ✓              |                          ✗                           |
+  | Poisson (`"fepois"`) and other GLMs (`"feglm"`) |           ✗            |             ✗              |                         ✓ †                          |
+  | Quantile regression (`"quantreg"`)              |           ✗            |             ✗              |                         ✓ †                          |
+  | With `weights`                                  |           ✓            |            ✓ ‡             |                         ✓ †                          |
+  | With `cluster`                                  | ✓ (resamples clusters) | ✓ (one weight per cluster) | ✓ † (the regressor must be constant within clusters) |
+  | With `strata`                                   |           ✓            |             ✓              |                         ✓ †                          |
 
 † Only valid if the regressor of interest is as good as randomly assigned (within `strata`, if given).<br>
 ‡ The random weights multiply your own; your weights must be analytic weights (pyfixest's default, `weights_type="aweights"`).
@@ -1017,7 +1016,6 @@ sco.null_summary
 ### Other options
 
 Other options: `alternative="greater"` or `"less"` gives one-sided tests, `alpha` sets the significance level used for the share of significant estimates, and `keep_draws=True` keeps the estimates from every resample in `sco.null_draws`.
-
 
 
 ### Contributing

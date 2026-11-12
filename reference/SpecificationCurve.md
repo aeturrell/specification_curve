@@ -328,8 +328,8 @@ Passed to [plot_curve](plot_curve.md#specification_curve.plot_curve), for exampl
 ##### Returns
 
 
-`tuple[Union[Figure, SubFigure], dict[str, Axes]]`  
-tuple\[Union\[Figure, SubFigure\], dict\[str, Axes\]\]: The figure and its axes keyed by panel name.
+`CurvePlot: CurvePlot`  
+The figure and its axes keyed by panel name. It unpacks as `fig, axes`.
 
 
 ------------------------------------------------------------------------

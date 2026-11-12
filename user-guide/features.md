@@ -36,7 +36,7 @@ sco = sc.SpecificationCurve(
     controls=["size", "age", "leverage"],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -70,7 +70,7 @@ sco = sc.SpecificationCurve(
     min_controls=1,
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -95,7 +95,7 @@ sco = sc.SpecificationCurve(
     fe=[None, "firm", "firm + year"],
 )
 sco.fit()
-sco.plot(color_by="fe");
+sco.plot(color_by="fe")
 ```
 
 
@@ -121,7 +121,7 @@ sco = sc.SpecificationCurve(
     vcov=["iid", "hetero", {"CRV1": "firm"}, {"CRV1": "state"}],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -154,7 +154,7 @@ sco = sc.SpecificationCurve(
     x="treated",
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -180,7 +180,7 @@ sco = sc.SpecificationCurve(
     fe="firm + year",
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -211,7 +211,7 @@ sco = sc.SpecificationCurve(
     },
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -251,7 +251,7 @@ sco = sc.SpecificationCurve(
     common_sample=False,
 )
 sco.fit()
-sco.plot(show_nobs=True);
+sco.plot(show_nobs=True)
 ```
 
 
@@ -282,7 +282,7 @@ sco = sc.SpecificationCurve(
     vcov={"CRV1": "firm"},
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -305,7 +305,7 @@ sco = sc.SpecificationCurve(
     vcov="hetero",
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -327,7 +327,7 @@ sco = sc.SpecificationCurve(
     quantile=[0.25, 0.5, 0.75],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -357,7 +357,7 @@ sco = sc.SpecificationCurve(
     vcov="hetero",
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -381,7 +381,7 @@ sco = sc.SpecificationCurve(
     weights=[None, "weight"],
 )
 sco.fit()
-sco.plot();
+sco.plot()
 ```
 
 
@@ -480,7 +480,7 @@ There are two ways to keep this manageable. `n_jobs` estimates specifications in
 
 ``` python
 sco.fit(max_specs=500, seed=0, n_jobs=2)
-sco.plot();
+sco.plot()
 ```
 
 
@@ -538,7 +538,7 @@ sco.plot(
         "hetero": "Robust",
         "CRV1: firm": "Clustered by firm",
     },
-);
+)
 ```
 
 
@@ -548,7 +548,7 @@ sco.plot(
 
 
 ``` python
-sco.plot(sort_by=["fe", "vcov"], color_by="vcov", panels=["fe", "controls"]);
+sco.plot(sort_by=["fe", "vcov"], color_by="vcov", panels=["fe", "controls"])
 ```
 
 
@@ -571,7 +571,7 @@ results = sco.results
 _, axes = sc.plot_curve(results[results["fe"].isna()], fig=left, panels=["controls"])
 axes["curve"].set_title("No fixed effects")
 _, axes = sc.plot_curve(results[results["fe"].notna()], fig=right, panels=["controls"])
-axes["curve"].set_title("With fixed effects");
+axes["curve"].set_title("With fixed effects")
 ```
 
 
@@ -624,7 +624,7 @@ The curve expected under the null, with a band covering 95% of the resamples, ca
 
 
 ``` python
-sco.plot(show_null_curve=True);
+sco.plot(show_null_curve=True)
 ```
 
 
