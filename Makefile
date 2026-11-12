@@ -7,6 +7,7 @@ all: site
 # Build the github pages site into great-docs/_site
 site:
 		uv pip install -e .
+		uv run python scripts/make_readme_figure.py
 		uv run great-docs build
 
 # Serve the built site locally
