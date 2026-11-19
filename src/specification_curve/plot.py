@@ -1,7 +1,7 @@
 """Drawing a specification curve from a results frame."""
 
 from collections.abc import Mapping, Sequence
-from typing import Any, NamedTuple
+from typing import TYPE_CHECKING, Any, NamedTuple
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -13,7 +13,10 @@ from matplotlib.lines import Line2D
 
 from ._pyfixest import normalise
 
-STYLE: dict[str, Any] = {
+if TYPE_CHECKING:
+    from matplotlib.typing import RcKeyType
+
+STYLE: "dict[RcKeyType, Any]" = {
     "font.size": 12,
     "axes.labelsize": 12,
     "xtick.labelsize": 10,
@@ -369,7 +372,7 @@ def plot_curve(
     if show_nobs:
         heights.append(1.0)
         names.append("nobs")
-    with mpl.rc_context(STYLE if style else {}):
+    with mpl.rc_context(STYLE if style else None):
         if fig is None:
             size = (12.0, 4.5 + sum(heights[1:])) if figsize is None else figsize
             fig = plt.figure(figsize=size)
