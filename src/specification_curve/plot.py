@@ -1,6 +1,7 @@
 """Drawing a specification curve from a results frame."""
 
-from typing import Any, Mapping, NamedTuple, Optional, Sequence, Union
+from collections.abc import Mapping, Sequence
+from typing import Any, NamedTuple
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -30,11 +31,11 @@ class CurvePlot(NamedTuple):
     text of the returned value, so no trailing semicolon is needed.
 
     Attributes:
-        fig (Union[Figure, SubFigure]): The figure or subfigure drawn into.
+        fig (Figure | SubFigure): The figure or subfigure drawn into.
         axes (dict[str, Axes]): The axes keyed by panel name.
     """
 
-    fig: Union[Figure, SubFigure]
+    fig: Figure | SubFigure
     axes: dict[str, Axes]
 
     def _ipython_display_(self) -> None:
@@ -62,8 +63,8 @@ PANELS: dict[str, str] = {
     "subset": "sample",
 }
 
-Selector = Union[int, str, Mapping[str, Any]]
-ColorSpec = Union[Mapping[str, Any], Sequence[Any], None]
+Selector = int | str | Mapping[str, Any]
+ColorSpec = Mapping[str, Any] | Sequence[Any] | None
 
 
 def _model_labels(results: pd.DataFrame) -> pd.Series:
@@ -81,7 +82,7 @@ def _dimension_values(results: pd.DataFrame, name: str) -> pd.Series:
 
 
 def _indicators(
-    results: pd.DataFrame, panels: Optional[Sequence[str]]
+    results: pd.DataFrame, panels: Sequence[str] | None
 ) -> dict[str, pd.DataFrame]:
     """For each panel, a table of which values each row uses."""
     names = list(PANELS) if panels is None else list(panels)
@@ -109,7 +110,7 @@ def _indicators(
 
 
 def _ci_columns(
-    results: pd.DataFrame, ci_levels: Optional[Sequence[float]]
+    results: pd.DataFrame, ci_levels: Sequence[float] | None
 ) -> list[tuple[str, str]]:
     """Pairs of interval columns to draw, narrowest level first."""
     stored = {
@@ -133,7 +134,7 @@ def _ci_columns(
     return [(low, low.replace("ci_low_", "ci_high_")) for low in lows]
 
 
-def _sort(ok: pd.DataFrame, sort_by: Union[str, Sequence[str]]) -> pd.DataFrame:
+def _sort(ok: pd.DataFrame, sort_by: str | Sequence[str]) -> pd.DataFrame:
     """Orders the specifications for plotting."""
     columns = [sort_by] if isinstance(sort_by, str) else list(sort_by)
     missing = [column for column in columns if column not in ok.columns]
@@ -236,7 +237,7 @@ def _matches(ok: pd.DataFrame, selector: Selector) -> np.ndarray:
 
 
 def _highlighted(
-    ok: pd.DataFrame, highlight: Union[Selector, Sequence[Selector], None]
+    ok: pd.DataFrame, highlight: Selector | Sequence[Selector] | None
 ) -> list[int]:
     """Position of each highlighted specification; each selector must match one."""
     if highlight is None:
@@ -255,12 +256,12 @@ def _highlighted(
     return positions
 
 
-def _label(labels: Optional[Mapping[str, str]], text: str) -> str:
+def _label(labels: Mapping[str, str] | None, text: str) -> str:
     """Display text for a dimension or value."""
     return text if labels is None else labels.get(text, text)
 
 
-def _title(labels: Optional[Mapping[str, str]], dimension: str) -> str:
+def _title(labels: Mapping[str, str] | None, dimension: str) -> str:
     """Display title for a dimension's panel or legend."""
     return (
         PANELS[dimension]
@@ -271,20 +272,20 @@ def _title(labels: Optional[Mapping[str, str]], dimension: str) -> str:
 
 def plot_curve(
     results: pd.DataFrame,
-    null_curves: Optional[pd.DataFrame] = None,
+    null_curves: pd.DataFrame | None = None,
     *,
     alpha: float = 0.05,
-    ci_levels: Optional[Sequence[float]] = None,
-    sort_by: Union[str, Sequence[str]] = "estimate",
+    ci_levels: Sequence[float] | None = None,
+    sort_by: str | Sequence[str] = "estimate",
     color_by: str = "significance",
-    panels: Optional[Sequence[str]] = None,
-    labels: Optional[Mapping[str, str]] = None,
-    highlight: Union[Selector, Sequence[Selector], None] = None,
+    panels: Sequence[str] | None = None,
+    labels: Mapping[str, str] | None = None,
+    highlight: Selector | Sequence[Selector] | None = None,
     show_median: bool = True,
     show_nobs: bool = False,
     colors: ColorSpec = None,
-    figsize: Optional[tuple[float, float]] = None,
-    fig: Union[Figure, SubFigure, None] = None,
+    figsize: tuple[float, float] | None = None,
+    fig: Figure | SubFigure | None = None,
     style: bool = True,
 ) -> CurvePlot:
     """Draws a specification curve.
@@ -301,25 +302,25 @@ def plot_curve(
 
     Args:
         results (pd.DataFrame): Results as produced by ``SpecificationCurve.fit``.
-        null_curves (Optional[pd.DataFrame]): Quantiles of the curve under the
+        null_curves (pd.DataFrame | None): Quantiles of the curve under the
             null, as produced by ``SpecificationCurve.fit_null``. Can only be
             shown when sorting by estimate.
         alpha (float): Significance level used when colouring by significance.
-        ci_levels (Optional[Sequence[float]]): Which of the stored confidence
+        ci_levels (Sequence[float] | None): Which of the stored confidence
             levels to draw. By default, all of them.
-        sort_by (Union[str, Sequence[str]]): Order of the specifications:
+        sort_by (str | Sequence[str]): Order of the specifications:
             "estimate", another column of the results, or a list of columns.
             Ties are ordered by estimate.
         color_by (str): "significance" colours estimates by sign and
             significance. A dimension ("y", "x", "fe", "iv", "vcov", "model",
             "weights" or "subset") colours by the value of that dimension and
             adds a legend.
-        panels (Optional[Sequence[str]]): Which dimensions to show under the
+        panels (Sequence[str] | None): Which dimensions to show under the
             curve, in order. By default, every dimension that varies.
-        labels (Optional[Mapping[str, str]]): Replacement display text for panel
+        labels (Mapping[str, str] | None): Replacement display text for panel
             titles (keyed by dimension, e.g. ``{"fe": "Fixed effects"}``) and for
             values (keyed by the value, e.g. ``{"firm + year": "Firm and year"}``).
-        highlight (Union[Selector, Sequence[Selector], None]): A preferred
+        highlight (Selector | Sequence[Selector] | None): A preferred
             specification to mark and annotate, given as a ``spec_id``, a dict of
             column values (e.g. ``{"y": "log(wage)", "controls": ["age"], "fe":
             None}``) or a query string. It must match exactly one specification.
@@ -331,9 +332,9 @@ def plot_curve(
             dict with any of the keys "positive", "negative", "insignificant".
             When colouring by a dimension, a list of colours or a dict keyed by
             the dimension's values.
-        figsize (Optional[tuple[float, float]]): Figure size in inches. By
+        figsize (tuple[float, float] | None): Figure size in inches. By
             default, chosen from the number of panels.
-        fig (Union[Figure, SubFigure, None]): An existing figure or subfigure to
+        fig (Figure | SubFigure | None): An existing figure or subfigure to
             draw into. By default a new figure is created.
         style (bool): Use this package's fonts and sizes for the figure.
 
@@ -435,7 +436,7 @@ def _draw_curve(
     ok: pd.DataFrame,
     intervals: Sequence[tuple[str, str]],
     colors: np.ndarray,
-    null_curves: Optional[pd.DataFrame],
+    null_curves: pd.DataFrame | None,
     show_median: bool,
     marked: Sequence[int],
 ) -> None:
@@ -533,7 +534,7 @@ def _draw_panel(
     table: pd.DataFrame,
     colors: np.ndarray,
     title: str,
-    labels: Optional[Mapping[str, str]],
+    labels: Mapping[str, str] | None,
 ) -> None:
     """Draws the markers showing which choice each specification makes."""
     n_specs = len(table)

@@ -1,7 +1,8 @@
 """The SpecificationCurve class."""
 
 import os
-from typing import Any, Mapping, Optional, Sequence, Union
+from collections.abc import Mapping, Sequence
+from typing import Any
 
 import pandas as pd
 from matplotlib.figure import SubFigure
@@ -40,39 +41,39 @@ class SpecificationCurve:
 
     Args:
         data (pd.DataFrame): The data.
-        formula (Optional[str]): pyfixest formula describing the outcomes,
+        formula (str | None): pyfixest formula describing the outcomes,
             regressors, fixed effects and instruments, for example
             ``"y1 + y2 ~ x + comb0(a, b) | sw0(firm, firm + year)"``. Use this or
             ``y``, not both.
-        y (Union[str, Sequence[str], None]): Outcome term(s).
-        x (Union[str, Sequence[str], None]): Focal regressor(s): the coefficient
+        y (str | Sequence[str] | None): Outcome term(s).
+        x (str | Sequence[str] | None): Focal regressor(s): the coefficient
             that is plotted, named as pyfixest reports it. Required. With several,
             each specification uses one of them. With instruments, this is usually
             the endogenous variable.
-        controls (Union[str, Sequence[str], None]): Terms included in every
+        controls (str | Sequence[str] | None): Terms included in every
             combination.
-        always (Union[str, Sequence[str], None]): Terms included in every
+        always (str | Sequence[str] | None): Terms included in every
             specification.
-        exclude (Optional[Sequence[Sequence[str]]]): Groups of controls that never
+        exclude (Sequence[Sequence[str]] | None): Groups of controls that never
             appear together in a specification.
         min_controls (int): Smallest number of controls in a specification.
-        max_controls (Optional[int]): Largest number of controls in a specification.
-        fe (Union[str, Sequence[Optional[str]], None]): Fixed-effect sets, each
+        max_controls (int | None): Largest number of controls in a specification.
+        fe (str | Sequence[str | None] | None): Fixed-effect sets, each
             written as in a pyfixest formula (``"firm + year"``). ``None`` in the
             list means no fixed effects.
-        iv (Union[str, Sequence[Optional[str]], None]): First stage(s), for example
+        iv (str | Sequence[str | None] | None): First stage(s), for example
             ``"x ~ z"``. ``None`` in the list means no instruments.
-        model (Union[str, Sequence[str]]): Estimator(s): "feols", "fepois", "feglm"
+        model (str | Sequence[str]): Estimator(s): "feols", "fepois", "feglm"
             or "quantreg".
-        family (Union[str, Sequence[str], None]): Family or families for "feglm".
-        quantile (Union[float, Sequence[float], None]): Quantile(s) for "quantreg".
+        family (str | Sequence[str] | None): Family or families for "feglm".
+        quantile (float | Sequence[float] | None): Quantile(s) for "quantreg".
             Defaults to 0.5.
-        vcov (Union[VcovSpec, Sequence[VcovSpec]]): Variance-covariance type(s), as
+        vcov (VcovSpec | Sequence[VcovSpec]): Variance-covariance type(s), as
             accepted by pyfixest, for example ``"hetero"`` or ``{"CRV1": "firm"}``.
             ``None`` uses pyfixest's default.
-        weights (Union[str, Sequence[Optional[str]], None]): Weight column(s).
+        weights (str | Sequence[str | None] | None): Weight column(s).
             ``None`` in a list means unweighted.
-        subsets (Optional[Mapping[str, Optional[str]]]): Named samples, each a
+        subsets (Mapping[str, str | None] | None): Named samples, each a
             ``DataFrame.query`` string or ``None`` for all rows.
         common_sample (bool): Within each subset, estimate every specification on
             the rows that are complete for all variables used by any of them, so
@@ -106,23 +107,23 @@ class SpecificationCurve:
     def __init__(
         self,
         data: pd.DataFrame,
-        formula: Optional[str] = None,
+        formula: str | None = None,
         *,
-        y: Union[str, Sequence[str], None] = None,
-        x: Union[str, Sequence[str], None] = None,
-        controls: Union[str, Sequence[str], None] = None,
-        always: Union[str, Sequence[str], None] = None,
-        exclude: Optional[Sequence[Sequence[str]]] = None,
+        y: str | Sequence[str] | None = None,
+        x: str | Sequence[str] | None = None,
+        controls: str | Sequence[str] | None = None,
+        always: str | Sequence[str] | None = None,
+        exclude: Sequence[Sequence[str]] | None = None,
         min_controls: int = 0,
-        max_controls: Optional[int] = None,
-        fe: Union[str, Sequence[Optional[str]], None] = None,
-        iv: Union[str, Sequence[Optional[str]], None] = None,
-        model: Union[str, Sequence[str]] = "feols",
-        family: Union[str, Sequence[str], None] = None,
-        quantile: Union[float, Sequence[float], None] = None,
-        vcov: Union[VcovSpec, Sequence[VcovSpec]] = None,
-        weights: Union[str, Sequence[Optional[str]], None] = None,
-        subsets: Optional[Mapping[str, Optional[str]]] = None,
+        max_controls: int | None = None,
+        fe: str | Sequence[str | None] | None = None,
+        iv: str | Sequence[str | None] | None = None,
+        model: str | Sequence[str] = "feols",
+        family: str | Sequence[str] | None = None,
+        quantile: float | Sequence[float] | None = None,
+        vcov: VcovSpec | Sequence[VcovSpec] = None,
+        weights: str | Sequence[str | None] | None = None,
+        subsets: Mapping[str, str | None] | None = None,
         common_sample: bool = True,
         skip_invalid: bool = False,
     ) -> None:
@@ -148,8 +149,8 @@ class SpecificationCurve:
             subsets=subsets,
             skip_invalid=skip_invalid,
         )
-        self._results: Optional[pd.DataFrame] = None
-        self._null: Optional[NullResult] = None
+        self._results: pd.DataFrame | None = None
+        self._null: NullResult | None = None
         self._fit_kwargs: dict[str, Any] = {}
         self.models: dict[int, Any] = {}
 
@@ -199,12 +200,12 @@ class SpecificationCurve:
         *,
         ci_levels: Sequence[float] = (0.95,),
         n_jobs: int = 1,
-        max_specs: Optional[int] = None,
-        seed: Optional[int] = None,
+        max_specs: int | None = None,
+        seed: int | None = None,
         on_error: str = "record",
         keep_models: bool = False,
         batch: bool = True,
-        progress: Optional[bool] = None,
+        progress: bool | None = None,
         **kwargs: Any,
     ) -> "SpecificationCurve":
         """Estimates the specifications.
@@ -213,9 +214,9 @@ class SpecificationCurve:
             ci_levels (Sequence[float]): Confidence levels to store. Each gives a
                 pair of columns such as ``ci_low_95`` and ``ci_high_95``.
             n_jobs (int): Number of parallel workers.
-            max_specs (Optional[int]): Estimate a random sample of this many
+            max_specs (int | None): Estimate a random sample of this many
                 specifications instead of the whole grid.
-            seed (Optional[int]): Seed for the random sample.
+            seed (int | None): Seed for the random sample.
             on_error (str): "record" keeps specifications that fail in the results
                 with their error message; "raise" stops at the first failure.
             keep_models (bool): Keep the fitted pyfixest models in ``.models``,
@@ -224,7 +225,7 @@ class SpecificationCurve:
             batch (bool): Send specifications that share a sample, estimator, focal
                 regressor and fixed effects to pyfixest in a single call. The
                 results are the same either way.
-            progress (Optional[bool]): Show a progress bar. By default one is shown
+            progress (bool | None): Show a progress bar. By default one is shown
                 when there are many pyfixest calls to make.
             **kwargs (Any): Passed to the pyfixest estimators, for example ``ssc``,
                 ``fixef_rm``, ``demeaner`` or ``context``. Each estimator receives
@@ -269,15 +270,15 @@ class SpecificationCurve:
         n_boot: int = 500,
         *,
         method: str = "auto",
-        cluster: Optional[str] = None,
-        strata: Optional[str] = None,
+        cluster: str | None = None,
+        strata: str | None = None,
         alpha: float = 0.05,
         alternative: str = "two-sided",
-        seed: Optional[int] = None,
+        seed: int | None = None,
         n_jobs: int = 1,
         keep_draws: bool = False,
         min_valid: float = 0.5,
-        progress: Optional[bool] = None,
+        progress: bool | None = None,
     ) -> "SpecificationCurve":
         """Tests the curve against the null hypothesis of no effect.
 
@@ -307,24 +308,24 @@ class SpecificationCurve:
             method (str): "bootstrap", "bayesian-bootstrap", "permutation" or
                 "auto". "auto" uses the bootstrap if every specification uses
                 "feols", and otherwise asks you to choose.
-            cluster (Optional[str]): Column identifying clusters. Whole clusters
+            cluster (str | None): Column identifying clusters. Whole clusters
                 are resampled (bootstrap), share one weight (Bayesian bootstrap)
                 or swap their focal values (permutation; the focal variable must
                 be constant within them).
-            strata (Optional[str]): Column identifying strata. Resampling is done
+            strata (str | None): Column identifying strata. Resampling is done
                 within each stratum.
             alpha (float): Significance level for the share of significant
                 estimates.
             alternative (str): "two-sided", "greater" (the effect is positive) or
                 "less" (the effect is negative).
-            seed (Optional[int]): Seed for the resampling. Results do not depend
+            seed (int | None): Seed for the resampling. Results do not depend
                 on ``n_jobs``.
             n_jobs (int): Number of parallel workers.
             keep_draws (bool): Keep the estimates from every resample in
                 ``.null_draws``.
             min_valid (float): A resample is left out if fewer than this share of
                 the specifications could be estimated in it.
-            progress (Optional[bool]): Show a progress bar. By default one is
+            progress (bool | None): Show a progress bar. By default one is
                 shown when there are at least 20 resamples.
 
         Returns:
@@ -353,7 +354,7 @@ class SpecificationCurve:
 
     def plot(
         self,
-        save_path: Union[str, os.PathLike[str], None] = None,
+        save_path: str | os.PathLike[str] | None = None,
         *,
         show_null_curve: bool = False,
         **kwargs: Any,
@@ -361,7 +362,7 @@ class SpecificationCurve:
         """Plots the fitted specification curve.
 
         Args:
-            save_path (Union[str, os.PathLike[str], None]): File to save the figure
+            save_path (str | os.PathLike[str] | None): File to save the figure
                 to; the format is taken from the extension.
             show_null_curve (bool): Overlay the curve expected under the null.
                 Requires ``fit_null`` to have been run.

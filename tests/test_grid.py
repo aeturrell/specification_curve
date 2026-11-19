@@ -49,7 +49,7 @@ def test_dimension_counts_multiply(panel) -> None:
 
 
 def test_exclude_and_size_limits(panel) -> None:
-    kwargs = dict(y="sales", x="treated", controls=["size", "age", "leverage"])
+    kwargs = {"y": "sales", "x": "treated", "controls": ["size", "age", "leverage"]}
     excluded = build_grid(panel, exclude=[["size", "age"]], **kwargs).frame
     assert len(excluded) == 6
     assert not any({"size", "age"} <= set(c) for c in excluded["controls"])
@@ -160,48 +160,64 @@ def test_model_variants(panel) -> None:
 @pytest.mark.parametrize(
     "kwargs, message",
     [
-        (dict(y="sales"), "x .* is required"),
-        (dict(x="treated"), "either a formula or y"),
-        (dict(formula="sales ~ treated", y="sales", x="treated"), "not both"),
-        (dict(formula="sales ~ size", x="treated"), "exactly one focal"),
+        ({"y": "sales"}, "x .* is required"),
+        ({"x": "treated"}, "either a formula or y"),
+        ({"formula": "sales ~ treated", "y": "sales", "x": "treated"}, "not both"),
+        ({"formula": "sales ~ size", "x": "treated"}, "exactly one focal"),
         (
-            dict(formula="sales ~ treated + size", x=["treated", "size"]),
+            {"formula": "sales ~ treated + size", "x": ["treated", "size"]},
             "exactly one focal",
         ),
-        (dict(formula="sales ~ treated - 1", x="treated"), "drop_intercept"),
-        (dict(y="sales", x="treated", model="ols"), "Unknown model"),
-        (dict(y="sales", x="treated", model="feglm"), "needs a family"),
-        (dict(y="sales", x="treated", family="logit"), "only used by"),
-        (dict(y="sales", x="treated", quantile=0.5), "only used by"),
+        ({"formula": "sales ~ treated - 1", "x": "treated"}, "drop_intercept"),
+        ({"y": "sales", "x": "treated", "model": "ols"}, "Unknown model"),
+        ({"y": "sales", "x": "treated", "model": "feglm"}, "needs a family"),
+        ({"y": "sales", "x": "treated", "family": "logit"}, "only used by"),
+        ({"y": "sales", "x": "treated", "quantile": 0.5}, "only used by"),
         (
-            dict(y="sales", x="treated", controls=["nope"]),
+            {"y": "sales", "x": "treated", "controls": ["nope"]},
             "does not refer to any column",
         ),
-        (dict(y="sales", x="treated", fe="firm + nope"), "not in the data"),
-        (dict(y="sales", x="treated", weights="nope"), "not in the data"),
-        (dict(y="sales", x="treated", vcov={"CRV1": "nope"}), "not in the data"),
+        ({"y": "sales", "x": "treated", "fe": "firm + nope"}, "not in the data"),
+        ({"y": "sales", "x": "treated", "weights": "nope"}, "not in the data"),
+        ({"y": "sales", "x": "treated", "vcov": {"CRV1": "nope"}}, "not in the data"),
         (
-            dict(y="sales", x="treated", iv="treated ~ nope"),
+            {"y": "sales", "x": "treated", "iv": "treated ~ nope"},
             "does not refer to any column",
         ),
         (
-            dict(y="sales", x="treated", subsets={"none": "year > 3000"}),
+            {"y": "sales", "x": "treated", "subsets": {"none": "year > 3000"}},
             "selects no rows",
         ),
-        (dict(y="sales", x="treated", subsets={"bad": "nope > 1"}), "failed"),
-        (dict(y="sales", x="treated", subsets={}), "at least one"),
+        ({"y": "sales", "x": "treated", "subsets": {"bad": "nope > 1"}}, "failed"),
+        ({"y": "sales", "x": "treated", "subsets": {}}, "at least one"),
         (
-            dict(y="sales", x="treated", controls=["size"], min_controls=2),
+            {"y": "sales", "x": "treated", "controls": ["size"], "min_controls": 2},
             "No specifications",
         ),
-        (dict(y="sales", x="treated", model="quantreg", fe="firm"), "fixed effects"),
-        (dict(y="sales", x="treated", model="quantreg", weights="weight"), "weights"),
         (
-            dict(y="sales", x="treated", model="quantreg", iv="treated ~ eligible"),
+            {"y": "sales", "x": "treated", "model": "quantreg", "fe": "firm"},
+            "fixed effects",
+        ),
+        (
+            {"y": "sales", "x": "treated", "model": "quantreg", "weights": "weight"},
+            "weights",
+        ),
+        (
+            {
+                "y": "sales",
+                "x": "treated",
+                "model": "quantreg",
+                "iv": "treated ~ eligible",
+            },
             "instrumental",
         ),
         (
-            dict(y="patents", x="treated", model="fepois", iv="treated ~ eligible"),
+            {
+                "y": "patents",
+                "x": "treated",
+                "model": "fepois",
+                "iv": "treated ~ eligible",
+            },
             "instrumental",
         ),
     ],
@@ -212,9 +228,12 @@ def test_validation_errors(panel, kwargs: dict, message: str) -> None:
 
 
 def test_skip_invalid(panel) -> None:
-    kwargs = dict(
-        y="sales", x="treated", model=["feols", "quantreg"], fe=[None, "firm"]
-    )
+    kwargs = {
+        "y": "sales",
+        "x": "treated",
+        "model": ["feols", "quantreg"],
+        "fe": [None, "firm"],
+    }
     with pytest.raises(ValueError, match="skip_invalid"):
         build_grid(panel, **kwargs)
     with pytest.warns(UserWarning, match="Left out 1"):
@@ -268,7 +287,7 @@ def test_variables_helpers() -> None:
 
 def test_subsets_by(panel) -> None:
     subsets = sc.subsets_by(panel, "industry", include_all=True)
-    assert list(subsets)[0] == "all"
+    assert next(iter(subsets)) == "all"
     assert len(subsets) == panel["industry"].nunique() + 1
     for name, query in subsets.items():
         if query is not None:

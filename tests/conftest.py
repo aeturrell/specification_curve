@@ -10,7 +10,7 @@ import pytest
 # This must be done before importing pyplot
 matplotlib.use("Agg")
 
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 
 @pytest.fixture(scope="session")

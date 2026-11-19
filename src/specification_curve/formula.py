@@ -1,8 +1,8 @@
 """Formula helpers: the ``comb``/``comb0`` operators and formula rendering."""
 
 import re
+from collections.abc import Sequence
 from itertools import combinations
-from typing import Optional, Sequence
 
 from ._pyfixest import ParsedFormula, normalise, parse_formula
 
@@ -130,8 +130,8 @@ def render(
     x: str,
     controls: Sequence[str] = (),
     always: Sequence[str] = (),
-    fe: Optional[str] = None,
-    iv: Optional[str] = None,
+    fe: str | None = None,
+    iv: str | None = None,
 ) -> str:
     """Builds a single-model pyfixest formula from its parts.
 
@@ -140,8 +140,8 @@ def render(
         x (str): Focal regressor.
         controls (Sequence[str]): Control terms.
         always (Sequence[str]): Terms included in every specification.
-        fe (Optional[str]): Fixed effects, e.g. "firm + year".
-        iv (Optional[str]): First stage, e.g. "x ~ z".
+        fe (str | None): Fixed effects, e.g. "firm + year".
+        iv (str | None): First stage, e.g. "x ~ z".
 
     Returns:
         str: The formula.

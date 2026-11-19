@@ -83,5 +83,5 @@ style = 'google'
 exclude = ["noxfile.py", "tests/", "docs/"]
 
 [tool.ruff.lint]
-# Ruff defaults (E4, E7, E9, F) plus import sorting.
+# Ruff's default rule set (expanded in ruff 0.16) plus import sorting.
 extend-select = ["I"]

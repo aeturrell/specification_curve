@@ -25,17 +25,17 @@ def test_grid_is_available_before_fit(curve) -> None:
     assert curve.n_specs == len(curve.grid) == 2 * 4 * 2 * 2
     assert "estimate" not in curve.grid.columns
     with pytest.raises(ValueError, match="Run .fit"):
-        curve.results
+        _ = curve.results
     with pytest.raises(ValueError, match="Run .fit"):
         curve.plot()
     with pytest.raises(ValueError, match="Run .fit"):
         curve.fit_null(n_boot=2)
     with pytest.raises(ValueError, match="Run .fit_null"):
-        curve.null_curves
+        _ = curve.null_curves
     with pytest.raises(ValueError, match="Run .fit_null"):
-        curve.null_summary
+        _ = curve.null_summary
     with pytest.raises(ValueError, match="Run .fit_null"):
-        curve.null_draws
+        _ = curve.null_draws
 
 
 def test_constructor_errors_surface_before_estimation(panel) -> None:

@@ -8,14 +8,14 @@ fitted model) goes through the functions here.
 import inspect
 import re
 from dataclasses import dataclass
-from typing import Any, Optional, Union
+from typing import Any
 
 import pandas as pd
 import pyfixest as pf
 from formulaic import Formula as _FormulaicFormula
 from pyfixest.estimation.formula.parse import Formula as _PyfixestFormula
 
-VcovSpec = Union[str, dict[str, str], None]
+VcovSpec = str | dict[str, str] | None
 
 MODELS: tuple[str, ...] = ("feols", "fepois", "feglm", "quantreg")
 
@@ -44,7 +44,7 @@ class ParsedFormula:
     Attributes:
         y (str): Outcome term.
         exog (tuple[str, ...]): Exogenous right-hand-side terms, without the intercept.
-        fe (Optional[str]): Fixed effects part, or None.
+        fe (str | None): Fixed effects part, or None.
         endog (tuple[str, ...]): Endogenous terms (instrumental variables only).
         instruments (tuple[str, ...]): Instruments (instrumental variables only).
         intercept (bool): Whether the model has an intercept (or fixed effects that absorb it).
@@ -52,7 +52,7 @@ class ParsedFormula:
 
     y: str
     exog: tuple[str, ...]
-    fe: Optional[str]
+    fe: str | None
     endog: tuple[str, ...]
     instruments: tuple[str, ...]
     intercept: bool
@@ -111,9 +111,9 @@ def estimate(
     data: pd.DataFrame,
     *,
     model: str,
-    family: Optional[str] = None,
-    quantile: Optional[float] = None,
-    weights: Optional[str] = None,
+    family: str | None = None,
+    quantile: float | None = None,
+    weights: str | None = None,
     **kwargs: Any,
 ) -> list[Any]:
     """Runs one pyfixest estimation call.
@@ -122,9 +122,9 @@ def estimate(
         formula (str): pyfixest formula; may describe several models.
         data (pd.DataFrame): Estimation data. pyfixest works on its own copy.
         model (str): One of "feols", "fepois", "feglm", "quantreg".
-        family (Optional[str]): Family, for "feglm".
-        quantile (Optional[float]): Quantile, for "quantreg".
-        weights (Optional[str]): Name of the weights column.
+        family (str | None): Family, for "feglm".
+        quantile (float | None): Quantile, for "quantreg".
+        weights (str | None): Name of the weights column.
         **kwargs (Any): Passed to the pyfixest estimator if it accepts them.
 
     Returns:
@@ -149,7 +149,7 @@ def model_nobs(model: Any) -> int:
     return int(model._N)
 
 
-def set_vcov(model: Any, vcov: Union[str, dict[str, str]]) -> None:
+def set_vcov(model: Any, vcov: str | dict[str, str]) -> None:
     """Recomputes a fitted model's variance-covariance matrix in place."""
     model.vcov(vcov)
 
