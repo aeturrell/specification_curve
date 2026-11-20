@@ -90,7 +90,7 @@ def test_bootstrap(fitted) -> None:
     # the effect is strong, so the observed curve is beyond every resample
     np.testing.assert_allclose(summary["p-value"], 1 / 9)
     with pytest.raises(ValueError, match="keep_draws"):
-        fitted.null_draws
+        _ = fitted.null_draws
 
 
 def test_bootstrap_is_reproducible_for_any_number_of_jobs(fitted) -> None:
@@ -111,7 +111,7 @@ def test_refitting_discards_inference(fitted) -> None:
     fitted.fit_null(n_boot=2, seed=0)
     fitted.fit()
     with pytest.raises(ValueError, match="Run .fit_null"):
-        fitted.null_summary
+        _ = fitted.null_summary
 
 
 def test_null_outcome_has_no_effect_left(panel) -> None:
@@ -306,12 +306,12 @@ def test_permutation_by_cluster(panel) -> None:
 @pytest.mark.parametrize(
     "kwargs, message",
     [
-        (dict(method="jackknife"), "method must be"),
-        (dict(alternative="bigger"), "alternative must be"),
-        (dict(n_boot=0), "at least 1"),
-        (dict(cluster="nope"), "not a column"),
-        (dict(strata="age"), "missing values"),
-        (dict(cluster="year", strata="firm"), "within one stratum"),
+        ({"method": "jackknife"}, "method must be"),
+        ({"alternative": "bigger"}, "alternative must be"),
+        ({"n_boot": 0}, "at least 1"),
+        ({"cluster": "nope"}, "not a column"),
+        ({"strata": "age"}, "missing values"),
+        ({"cluster": "year", "strata": "firm"}, "within one stratum"),
     ],
 )
 def test_argument_errors(fitted, kwargs: dict, message: str) -> None:
@@ -325,7 +325,7 @@ def test_cluster_and_strata_bootstrap_runs(fitted) -> None:
 
 
 def test_resamples_with_too_many_failures_are_left_out(panel, monkeypatch) -> None:
-    import specification_curve.inference as inference
+    from specification_curve import inference
 
     sco = sc.SpecificationCurve(
         panel, y="log(sales)", x="treated", controls=["size"]
@@ -372,10 +372,10 @@ def test_pvalues_are_calibrated_when_there_is_no_effect() -> None:
         data["b"] = 0.5 * data["a"] + rng.normal(size=n)
         data["y"] = data["a"] + 0.5 * data["b"] + rng.normal(size=n)
         sco = sc.SpecificationCurve(data, y="y", x="x", controls=["a", "b"]).fit()
-        for method in pvalues:
+        for method, values in pvalues.items():
             seed = int(rng.integers(1_000_000))
             sco.fit_null(n_boot=19, method=method, seed=seed, progress=False)
-            pvalues[method].append(sco.null_summary["p-value"].to_numpy())
+            values.append(sco.null_summary["p-value"].to_numpy())
     for method, values in pvalues.items():
         table = np.array(values)
         # the median and Stouffer's Z have roughly uniform p-values, averaging 0.5

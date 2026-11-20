@@ -8,8 +8,9 @@ Journal of Economic Perspectives 40(4), 137-158.
 """
 
 import warnings
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import Any, Mapping, Optional, Sequence
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -40,7 +41,7 @@ class NullResult:
         curves (pd.DataFrame): Quantiles of the sorted curve under the null, one
             row per rank.
         summary (pd.DataFrame): Observed test statistics and their p-values.
-        draws (Optional[pd.DataFrame]): Estimates from every resample (rows) and
+        draws (pd.DataFrame | None): Estimates from every resample (rows) and
             specification (columns, by ``spec_id``), if they were kept.
         method (str): The resampling method used.
         n_boot (int): Number of resamples that were used.
@@ -50,7 +51,7 @@ class NullResult:
 
     curves: pd.DataFrame
     summary: pd.DataFrame
-    draws: Optional[pd.DataFrame]
+    draws: pd.DataFrame | None
     method: str
     n_boot: int
     n_dropped: int
@@ -154,7 +155,7 @@ def _null_grid(
 
 
 def _units(
-    data: pd.DataFrame, cluster: Optional[str], strata: Optional[str]
+    data: pd.DataFrame, cluster: str | None, strata: str | None
 ) -> list[list[np.ndarray]]:
     """Row positions of each resampling unit, grouped by stratum."""
     positions = np.arange(len(data))
@@ -231,7 +232,7 @@ def bayesian_weights(
 
 def _weighted_grid(
     grid: pd.DataFrame, data: pd.DataFrame
-) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Optional[str]]]:
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, str | None]]:
     """Points each specification at a Bayesian bootstrap weight column.
 
     Returns the new grid, the data with placeholder weight columns, and a map
@@ -239,8 +240,8 @@ def _weighted_grid(
     None).
     """
     grid = grid.copy()
-    sources: dict[str, Optional[str]] = {}
-    names: dict[Optional[str], str] = {}
+    sources: dict[str, str | None] = {}
+    names: dict[str | None, str] = {}
     for weight in grid["weights"].unique():
         source = None if pd.isna(weight) else str(weight)
         names[source] = f"{WEIGHT_PREFIX}{len(names)}"
@@ -287,7 +288,7 @@ def _one_resample(
     units: Sequence[Sequence[np.ndarray]],
     focal_columns: Sequence[str],
     engine_kwargs: Mapping[str, Any],
-    weight_sources: Mapping[str, Optional[str]],
+    weight_sources: Mapping[str, str | None],
 ) -> tuple[np.ndarray, np.ndarray]:
     """Re-estimates the curve on one resample; returns estimates and p-values."""
     rng = np.random.default_rng(seed)
@@ -317,8 +318,8 @@ def _one_resample(
 def _check_design(
     data: pd.DataFrame,
     method: str,
-    cluster: Optional[str],
-    strata: Optional[str],
+    cluster: str | None,
+    strata: str | None,
     focal_columns: Sequence[str],
 ) -> None:
     """Raises if the resampling design does not fit the data."""
@@ -329,11 +330,14 @@ def _check_design(
             raise ValueError(f"{name}={column!r} is not a column of the data")
         if data[column].isna().any():
             raise ValueError(f"{name}={column!r} has missing values")
-    if cluster is not None and strata is not None:
-        if (data.groupby(cluster)[strata].nunique() > 1).any():
-            raise ValueError(
-                f"Each cluster ({cluster!r}) must lie within one stratum ({strata!r})"
-            )
+    if (
+        cluster is not None
+        and strata is not None
+        and (data.groupby(cluster)[strata].nunique() > 1).any()
+    ):
+        raise ValueError(
+            f"Each cluster ({cluster!r}) must lie within one stratum ({strata!r})"
+        )
     if method == "permutation" and cluster is not None:
         varying = [
             column
@@ -352,20 +356,20 @@ def fit_null(
     data: pd.DataFrame,
     *,
     vcov_specs: Mapping[str, VcovSpec],
-    subsets: Mapping[str, Optional[str]],
+    subsets: Mapping[str, str | None],
     n_boot: int = 500,
     method: str = "auto",
-    cluster: Optional[str] = None,
-    strata: Optional[str] = None,
+    cluster: str | None = None,
+    strata: str | None = None,
     alpha: float = 0.05,
     alternative: str = "two-sided",
-    seed: Optional[int] = None,
+    seed: int | None = None,
     n_jobs: int = 1,
     keep_draws: bool = False,
     min_valid: float = 0.5,
-    progress: Optional[bool] = None,
+    progress: bool | None = None,
     common_sample: bool = True,
-    fit_kwargs: Optional[Mapping[str, Any]] = None,
+    fit_kwargs: Mapping[str, Any] | None = None,
 ) -> NullResult:
     """Tests a specification curve against the null hypothesis of no effect.
 
@@ -391,29 +395,29 @@ def fit_null(
         results (pd.DataFrame): Results of the fitted curve.
         data (pd.DataFrame): The data the curve was fitted on.
         vcov_specs (Mapping[str, VcovSpec]): Maps ``vcov`` labels to pyfixest values.
-        subsets (Mapping[str, Optional[str]]): Maps subset names to queries.
+        subsets (Mapping[str, str | None]): Maps subset names to queries.
         n_boot (int): Number of resamples.
         method (str): "bootstrap", "bayesian-bootstrap", "permutation" or
             "auto". "auto" uses the bootstrap if every specification uses
             "feols".
-        cluster (Optional[str]): Column identifying clusters. Whole clusters are
+        cluster (str | None): Column identifying clusters. Whole clusters are
             resampled (bootstrap), share a weight (Bayesian bootstrap) or swap
             their focal values (permutation).
-        strata (Optional[str]): Column identifying strata. Resampling is done
+        strata (str | None): Column identifying strata. Resampling is done
             within each stratum.
         alpha (float): Significance level for the share of significant estimates.
         alternative (str): "two-sided", "greater" (the effect is positive) or
             "less" (the effect is negative).
-        seed (Optional[int]): Seed for the resampling. Results do not depend on
+        seed (int | None): Seed for the resampling. Results do not depend on
             ``n_jobs``.
         n_jobs (int): Number of parallel workers.
         keep_draws (bool): Keep the estimates from every resample.
         min_valid (float): A resample is left out if fewer than this share of
             the specifications could be estimated in it.
-        progress (Optional[bool]): Show a progress bar. By default one is shown
+        progress (bool | None): Show a progress bar. By default one is shown
             when there are at least 20 resamples.
         common_sample (bool): As used when fitting the curve.
-        fit_kwargs (Optional[Mapping[str, Any]]): Passed to the pyfixest estimators.
+        fit_kwargs (Mapping[str, Any] | None): Passed to the pyfixest estimators.
 
     Returns:
         NullResult: The curve under the null and the tests.
@@ -471,7 +475,7 @@ def fit_null(
 
     grid = ok
     frame = data
-    weight_sources: dict[str, Optional[str]] = {}
+    weight_sources: dict[str, str | None] = {}
     if method in NULL_OUTCOME_METHODS:
         grid, frame = _null_grid(ok, data)
     if method == "bayesian-bootstrap":

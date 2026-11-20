@@ -59,8 +59,8 @@ def test_structure_and_global_state(fitted) -> None:
 
 
 def test_style_can_be_turned_off(fitted) -> None:
-    styled, _ = sc.plot_curve(fitted.results)
-    plain, axes = sc.plot_curve(fitted.results, style=False, show_median=False)
+    sc.plot_curve(fitted.results)
+    _, axes = sc.plot_curve(fitted.results, style=False, show_median=False)
     label = axes["curve"].yaxis.get_label()
     assert label.get_fontfamily() == mpl.rcParams["font.family"]
     assert not axes["curve"].texts

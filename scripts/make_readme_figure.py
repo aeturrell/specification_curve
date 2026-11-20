@@ -13,9 +13,10 @@ import matplotlib
 
 matplotlib.use("Agg")
 
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 
-import specification_curve as sc  # noqa: E402
+import specification_curve as sc
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "docs" / "quickstart.svg"
@@ -39,6 +40,7 @@ def main() -> None:
     # reproducible, so it only shows up in a diff when the figure changes.
     with plt.rc_context({"svg.hashsalt": "specification_curve"}):
         fig, _ = sco.plot()
+        assert isinstance(fig, Figure)  # sco.plot() makes a new top-level figure
         fig.savefig(OUTPUT, bbox_inches="tight", metadata={"Date": None})
     plt.close("all")
     print(f"Wrote {OUTPUT.relative_to(ROOT)}")

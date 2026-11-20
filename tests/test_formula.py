@@ -92,12 +92,15 @@ def test_parse_error_is_value_error() -> None:
 @pytest.mark.parametrize(
     "kwargs, expected",
     [
-        (dict(y="y", x="x"), "y ~ x"),
-        (dict(y="y", x="x", controls=["a"], always=["b"]), "y ~ x + b + a"),
-        (dict(y="y", x="x", fe="f + g"), "y ~ x | f + g"),
-        (dict(y="y", x="x", iv="x ~ z"), "y ~ 1 | x ~ z"),
-        (dict(y="y", x="x", controls=["a"], fe="f", iv="x ~ z"), "y ~ a | f | x ~ z"),
-        (dict(y="y", x="a", iv="x ~ z"), "y ~ a | x ~ z"),
+        ({"y": "y", "x": "x"}, "y ~ x"),
+        ({"y": "y", "x": "x", "controls": ["a"], "always": ["b"]}, "y ~ x + b + a"),
+        ({"y": "y", "x": "x", "fe": "f + g"}, "y ~ x | f + g"),
+        ({"y": "y", "x": "x", "iv": "x ~ z"}, "y ~ 1 | x ~ z"),
+        (
+            {"y": "y", "x": "x", "controls": ["a"], "fe": "f", "iv": "x ~ z"},
+            "y ~ a | f | x ~ z",
+        ),
+        ({"y": "y", "x": "a", "iv": "x ~ z"}, "y ~ a | x ~ z"),
     ],
 )
 def test_render(kwargs: dict, expected: str) -> None:

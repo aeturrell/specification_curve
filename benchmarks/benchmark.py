@@ -14,7 +14,7 @@ import platform
 import subprocess
 import time
 import warnings
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -130,7 +130,7 @@ def cpu_name() -> str:
 def main() -> None:
     """Runs the benchmark at two data sizes and appends the timings to the log."""
     warnings.simplefilter("ignore")
-    run_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    run_at = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     meta = {
         "run_at": run_at,
         "package_version": sc.__version__,

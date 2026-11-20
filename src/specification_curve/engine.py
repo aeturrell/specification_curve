@@ -2,8 +2,9 @@
 
 import warnings
 from collections import Counter
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
-from typing import Any, Mapping, Optional, Sequence
+from typing import Any
 
 import pandas as pd
 from joblib import Parallel, delayed, effective_n_jobs
@@ -36,11 +37,11 @@ class _Call:
 
     frame_key: tuple[Any, ...]
     model: str
-    family: Optional[str]
-    quantile: Optional[float]
-    weights: Optional[str]
+    family: str | None
+    quantile: float | None
+    weights: str | None
     units: list[_Unit]
-    formula: Optional[str] = None
+    formula: str | None = None
 
 
 def result_columns(ci_levels: Sequence[float]) -> list[str]:
@@ -64,7 +65,7 @@ def _prepare_frames(
     grid: pd.DataFrame,
     data: pd.DataFrame,
     vcov_specs: Mapping[str, VcovSpec],
-    subsets: Mapping[str, Optional[str]],
+    subsets: Mapping[str, str | None],
     common_sample: bool,
 ) -> tuple[dict[tuple[Any, ...], pd.DataFrame], dict[int, tuple[Any, ...]]]:
     """Builds the estimation sample(s) and maps each grid row to its sample."""
@@ -154,8 +155,8 @@ def _batched_formula(
     x: str,
     always: Sequence[str],
     control_sets: Sequence[tuple[str, ...]],
-    fe: Optional[str],
-) -> Optional[str]:
+    fe: str | None,
+) -> str | None:
     """Writes one pyfixest formula that covers several outcomes and control sets."""
     if len(outcomes) * len(control_sets) == 1:
         return None
@@ -172,7 +173,7 @@ def _batched_formula(
     return formula if fe is None else f"{formula} | {fe}"
 
 
-def _model_key(y: str, terms: Sequence[str], fe: Optional[str]) -> tuple[Any, ...]:
+def _model_key(y: str, terms: Sequence[str], fe: str | None) -> tuple[Any, ...]:
     """A spelling-independent key identifying a model by its parts."""
     fe_terms: frozenset[str] = frozenset()
     if fe is not None:
@@ -188,7 +189,7 @@ def _formula_key(formula: str) -> tuple[Any, ...]:
 
 def _fit_batched(
     call: _Call, frame: pd.DataFrame, fit_kwargs: Mapping[str, Any]
-) -> Optional[list[Any]]:
+) -> list[Any] | None:
     """Fits a batched call; returns one model per unit, or None if that fails."""
     try:
         models = backend.estimate(
@@ -202,7 +203,9 @@ def _fit_batched(
         )
         by_key = {_formula_key(str(model._fml)): model for model in models}
         matched = [by_key.get(_formula_key(unit.formula)) for unit in call.units]
-    except Exception:
+    # Deliberately broad: any failure of the batched fit falls back to fitting
+    # one specification at a time, which records the real error per spec.
+    except Exception:  # noqa: BLE001
         return None
     if len(models) != len(call.units) or any(model is None for model in matched):
         return None
@@ -250,7 +253,7 @@ def _run_call(
     fit_kwargs: Mapping[str, Any],
 ) -> tuple[list[dict[str, Any]], dict[int, Any]]:
     """Fits the models of one call and returns their result records."""
-    fitted: Optional[list[Any]] = None
+    fitted: list[Any] | None = None
     if call.formula is not None:
         fitted = _fit_batched(call, frame, fit_kwargs)
     records: list[dict[str, Any]] = []
@@ -309,16 +312,16 @@ def run_grid(
     data: pd.DataFrame,
     *,
     vcov_specs: Mapping[str, VcovSpec],
-    subsets: Mapping[str, Optional[str]],
+    subsets: Mapping[str, str | None],
     common_sample: bool = True,
     ci_levels: Sequence[float] = (0.95,),
     n_jobs: int = 1,
     on_error: str = "record",
     keep_models: bool = False,
     batch: bool = True,
-    progress: Optional[bool] = None,
+    progress: bool | None = None,
     warn: bool = True,
-    fit_kwargs: Optional[Mapping[str, Any]] = None,
+    fit_kwargs: Mapping[str, Any] | None = None,
 ) -> tuple[pd.DataFrame, dict[int, Any]]:
     """Estimates every specification in a grid.
 
@@ -332,7 +335,7 @@ def run_grid(
         data (pd.DataFrame): The data. It is not modified.
         vcov_specs (Mapping[str, VcovSpec]): Maps the grid's ``vcov`` labels to the
             values passed to pyfixest.
-        subsets (Mapping[str, Optional[str]]): Maps subset names to queries.
+        subsets (Mapping[str, str | None]): Maps subset names to queries.
         common_sample (bool): Use one complete-case sample for all specifications
             within a subset.
         ci_levels (Sequence[float]): Confidence levels to store.
@@ -341,12 +344,12 @@ def run_grid(
             their error message; "raise" stops at the first failure.
         keep_models (bool): Also return the fitted pyfixest models.
         batch (bool): Combine specifications into multi-model pyfixest calls.
-        progress (Optional[bool]): Show a progress bar. By default one is shown
+        progress (bool | None): Show a progress bar. By default one is shown
             when there
             are many pyfixest calls to make.
         warn (bool): Summarise the warnings raised during estimation in a single
             warning.
-        fit_kwargs (Optional[Mapping[str, Any]]): Passed to the pyfixest estimators.
+        fit_kwargs (Mapping[str, Any] | None): Passed to the pyfixest estimators.
 
     Returns:
         tuple[pd.DataFrame, dict[int, Any]]: The results, one row per
@@ -395,7 +398,7 @@ def run_grid(
     if "vcov" in stats:
         results["vcov"] = stats["vcov"].where(stats["vcov"].notna(), results["vcov"])
     for column in columns:
-        results[column] = stats[column] if column in stats else None
+        results[column] = stats.get(column)
     results["error"] = missing_to_none(results["error"])
     results["nobs"] = results["nobs"].astype("Int64")
     return results.reset_index().sort_values("spec_id", ignore_index=True), models

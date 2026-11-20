@@ -92,70 +92,70 @@ def _assert_same(results: pd.DataFrame, expected: pd.DataFrame) -> None:
 
 
 CASES: dict[str, dict] = {
-    "feols": dict(
-        y=["log(sales)", "sales"],
-        x="treated",
-        controls=["size", "age", "leverage"],
-        always=["i(industry)"],
-        exclude=[["age", "leverage"]],
-        fe=[None, "firm", "firm + year"],
-        vcov=[None, "hetero", {"CRV1": "firm"}, {"CRV1": "firm + year"}],
-    ),
-    "feols_weights_subsets": dict(
-        y="log(sales)",
-        x=["treated", "eligible"],
-        controls=["size", "log(age)"],
-        fe=[None, "firm"],
-        weights=[None, "weight"],
-        subsets={"all": None, "late": "year >= 2013"},
-        vcov="HC1",
-    ),
-    "feols_iv": dict(
-        y="log(sales)",
-        x="treated",
-        controls=["size", "age"],
-        fe=[None, "year"],
-        iv=[None, "treated ~ eligible"],
-        vcov=["hetero", {"CRV1": "firm"}],
-    ),
-    "fepois": dict(
-        y="patents",
-        x="treated",
-        controls=["size", "leverage"],
-        fe=[None, "year"],
-        model="fepois",
-        vcov=[None, "hetero", {"CRV1": "firm"}],
-    ),
-    "feglm": dict(
-        y="exporter",
-        x="treated",
-        controls=["size", "leverage"],
-        fe=[None, "year"],
-        model="feglm",
-        family=["logit", "probit", "gaussian"],
-        vcov=["iid", "hetero"],
-    ),
-    "quantreg": dict(
-        y="log(sales)",
-        x="treated",
-        controls=["size", "age"],
-        model="quantreg",
-        quantile=[0.25, 0.5],
-        vcov=[None, "iid", {"CRV1": "firm"}],
-    ),
-    "mixed_models": dict(
-        y=["patents", "exporter"],
-        x="treated",
-        controls=["size"],
-        model=["feols", "fepois", "feglm"],
-        family="gaussian",
-        vcov="hetero",
-    ),
-    "formula": dict(
-        formula="log(sales) + sales ~ treated + size + comb0(age, leverage) | sw0(firm, firm + year)",
-        x="treated",
-        vcov=["hetero", {"CRV1": "firm"}],
-    ),
+    "feols": {
+        "y": ["log(sales)", "sales"],
+        "x": "treated",
+        "controls": ["size", "age", "leverage"],
+        "always": ["i(industry)"],
+        "exclude": [["age", "leverage"]],
+        "fe": [None, "firm", "firm + year"],
+        "vcov": [None, "hetero", {"CRV1": "firm"}, {"CRV1": "firm + year"}],
+    },
+    "feols_weights_subsets": {
+        "y": "log(sales)",
+        "x": ["treated", "eligible"],
+        "controls": ["size", "log(age)"],
+        "fe": [None, "firm"],
+        "weights": [None, "weight"],
+        "subsets": {"all": None, "late": "year >= 2013"},
+        "vcov": "HC1",
+    },
+    "feols_iv": {
+        "y": "log(sales)",
+        "x": "treated",
+        "controls": ["size", "age"],
+        "fe": [None, "year"],
+        "iv": [None, "treated ~ eligible"],
+        "vcov": ["hetero", {"CRV1": "firm"}],
+    },
+    "fepois": {
+        "y": "patents",
+        "x": "treated",
+        "controls": ["size", "leverage"],
+        "fe": [None, "year"],
+        "model": "fepois",
+        "vcov": [None, "hetero", {"CRV1": "firm"}],
+    },
+    "feglm": {
+        "y": "exporter",
+        "x": "treated",
+        "controls": ["size", "leverage"],
+        "fe": [None, "year"],
+        "model": "feglm",
+        "family": ["logit", "probit", "gaussian"],
+        "vcov": ["iid", "hetero"],
+    },
+    "quantreg": {
+        "y": "log(sales)",
+        "x": "treated",
+        "controls": ["size", "age"],
+        "model": "quantreg",
+        "quantile": [0.25, 0.5],
+        "vcov": [None, "iid", {"CRV1": "firm"}],
+    },
+    "mixed_models": {
+        "y": ["patents", "exporter"],
+        "x": "treated",
+        "controls": ["size"],
+        "model": ["feols", "fepois", "feglm"],
+        "family": "gaussian",
+        "vcov": "hetero",
+    },
+    "formula": {
+        "formula": "log(sales) + sales ~ treated + size + comb0(age, leverage) | sw0(firm, firm + year)",
+        "x": "treated",
+        "vcov": ["hetero", {"CRV1": "firm"}],
+    },
 }
 
 
@@ -167,12 +167,12 @@ def test_results_match_direct_pyfixest_calls(panel, case: str, batch: bool) -> N
 
 
 def test_without_common_sample_each_model_uses_its_own_rows(panel) -> None:
-    kwargs = dict(
-        y="log(sales)",
-        x="treated",
-        controls=["age", "leverage"],
-        vcov=[None, {"CRV1": "firm"}],
-    )
+    kwargs = {
+        "y": "log(sales)",
+        "x": "treated",
+        "controls": ["age", "leverage"],
+        "vcov": [None, {"CRV1": "firm"}],
+    }
     results = _run(panel, kwargs, common_sample=False)
     _assert_same(results, _direct(panel, kwargs, common_sample=False))
     assert results["nobs"].nunique() > 1
@@ -186,12 +186,12 @@ def test_missing_cluster_values_are_dropped(panel, common_sample: bool) -> None:
     df = panel.copy()
     df["state"] = df["state"].astype(float)
     df.loc[df.index[:25], "state"] = np.nan
-    kwargs = dict(
-        y="log(sales)",
-        x="treated",
-        controls=["size"],
-        vcov=["hetero", {"CRV1": "state"}],
-    )
+    kwargs = {
+        "y": "log(sales)",
+        "x": "treated",
+        "controls": ["size"],
+        "vcov": ["hetero", {"CRV1": "state"}],
+    }
     results = _run(df, kwargs, common_sample=common_sample)
     assert results["error"].isna().all()
     clustered = results[results["vcov"] == "CRV1: state"]
@@ -215,12 +215,12 @@ def test_vcov_variants_share_one_fit(panel, monkeypatch) -> None:
         return original(formula, data, **kwargs)
 
     monkeypatch.setattr(backend, "estimate", counting)
-    kwargs = dict(
-        y="log(sales)",
-        x="treated",
-        controls=["size", "age"],
-        vcov=[None, "hetero", {"CRV1": "firm"}],
-    )
+    kwargs = {
+        "y": "log(sales)",
+        "x": "treated",
+        "controls": ["size", "age"],
+        "vcov": [None, "hetero", {"CRV1": "firm"}],
+    }
     results = _run(panel, kwargs, batch=False)
     assert len(results) == 12
     assert len(calls) == 4
@@ -232,7 +232,7 @@ def test_vcov_variants_share_one_fit(panel, monkeypatch) -> None:
 
 def test_default_vcov_is_labelled_from_the_model(panel) -> None:
     results = _run(
-        panel, dict(y="log(sales)", x="treated", model=["feols", "quantreg"])
+        panel, {"y": "log(sales)", "x": "treated", "model": ["feols", "quantreg"]}
     )
     assert dict(zip(results["model"], results["vcov"])) == {
         "feols": "iid",
@@ -242,9 +242,11 @@ def test_default_vcov_is_labelled_from_the_model(panel) -> None:
 
 def test_batches_are_split_and_sampled_grids_work(panel, monkeypatch) -> None:
     monkeypatch.setattr("specification_curve.engine.BATCH_SIZE", 3)
-    kwargs = dict(
-        y=["log(sales)", "sales"], x="treated", controls=["size", "age", "leverage"]
-    )
+    kwargs = {
+        "y": ["log(sales)", "sales"],
+        "x": "treated",
+        "controls": ["size", "age", "leverage"],
+    }
     grid = build_grid(panel, **kwargs)
     expected = _direct(panel, kwargs)
     full, _ = run_grid(
@@ -277,7 +279,7 @@ def test_batched_call_that_fails_falls_back_to_single_fits(panel, monkeypatch) -
         return original(formula, data, **kwargs)
 
     monkeypatch.setattr(backend, "estimate", flaky)
-    kwargs = dict(y="log(sales)", x="treated", controls=["size", "age"])
+    kwargs = {"y": "log(sales)", "x": "treated", "controls": ["size", "age"]}
     _assert_same(_run(panel, kwargs), _direct(panel, kwargs))
 
 
@@ -289,13 +291,18 @@ def test_batched_call_with_unexpected_models_falls_back(panel, monkeypatch) -> N
         return models[:-1] if len(models) > 1 else models
 
     monkeypatch.setattr(backend, "estimate", short)
-    kwargs = dict(y="log(sales)", x="treated", controls=["size", "age"])
+    kwargs = {"y": "log(sales)", "x": "treated", "controls": ["size", "age"]}
     _assert_same(_run(panel, kwargs), _direct(panel, kwargs))
 
 
 def test_errors_are_recorded_or_raised(panel) -> None:
     # industry is constant within firm, so firm fixed effects absorb it
-    kwargs = dict(y="log(sales)", x="industry", controls=["size"], fe=[None, "firm"])
+    kwargs = {
+        "y": "log(sales)",
+        "x": "industry",
+        "controls": ["size"],
+        "fe": [None, "firm"],
+    }
     results = _run(panel, kwargs)
     failed = results[results["error"].notna()]
     assert list(failed["fe"]) == ["firm", "firm"]
@@ -309,7 +316,7 @@ def test_errors_are_recorded_or_raised(panel) -> None:
 
 
 def test_estimation_errors_are_recorded_or_raised(panel) -> None:
-    kwargs = dict(y="log(sales)", x="treated", controls=["nofunc(size)"])
+    kwargs = {"y": "log(sales)", "x": "treated", "controls": ["nofunc(size)"]}
     results = _run(panel, kwargs)
     assert results["error"].isna().tolist() == [True, False]
     with pytest.raises(RuntimeError, match="Specification 1"):
@@ -317,13 +324,13 @@ def test_estimation_errors_are_recorded_or_raised(panel) -> None:
 
 
 def test_unsupported_vcov_fails_only_its_own_rows(panel) -> None:
-    kwargs = dict(
-        y="exporter",
-        x="treated",
-        model="feglm",
-        family="logit",
-        vcov=["hetero", {"CRV3": "firm"}],
-    )
+    kwargs = {
+        "y": "exporter",
+        "x": "treated",
+        "model": "feglm",
+        "family": "logit",
+        "vcov": ["hetero", {"CRV3": "firm"}],
+    }
     results = _run(panel, kwargs)
     assert results["error"].isna().tolist() == [True, False]
     assert results["vcov"].tolist() == ["hetero", "CRV3: firm"]
@@ -333,7 +340,7 @@ def test_unsupported_vcov_fails_only_its_own_rows(panel) -> None:
 
 def test_empty_sample_is_an_error_row(panel) -> None:
     df = panel.assign(empty=np.nan)
-    results = _run(df, dict(y="log(sales)", x="treated", controls=["empty"]))
+    results = _run(df, {"y": "log(sales)", "x": "treated", "controls": ["empty"]})
     assert results["error"].str.contains("no rows").all()
 
 
@@ -351,7 +358,7 @@ def test_data_is_not_modified(panel) -> None:
 
 
 def test_ci_levels_and_result_columns(panel) -> None:
-    results = _run(panel, dict(y="log(sales)", x="treated"), ci_levels=(0.9, 0.995))
+    results = _run(panel, {"y": "log(sales)", "x": "treated"}, ci_levels=(0.9, 0.995))
     assert result_columns((0.9, 0.995)) == [
         "estimate", "se", "statistic", "pvalue",
         "ci_low_90", "ci_high_90", "ci_low_99.5", "ci_high_99.5", "nobs", "error",
@@ -381,12 +388,14 @@ def test_keep_models_and_pass_through_arguments(panel) -> None:
 
 
 def test_progress_bar_can_be_forced(panel, capsys) -> None:
-    _run(panel, dict(y="log(sales)", x="treated"), progress=True)
+    _run(panel, {"y": "log(sales)", "x": "treated"}, progress=True)
     assert "Fitting specifications" in capsys.readouterr().err
 
 
 def test_transformed_focal_regressor_is_matched_by_name(panel) -> None:
-    results = _run(panel, dict(y="log(sales)", x="log( size+10 )", controls=["age"]))
+    results = _run(
+        panel, {"y": "log(sales)", "x": "log( size+10 )", "controls": ["age"]}
+    )
     assert results["error"].isna().all()
     reference = pf.feols("log(sales) ~ log(size + 10)", panel.dropna(subset=["age"]))
     np.testing.assert_allclose(results["estimate"].iloc[0], reference.coef().iloc[1])
@@ -399,9 +408,12 @@ def test_package_exports() -> None:
 
 def test_estimation_warnings_are_summarised_once(panel) -> None:
     # industry is constant within firm, so pyfixest warns that it drops it
-    kwargs = dict(
-        y="log(sales)", x="treated", controls=["size", "i(industry)"], fe="firm"
-    )
+    kwargs = {
+        "y": "log(sales)",
+        "x": "treated",
+        "controls": ["size", "i(industry)"],
+        "fe": "firm",
+    }
     with pytest.warns(UserWarning, match=r"2 warning\(s\) were raised") as caught:
         results = _run(panel, kwargs)
     assert len(caught) == 1

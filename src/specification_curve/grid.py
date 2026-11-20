@@ -2,9 +2,10 @@
 
 import re
 import warnings
+from collections.abc import Hashable, Mapping, Sequence
 from dataclasses import dataclass, replace
 from itertools import combinations, product
-from typing import Any, Hashable, Mapping, Optional, Sequence, Union
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -12,7 +13,7 @@ import pandas as pd
 from ._pyfixest import MODELS, VcovSpec, normalise, vcov_label
 from .formula import expand, render, split_top_level
 
-StrOrList = Union[str, Sequence[str]]
+StrOrList = str | Sequence[str]
 
 GRID_COLUMNS: list[str] = [
     "spec_id",
@@ -44,21 +45,21 @@ class Grid:
         frame (pd.DataFrame): One row per specification.
         vcov_specs (dict[str, VcovSpec]): Maps each label in the ``vcov`` column to
             the value passed to pyfixest.
-        subsets (dict[str, Optional[str]]): Maps each subset name to its query.
+        subsets (dict[str, str | None]): Maps each subset name to its query.
         n_skipped (int): Number of invalid combinations left out.
     """
 
     frame: pd.DataFrame
     vcov_specs: dict[str, VcovSpec]
-    subsets: dict[str, Optional[str]]
+    subsets: dict[str, str | None]
     n_skipped: int = 0
 
-    def sample(self, n: int, seed: Optional[int] = None) -> "Grid":
+    def sample(self, n: int, seed: int | None = None) -> "Grid":
         """Draws a random sample of specifications.
 
         Args:
             n (int): Number of specifications to keep.
-            seed (Optional[int]): Seed for the random draw.
+            seed (int | None): Seed for the random draw.
 
         Returns:
             Grid: A grid with at most ``n`` rows, in ``spec_id`` order.
@@ -138,10 +139,10 @@ def _structural_from_keywords(
     x: StrOrList,
     controls: Sequence[str],
     always: Sequence[str],
-    fe: Sequence[Optional[str]],
-    iv: Sequence[Optional[str]],
+    fe: Sequence[str | None],
+    iv: Sequence[str | None],
     min_controls: int,
-    max_controls: Optional[int],
+    max_controls: int | None,
 ) -> list[dict[str, Any]]:
     """Builds the structural part of the grid from keyword arguments."""
     largest = (
@@ -216,7 +217,7 @@ def _filter_structural(
     rows: list[dict[str, Any]],
     exclude: Sequence[Sequence[str]],
     min_controls: int,
-    max_controls: Optional[int],
+    max_controls: int | None,
 ) -> list[dict[str, Any]]:
     """Applies exclusion groups and size limits, and removes duplicate rows."""
     groups = [{normalise(term) for term in group} for group in exclude if group]
@@ -240,9 +241,9 @@ def _filter_structural(
 
 def _model_variants(
     model: StrOrList,
-    family: Union[str, Sequence[str], None],
-    quantile: Union[float, Sequence[float], None],
-) -> list[tuple[str, Optional[str], Optional[float]]]:
+    family: str | Sequence[str] | None,
+    quantile: float | Sequence[float] | None,
+) -> list[tuple[str, str | None, float | None]]:
     """Expands the model, family and quantile arguments into estimator settings."""
     models = as_list(model)
     unknown = [m for m in models if m not in MODELS]
@@ -256,7 +257,7 @@ def _model_variants(
         raise ValueError('family is only used by model "feglm"')
     if quantiles and "quantreg" not in models:
         raise ValueError('quantile is only used by model "quantreg"')
-    variants: list[tuple[str, Optional[str], Optional[float]]] = []
+    variants: list[tuple[str, str | None, float | None]] = []
     for name in models:
         if name == "feglm":
             variants.extend((name, fam, None) for fam in families)
@@ -268,8 +269,8 @@ def _model_variants(
 
 
 def _invalid_reason(
-    model: str, row: Mapping[str, Any], weights: Optional[str]
-) -> Optional[str]:
+    model: str, row: Mapping[str, Any], weights: str | None
+) -> str | None:
     """Explains why an estimator cannot run a specification, or returns None."""
     if model == "quantreg":
         if row["fe"] is not None:
@@ -317,7 +318,7 @@ def _check_columns(
             raise ValueError(f"Column(s) {missing} in {term!r} are not in the data")
 
 
-def _check_subsets(data: pd.DataFrame, subsets: Mapping[str, Optional[str]]) -> None:
+def _check_subsets(data: pd.DataFrame, subsets: Mapping[str, str | None]) -> None:
     """Raises if a subset query fails or selects no rows."""
     for name, query in subsets.items():
         if query is None:
@@ -336,47 +337,47 @@ def _check_subsets(data: pd.DataFrame, subsets: Mapping[str, Optional[str]]) -> 
 
 def build_grid(
     data: pd.DataFrame,
-    formula: Optional[str] = None,
+    formula: str | None = None,
     *,
-    y: Union[str, Sequence[str], None] = None,
-    x: Union[str, Sequence[str], None] = None,
-    controls: Union[str, Sequence[str], None] = None,
-    always: Union[str, Sequence[str], None] = None,
-    exclude: Optional[Sequence[Sequence[str]]] = None,
+    y: str | Sequence[str] | None = None,
+    x: str | Sequence[str] | None = None,
+    controls: str | Sequence[str] | None = None,
+    always: str | Sequence[str] | None = None,
+    exclude: Sequence[Sequence[str]] | None = None,
     min_controls: int = 0,
-    max_controls: Optional[int] = None,
-    fe: Union[str, Sequence[Optional[str]], None] = None,
-    iv: Union[str, Sequence[Optional[str]], None] = None,
+    max_controls: int | None = None,
+    fe: str | Sequence[str | None] | None = None,
+    iv: str | Sequence[str | None] | None = None,
     model: StrOrList = "feols",
-    family: Union[str, Sequence[str], None] = None,
-    quantile: Union[float, Sequence[float], None] = None,
-    vcov: Union[VcovSpec, Sequence[VcovSpec]] = None,
-    weights: Union[str, Sequence[Optional[str]], None] = None,
-    subsets: Optional[Mapping[str, Optional[str]]] = None,
+    family: str | Sequence[str] | None = None,
+    quantile: float | Sequence[float] | None = None,
+    vcov: VcovSpec | Sequence[VcovSpec] = None,
+    weights: str | Sequence[str | None] | None = None,
+    subsets: Mapping[str, str | None] | None = None,
     skip_invalid: bool = False,
 ) -> Grid:
     """Builds the grid of specifications.
 
     Args:
         data (pd.DataFrame): The data the specifications will be run on.
-        formula (Optional[str]): pyfixest formula describing outcomes, regressors,
+        formula (str | None): pyfixest formula describing outcomes, regressors,
             fixed effects and instruments. Use this or ``y``.
-        y (Union[str, Sequence[str], None]): Outcome term(s).
-        x (Union[str, Sequence[str], None]): Focal regressor(s).
-        controls (Union[str, Sequence[str], None]): Terms included in all combinations.
-        always (Union[str, Sequence[str], None]): Terms in every specification.
-        exclude (Optional[Sequence[Sequence[str]]]): Groups of controls that never
+        y (str | Sequence[str] | None): Outcome term(s).
+        x (str | Sequence[str] | None): Focal regressor(s).
+        controls (str | Sequence[str] | None): Terms included in all combinations.
+        always (str | Sequence[str] | None): Terms in every specification.
+        exclude (Sequence[Sequence[str]] | None): Groups of controls that never
             appear together.
         min_controls (int): Smallest number of controls in a specification.
-        max_controls (Optional[int]): Largest number of controls in a specification.
-        fe (Union[str, Sequence[Optional[str]], None]): Fixed-effect sets.
-        iv (Union[str, Sequence[Optional[str]], None]): First stage(s), e.g. "x ~ z".
+        max_controls (int | None): Largest number of controls in a specification.
+        fe (str | Sequence[str | None] | None): Fixed-effect sets.
+        iv (str | Sequence[str | None] | None): First stage(s), e.g. "x ~ z".
         model (StrOrList): Estimator(s).
-        family (Union[str, Sequence[str], None]): Family or families for "feglm".
-        quantile (Union[float, Sequence[float], None]): Quantile(s) for "quantreg".
-        vcov (Union[VcovSpec, Sequence[VcovSpec]]): Variance-covariance type(s).
-        weights (Union[str, Sequence[Optional[str]], None]): Weight column(s).
-        subsets (Optional[Mapping[str, Optional[str]]]): Named sample restrictions.
+        family (str | Sequence[str] | None): Family or families for "feglm".
+        quantile (float | Sequence[float] | None): Quantile(s) for "quantreg".
+        vcov (VcovSpec | Sequence[VcovSpec]): Variance-covariance type(s).
+        weights (str | Sequence[str | None] | None): Weight column(s).
+        subsets (Mapping[str, str | None] | None): Named sample restrictions.
         skip_invalid (bool): Drop combinations an estimator cannot run instead of
             raising.
 
@@ -415,7 +416,7 @@ def build_grid(
 
     variants = _model_variants(model, family, quantile)
     vcov_specs = {vcov_label(spec): spec for spec in as_list(vcov)}
-    subset_map: dict[str, Optional[str]] = (
+    subset_map: dict[str, str | None] = (
         {"all": None} if subsets is None else dict(subsets)
     )
     if not subset_map:
@@ -482,7 +483,7 @@ def build_grid(
 
 def subsets_by(
     data: pd.DataFrame, column: str, include_all: bool = False
-) -> dict[str, Optional[str]]:
+) -> dict[str, str | None]:
     """Builds a ``subsets`` argument with one sample per level of a column.
 
     Args:
@@ -491,14 +492,14 @@ def subsets_by(
         include_all (bool): Also include the full sample, named "all".
 
     Returns:
-        dict[str, Optional[str]]: Maps a name for each sample to its query.
+        dict[str, str | None]: Maps a name for each sample to its query.
 
     Examples:
         >>> import pandas as pd
         >>> subsets_by(pd.DataFrame({"g": ["a", "b", "a"]}), "g")
         {'g = a': "`g` == 'a'", 'g = b': "`g` == 'b'"}
     """
-    out: dict[str, Optional[str]] = {"all": None} if include_all else {}
+    out: dict[str, str | None] = {"all": None} if include_all else {}
     for level in sorted(data[column].dropna().unique()):
         value = level.item() if hasattr(level, "item") else level
         out[f"{column} = {value}"] = f"`{column}` == {value!r}"
