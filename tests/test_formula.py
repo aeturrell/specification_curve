@@ -89,6 +89,26 @@ def test_parse_error_is_value_error() -> None:
         backend.parse_formula("y ~ ~ x")
 
 
+def test_parse_preserves_backticks_for_non_identifier_names() -> None:
+    (parsed,) = backend.parse_formula(
+        "`firm sales` ~ `is treated` + `x-1` + `is treated`:`firm size` + log(`firm size` + 10)"
+    )
+    assert parsed.y == "`firm sales`"
+    assert parsed.exog == (
+        "`is treated`",
+        "`x-1`",
+        "log(`firm size` + 10)",
+        "`is treated`:`firm size`",
+    )
+    (iv_parsed,) = backend.parse_formula(
+        "`firm sales` ~ `firm size` | `is treated` ~ `z 1`"
+    )
+    assert iv_parsed.y == "`firm sales`"
+    assert iv_parsed.exog == ("`firm size`",)
+    assert iv_parsed.endog == ("`is treated`",)
+    assert iv_parsed.instruments == ("`z 1`",)
+
+
 @pytest.mark.parametrize(
     "kwargs, expected",
     [

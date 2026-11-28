@@ -33,8 +33,8 @@ _RESERVED_KWARGS = frozenset(
 
 
 def normalise(term: str) -> str:
-    """Removes all whitespace from a term so that spellings can be compared."""
-    return re.sub(r"\s+", "", term)
+    """Removes whitespace and backticks from a term so that spellings can be compared."""
+    return re.sub(r"[\s`]+", "", term)
 
 
 @dataclass(frozen=True)
@@ -58,9 +58,20 @@ class ParsedFormula:
     intercept: bool
 
 
+def _format_term(term: Any) -> str:
+    """Renders a parsed formulaic term, keeping backticks on non-identifier names."""
+    parts = [
+        f"`{factor.expr}`"
+        if factor.eval_method.value == "lookup" and not factor.expr.isidentifier()
+        else str(factor)
+        for factor in term.factors
+    ]
+    return ":".join(parts)
+
+
 def _terms(formula_part: Any) -> tuple[str, ...]:
     """Lists the non-intercept terms of a parsed formula part as strings."""
-    return tuple(str(term) for term in formula_part if str(term) != "1")
+    return tuple(_format_term(term) for term in formula_part if str(term) != "1")
 
 
 def parse_formula(formula: str) -> list[ParsedFormula]:
@@ -86,10 +97,11 @@ def parse_formula(formula: str) -> list[ParsedFormula]:
     for item in parsed:
         has_fe = bool(item.is_fixed_effects)
         is_iv = bool(item.is_instrumental_variable)
-        exog_terms = [str(term) for term in item.exogenous]
+        exog_terms = [_format_term(term) for term in item.exogenous]
+        dep_terms = [_format_term(term) for term in item.dependent]
         out.append(
             ParsedFormula(
-                y=str(item.dependent).strip(),
+                y=" + ".join(dep_terms).strip(),
                 exog=tuple(term for term in exog_terms if term != "1"),
                 fe=str(item.fixed_effects).strip() if has_fe else None,
                 endog=_terms(item.endogenous) if is_iv else (),

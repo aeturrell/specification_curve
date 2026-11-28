@@ -401,6 +401,63 @@ def test_transformed_focal_regressor_is_matched_by_name(panel) -> None:
     np.testing.assert_allclose(results["estimate"].iloc[0], reference.coef().iloc[1])
 
 
+@pytest.mark.parametrize("batch", [True, False])
+def test_backtick_quoted_focal_regressor_and_formula(panel, batch: bool) -> None:
+    df = panel.rename(
+        columns={"sales": "firm sales", "treated": "is treated", "size": "firm size"}
+    ).assign(**{"x-1": panel["eligible"]})
+    kw_results = _run(
+        df,
+        {"y": "`firm sales`", "x": "`is treated`", "controls": ["`firm size`", "age"]},
+        batch=batch,
+    )
+    assert kw_results["error"].isna().all()
+    fml_results = _run(
+        df,
+        {
+            "formula": "`firm sales` ~ `is treated` + comb0(`firm size`, age)",
+            "x": "`is treated`",
+        },
+        batch=batch,
+    )
+    assert fml_results["error"].isna().all()
+    np.testing.assert_allclose(
+        kw_results["estimate"], fml_results["estimate"], rtol=1e-6, atol=1e-8
+    )
+    sample = df.dropna(subset=["firm sales", "is treated", "firm size", "age"])
+    reference = pf.feols("`firm sales` ~ `is treated` + `firm size`", sample)
+    np.testing.assert_allclose(
+        kw_results.loc[kw_results["controls"] == ("`firm size`",), "estimate"].iloc[0],
+        reference.coef()["is treated"],
+    )
+    # A column name containing '-' stays backtick-quoted instead of dropping the intercept.
+    hyphen = _run(
+        df,
+        {"formula": "`firm sales` ~ `x-1` + comb0(`firm size`)", "x": "`x-1`"},
+        batch=batch,
+    )
+    assert hyphen["error"].isna().all()
+    ref_hyphen = pf.feols("`firm sales` ~ `x-1`", df)
+    np.testing.assert_allclose(hyphen["estimate"].iloc[0], ref_hyphen.coef()["x-1"])
+    # Interaction of backtick-quoted columns matches its tidy() coefficient.
+    inter = _run(
+        df,
+        {"y": "`firm sales`", "x": "`is treated`:`firm size`"},
+        batch=batch,
+    )
+    assert inter["error"].isna().all()
+    ref_inter = pf.feols("`firm sales` ~ `is treated`:`firm size`", df)
+    np.testing.assert_allclose(
+        inter["estimate"].iloc[0], ref_inter.coef()["is treated:firm size"]
+    )
+    # Null inference works with backtick-quoted outcome and focal regressor.
+    sco = sc.SpecificationCurve(
+        df, y="`firm sales`", x="`is treated`", controls=["`firm size`"]
+    ).fit(batch=batch)
+    sco.fit_null(n_boot=2, method="bootstrap", seed=0)
+    sco.fit_null(n_boot=2, method="permutation", seed=0)
+
+
 def test_package_exports() -> None:
     assert set(sc.__all__) <= set(dir(sc))
     assert isinstance(sc.__version__, str)
